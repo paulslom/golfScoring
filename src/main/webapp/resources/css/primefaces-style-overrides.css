@@ -1,0 +1,21 @@
+.ui-widget
+{
+   font-size: 12px;
+   font-weight: normal;
+}
+
+.ui-button-text
+{
+   font-size: 12px;
+   font-weight: normal;
+}
+
+.ui-datatable.interactionHistory thead th,
+.ui-datatable.interactionHistory tbody,
+.ui-datatable.interactionHistory tbody tr,
+.ui-datatable.interactionHistory tbody td, 
+.ui-state-highlight.ui-selected.interactionHistory tr 
+{
+   border-style: none;
+   background: white;
+}

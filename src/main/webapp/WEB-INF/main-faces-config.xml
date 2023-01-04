@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
+    version="2.3">
+
+    <name>MainFacesConfig</name>
+    
+    <ordering>
+	  <after>
+	     <name>primefaces</name>
+	     <others />
+	  </after>
+	</ordering>  	
+	   		
+	<!-- Navigation Rules -->
+	
+	<navigation-rule>
+		<from-view-id>/register.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Registration.emailAdminNewPlayer}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/register.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Registration.cancel}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+		
+	<navigation-rule>
+		<from-view-id>/auth/admin/gameList.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Game.addGameFromGameList}</from-action>
+			<from-outcome>addGame</from-outcome>
+			<to-view-id>/auth/admin/addGame.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/auth/admin/addGame.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Game.addGame}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/gameList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/auth/admin/gameList.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Game.proceedToPlayerPicklist}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/playerPicklist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/auth/admin/playerPicklist.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Player.proceedToTeeTimes}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/teeTimePickList.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/auth/admin/teeTimePickList.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Player.proceedToGameHandicaps}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/gameHandicaps.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/auth/admin/gameHandicaps.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Round.proceedToPickTeams}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/pickTeams.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>			
+		
+	<navigation-rule>
+		<from-view-id>/auth/admin/pickTeams.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Round.proceedToPreGameEmail}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/emailPreGame.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/auth/gameEnterScores.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Round.runGameNavigate}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/runGame.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/auth/admin/runGame.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{pc_Game.navigateToEmail}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/admin/emailPostGame.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>					
+	
+</faces-config>

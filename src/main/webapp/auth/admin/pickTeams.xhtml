@@ -1,0 +1,136 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewAction action="#{pc_Round.onloadPickTeams}" />
+        </f:metadata>
+    </ui:define>
+     
+    <ui:define name="content">
+    
+ 	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+			
+		   <h:form id="gameListPlayersForm">
+		   		
+		   		<table>
+		   		
+	         		<tr>
+	                  
+		               <td class="textLabel">
+		                  <p:outputLabel value="Game Date"/>
+		               </td>
+	             
+		               <td class="text">
+						
+					      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
+					         <p:ajax listener="#{pc_Round.valueChangeGamePickTeams}" event="change" 
+					         	update="gameListPlayersForm:label1 gameListPlayersForm:label2 gameListPlayersForm:label3 playersSelectionForm"/>
+					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						  </p:selectOneMenu>
+						
+					   </td>
+					   
+					   <td class="textLabel">
+							<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+					   </td>
+					   
+					   <td class="textLabel">
+							<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+					   </td>
+					   
+					</tr>
+					
+					<tr>   	
+					   
+					    <td class="textLabel" colspan="4">
+							<p:outputLabel id="label3" value=" Players Selected so far: #{fn:length(pc_Round.roundsForGame) }"/>
+					   </td>					       
+					   
+				    </tr>
+				    
+				    <tr>
+						<td colspan="4" align="center">
+							<p:messages id="facesMessages" showDetail="false">
+							   <p:autoUpdate/>
+							</p:messages>    								
+						</td>
+					</tr>	
+				    
+				</table>
+				
+			</h:form>
+			
+			<h:form id="playersSelectionForm">	    
+				
+		      	 <p:dataTable id="playersTableID" value="#{pc_Round.roundsForGame}"
+			          var="rd" scrollable="true" scrollHeight="350" sortBy="#{rd.player.lastName}"
+			          rowKey="#{rd.player.playerID}"
+			          style="font-size:12px;">							
+						
+			          <f:facet name="header">
+	    				  <h:outputText value="Players"/>
+					  </f:facet>
+						
+					  <p:column style="width:10%" headerText="ID" sortBy="#{rd.player.playerID}">												
+						  <h:outputText value="#{rd.playerID}"/>														
+					  </p:column>
+					  
+					  <p:column style="width:10%" headerText="First" sortBy="#{rd.player.firstName}">												
+						  <h:outputText value="#{rd.player.firstName}"/>														
+					  </p:column>
+					  
+					  <p:column style="width:20%" headerText="Last" sortBy="#{rd.player.lastName}">												
+						  <h:outputText value="#{rd.player.lastName}"/>														
+					  </p:column>
+					  
+					  <p:column style="width:20%" headerText="Round Handicap" sortBy="#{rd.roundHandicap}">												
+						  <h:outputText value="#{rd.roundHandicap}">
+						     <f:convertNumber type="number"
+		                             		maxIntegerDigits="2"
+		                             		maxFractionDigits="0"/>
+				          </h:outputText>   														
+					  </p:column>
+					  
+					  <p:column style="width:20%" headerText="Team">												
+						  <p:selectOneMenu id="teamNumList" value="#{rd.teamNumber}" hideNoSelectionOption="true">
+					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+							 <f:selectItems value="#{pc_Round.teamNumberList}" var="t" itemLabel="#{t.label}" itemValue="#{t.value}"/>					
+						  </p:selectOneMenu>													
+					  </p:column>						  
+						  
+				 </p:dataTable>
+				
+				 <p:commandButton id="pickTeamsButtonID"
+	                value="#{bundle.pickTeams}"
+	                action="#{pc_Round.pickTeams}"
+	                update="playersTableID">
+				 </p:commandButton> 
+				 
+				 <p:commandButton id="resetTeamsButtonID"
+	                value="#{bundle.resetTeams}"
+	                action="#{pc_Round.resetTeams}"
+	                update="playersTableID">
+				 </p:commandButton> 
+				
+				 <p:commandButton id="saveAndStayButtonID"
+	                value="#{bundle.saveAndStay}"
+	                action="#{pc_Round.saveAndStayPickTeams}">
+				 </p:commandButton> 
+				 		  
+				 <p:commandButton id="proceedButtonID"
+	                value="#{bundle.proceedToPreGameEmail}"
+	                action="#{pc_Round.proceedToPreGameEmail}">
+				 </p:commandButton> 
+							
+		   </h:form> 
+
+	</ui:define>
+	
+</ui:composition>	

@@ -1,0 +1,144 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+     
+    <ui:define name="content">
+ 	    
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+	 	
+	   <h:form id="emailPostGameForm">                  
+						
+	      <p:dataTable id="gamesTableID" value="#{pc_GolfMain.fullGameList}"
+	          var="game" scrollable="true" scrollHeight="250"
+	          selectionMode="single" selection="#{pc_Game.selectedGame}" rowKey="#{game.gameID}"
+	          style="font-size:11px;">							
+				
+	          <f:facet name="header">
+   					  <h:outputText value="Games"/>
+			  </f:facet>
+			  
+			  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowAjax}" 
+			       update="emailPostGameForm:composeEmailButtonID emailPostGameForm:sendEmailButtonID" ></p:ajax>
+						
+			  <p:column style="width:3%" headerText="ID" sortBy="#{game.gameID}">												
+				  <h:outputText value="#{game.gameID}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:10%" headerText="Date" sortBy="#{game.gameDate}">												
+				  <h:outputText value="#{game.gameDate}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:10%" headerText="Course" sortBy="#{game.courseName}">												
+				  <h:outputText value="#{game.courseName}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Bet Amt" sortBy="#{game.betAmount}">												
+				  <h:outputText value="#{game.betAmount}">
+				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Total Players" sortBy="#{game.totalPlayers}">												
+				  <h:outputText value="#{game.totalPlayers}">					    
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Total Teams" sortBy="#{game.totalTeams}">												
+				  <h:outputText value="#{game.totalTeams}">					     
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Total Team Balls" sortBy="#{game.howManyBalls}">												
+				  <h:outputText value="#{game.howManyBalls}">					    
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Team Ball Value" sortBy="#{game.eachBallWorth}">												
+				  <h:outputText value="#{game.eachBallWorth}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Team Pot" sortBy="#{game.teamPot}">												
+				  <h:outputText value="#{game.teamPot}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Skins Pot" sortBy="#{game.skinsPot}">												
+				  <h:outputText value="#{game.skinsPot}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Purse Amt" sortBy="#{game.purseAmount}">												
+				  <h:outputText value="#{game.purseAmount}">
+				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Indiv Grs" sortBy="#{game.individualGrossPrize}">												
+				  <h:outputText value="#{game.individualGrossPrize}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Indiv Net" sortBy="#{game.individualNetPrize}">												
+				  <h:outputText value="#{game.individualNetPrize}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+		  
+		  </p:dataTable>
+			
+		  <table>        
+				
+			<tr>
+				<td>
+					<hr/>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+								
+				  <p:messages id="facesMessagesID" showDetail="false">
+				     <p:autoUpdate />
+				  </p:messages>
+			        
+		          <p:commandButton id="composeEmailButtonID"
+		              value="#{bundle.composeEmail}"
+		              action="#{pc_Game.composePostGameEmail}"
+		              update="emailPostGameForm">
+				  </p:commandButton>
+					 
+				  <p:commandButton id="sendEmailButtonID"
+		              value="#{bundle.sendEmail}"
+		              action="#{pc_Game.sendPostGameEmail}"
+		              update="facesMessagesID">
+				  </p:commandButton>
+					  
+				</td>
+			</tr>
+							
+			<tr>
+				<td style="font: 12px 'Verdana'">
+				   <p:outputLabel id="displayedPostgameEmailMessageID"
+				      escape="false"
+				      rendered="#{pc_Game.showPostgameEmail}" 
+					  value="#{pc_Game.postGameEmailMessage}">
+				   </p:outputLabel>
+				</td>
+			</tr>	 
+			
+		 </table>
+			
+		</h:form> 
+	
+	</ui:define>
+	
+</ui:composition>	

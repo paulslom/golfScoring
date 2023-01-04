@@ -1,0 +1,476 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">    
+     
+    <ui:define name="content">
+   
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+		
+	   <h:form id="gameForm">
+	   		
+	   		<table>
+	   		
+         		<tr>
+                  
+                   <td class="textLabel">
+	                  <p:outputLabel value="Game Date"/>
+	               </td>
+             
+	               <td class="text">
+					
+				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
+				         <p:ajax listener="#{pc_Game.valueChangeGame}" event="change" 
+				         	update="gameForm"/>
+				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+					  </p:selectOneMenu>
+					
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label2" value="#{bundle.course} - #{pc_Game.selectedGame.courseName}"/>
+				   </td>					       
+				   
+			       <td class="textLabel">
+						<p:outputLabel value="#{bundle.PurseAmount}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.purseAmount}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>		              
+		           </td>
+		      
+				   <td class="textLabel">
+						<p:outputLabel value="#{bundle.totalTeams} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.totalTeams}"/>
+		           </td>
+		        		
+					 <td class="textLabel">
+						<p:outputLabel value="#{bundle.howManyBalls} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.howManyBalls}"/>
+		             </td>
+		         
+		         </tr> 
+		         
+		          <tr>
+		         	<td colspan="8">
+		         		<HR />
+		         	</td>
+		         </tr>
+		         
+		         <tr>	
+		
+					 <td class="textLabel">
+						<p:outputLabel value="#{bundle.eachBallWorth} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.eachBallWorth}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>		              
+		             </td>
+		        	
+		        	 <td class="textLabel">
+						<p:outputLabel value="#{bundle.teamPot}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.teamPot}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>
+		             </td>				 
+		        
+					 <td class="textLabel">
+						<p:outputLabel value="#{bundle.skinsPot} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.skinsPot}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>                	
+		             </td>
+		             
+		             <td class="textLabel">
+						<p:outputLabel value="#{bundle.indivGrossPrize}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.individualGrossPrize}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>                	
+		             </td> 
+		             
+		             <td class="textLabel">
+						<p:outputLabel value="#{bundle.indivNetPrize}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.individualNetPrize}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>                	
+		             </td> 
+		        	 
+		             <td class="textLabel">
+						<p:outputLabel value="#{bundle.playBallMethod}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.playTheBallMethod}"/>
+		             </td>  
+		             
+		             <td class="textLabel" colspan="2">
+						<p:outputLabel value="#{bundle.gameNote}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.gameNoteForEmail}"/>
+		             </td>  
+		            					    
+		         </tr>
+			    
+			    <tr>   	
+					<td class="textLabel" colspan="8">
+						<br/>
+					</td>				   
+				</tr>
+				
+				<tr>   	
+					<td align="center" colspan="8">
+					
+						<p:commandButton id="submitWeeklyGameID"
+		                     value="#{bundle.runGame}" 
+		                     disabled="#{pc_Game.selectedGame == null}"                                    
+		                     action="#{pc_Game.runSelectedGame}"
+		                     update="scoresTableID skinWinningsID playerMoneyID teamResultsID">
+		                </p:commandButton> 
+		                
+		                <p:commandButton id="sendEmailID"
+		                     value="#{bundle.emailNavigate}" 
+		                     disabled="#{pc_Game.selectedGame == null}"                                    
+		                     action="#{pc_Game.navigateToEmail}">
+		                </p:commandButton> 
+		                 
+		                <p:blockUI block="gameForm" trigger="submitWeeklyGameID"> 
+					        <p:graphicImage value="/images/wait.gif"/>  
+					    </p:blockUI> 
+					       
+					</td>
+				</tr>
+					     
+			    <tr>
+					<td colspan="8" align="center">
+						<p:messages id="facesMessages" showDetail="false">
+						   <p:autoUpdate/>
+						</p:messages>    								
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="8"  align="center">
+					
+		              <p:commandLink ajax="false">
+	                     <p:graphicImage url="/images/excel.png" width="24"/>
+	                     <p:dataExporter type="xls" target="scoresTableID,teamResultsID,skinWinningsID,playerMoneyID" fileName="golfresultsxls" />
+	                  </p:commandLink>
+	 
+	                  <p:commandLink ajax="false">
+	                     <p:graphicImage url="/images/pdf.png" width="24"/>
+	                     <p:dataExporter type="pdf" target="playerMoneyID" 
+	                     		preProcessor="#{pc_Game.preProcessPDF}" fileName="golfresultspdf"/>
+	                  </p:commandLink>				                
+			            
+			        </td>
+			    </tr>
+			    
+				<tr valign="top">
+					<td width="100%" colspan="8" style="border: solid 1px #000000">
+	
+					    <p:dataTable id="scoresTableID" value="#{pc_Game.playerScores}" var="ps" sortBy="#{ps.teamNumber}"
+					          scrollable="true" scrollHeight="500" style="font-size:12px;">							
+	 						
+					      <f:facet name="header">
+	      					  <h:outputText value="Scores"/>
+	 					  </f:facet>
+	 					  
+	 					  <p:column style="width:11%" headerText="Ply" sortBy="#{ps.player.fullName}" exportFunction="#{pc_Game.exportPlayerName}">												
+							  <h:outputText value="#{ps.player.fullName}"/>														
+						  </p:column>
+							
+						  <p:column style="width:5%" headerText="Team" sortBy="#{ps.teamNumberDisplay}" exportable="false">												
+							  <h:outputText value="#{ps.teamNumberDisplay}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="1" sortBy="#{ps.hole1Score}">												
+						  	  <h:outputText value ="#{ps.hole1Score}" styleClass="#{ps.hole1StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="2" sortBy="#{ps.hole2Score}">												
+							  <h:outputText value="#{ps.hole2Score}" styleClass="#{ps.hole2StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="3" sortBy="#{ps.hole3Score}">												
+							  <h:outputText value="#{ps.hole3Score}"  styleClass="#{ps.hole3StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="4" sortBy="#{ps.hole4Score}">												
+							  <h:outputText value="#{ps.hole4Score}" styleClass="#{ps.hole4StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="5" sortBy="#{ps.hole5Score}">												
+							  <h:outputText value="#{ps.hole5Score}" styleClass="#{ps.hole5StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="6" sortBy="#{ps.hole6Score}">												
+							  <h:outputText value="#{ps.hole6Score}" styleClass="#{ps.hole6StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="7" sortBy="#{ps.hole7Score}">												
+							  <h:outputText value="#{ps.hole7Score}" styleClass="#{ps.hole7StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="8" sortBy="#{ps.hole8Score}">												
+							  <h:outputText value="#{ps.hole8Score}" styleClass="#{ps.hole8StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="9" sortBy="#{ps.hole9Score}">												
+							  <h:outputText value="#{ps.hole9Score}"  styleClass="#{ps.hole9StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:5%" headerText="Fr" sortBy="#{ps.front9Total}">												
+							  <h:outputText value="#{ps.front9Total}" styleClass="#{ps.front9StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="10" sortBy="#{ps.hole10Score}">												
+							  <h:outputText value="#{ps.hole10Score}" styleClass="#{ps.hole10StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="11" sortBy="#{ps.hole11Score}">												
+							  <h:outputText value="#{ps.hole11Score}" styleClass="#{ps.hole11StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="12" sortBy="#{ps.hole12Score}">												
+							  <h:outputText value="#{ps.hole12Score}" styleClass="#{ps.hole12StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="13" sortBy="#{ps.hole13Score}">												
+							  <h:outputText value="#{ps.hole13Score}" styleClass="#{ps.hole13StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="14" sortBy="#{ps.hole14Score}">												
+							  <h:outputText value="#{ps.hole14Score}"  styleClass="#{ps.hole14StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="15" sortBy="#{ps.hole15Score}">												
+							  <h:outputText value="#{ps.hole15Score}" styleClass="#{ps.hole15StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="16" sortBy="#{ps.hole16Score}">												
+							  <h:outputText value="#{ps.hole16Score}" styleClass="#{ps.hole16StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="17" sortBy="#{ps.hole17Score}">												
+							  <h:outputText value="#{ps.hole17Score}"  styleClass="#{ps.hole17StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="18" sortBy="#{ps.hole18Score}">												
+							  <h:outputText value="#{ps.hole18Score}" styleClass="#{ps.hole18StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:6%" headerText="Bk" sortBy="#{ps.back9Total}">												
+							  <h:outputText value="#{ps.back9Total}" styleClass="#{ps.back9StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:6%" headerText="Grs" sortBy="#{ps.totalScore}">												
+							  <h:outputText value="#{ps.totalScore}" styleClass="#{ps.totalStyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:6%" headerText="Hcp" sortBy="#{ps.roundHandicap}">												
+							  <h:outputText value="#{ps.roundHandicap}"/>														
+						  </p:column>
+						  
+						   <p:column style="width:6%" headerText="Net" sortBy="#{ps.netScore}">												
+							  <h:outputText value="#{ps.netScore}" styleClass="#{ps.netStyleClass}"/>														
+						  </p:column>
+						  
+						</p:dataTable>
+						
+					</td>	  	
+				</tr>			 						 
+		
+				<tr valign="top">
+					<td width="100%" colspan="8" style="border: solid 1px #000000">
+	
+					    <p:dataTable id="teamResultsID" value="#{pc_Game.teamResultsList}" sortBy="#{ts.player.firstName}"  
+					         var="ts" scrollable="true" scrollHeight="400" style="font-size:12px;">								
+	 						
+					      <f:facet name="header">
+	      					  <h:outputText value="#{bundle.teamResults}"/>
+	 					  </f:facet>
+	 						
+	 					  <p:column style="width:11%" headerText="Team" sortBy="#{ts.player.firstName}">												
+							  <h:outputText value="#{ts.player.firstName}"/>														
+						  </p:column>
+						 
+						  <p:column style="width:5%" headerText="Ball">												
+							  <h:outputText value="#{ts.player.lastName}"/>														
+						  </p:column>						
+						  
+						  <p:column style="width:3%" headerText="1">												
+						  	  <h:outputText value ="#{ts.hole1Score}" styleClass="#{ts.hole1StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="2">												
+							  <h:outputText value="#{ts.hole2Score}" styleClass="#{ts.hole2StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="3">												
+							  <h:outputText value="#{ts.hole3Score}"  styleClass="#{ts.hole3StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="4">												
+							  <h:outputText value="#{ts.hole4Score}" styleClass="#{ts.hole4StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="5">												
+							  <h:outputText value="#{ts.hole5Score}" styleClass="#{ts.hole5StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="6">												
+							  <h:outputText value="#{ts.hole6Score}" styleClass="#{ts.hole6StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="7">												
+							  <h:outputText value="#{ts.hole7Score}" styleClass="#{ts.hole7StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="8">												
+							  <h:outputText value="#{ts.hole8Score}" styleClass="#{ts.hole8StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="9">												
+							  <h:outputText value="#{ts.hole9Score}"  styleClass="#{ts.hole9StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:5%" headerText="Fr">												
+							  <h:outputText value="#{ts.front9Total}" styleClass="#{ts.front9StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="10">												
+							  <h:outputText value="#{ts.hole10Score}" styleClass="#{ts.hole10StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="11">												
+							  <h:outputText value="#{ts.hole11Score}" styleClass="#{ts.hole11StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="12">												
+							  <h:outputText value="#{ts.hole12Score}" styleClass="#{ts.hole12StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="13">												
+							  <h:outputText value="#{ts.hole13Score}" styleClass="#{ts.hole13StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="14">												
+							  <h:outputText value="#{ts.hole14Score}"  styleClass="#{ts.hole14StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="15">												
+							  <h:outputText value="#{ts.hole15Score}" styleClass="#{ts.hole15StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="16">												
+							  <h:outputText value="#{ts.hole16Score}" styleClass="#{ts.hole16StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="17">												
+							  <h:outputText value="#{ts.hole17Score}"  styleClass="#{ts.hole17StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:3%" headerText="18">												
+							  <h:outputText value="#{ts.hole18Score}" styleClass="#{ts.hole18StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:6%" headerText="Bk">												
+							  <h:outputText value="#{ts.back9Total}" styleClass="#{ts.back9StyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:6%" headerText="Totl">												
+							  <h:outputText value="#{ts.totalScore}" styleClass="#{ts.totalStyleClass}"/>														
+						  </p:column>
+						  
+						  <p:column style="width:6%" headerText="+/-">												
+							  <h:outputText value="#{ts.totalToPar}" styleClass="#{ts.totalToParClass}"/>														
+						  </p:column>
+						  
+						  <p:summaryRow>
+						  	<p:column colspan="24" style="text-align:right">
+							     <h:outputText value="" />
+							  </p:column>						 
+						  </p:summaryRow>   
+												   
+					   </p:dataTable>  
+								
+					</td>
+				</tr>
+				
+				<tr valign="top">
+					<td width="100%" colspan="8" style="border: solid 1px #000000">
+	
+					    <p:dataTable id="skinWinningsID" var="result" value="#{pc_Game.skinWinningsList}" scrollable="true" scrollHeight="155" style="font-size:12px;">							
+	 						
+					      <f:facet name="header">
+	      					  <h:outputText value="#{bundle.skinWinnings}"/>
+	 					  </f:facet>
+	 					
+	 					  <p:column headerText="Player" sortBy="#{result.playerName}">							  		
+							  <h:outputText value="#{result.playerName}" />      								
+						  </p:column>
+						  
+						  <p:column headerText="Skin" sortBy="#{result.winDescription}">							  		
+							  <h:outputText value="#{result.winDescription}" />      								
+						  </p:column>
+						  
+						  <p:column headerText="Amount" sortBy="#{result.amountWon}">							  		
+							  <h:outputText value="#{result.amountWon}">
+							  	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+							  </h:outputText>	      								
+						  </p:column> 					  		
+												   
+					   </p:dataTable>  
+								
+					</td>
+				</tr>
+				
+				<tr valign="top">
+					<td width="100%" colspan="8" style="border: solid 1px #000000">
+	
+					    <p:dataTable id="playerMoneyID" var="result" value="#{pc_Game.playerMoneyForSelectedGameList}" sortBy="#{result.player.lastName}" 
+					    	scrollable="true" scrollHeight="600" style="font-size:12px;">							
+	 						
+					      <f:facet name="header">
+	      					  <h:outputText value="#{bundle.individualWinnings}"/>
+	 					  </f:facet>
+	 					
+	 					  <p:column headerText="Player" sortBy="#{result.player.fullName}">							  		
+							  <h:outputText value="#{result.player.fullName}" />      								
+						  </p:column>
+						  
+						  <p:column headerText="What">							  		
+							  <h:outputText value="#{result.description}" />      								
+						  </p:column>
+						  
+						  <p:column headerText="Amount">							  		
+							  <h:outputText value="#{result.amount}">
+							  	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+							  </h:outputText>	      								
+						  </p:column> 
+						  
+						  <p:summaryRow listener="#{pc_Game.calculatePMTotal}">
+							  <p:column colspan="2" style="text-align:right">
+							     <h:outputText value="Total:" />
+							  </p:column>
+							  <p:column>
+							     <h:outputText value="#{pc_Game.totalWon}">
+							  	   <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+							     </h:outputText>	
+							  </p:column>
+						  </p:summaryRow>   				
+												   
+					   </p:dataTable>  
+								
+					</td>
+				</tr>     
+			    
+			</table>
+			
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>	

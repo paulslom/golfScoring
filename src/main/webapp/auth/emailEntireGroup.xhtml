@@ -1,0 +1,71 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+     
+    <f:metadata>
+	    <f:viewAction action="#{pc_GolfMain.onLoadEmailGroup}" />
+	</f:metadata> 
+	
+    <ui:define name="content">
+ 	    
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+	 	
+	   <h:form id="emailForm">                  
+			
+		  <p:messages id="facesMessagesID" showDetail="false">
+		     <p:autoUpdate />
+		  </p:messages> 
+		    
+		  <table id="tableEmailGroupID">
+     		  
+     		  <tr>
+				  <td class="textLabel" colspan="2">
+					 <p:outputLabel value="#{pc_GolfMain.groupEmailDisclaimer}">
+		  			 </p:outputLabel>	
+				  </td>						
+		      </tr>
+		      
+		      <tr>
+				  <td class="textLabel">
+					  <p:outputLabel value="#{bundle.emailSender}">
+		  			 </p:outputLabel>	
+				  </td>	
+				  <td class="text">
+					  <p:outputLabel value="#{pc_GolfMain.groupEmailSender}">
+		  			 </p:outputLabel>	
+				  </td>								
+		      </tr>
+		      
+		      <tr>
+				  <td colspan="2">
+					 <p>Enter your email message to the group here.  </p>
+				  </td>						
+		      </tr>
+		      
+		      <tr>
+				  <td colspan="2">
+					   <p:inputTextarea id="userInputMessage" rows="10" cols="50" value="#{pc_GolfMain.groupEmailMessage}"/> 	
+				  </td>						
+		      </tr>
+		      
+		      <tr>
+				  <td colspan="2">
+					  <p:commandButton id="sendEmailButtonID"
+			              value="#{bundle.sendGroupEmail}"
+			              action="#{pc_GolfMain.sendGroupEmail}"
+			              update="facesMessagesID">
+					  </p:commandButton>		 	
+				  </td>						
+		      </tr>
+		      
+		  </table>
+			
+		</h:form> 
+	
+	</ui:define>
+	
+</ui:composition>	

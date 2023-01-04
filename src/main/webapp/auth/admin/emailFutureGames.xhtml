@@ -1,0 +1,109 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+      
+    <f:metadata>
+	    <f:viewAction action="#{pc_Game.onLoadEmailFuture}" />
+	</f:metadata>  
+	
+    <ui:define name="content">
+ 	    
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+	 	
+	   <h:form id="emailFutureGameForm">                  
+						
+	       <p:dataTable id="gamesTableID" value="#{pc_Game.futureGamesList}"
+	          var="game" scrollable="true" scrollHeight="350"
+	          selectionMode="single" selection="#{pc_Game.selectedGame}" rowKey="#{game.gameID}"
+	          style="font-size:11px;">													
+				
+	          <f:facet name="header">
+   					  <h:outputText value="Games"/>
+			  </f:facet>
+			  
+			  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowAjax}" 
+			       update="emailFutureGameForm:composeEmailButtonID emailFutureGameForm:sendEmailButtonID" ></p:ajax>
+						
+			  <p:column style="width:3%" headerText="ID" sortBy="#{game.gameID}">												
+				  <h:outputText value="#{game.gameID}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:10%" headerText="Date" sortBy="#{game.gameDate}">												
+				  <h:outputText value="#{game.gameDate}">
+				  	<f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>	
+				  </h:outputText>														
+			  </p:column>
+			  
+			  <p:column style="width:10%" headerText="Course" sortBy="#{game.courseName}">												
+				  <h:outputText value="#{game.courseName}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Bet Amt" sortBy="#{game.betAmount}">												
+				  <h:outputText value="#{game.betAmount}">
+				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:7%" headerText="Field Size" sortBy="#{game.fieldSize}">												
+				  <h:outputText value="#{game.fieldSize}">					    
+				  </h:outputText>   														
+			  </p:column>		  
+		  
+		  </p:dataTable>
+			
+		  <table>        
+				
+			<tr>
+				<td>
+					<hr/>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+								
+				  <p:commandButton id="composeEmailButtonID"
+		              value="#{bundle.composeEmail}"
+		              disabled="#{pc_Game.disableEmailStuff}"
+		              action="#{pc_Game.composeFutureGameEmail(true)}"
+		              update="emailFutureGameForm">
+				  </p:commandButton>
+					 
+				  <p:commandButton id="sendEmailButtonID"
+		              value="#{bundle.sendEmail}"
+		              disabled="#{pc_Game.disableEmailStuff}"
+		              action="#{pc_Game.sendFutureGameEmail}"
+		              update="facesMessagesID">
+				  </p:commandButton>
+					  
+				</td>
+			</tr>
+							
+			<tr>
+				<td style="font: 12px 'Verdana'">
+				   <p:outputLabel id="displayedFuturegameEmailMessageID"
+				      escape="false"
+					  value="#{pc_Game.futureGameEmailMessage}">
+				   </p:outputLabel>
+				</td>
+			</tr>
+
+			<tr>
+			   <td>
+  				  <p:messages id="facesMessagesID" showDetail="false">
+				     <p:autoUpdate />
+				  </p:messages> 
+			   </td>	  
+			</tr>	    
+			
+		 </table>
+			
+		</h:form> 
+	
+	</ui:define>
+	
+</ui:composition>	

@@ -1,0 +1,130 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <f:metadata>
+	    <f:viewAction action="#{pc_Round.onLoadGameHandicaps}" />
+	</f:metadata> 
+	 
+    <ui:define name="content">
+ 	    
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+	 	
+	 	<h:form id="handicapsGameForm">
+		   		
+	   		<h3>Handicaps specific for a game</h3>
+	   		
+	   		<table>
+	   		
+         		<tr>
+                  
+	               <td class="textLabel">
+	                  <p:outputLabel value="Game Date"/>
+	               </td>
+             
+	               <td class="text">
+					
+				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
+				         <p:ajax listener="#{pc_Round.valueChangeGameHandicaps}" event="change" 
+				         	update="handicapsGameForm:label1 handicapsGameForm:label2 handicapsPlayerForm"/>
+				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+					  </p:selectOneMenu>
+					
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+				   </td>
+				   
+				</tr>					
+				    
+			    <tr>
+					<td colspan="4" align="center">
+						<p:messages id="facesMessages" showDetail="false">
+						   <p:autoUpdate/>
+						</p:messages>    								
+					</td>
+				</tr>	
+			    
+			</table>
+			
+	   </h:form>
+	   
+	   <h:form id="handicapsPlayerForm">                  
+						
+	      <p:dataTable id="playersTableID" value="#{pc_Round.roundsForGame}"
+	          var="rfg" scrollable="true" scrollHeight="350" 
+	          selectionMode="single" selection="#{pc_Round.selectedRound}" rowKey="#{rfg.roundID}"
+	          style="font-size:12px;" sortBy="#{rfg.player.lastName}">							
+				
+	          <f:facet name="header">
+   				  <h:outputText value="Player Rounds"/>
+			  </f:facet>
+				
+			  <p:column style="width:20%" headerText="Last name" sortBy="#{rfg.player.firstName}">												
+				  <h:outputText value="#{rfg.player.firstName}"/>														
+			  </p:column>	
+			  	
+			  <p:column style="width:20%" headerText="Last name" sortBy="#{rfg.player.lastName}">												
+				  <h:outputText value="#{rfg.player.lastName}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:10%" headerText="Tee" sortBy="#{rfg.courseTeeColor}">												
+				  <h:outputText value="#{rfg.courseTeeColor}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:20%" headerText="Current Handicap Index" sortBy="#{rfg.player.handicap}">												
+				  <h:inputText value="#{rfg.player.handicap}">
+				     <f:convertNumber type="number"
+                             		maxIntegerDigits="2"
+                             		maxFractionDigits="1"/>
+				  </h:inputText>   														
+			  </p:column>
+			  
+			  <p:column style="width:10%" headerText="Round Hcp" sortBy="#{rfg.roundHandicap}">												
+				  <h:outputText value="#{rfg.roundHandicap}">
+				     <f:convertNumber type="number"
+                             		maxIntegerDigits="2"
+                             		maxFractionDigits="0"/>
+				  </h:outputText>   														
+			  </p:column>	
+			  
+			  <p:column style="width:20%" headerText="Hcp differential" sortBy="#{rfg.roundHandicapDifferential}">												
+				  <h:outputText value="#{rfg.roundHandicapDifferential}">
+				     <f:convertNumber type="number"
+                             		maxIntegerDigits="2"
+                             		maxFractionDigits="1"/>
+				  </h:outputText>   														
+			  </p:column>					 
+		  
+		  </p:dataTable>
+			 	
+	      <p:messages id="facesMessages" showDetail="false">
+	        <p:autoUpdate/>
+	      </p:messages>   
+				        
+          <p:commandButton id="updateHandicapsButtonID"
+              value="#{bundle.update}"
+              action="#{pc_Round.updateGameHandicaps}"
+              update="handicapsPlayerForm">
+		  </p:commandButton>
+		  
+		  <p:commandButton id="proceedToPickTeamsButtonID"
+             value="#{bundle.proceedToPickTeams}"
+             action="#{pc_Round.proceedToPickTeams}">
+		  </p:commandButton> 					
+			
+		</h:form> 	
+		
+	</ui:define>
+	
+</ui:composition>	

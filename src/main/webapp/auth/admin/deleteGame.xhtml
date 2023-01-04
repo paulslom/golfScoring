@@ -1,0 +1,90 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">    
+     
+    <ui:define name="content">
+   
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+		
+	   <h:form id="deleteGameForm">
+	   		
+	   		<table>
+	   		
+         		<tr>
+                  
+                   <td class="textLabel">
+	                  <p:outputLabel value="Game Date"/>
+	               </td>
+             
+	               <td class="text">
+					
+				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
+				         <p:ajax listener="#{pc_Game.valueChangeGame}" event="change" 
+				         	update="deleteGameForm"/>
+				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+					  </p:selectOneMenu>
+					
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label2" value="#{bundle.course} - #{pc_Game.selectedGame.courseName}"/>
+				   </td>					       
+				   
+			       <td class="textLabel">
+						<p:outputLabel value="#{bundle.PurseAmount}"/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.purseAmount}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>		              
+		           </td>
+		      
+				   <td class="textLabel">
+						<p:outputLabel value="#{bundle.totalTeams} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.totalTeams}"/>
+		           </td>
+		        		
+					 <td class="textLabel">
+						<p:outputLabel value="#{bundle.howManyBalls} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.howManyBalls}"/>
+		             </td>
+		         
+		         </tr> 
+		         
+		         <tr>
+		         	<td colspan="8">
+		         		<HR />
+		         	</td>
+		         </tr>
+		         
+		         <tr>
+					<td>
+						
+						<p:growl id="message" showDetail="true" />
+     
+					    <p:commandButton value="Delete Selected Game" action="#{pc_Game.deleteGame}" update="message">
+					        <p:confirm header="Confirmation" message="Really completely delete this game??" icon="pi pi-exclamation-triangle" />
+					    </p:commandButton>
+					     
+					    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+					    </p:confirmDialog>  			  
+						  
+					</td>
+				</tr>					
+				
+			</table>
+			
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>	

@@ -1,0 +1,70 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <f:metadata>
+	    <f:viewAction action="#{pc_GolfMain.refreshFullPlayerTeePreferencesList}" />
+	</f:metadata> 
+	 
+    <ui:define name="content">
+   
+       <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+		
+	   <h:form id="playerTeePrefsForm">
+	   			       
+          <p:dataTable id="playerTeePrefsTableID" value="#{pc_PlayerTeePreference.fullPlayerTeePreferencesList}"
+	          var="plyr" scrollable="true" scrollHeight="550" sortyBy="#{plyr.playerFullName}" 
+	          selectionMode="single" selection="#{pc_PlayerTeePreference.selectedPlayerTeePreference}" rowKey="#{plyr.playerTeePreferenceID}"
+	          style="font-size:12px;">							
+				
+	          <f:facet name="header">
+   				  <h:outputText value="Player Tee Prefs"/>
+			  </f:facet>
+			  
+			  <p:ajax event="rowSelect" listener="#{pc_PlayerTeePreference.selectRowAjax}"></p:ajax>
+						
+			  <p:column style="width:5%" headerText="ID" sortBy="#{plyr.playerTeePreferenceID}">												
+				  <h:outputText value="#{plyr.playerTeePreferenceID}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:30%" headerText="Name" sortBy="#{plyr.playerFullName}">												
+				  <h:outputText value="#{plyr.playerFullName}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:20%" headerText="Course" sortBy="#{plyr.courseName}">												
+				  <h:outputText value="#{plyr.courseName}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:45%" headerText="Tee">												
+				  <p:selectOneRadio id="teeColorID" value="#{plyr.courseTeeID}">
+                       <f:selectItems value="#{plyr.teeSelections}"/>
+	              </p:selectOneRadio>													
+  			  </p:column>
+					  
+		  </p:dataTable>
+			 	
+	      <p:messages id="facesMessages" showDetail="false">
+	        <p:autoUpdate/>
+	      </p:messages>   
+		
+		  <p:commandButton id="selectGoldsID"
+                value="Select Gold all"
+                action="#{pc_PlayerTeePreference.selectGoldAll}"
+                update="playerTeePrefsForm">
+		  </p:commandButton>
+		  		        
+          <p:commandButton id="maintainID"
+                value="Update all"
+                action="#{pc_PlayerTeePreference.updatePrefs}"
+                update="playerTeePrefsForm">
+		  </p:commandButton>
+			
+		</h:form>			
+		
+	</ui:define>
+	
+</ui:composition>	

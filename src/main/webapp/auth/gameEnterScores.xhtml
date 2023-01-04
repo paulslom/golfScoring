@@ -1,0 +1,312 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <f:metadata>
+	    <f:viewAction action="#{pc_Round.onLoadGameEnterScores}" />
+	</f:metadata> 
+	
+    <ui:define name="content">
+   
+       <h:outputScript name="javascript/golfJS.js" target="head" />
+       
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+		
+	   <h:form id="gameForm">
+	   		
+	   		<table>
+	   		
+         		<tr>
+                  
+                   <td class="textLabel">
+	                  <p:outputLabel value="Enter Scores  "/>
+	               </td>
+	               
+	               <td class="textLabel">
+	                  <p:outputLabel value="Game Date"/>
+	               </td>
+             
+	               <td class="text">
+					
+				      <p:selectOneMenu id="gameList" value="#{pc_Round.game}" required="true"  hideNoSelectionOption="true">
+				         <p:ajax listener="#{pc_Round.valueChangeGame}" event="change" 
+				         	update="gameForm:label1 gameForm:label2 scoresForm"/>
+				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+						 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+					  </p:selectOneMenu>
+					
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label2" value="#{bundle.course} - #{pc_Game.selectedGame.courseName}"/>
+				   </td>					       
+				   
+			    </tr>
+			    
+			    <tr>   	
+					<td class="textLabel" colspan="4">
+						<p:outputLabel id="label3" value=" Players Selected so far: #{pc_Player.totalSelectedPlayers}"/>
+					</td>				   
+				</tr>
+			    
+			</table>
+			
+		</h:form>
+		
+		<h:form id="scoresForm">
+		
+			<p:dataTable id="roundsTableID" value="#{pc_Round.syncGameRoundList}"
+		          var="rd" scrollable="true" scrollHeight="350" sortBy="#{rd.teeTime.playGroupNumber}"
+		          selection="#{pc_Round.selectedRound}" rowKey="#{rd.roundID}" rowIndexVar="index"
+		          selectionMode="single" style="font-size:10px;">							
+					
+		          <f:facet name="header">
+	   				  <h:outputText value="Rounds for Game"/>
+				  </f:facet>
+					
+				  <p:ajax event="rowSelect" listener="#{pc_Round.selectRowAjax}" update="scoresForm:deleteSelectedButtonID scoresForm:fixScoreButtonID"></p:ajax>
+				  		
+				  <p:column style="width:10%" headerText="Name" sortBy="#{rd.playerName}">												
+					  <h:outputText value="#{rd.playerName}"/>														
+				  </p:column>
+				  
+				  <p:column id="playGroupNumID" style="width:5%" headerText="Play group" sortBy="#{rd.teeTime.playGroupNumber}">												
+					  <p:outputLabel size="4" value="#{rd.teeTime.playGroupNumber}"/>	
+					  <p:outputLabel size="2" value=" - "/>	
+					  <p:outputLabel size="4" value="#{rd.teeTime.teeTimeString}"/>														
+				  </p:column>
+				  
+				  <p:column id="teamNumID" style="width:5%" headerText="Team Num" sortBy="#{rd.teamNumberDisplay}">												
+					  <p:outputLabel size="4" value="#{rd.teamNumberDisplay}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="1">												
+					  <p:inputNumber id="inputHole1ID" emptyValue="empty" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole1Score}" onkeyup="tabNextScore(this);"
+						    disabled="#{rd.hole1ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="2">												
+					  <p:inputNumber id="inputHole2ID" emptyValue="empty" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole2Score}" onkeyup="tabNextScore(this);"
+					  		disabled="#{rd.hole2ScoreEntryDisabled}"/>
+				  </p:column>
+				 
+				  <p:column style="width:3%" headerText="3">												
+					  <p:inputNumber id="inputHole3ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole3Score}" onkeyup="tabNextScore(this);"
+					  		disabled="#{rd.hole3ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="4">												
+					  <p:inputNumber id="inputHole4ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole4Score}" onkeyup="tabNextScore(this);"
+						  	disabled="#{rd.hole4ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="5">												
+					  <p:inputNumber id="inputHole5ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole5Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole5ScoreEntryDisabled}"/>
+				  </p:column>
+				 
+				  <p:column style="width:3%" headerText="6">												
+					  <p:inputNumber id="inputHole6ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole6Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole6ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="7">												
+					  <p:inputNumber id="inputHole7ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole7Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole7ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="8">												
+					  <p:inputNumber id="inputHole8ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole8Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole8ScoreEntryDisabled}"/>
+				  </p:column>
+				 
+				  <p:column style="width:3%" headerText="9">												
+					  <p:inputNumber id="inputHole9ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole9Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole9ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:5%" headerText="Front">												
+					  <p:outputLabel id="front9ID" size="4" value="#{rd.front9Total}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="10">												
+					  <p:inputNumber id="inputHole10ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole10Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole10ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="11">												
+					  <p:inputNumber id="inputHole11ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole11Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole11ScoreEntryDisabled}"/>
+				  </p:column>
+				 
+				  <p:column style="width:3%" headerText="12">												
+					  <p:inputNumber id="inputHole12ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole12Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole12ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="13">												
+					  <p:inputNumber id="inputHole13ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole13Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole13ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="14">												
+					  <p:inputNumber id="inputHole14ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole14Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole14ScoreEntryDisabled}"/>
+				  </p:column>
+				 
+				  <p:column style="width:3%" headerText="15">												
+					  <p:inputNumber id="inputHole15ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole15Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole15ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="16">												
+					  <p:inputNumber id="inputHole16ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole16Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole16ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:3%" headerText="17">												
+					  <p:inputNumber id="inputHole17ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole17Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole17ScoreEntryDisabled}"/>					  	 												
+				  </p:column>
+				 
+				  <p:column style="width:3%" headerText="18">												
+					  <p:inputNumber id="inputHole18ID" minValue="1" maxValue="9" decimalPlaces="0" size="2" value="#{rd.hole18Score}" onkeyup="tabNextScore(this);"
+						  disabled="#{rd.hole18ScoreEntryDisabled}"/>
+				  </p:column>
+				  
+				  <p:column style="width:5%" headerText="Back">												
+					  <p:outputLabel id="back9ID" size="4" value="#{rd.back9Total}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:5%" headerText="Total">												
+					  <p:outputLabel id="totalScoreID" size="4" value="#{rd.totalScore}"/>														
+				  </p:column>
+			  
+			</p:dataTable>
+		
+		    <p:commandButton id="deleteSelectedButtonID"
+		          rendered="#{request.isUserInRole('ROLE_ADMIN')}"
+                  value="#{bundle.deleteSelectedPlayerRound}"
+                  disabled="#{pc_GolfMain.disableDeleteSelectedPlayerRound}"
+                  action="#{pc_Round.deleteSelectedPlayerRound}"
+                  update="scoresForm">
+		    </p:commandButton> 
+		    
+		    <p:commandButton id="updateScoresButtonID"
+                  value="#{bundle.updateScores}"
+                  action="#{pc_Round.updateAllRounds}"
+                  update="scoresForm">
+		    </p:commandButton> 
+		    
+		    <p:commandButton id="runGameButtonID"
+                  value="#{bundle.runGameNavigate}"
+                  rendered="#{request.isUserInRole('ROLE_ADMIN')}"
+                  disabled="#{pc_Round.disableRunGameNavigate}"
+                  action="#{pc_Round.runGameNavigate}"
+                  update="facesMessagesID">
+		    </p:commandButton>
+		    
+		    <p:commandButton id="fixScoreButtonID"
+                value="#{bundle.fixScore}"
+                action="#{pc_Round.clearFixedScore}"
+                update="fixScoreDialogID"
+                disabled="#{pc_Round.disableFixScore}"
+          		oncomplete="PF('fixScoreDialog').show();">
+			</p:commandButton>	 
+		   	
+		   	<p:blockUI block="scoresForm" trigger="fixScoreDialogID"> 
+		        <p:graphicImage value="/images/wait.gif"/>  
+		    </p:blockUI> 
+					    	    
+		   	<p:messages id="facesMessagesID" showDetail="false">
+		   	   <p:autoUpdate/>
+		   	</p:messages> 
+		   
+		</h:form>
+		
+		<p:dialog id="fixScoreDialogID" showEffect="fade" hideEffect="explode" header="Fix Score" 
+			          widgetVar="fixScoreDialog" position="center center" width="220" height="150">				
+			
+			<p:ajax event="close" update="scoresForm:roundsTableID" />						
+	    
+			<h:form id="scoreDialogForm">				
+				
+				<table>
+     
+				  <tr>
+				  		
+		  			 <td class="textLabel" colspan="3">
+						<p:outputLabel value="#{bundle.player}"/>&#xA0;
+						<p:outputLabel value="#{pc_Round.selectedRound.playerName}"/>
+					 </td>	
+				
+		          </tr>
+		          
+	              <tr>
+				  		
+		  			 <td class="textLabel">
+						<p:outputLabel value="#{bundle.hole}"/>
+					 </td>	
+					 
+		             <td colspan="2" class="text">
+		             
+		                 <p:selectOneMenu id="rdHoleID" value="#{pc_Round.fixHole}" required="true"  hideNoSelectionOption="true">
+					        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+							<f:selectItems value="#{pc_GolfMain.holeSelections}"/>		
+						 </p:selectOneMenu>
+					    
+		             </td>
+		             
+		          </tr>
+		          
+		          <tr>
+				  		
+		  			 <td class="textLabel">
+						<p:outputLabel value="#{bundle.correctedScore}"/>
+					 </td>	
+					 
+		             <td colspan="2" class="text">
+		             
+		                 <p:selectOneMenu id="fixScoreIndividualID" value="#{pc_Round.correctedScore}" required="true"  hideNoSelectionOption="true">
+					        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+							<f:selectItems value="#{pc_GolfMain.scoreSelections}"/>		
+						 </p:selectOneMenu>
+						 
+		             </td>
+		             
+		          </tr>
+	              	
+				  <tr>
+						<td colspan="3" align="center">
+						
+						   <p:commandButton 
+							   value="#{bundle.ok}" 
+							   action="#{pc_Round.saveFixedScore}"																   
+							   oncomplete="PF('fixScoreDialog').hide();">
+						   </p:commandButton> 
+						   
+						   <p:commandButton value="#{bundle.cancel}"
+						       immediate="true" 										      											     
+							   onclick="PF('fixScoreDialog').hide();">
+						   </p:commandButton>
+						   
+						</td>
+					</tr>
+					
+				</table>
+				
+			</h:form> 			
+				      
+		</p:dialog>
+		
+	</ui:define>
+	
+</ui:composition>	

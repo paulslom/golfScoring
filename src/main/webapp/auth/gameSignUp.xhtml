@@ -1,0 +1,101 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <f:metadata>
+	    <f:viewAction action="#{pc_Game.onLoadGameSignUp}" />
+	</f:metadata> 
+	 
+    <ui:define name="content">
+   
+       <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+		
+	   <h:form id="gameSignUpForm">
+	   			       
+          <p:dataTable id="gamesTableID" value="#{pc_Game.availableGameList}"
+	          var="game" scrollable="true" scrollHeight="350"
+	          selectionMode="single" selection="#{pc_Game.selectedGame}" rowKey="#{game.gameID}"
+	          style="font-size:11px;">							
+				
+	          <f:facet name="header">
+   				  <h:outputText value="Games available for signup"/>
+			  </f:facet>
+				
+			  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowSignup}" 
+			       update="gameSignUpForm:whoIsSignedUpID" ></p:ajax>
+					
+			  <p:column id="tblGameID" headerText="Game ID" sortBy="#{game.gameID}">												
+				  <h:outputText value="#{game.gameID}"/>														
+			  </p:column>
+			  
+			  <p:column id="tblGameDate" headerText="Game Date" sortBy="#{game.gameDate}">												
+				  <h:outputText value="#{game.gameDate}">
+				     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
+				  </h:outputText>														
+			  </p:column>
+			  
+			  <p:column headerText="Course" sortBy="#{game.courseName}">												
+				  <h:outputText value="#{game.courseName}"/>														
+			  </p:column>
+			  
+			  <p:column headerText="Field Size" sortBy="#{game.fieldSize}">												
+				  <h:outputText value="#{game.fieldSize}"/>														
+			  </p:column>
+			  
+			  <p:column headerText="Spots Available" sortBy="#{game.spotsAvailable}">												
+				  <h:outputText value="#{game.spotsAvailable}"/>														
+			  </p:column>		 
+			 
+			  <p:column id="signUpID" headerText="Sign Up">												
+				  <p:commandButton value="Sign up" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" action="#{pc_Game.signUp(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>
+			  </p:column>
+				
+			  <p:column headerText="Tee" styleClass="centeredColumnContent">												
+				  <p:selectOneRadio id="teeColorID" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" value="#{game.courseTeeID}">
+                       <f:selectItems value="#{game.teeSelections}"/>
+	              </p:selectOneRadio>
+	              <h:outputText rendered="#{!game.renderSignUp}" value="#{game.courseTeeColor}"/>														
+  			  </p:column>
+  			  
+			  <p:column id="wdID" headerText="Withdraw">												
+				  <p:commandButton value="Withdraw" rendered="#{game.renderWithdraw}" action="#{pc_Game.withdraw(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>	
+			  </p:column>
+			  
+			  <p:column id="closedID" headerText="Closed">												
+				  <h:outputText value="#{bundle.gameClosedOnSignupScreen}" rendered="#{game.gameClosedForSignups}"/>	
+			  </p:column>
+ 
+		  </p:dataTable>
+			 	
+	      <p:messages id="facesMessagesID" showDetail="false">
+	         <p:autoUpdate/>
+	      </p:messages> 
+	      
+	      <table>        
+				
+			<tr>
+				<td>
+					<hr/>
+				</td>
+			</tr>			
+				
+			<tr>
+				<td style="font: 12px 'Verdana'">
+				   <p:outputLabel id="whoIsSignedUpID"
+				      escape="false"
+					  value="#{pc_Game.whoIsSignedUpMessage}">
+				   </p:outputLabel>
+				</td>
+			</tr>	 
+			
+		 </table>		      
+			
+		</h:form>		
+		
+	</ui:define>
+	
+</ui:composition>	

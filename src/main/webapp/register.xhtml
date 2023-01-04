@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+  <title>Register new user</title>
+  <h:outputStylesheet name="/css/login.css" />
+</h:head>
+
+<h:body>
+
+  <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+	 
+  <h:form prependId="false">
+
+     <table>
+        
+        <tr>
+				  		
+ 			 <td colspan="2">
+				<h2>Please fill out the following form.  This form is for NEW USERS ONLY.  Submit and the site admin will review the request and add you shortly.</h2>
+			 </td>  
+      
+        </tr>
+          
+        <tr>
+			  		
+			<td class="textLabel">
+			   <p:outputLabel for="firstNameID" value="#{bundle.firstName}"/>
+		    </td>	
+	 
+            <td class="text">
+              <p:inputText id="firstNameID" size="30" value="#{pc_Registration.firstName}" required="true"/>
+            </td>
+           
+         </tr>
+        
+         <tr>
+  		
+			<td class="textLabel">
+		        <p:outputLabel for="lastNameID" value="#{bundle.lastName}"/>
+	        </td>	
+	 
+            <td class="text">
+               <p:inputText id="lastNameID" size="30" value="#{pc_Registration.lastName}" required="true"/>
+            </td>
+           
+         </tr>
+        
+         <tr>
+  		
+			 <td class="textLabel">
+		        <p:outputLabel for="handicapID" value="#{bundle.handicap}"/>
+	         </td>	
+	 
+            <td class="text">
+              <p:inputText id="handicapID" size="8" value="#{pc_Registration.handicap}" required="true"/>
+            </td>
+           
+         </tr>
+        
+         <tr>
+  		
+			 <td class="textLabel">
+		       <p:outputLabel for="usernameID" value="User Name"/>
+	         </td>	
+	 
+             <td class="text">
+                <p:inputText id="usernameID" size="50" value="#{pc_Registration.username}" required="true"/>
+             </td>
+           
+         </tr>
+        
+         <tr>
+  		
+			 <td class="textLabel">
+		       <p:outputLabel for="emailID" value="#{bundle.email}"/>
+	         </td>	
+	 
+             <td class="text">
+                <p:inputText id="emailID" size="50" value="#{pc_Registration.emailAddress}" required="true"/>
+             </td>
+           
+         </tr>
+          
+         <tr>
+         
+			<td>
+							
+			  <p:messages id="facesMessagesID" showDetail="false">
+			     <p:autoUpdate />
+			  </p:messages>   
+			
+			</td>
+			
+		 </tr>
+		 
+         <tr>
+          
+		    <td align="center">
+		
+		       <p:commandButton 
+			      value="#{bundle.ok}" 
+			      action="#{pc_Registration.emailAdminNewPlayer}"
+			      update="facesMessagesID">
+		       </p:commandButton> 			 
+		   
+		    </td>
+		    
+		    <td align="center">
+		
+		       <p:commandButton 
+			      value="#{bundle.cancel}" 
+			      immediate="true"
+			      action="#{pc_Registration.cancel}">
+		       </p:commandButton> 			 
+		   
+		    </td>
+	     
+	     </tr>
+         
+       </table>  
+    
+  </h:form>
+</h:body>
+</html>

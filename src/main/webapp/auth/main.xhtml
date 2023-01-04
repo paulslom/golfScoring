@@ -1,0 +1,33 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+     
+    <ui:define name="content">
+      
+         <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+
+         <h:form id="mainForm">                      
+             
+  			<h1>Welcome to the Golf Scoring Application 
+  				<p:outputLabel value="#{pc_Player.loggedInPlayerName}"></p:outputLabel>
+  			</h1>
+  		
+		    <p:selectOneMenu id="groupList" disabled="true" rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="#{pc_Group.selectedGroup}" required="true" hideNoSelectionOption="true">
+		     	<f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />						
+		   		<f:selectItems value="#{pc_Group.groupList}" var="c" itemLabel="#{c.groupName}" itemValue="#{c.groupID}"/>					
+		    </p:selectOneMenu>		    
+		    
+		    <p:messages id="facesMessagesID" showDetail="false">
+		       <p:autoUpdate/>
+		    </p:messages>   			
+	                
+	     </h:form>
+   
+    </ui:define>
+
+</ui:composition>
+  

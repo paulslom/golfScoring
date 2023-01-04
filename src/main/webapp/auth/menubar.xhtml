@@ -1,0 +1,64 @@
+<ui:composition 
+    
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+     
+      <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+  
+      <h:form id="menuForm"> 
+                       
+           <p:menubar>
+           
+           	<p:menuitem value="Main" url="#{request.contextPath}/auth/main.xhtml"/>
+           	
+			<p:submenu label="Game">
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="List" url="#{request.contextPath}/auth/admin/gameList.xhtml"/>
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Add Game" url="#{request.contextPath}/auth/admin/addGame.xhtml"/>				
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Select Players for Game" url="#{request.contextPath}/auth/admin/playerPicklist.xhtml"/>
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Select Player tee times" url="#{request.contextPath}/auth/admin/teeTimePickList.xhtml"/>
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Player Game Handicaps" url="#{request.contextPath}/auth/admin/gameHandicaps.xhtml"/>				
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Pick Teams" url="#{request.contextPath}/auth/admin/pickTeams.xhtml"/>				
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Run Game" url="#{request.contextPath}/auth/admin/runGame.xhtml"/>	
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Delete Game" url="#{request.contextPath}/auth/admin/deleteGame.xhtml"/>	
+				<p:menuitem value="Sign Up for Game" url="#{request.contextPath}/auth/gameSignUp.xhtml"/>											
+			</p:submenu>
+			
+			<p:submenu label="Player">
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Players" url="#{request.contextPath}/auth/admin/player.xhtml"/>			
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Money" url="#{request.contextPath}/auth/admin/playerMoney.xhtml"/>
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Tee Prefs" url="#{request.contextPath}/auth/admin/playerTeePrefs.xhtml"/>
+			</p:submenu>
+			
+			<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Tee Times" url="#{request.contextPath}/auth/admin/teeTimes.xhtml"/>
+			
+			<p:submenu label="Scores">
+				<p:menuitem value="Enter scores for Game" url="#{request.contextPath}/auth/gameEnterScores.xhtml"/>	
+			</p:submenu>
+			
+			<p:submenu label="Email">
+			    <p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Future Game" url="#{request.contextPath}/auth/admin/emailFutureGames.xhtml"/>
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Pre-Game" url="#{request.contextPath}/auth/admin/emailPreGame.xhtml"/>
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Post-Game" url="#{request.contextPath}/auth/admin/emailPostGame.xhtml"/>	
+				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Test" url="#{request.contextPath}/auth/admin/emailTest.xhtml"/>	
+				<p:menuitem value="Entire Group" url="#{request.contextPath}/auth/emailEntireGroup.xhtml"/>	
+			</p:submenu>
+			
+			<p:submenu label="Profile">
+				<p:menuitem value="Change Password" url="#{request.contextPath}/auth/changePassword.xhtml"/>
+				<p:menuitem value="Playing Partner Preferences" url="#{request.contextPath}/auth/playingPartnerPrefs.xhtml"/>	
+				<p:menuitem value="Tee Time preferences" url="#{request.contextPath}/auth/teeTimePrefs.xhtml"/>	
+			</p:submenu>
+			    
+			<f:facet name="options">
+			   <p:outputLabel value="Logged in user: #{pc_GolfMain.signedOnUserName}"/>&#xA0;&#xA0;
+			   <h:outputLink value="#{request.contextPath}/logout">Sign Out</h:outputLink>			   
+	        </f:facet>
+			
+		</p:menubar> 
+          
+     </h:form>
+  
+</ui:composition>

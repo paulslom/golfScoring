@@ -1,0 +1,256 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+ 		 
+    <ui:define name="content">
+     
+		<f:loadBundle var="bundle" basename="ApplicationProperties" />  
+		    
+		<h:form id="gameDialogForm">				
+			
+			<table id="gamemaintainTableID">
+	
+			  <tr>
+			  		
+	  			 <td colspan="3" class="text">
+	                <p:outputLabel value="Add Game"/>
+	             </td>
+	             
+	          </tr>
+	          
+			  <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="gameDateID" value="Game Date"/>
+				 </td>	
+				 
+	             <td  colspan="2" class="text">
+	                <p:calendar id="gameDateID" 
+	        	        size="23"
+	        	        required="true"
+	        	        readonlyInput="false" 
+	        	        value="#{pc_Game.gameDate}"
+	        			mode="popup" showOn="both" pattern="MM/dd/yyyy" yearRange="c-120:c">						        									            			
+	        	    </p:calendar>
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+		          <td class="textLabelMiddle">
+	                <p:outputLabel for="courseListID" value="#{bundle.course}"/>
+	              </td>
+	             
+	             <td colspan="2" class="text">
+					
+				    <p:selectOneMenu id="courseListID" value="#{pc_Game.courseID}" required="true"  hideNoSelectionOption="true">
+				        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+						<f:selectItems value="#{pc_GolfMain.courseSelections}" var="c" itemLabel="#{c.courseName}" itemValue="#{c.courseID}"/>					
+					</p:selectOneMenu>
+					
+				 </td>
+			  </tr>
+			  
+			  <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="fieldSizeID" value="Field Size"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                 <p:selectOneMenu id="fieldSizeID" value="#{pc_Game.fieldSize}" required="true">
+						<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
+						<p:ajax event="valueChange" listener="#{pc_Game.valueChgFieldSize}" 
+							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID 
+							   		   gameDialogForm:totalPlayersID gameDialogForm:teamPotID gameDialogForm:skinsPotID
+							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID
+							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
+					</p:selectOneMenu>			            			
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="betAmtID" value="Bet Amount"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="betAmtID" size="8" value="#{pc_Game.betAmount}" required="true"/>
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="totalPlayersID" value="Total Players"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:selectOneMenu id="totalPlayersID" value="#{pc_Game.totalPlayers}" required="true">
+						<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
+						<p:ajax event="valueChange" listener="#{pc_Game.valueChgTotalPlayersAdd}" 
+						   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID gameDialogForm:teamPotID gameDialogForm:skinsPotID
+						           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
+					</p:selectOneMenu>						
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="totalTeamsID" value="Total Teams"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:selectOneMenu id="totalTeamsID" value="#{pc_Game.totalTeams}" required="true">
+						<f:selectItems value="#{pc_GolfMain.totalTeamsSelections}"/>
+						<p:ajax event="valueChange" update="gameDialogForm:purseID" />
+					</p:selectOneMenu>
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="howManyBallsID" value="How Many Balls"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:selectOneMenu id="howManyBallsID" value="#{pc_Game.howManyBalls}" required="true">
+						<f:selectItems value="#{pc_GolfMain.howManyBallsSelections}"/>
+						<p:ajax event="valueChange" update="gameDialogForm:teamPotID" />
+					</p:selectOneMenu>
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+			  		
+	  			 <td class="textLabelMiddle">
+					<p:outputLabel for="teamBallValueID" value="Each Ball Worth"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="teamBallValueID" size="8" value="#{pc_Game.eachBallWorth}" required="true">
+	                    <p:ajax event="valueChange" update="gameDialogForm:teamPotID"/> 
+	                </p:inputText>         
+	             </td>
+	             
+	          </tr>
+	          
+	          <tr>
+		         <td class="textLabelMiddle">
+					<p:outputLabel for="teamPotID" value="#{bundle.teamPot}"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="teamPotID" size="8" value="#{pc_Game.teamPot}" required="true"/> 
+	             </td>				 
+	       	  </tr>
+	       	  
+	       	  <tr>
+				 <td class="textLabelMiddle">
+					<p:outputLabel for="skinsPotID" value="#{bundle.skinsPot}"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="skinsPotID" size="8" value="#{pc_Game.skinsPot}" required="true"/>                	
+	             </td>
+	          	             
+	          </tr>
+	             
+	          <tr>
+	            
+	             <td class="textLabelMiddle">
+					<p:outputLabel for="individualGrossID" value="#{bundle.indivGrossPrize}"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="individualGrossID" size="8" value="#{pc_Game.individualGrossPrize}" required="true"/>
+	             </td> 
+	             
+	          </tr>
+	             
+	          <tr>
+	             
+	             <td class="textLabelMiddle">
+					<p:outputLabel for="individualNetID" value="#{bundle.indivNetPrize}"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="individualNetID" size="8" value="#{pc_Game.individualNetPrize}" required="true"/>
+	             </td> 
+	             
+	          </tr>
+	             
+	          <tr>
+	              <td class="textLabelMiddle">
+					  <p:outputLabel  for="purseID" value="#{bundle.PurseAmount}"/>
+				  </td>	
+				 
+	              <td colspan="2" class="text">
+	                  <p:inputText id="purseID" size="8" value="#{pc_Game.purseAmount}" required="true"/>     
+	              </td>
+	          </tr> 
+	             
+	          <tr>
+	              <td class="textLabelMiddle">
+					  <p:outputLabel  for="gameNoteID" value="#{bundle.gameNote}"/>
+				  </td>	
+				 
+	              <td colspan="2" class="text">
+	                  <p:inputText id="gameNoteID" size="40" maxLength="45" value="#{pc_Game.gameNoteForEmail}"/>     
+	              </td>
+	          </tr>                 
+	
+	          <tr>
+	              <td class="textLabelMiddle">
+					  <p:outputLabel  for="playBallMethodID" value="#{bundle.playBallMethod}"/>
+				  </td>	
+				 
+	              <td colspan="2" class="text">
+	                  <p:inputText id="playBallMethodID" size="30" value="#{pc_Game.playTheBallMethod}" required="true"/>     
+	              </td>
+	          </tr> 
+	             
+	          <tr>
+	              <td class="textLabelMiddle">
+					  <p:outputLabel  for="teeTimesID" value="#{bundle.teeTimes}"/>
+				  </td>	
+				 
+	              <td colspan="2" class="text">
+	                  <p:inputText id="teeTimesID" size="20" value="#{pc_Game.teeTimesString}" required="true"/>     
+	              </td>
+	          </tr> 
+	             
+	             <p:messages id="facesMessages" showDetail="false">
+			         <p:autoUpdate/>
+			     </p:messages>   
+	             	
+				 <tr>
+					<td colspan="3" align="center">
+					
+					   <p:commandButton 
+						   value="#{bundle.ok}" 
+						   action="#{pc_Game.addGame}">
+					   </p:commandButton> 				  
+					   
+					</td>
+				 </tr>
+					
+			</table>
+			
+		</h:form> 
+		
+	</ui:define>
+	
+</ui:composition>	

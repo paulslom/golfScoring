@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">    
+    
+    <h:head>
+    
+      <meta http-equiv="pragma" content="no-cache"></meta>
+	  <meta http-equiv="cache-control" content="no-cache"></meta>
+	  <meta http-equiv="expires" content="0"></meta>
+	  
+	  <style>
+	  
+		  .ui-picklist .ui-picklist-list
+		  {
+		     height:250px;
+		     width: 275px
+		  }
+
+	  </style>
+		
+    </h:head>  
+  		   
+    <h:body>
+    
+        <h:outputStylesheet name="css/scoring.css" />  
+    
+		<f:view>	 
+	 		
+			 <div style="border-width: 1px; border-style: solid; height: 10%">
+				 <ui:insert name="header">
+				 	<ui:include src="/auth/menubar.xhtml"></ui:include>
+				 </ui:insert>
+			 </div>
+			 
+			 <div style="border-width: 1px; border-style: solid; height: 90%">
+				 <ui:insert name="content">
+				 	<ui:include src="/auth/main.xhtml"></ui:include>
+				 </ui:insert>
+			 </div>
+			 
+		</f:view>	 
+		        
+    </h:body>
+    
+</html>

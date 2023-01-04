@@ -1,0 +1,115 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <f:metadata>
+	    <f:viewAction action="#{pc_Player.onLoadPlayerPickList}" />
+	</f:metadata> 
+	
+    <ui:define name="content">
+    
+ 	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+			
+		   <h:form id="gameListPlayersForm">
+		   		
+		   		<h3>Player PickList</h3>
+		   		
+		   		<table>
+		   		
+	         		<tr>
+	                  
+	                   <td class="textLabel">
+		                  <p:outputLabel value="Game ID: #{pc_Game.selectedGame.gameID}"/>
+		               </td>
+		               
+		               <td class="textLabel">
+		                  <p:outputLabel value="Game Date"/>
+		               </td>
+	             
+		               <td class="text">
+						
+					      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
+					         <p:ajax listener="#{pc_Player.valueChangeGame}" event="change" 
+					         	update="gameListPlayersForm:label1 gameListPlayersForm:label2 gameListPlayersForm playersPicklistForm"/>
+					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						  </p:selectOneMenu>
+						
+					   </td>
+					   
+					   <td class="textLabel">
+							<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+					   </td>
+					   
+					   <td class="textLabel">
+							<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+					   </td>
+					   
+					</tr>
+					
+					<tr>   	
+					   
+					    <td class="textLabel" colspan="4">
+							<p:outputLabel id="label3" value=" Players Selected so far: #{pc_Player.pickListTargetPlayersSelected}"/>
+					   </td>					       
+					   
+				    </tr>
+				    
+				    <tr>
+						<td colspan="4" align="center">
+							<p:messages id="facesMessages" showDetail="false">
+							   <p:autoUpdate/>
+							</p:messages>    								
+						</td>
+					</tr>	
+				    
+				</table>
+				
+			</h:form>
+			
+			<h:form id="playersPicklistForm">				
+				
+				<p:pickList value="#{pc_Player.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
+					itemValue="#{player}" converter="playerConverter" showSourceControls="true" showTargetControls="true">
+					
+					<f:facet name="sourceCaption">Available</f:facet>
+			        <f:facet name="targetCaption">Playing</f:facet>
+			 
+			        <p:ajax event="transfer" listener="#{pc_Player.onTransfer}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3" />
+			        <p:ajax event="select" listener="#{pc_Player.onSelect}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3"/>
+			        <p:ajax event="unselect" listener="#{pc_Player.onUnselect}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3"/>
+			        <p:ajax event="reorder" listener="#{pc_Player.onReorder}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3"/>
+			        
+					<p:column style="width:10%">
+						#{player.playerID}
+					</p:column>
+					
+					<p:column style="width:90%">
+						#{player.fullName}
+					</p:column>
+					
+				</p:pickList>				
+				 
+				<p:commandButton id="saveAndStayButtonID"
+	                value="#{bundle.saveAndStay}"
+	                action="#{pc_Player.saveAndStayPickList}">
+				</p:commandButton> 
+				
+				<p:commandButton id="proceedToTeeTimesButtonID"
+	                value="#{bundle.proceedToTeeTimes}"
+	                action="#{pc_Player.proceedToTeeTimes}">
+				</p:commandButton> 
+								 
+				<p:messages id="facesMessagesID" showDetail="false">
+				   <p:autoUpdate/>
+				</p:messages> 					
+							
+		   </h:form> 
+
+	</ui:define>
+	
+</ui:composition>	

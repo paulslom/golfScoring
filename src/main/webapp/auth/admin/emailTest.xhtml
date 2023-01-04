@@ -1,0 +1,40 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+     
+    <ui:define name="content">
+ 	    
+	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+	 	
+	   <h:form id="emailTestForm">                  
+								
+		  <p:messages id="facesMessagesID" showDetail="false">
+		     <p:autoUpdate />
+		  </p:messages>   
+	        
+          <p:commandButton id="composeTestEmailButtonID"
+              value="#{bundle.composeTestEmail}"
+              action="#{pc_Game.composeTestEmail}"
+              update="emailTestForm">
+		  </p:commandButton>
+			 
+		  <p:commandButton id="sendTestEmailButtonID"
+              value="#{bundle.sendTestEmail}"
+              action="#{pc_Game.sendTestEmail}"
+              update="facesMessagesID">
+		  </p:commandButton>
+		
+		  <p:outputLabel id="displayedTestEmailMessageID"
+		      escape="false"
+			  value="#{pc_Game.testEmailMessage}">
+		  </p:outputLabel>				
+			
+		</h:form> 
+	
+	</ui:define>
+	
+</ui:composition>	
