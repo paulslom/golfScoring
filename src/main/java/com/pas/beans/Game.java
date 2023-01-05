@@ -457,17 +457,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		newRound.setCourseTeeID(game1.getCourseTeeID());
 		
-		if (game1.getCourseTeeID() == null)
-		{
-			newRound.setRoundHandicap(tempPlayer.getHandicap()); //just use their index, but this shouldn't really be hit
-		}
-		else
-		{
-			CourseTee ct = courseTeeDAO.getCourseTeesMap().get(game1.getCourseTeeID());
-			BigDecimal roundHandicap = Utils.getCourseHandicap(ct, tempPlayer.getHandicap());
-			newRound.setRoundHandicap(roundHandicap);
-		}
-		
+		newRound.setRoundHandicap(tempPlayer.getHandicap()); //set this to their usga ghin handicap index when they sign up.  We'll tweak this later when entering them on the set game handicaps page
+				
 		roundDAO.addRound(newRound);
 		
 		this.getAvailableGameList().clear();
