@@ -413,7 +413,7 @@ public class RoundRowMapper implements RowMapper<Round>, Serializable
 	private Player getPlayer(int playerID) 
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		Player player = golfmain.getFullPlayerMap().get(playerID);
+		Player player = golfmain.getFullPlayersMapByPlayerID().get(playerID);
 		return player;
 	}
 

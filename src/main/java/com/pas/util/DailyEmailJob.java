@@ -1,14 +1,22 @@
 package com.pas.util;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -16,13 +24,11 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import com.pas.beans.Course;
 import com.pas.beans.Game;
 import com.pas.beans.Player;
+import com.pas.beans.TeeTime;
 import com.pas.dao.CourseRowMapper;
 import com.pas.dao.GameRowMapper;
 import com.pas.dao.PlayerRowMapper;
-
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
+import com.pas.dao.TeeTimeRowMapper;
 
 public class DailyEmailJob implements Runnable 
 {
@@ -30,6 +36,8 @@ public class DailyEmailJob implements Runnable
 	
 	private static long TEN_HOURS = 36000000; //in milliseconds
 	private static long SIX_DAYS = 518400000; //in milliseconds
+	
+	private static String NEWLINE = "<br/>";	
 	
 	@Override
 	public void run() 
@@ -62,8 +70,7 @@ public class DailyEmailJob implements Runnable
 		} 
 		catch (Exception e) 
 		{
-			log.error("Exception encountered in DailyEmailJob: " + e.getMessage());
-			e.printStackTrace();
+			log.error("Exception encountered in DailyEmailJob: " + e.getMessage(), e);
 		}		
    
 	}
@@ -75,43 +82,52 @@ public class DailyEmailJob implements Runnable
 		String gameDateStr = sdf.format(inputGame.getGameDate());	
 		log.info("I've got a game with date = " + gameDateStr + " that I will set up email for.");
 		
-		String subjectLine = "TMG game on " + Utils.getDayofWeekString(inputGame.getGameDate()) + " " + sdf.format(inputGame.getGameDate()) + " on " + inputGame.getCourseName();
-		log.info("establishing email recipients");
+		String subjectLine = "Golf game on " + Utils.getDayofWeekString(inputGame.getGameDate()) + " " + sdf.format(inputGame.getGameDate()) + " on " + inputGame.getCourseName();
 		
-		List<String> adminUsers = inputGame.getAdminUsers();
-		//ArrayList<String> emailRecipients = establishAdminOnlyEmailRecipients(adminUsers); //just admins when testing		
-		ArrayList<String> emailRecipients = establishEmailRecipients();
+		inputGame.setFutureGameEmailMessage(inputGame.getFutureGameEmailMessage().replace("~~~teeTimes~~~", getTeeTimes(inputGame)));
+		inputGame.setFutureGameEmailMessage(inputGame.getFutureGameEmailMessage().replace("~~~gameDetails~~~", getGameParticipants(inputGame)));
 		
+		log.info("establishing email recipients");		
+		ArrayList<String> emailRecipients = establishEmailRecipients();		
 		log.info("email recipients successfully established");
+		
 		SAMailUtility.sendEmail(subjectLine, inputGame.getFutureGameEmailMessage(), emailRecipients, false); //last false parameter means do not use jsf
 		log.info("email successfully sent");
 	}
 
-	private ArrayList<String> establishEmailRecipients() 
+	private String getTeeTimes(Game inputGame) 
 	{
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());
+		String sql = "select tt.idTeeTimes, tt.idgame, tt.playgroupnumber, tt.teetime, gm.gameDate, cs.courseName from teetimes tt inner join game gm on tt.idgame = gm.idgame inner join golfcourse cs on gm.idgolfcourse = cs.idgolfcourse where tt.idgame = :idgame"; 
+		SqlParameterSource param = new MapSqlParameterSource("idgame", inputGame.getGameID());
+		List<TeeTime> teeTimeList = namedParameterJdbcTemplate.query(sql, param, new TeeTimeRowMapper()); 
+		
+		StringBuffer sb = new StringBuffer();
+		
+		for (int i = 0; i < teeTimeList.size(); i++) 
+		{
+			TeeTime teeTime = teeTimeList.get(i);
+			sb.append(teeTime.getTeeTimeString() + " ");
+		}
+		
+		sb.append(NEWLINE);
+		
+		return sb.toString();
+	}
+
+	private ArrayList<String> establishEmailRecipients() 
+	{		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(Utils.getDatasourceProperties());		
 		String sql = "select * from player order by lastName, firstName";		 
-		List<Player> playerList = jdbcTemplate.query(sql, new PlayerRowMapper()); 	
-		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerList);
-		return emailRecips;
-	}
-	
-	private ArrayList<String> establishAdminOnlyEmailRecipients(List<String> adminUsers) 
-	{
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());	
+		List<Player> playerList = jdbcTemplate.query(sql, new PlayerRowMapper()); 
+		log.info("LoggedDBOperation: function-inquiry; table:player; rows:" + playerList.size());
+		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerList);		
 		
+		/*
 		ArrayList<String> emailRecips = new ArrayList<>();
+		emailRecips.add("paulslomkowski@yahoo.com");
+		*/
 		
-		for (int i = 0; i < adminUsers.size(); i++) 
-		{
-			String playerUserName = adminUsers.get(i);
-			String sql = "select * from player where username = :username";		 
-			SqlParameterSource param = new MapSqlParameterSource("username", playerUserName);		 
-			Player player = namedParameterJdbcTemplate.queryForObject(sql, param, new PlayerRowMapper());	
-			String emailAddr = player.getEmailAddress();
-			emailRecips.add(emailAddr);
-		}
-	
 		return emailRecips;
 	}
 	
@@ -124,6 +140,7 @@ public class DailyEmailJob implements Runnable
 		
 		String sql = "select * from game order by gameDate";		 
 		List<Game> gameList = jdbcTemplate.query(sql, new GameRowMapper()); 
+		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + gameList.size());
 		
 		Date today = new Date();
 		LocalDate localDateToday = today.toInstant().atZone(ZoneId.of("America/New_York")).toLocalDate();
@@ -154,12 +171,78 @@ public class DailyEmailJob implements Runnable
 			
 			String coursesql = "select * from golfcourse where idgolfCourse = :courseID";			 
 			SqlParameterSource param = new MapSqlParameterSource("courseID", tempGame.getCourseID());			 
-			Course tempCourse = namedParameterJdbcTemplate.queryForObject(coursesql, param, new CourseRowMapper()); 	    
+			Course tempCourse = namedParameterJdbcTemplate.queryForObject(coursesql, param, new CourseRowMapper()); 
+			log.info("LoggedDBOperation: function-inquiry; table:course; rows:1");
 			tempGame.setCourse(tempCourse);
 			tempGame.setCourseName(tempGame.getCourse().getCourseName());		
 		}
         
 		return tempList;
+	}
+	private String getGameParticipants(Game inputGame) 
+	{
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("Current list of players for this game:");
+		sb.append(NEWLINE);
+		
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());
+		String sql = "SELECT concat(p.firstName, ' ', p.lastName) as playerName, r.dSignUpdatetime from round r inner join player p "
+				+ "where r.idplayer = p.idplayer and r.idgame = :idgame order by r.dSignupDateTime";		 
+		SqlParameterSource param = new MapSqlParameterSource("idgame", inputGame.getGameID());
+		
+		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
+		TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
+		signupSDF.setTimeZone(etTimeZone);
+		
+		List<String> roundPlayers = namedParameterJdbcTemplate.query(sql, param, new ResultSetExtractor<List<String>>() 
+		{	   
+			@Override
+		    public List<String> extractData(ResultSet rs) throws SQLException, DataAccessException 
+		    {
+				List<String> participantsList = new ArrayList<>();
+				
+				while (rs.next()) 
+				{
+					if (rs.getTimestamp("dSignUpdatetime") == null)
+					{
+						
+					}
+					else
+					{
+						String signupDateTime = signupSDF.format(rs.getTimestamp("dSignUpdatetime"));
+						participantsList.add(rs.getString("playerName") + " (signed up: " + signupDateTime + ")");
+					}
+				}
+				
+				log.info("LoggedDBOperation: function-inquiry; table:game Participants; rows:" + participantsList.size());
+				
+				return participantsList;
+		    }
+		});	
+		
+		
+		for (int i = 0; i < roundPlayers.size(); i++) 
+		{
+			String playerName = roundPlayers.get(i);
+			if (i+1 <= inputGame.getFieldSize())
+			{
+				sb.append(i+1 + ". " + playerName);
+			}
+			else
+			{
+				sb.append(i+1 + ". " + playerName + " (wait list)");
+			}
+			sb.append(NEWLINE);
+		}
+		
+		int spotsAvailable = inputGame.getFieldSize() - roundPlayers.size();
+		
+		sb.append(NEWLINE);
+		sb.append("Spots still available: " + spotsAvailable);
+		sb.append(NEWLINE);
+		
+		return sb.toString();
 	}
 	
 }

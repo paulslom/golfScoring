@@ -12,6 +12,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
+import com.pas.beans.GolfMain;
 import com.pas.beans.Group;
 
 @FacesConverter(forClass = Group.class)
@@ -44,7 +45,7 @@ public class GroupConverter implements Converter<Object>
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String submittedValue) 
-	{
+	{		
 	    if (submittedValue == null || submittedValue.isEmpty()) 
 	    {
 	        return null;
@@ -54,8 +55,8 @@ public class GroupConverter implements Converter<Object>
 	    {
 	    	if (groupsMap.isEmpty())
 	    	{
-	    		Group group = BeanUtilJSF.getBean("pc_Group");
-	        	List<Group> fullGroupList = group.getGroupList();
+	    		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
+	        	List<Group> fullGroupList = gm.getGroupsList();
 	        	groupsMap = fullGroupList.stream().collect(Collectors.toMap(Group::getGroupID, grp -> grp));	   
 	    	}
 			

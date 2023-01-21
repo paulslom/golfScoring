@@ -20,15 +20,9 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.CourseDAO;
-import com.pas.dao.CourseTeeDAO;
-import com.pas.dao.GameDAO;
-import com.pas.dao.PlayerDAO;
-import com.pas.dao.RoundDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
@@ -140,12 +134,6 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	private List<Round> roundsForGame = new ArrayList<Round>();	
 	
-	@Autowired private CourseDAO courseDAO;
-	@Autowired private GameDAO gameDAO;
-	@Autowired private RoundDAO roundDAO;	
-	@Autowired private PlayerDAO playerDAO;	
-	@Autowired private CourseTeeDAO courseTeeDAO;
-	
 	public Round() 
 	{
 		//log.debug("In Round constructor.  hash code is this: " + this.hashCode());
@@ -180,11 +168,11 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		if (game == null || game.getSelectedGame() == null)
 		{
 			game.setSelectedGame(golfmain.getFullGameList().get(0));
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(game.getSelectedGame()));
+			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
 		}
 		else if (CollectionUtils.isEmpty(this.getRoundsForGame()))
 		{
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(game.getSelectedGame()));
+			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
 		}				
 	}
 
@@ -196,11 +184,11 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		if (game == null || game.getSelectedGame() == null)
 		{
 			game.setSelectedGame(golfmain.getFullGameList().get(0));
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(game.getSelectedGame()));
+			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
 		}
 		else if (CollectionUtils.isEmpty(this.getRoundsForGame()))
 		{
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(game.getSelectedGame()));
+			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
 		}
 		
 		this.getTeamNumberList().clear();
@@ -483,13 +471,15 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info("User picked a game on select players for game form");
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
 		Game selectedOption = (Game)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(selectedOption));
+			this.setRoundsForGame(golfmain.getRoundsForGame(selectedOption));
 		}
 		
 		this.getTeamNumberList().clear();
@@ -529,11 +519,12 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	public String saveAndStayPickTeams()
 	{
 		Game game = BeanUtilJSF.getBean("pc_Game");
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 		{
 			Round rd = this.getRoundsForGame().get(i);
-			roundDAO.updateRoundTeamNumber(game.getSelectedGame(), rd.getPlayerID(), rd.getTeamNumber());			
+			golfmain.updateRoundTeamNumber(game.getSelectedGame(), rd.getPlayerID(), rd.getTeamNumber());			
 		}
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -551,20 +542,21 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	public String updateGameHandicaps()
 	{
 		Game game = BeanUtilJSF.getBean("pc_Game");		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 		{
 			Round rd = this.getRoundsForGame().get(i);
 			Player player = rd.getPlayer();
-			playerDAO.updatePlayerHandicap(player.getPlayerID(), rd.getPlayer().getHandicap());
+			golfmain.updatePlayerHandicap(player.getPlayerID(), rd.getPlayer().getHandicap());
 			
-			CourseTee ct = courseTeeDAO.getCourseTeesMap().get(rd.getCourseTeeID());			
+			CourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());			
 			BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
 			
-			roundDAO.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);			
+			golfmain.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);			
 		}
 		
-		this.setRoundsForGame(roundDAO.readRoundsFromDB(game.getSelectedGame()));
+		this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 	    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
@@ -674,24 +666,24 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
-		Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(getTempUserName());
+		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 	
 		boolean adminUser = Utils.isAdminUser();
 		
 		if (adminUser)
 		{
-			availableGamesList = gameDAO.readGamesFromDB();
+			availableGamesList = golfmain.getFullGameList();
 		}
 		else //normal user; only load games they are a part of, that are in the future.
 		{
-			availableGamesList = gameDAO.readAvailableGamesByPlayerID(tempPlayer.getPlayerID());
+			availableGamesList = golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID());
 		}				
 		
 		//let's take the first one
 		if (availableGamesList != null && availableGamesList.size() > 0)
 		{
 			this.setGame(availableGamesList.get(0));			
-			this.setSyncGameRoundList(roundDAO.readRoundsFromDB(this.getGame()));
+			this.setSyncGameRoundList(golfmain.getRoundsForGame(this.getGame()));
 			setUpGameEnterScores(tempPlayer);		
 		}
 		else //no games available to enter scores for
@@ -757,11 +749,13 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		Game selectedOption = (Game)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(selectedOption));
+			this.setRoundsForGame(golfmain.getRoundsForGame(selectedOption));
 		}
 						
 	}
@@ -771,17 +765,17 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		log.info(getTempUserName() + " picked a game on game enter scores");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
+		
 		Game selectedOption = (Game)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
 			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 			
-			Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(getTempUserName());
+			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 		
 			this.getSyncGameRoundList().clear();
-			this.setSyncGameRoundList(roundDAO.readRoundsFromDB(selectedOption));		
+			this.setSyncGameRoundList(golfmain.getRoundsForGame(selectedOption));		
 			setUpGameEnterScores(tempPlayer);			
 		}
 						
@@ -918,31 +912,12 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " entering updateAllRounds method");
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		int updatedRounds = 0;
 		
 		this.setDisableRunGameNavigate(false);
-		/*
-		Player tempPlayerBean = BeanUtilJSF.getBean("pc_Player");
-		Player tempPlayer = tempPlayerBean.getFullPlayerMapByUserName().get(getTempUserName());
-	
-		boolean adminUser = Utils.isAdminUser();		
-		int tempTeeTimeID = 0;
 		
-		//first let's find out what play group this player is in (might not be in any; in that case empty out the list!)
-		synchronized (this.getSyncGameRoundList())
-		{
-			for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 			
-			{
-				Round rd = this.getSyncGameRoundList().get(i);
-				if (rd.getPlayerID() == tempPlayer.getPlayerID())
-				{
-					tempTeeTimeID = rd.getTeeTimeID();
-					break;
-				}
-			}
-		}
-		
-		*/
 		synchronized (this.getSyncGameRoundList())
 		{
 			for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
@@ -953,13 +928,6 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				{
 					continue;
 				}
-				
-				/*
-				if (!adminUser && tempRound.getTeeTimeID() != tempTeeTimeID)
-				{
-					continue; //only update rounds within this non-admin player's own group
-				}
-				*/
 				
 				log.info(getTempUserName() + " in updateAllRounds method roundID = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName());
 				
@@ -984,8 +952,8 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				
 				tempRound.setNetScore((new BigDecimal(tempRound.getTotalScore())).subtract(tempRound.getRoundHandicap()));
 				
-				Game game = gameDAO.readGameFromDB(tempRound.getGameID());
-				Course course = courseDAO.readCourseFromDB(game.getCourseID());
+				Game game = golfmain.getGameByGameID(tempRound.getGameID());
+				Course course = golfmain.getCoursesMap().get(game.getCourseID());
 				int coursePar = course.getCoursePar();
 				int scoreToPar = tempRound.getTotalScore() - coursePar;
 				String scoreToParString = "";
@@ -1006,7 +974,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				
 				log.info(getTempUserName() + " about to update round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
 				
-				roundDAO.updateRound(tempRound);
+				golfmain.updateRound(tempRound);
 				
 				log.info(getTempUserName() + " completed updating round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
 				
@@ -1022,8 +990,10 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String deleteSelectedPlayerRound()
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		Round rd = this.getSelectedRound();
-		roundDAO.deleteRoundFromDB(rd.getRoundID());
+		golfmain.deleteRoundFromDB(rd.getRoundID());
 		
 		int indexToRemove = -1;
 		

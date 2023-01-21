@@ -379,7 +379,8 @@
 						
 						   <p:commandButton 
 							   value="#{bundle.ok}" 
-							   action="#{pc_Game.saveGame}"																   
+							   action="#{pc_Game.saveGame}"	
+							   update="gameForm:gamesTableID"															   
 							   oncomplete="PF('maintainGamesDialog').hide();">
 						   </p:commandButton> 
 						   

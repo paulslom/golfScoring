@@ -1,6 +1,10 @@
 package com.pas.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,7 @@ public class PlayerTeePreferenceDAO extends JdbcDaoSupport implements Serializab
 	private final DataSource dataSource;
 	
 	private Map<Integer,PlayerTeePreference> playerTeePreferencesMap = new HashMap<Integer,PlayerTeePreference>();
+	private List<PlayerTeePreference> playerTeePreferencesList = new ArrayList<>();
 	
 	@PostConstruct
 	private void initialize() 
@@ -58,35 +63,38 @@ public class PlayerTeePreferenceDAO extends JdbcDaoSupport implements Serializab
 
 	public List<PlayerTeePreference> readPlayerTeePreferencesFromDB(Group grp)
     {
-		String sql = "select pt.* from playertees pt inner join golfcourse gc on gc.idgolfcourse = pt.idgolfCourse where gc.idgroup = :groupID";
-		 
-		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getSelectedGroup().getGroupID());
-		 
-		List<PlayerTeePreference> playerTeePreferencesList = namedParameterJdbcTemplate.query(sql, param, new PlayerTeePreferenceRowMapper()); 
+		String sql = "select pt.* from playertees pt inner join golfcourse gc on gc.idgolfcourse = pt.idgolfCourse where gc.idgroup = :groupID";		 
+		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getGroupID());		 
+		this.setPlayerTeePreferencesList(namedParameterJdbcTemplate.query(sql, param, new PlayerTeePreferenceRowMapper())); 
+		
+		log.info("LoggedDBOperation: function-inquiry; table:playerteepreference; rows:" + playerTeePreferencesList.size());
 		
 		playerTeePreferencesMap = playerTeePreferencesList.stream().collect(Collectors.toMap(PlayerTeePreference::getPlayerTeePreferenceID, PlayerTeePreference -> PlayerTeePreference));
 			
 		return playerTeePreferencesList;
     }
 	
-	public PlayerTeePreference readPlayerTeePreferenceTeeFromDB(Integer playerID, Integer courseID)
+	public PlayerTeePreference getPlayerTeePreference(Integer playerID, Integer courseID)
     {
-		String sql = "select * from playertees where idplayer = :idplayer  and idgolfcourse = :idgolfcourse";		 
-		SqlParameterSource param = new MapSqlParameterSource("idplayer", playerID).addValue("idgolfcourse", courseID);	 
-		 
-		PlayerTeePreference playerTeePreference = namedParameterJdbcTemplate.queryForObject(sql, param, new PlayerTeePreferenceRowMapper()); 	
-    	
-    	return playerTeePreference;
+		PlayerTeePreference playerTeePreference = new PlayerTeePreference();
+		for (int i = 0; i < this.getPlayerTeePreferencesList().size(); i++) 
+		{
+			playerTeePreference = this.getPlayerTeePreferencesList().get(i);
+			
+			//log.info("ptp id: " + playerTeePreference.getPlayerTeePreferenceID() + " player id: " + playerTeePreference.getPlayerID() + " course tee id: " + playerTeePreference.getCourseTeeID());
+			
+			if (playerTeePreference.getPlayerID() == playerID && playerTeePreference.getCourseID() == courseID)
+			{
+				break; //this is the one we want
+			}
+		}
+	
+		return playerTeePreference;
     }
 	
-	public PlayerTeePreference readPlayerTeePreferenceTeeFromDB(Integer playerTeePreferenceID)
+	public PlayerTeePreference getPlayerTeePreference(Integer playerTeePreferenceID)
     {
-		String sql = "select * from playertees where idplayertees = :PlayerTeePreferenceID";
-		 
-		SqlParameterSource param = new MapSqlParameterSource("PlayerTeePreferenceID", playerTeePreferenceID);
-		 
-		PlayerTeePreference playerTeePreference = namedParameterJdbcTemplate.queryForObject(sql, param, new PlayerTeePreferenceRowMapper()); 	
-    	
+		PlayerTeePreference playerTeePreference = this.getPlayerTeePreferencesMap().get(playerTeePreferenceID);				
     	return playerTeePreference;
     }
 
@@ -94,6 +102,10 @@ public class PlayerTeePreferenceDAO extends JdbcDaoSupport implements Serializab
 	{
 		String insertStr = "INSERT INTO playertees (idplayer, idgolfcourse, idgolfcoursetee) values(?,?,?)";			
 		jdbcTemplate.update(insertStr, new Object[] {playerTeePreference.getPlayerID(), playerTeePreference.getCourseID(), playerTeePreference.getCourseTeeID()});	
+		log.info("LoggedDBOperation: function-update; table:playerteepreference; rows:1");
+		
+		refreshListsAndMaps("add",playerTeePreference);
+		
 		log.info("addPlayerTeePreference complete");	
 	}
 	
@@ -106,8 +118,41 @@ public class PlayerTeePreferenceDAO extends JdbcDaoSupport implements Serializab
 		updateStr = updateStr + " WHERE idplayertees = ?";
 	
 		jdbcTemplate.update(updateStr, playerTeePreference.getPlayerID(), playerTeePreference.getCourseID(), playerTeePreference.getCourseTeeID(), playerTeePreference.getPlayerTeePreferenceID());
+		log.info("LoggedDBOperation: function-update; table:playerteepreference; rows:1");
 		
+		refreshListsAndMaps("update", playerTeePreference);
+			
 		log.debug("update player tee preference table complete");		
+	}
+	
+	private void refreshListsAndMaps(String function, PlayerTeePreference ptp)
+	{
+		if (function.equalsIgnoreCase("delete"))
+		{
+			this.getPlayerTeePreferencesMap().remove(ptp.getPlayerTeePreferenceID());			
+		}
+		else if (function.equalsIgnoreCase("add"))
+		{
+			this.getPlayerTeePreferencesMap().put(ptp.getPlayerTeePreferenceID(), ptp);		
+		}
+		else if (function.equalsIgnoreCase("update"))
+		{
+			this.getPlayerTeePreferencesMap().remove(ptp.getPlayerTeePreferenceID());		
+			this.getPlayerTeePreferencesMap().put(ptp.getPlayerTeePreferenceID(), ptp);		
+		}
+		
+		this.getPlayerTeePreferencesList().clear();
+		Collection<PlayerTeePreference> values = this.getPlayerTeePreferencesMap().values();
+		this.setPlayerTeePreferencesList(new ArrayList<>(values));
+		
+		Collections.sort(this.getPlayerTeePreferencesList(), new Comparator<PlayerTeePreference>() 
+		{
+		   public int compare(PlayerTeePreference o1, PlayerTeePreference o2) 
+		   {
+		      return o1.getPlayerFullName().compareTo(o2.getPlayerFullName());
+		   }
+		});
+		
 	}
 	
 	public Map<Integer, PlayerTeePreference> getPlayerTeePreferencesMap() {
@@ -116,6 +161,14 @@ public class PlayerTeePreferenceDAO extends JdbcDaoSupport implements Serializab
 
 	public void setPlayerTeePreferencesMap(Map<Integer, PlayerTeePreference> playerTeePreferencesMap) {
 		this.playerTeePreferencesMap = playerTeePreferencesMap;
+	}
+
+	public List<PlayerTeePreference> getPlayerTeePreferencesList() {
+		return playerTeePreferencesList;
+	}
+
+	public void setPlayerTeePreferencesList(List<PlayerTeePreference> playerTeePreferencesList) {
+		this.playerTeePreferencesList = playerTeePreferencesList;
 	}
 
 

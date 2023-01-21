@@ -1,6 +1,7 @@
 package com.pas.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,24 +22,22 @@ import com.pas.beans.Group;
 @Repository
 public class GroupDAO extends JdbcDaoSupport implements Serializable 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static Logger log = LogManager.getLogger(GroupDAO.class);
 	private final JdbcTemplate jdbcTemplate;
 	private final DataSource dataSource;
 	
 	private Map<Integer,Group> groupsMap = new HashMap<Integer,Group>();
+	private List<Group> groupsList = new ArrayList<>();
 	
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-		   log.info("attempting to setDataSource in initialize method of GroupDAO");
+		   log.info("attempting to setDataSource");
 	       setDataSource(dataSource);
-	       log.info("successfully set setDataSource in initialize method of GroupDAO");
+	       log.info("successfully set setDataSource");
 	   } 
 	   catch (final Exception ex) 
 	   {
@@ -53,17 +52,17 @@ public class GroupDAO extends JdbcDaoSupport implements Serializable
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-	public List<Group> readGroupsFromDB() 
+	public void readGroupsFromDB() 
     {
-		log.info("attempting to readGroupsFromDB in GroupDAO");
+		log.info("attempting to readGroupsFromDB");
 		String sql = "select * from golfgroup";		 
-		List<Group> groupList = jdbcTemplate.query(sql, new GroupRowMapper()); 
+		this.setGroupsList(jdbcTemplate.query(sql, new GroupRowMapper())); 
 		
-		log.info("successfully read groups in readGroupsFromDB in GroupDAO");
+		log.info("successfully read groups in readGroupsFromDB");
 		
-		groupsMap = groupList.stream().collect(Collectors.toMap(Group::getGroupID, group -> group));	   
+		log.info("LoggedDBOperation: function-inquiry; table:group; rows:" + this.getGroupsList().size());
 		
-    	return groupList;
+		groupsMap = this.getGroupsList().stream().collect(Collectors.toMap(Group::getGroupID, group -> group));	 		
 	}
 
 	public Map<Integer, Group> getGroupsMap() {
@@ -72,6 +71,14 @@ public class GroupDAO extends JdbcDaoSupport implements Serializable
 
 	public void setGroupsMap(Map<Integer, Group> groupsMap) {
 		this.groupsMap = groupsMap;
+	}
+
+	public List<Group> getGroupsList() {
+		return groupsList;
+	}
+
+	public void setGroupsList(List<Group> groupsList) {
+		this.groupsList = groupsList;
 	}	
 
 }

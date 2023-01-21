@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
 	  {
 		  log.info("User " + username + " attempting to log in");
-	      GolfUser golfuser = usersAndAuthoritiesDAO.readUserFromDB(username);
+	      GolfUser golfuser = usersAndAuthoritiesDAO.getGolfUser(username);
 
 	      UserBuilder builder = null;
 	   
@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	         builder.password(golfuser.getPassword());
 	         builder.roles(golfuser.getUserRoles());
 	         
-	         log.info("User " + username + " successfully found on database.");
+	         log.info("User " + username + " successfully found on database as " + golfuser.getUserName());
 	     } 
 	     else 
 	     {

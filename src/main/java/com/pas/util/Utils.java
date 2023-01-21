@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -41,7 +42,15 @@ public class Utils
 	public static int BACK9_STYLE_HOLENUM = 20;
 	public static int TOTAL_STYLE_HOLENUM = 21;
 	public static int NET_STYLE_HOLENUM = 22;
-
+	
+	public static String getLastYearsLastDayDate() 
+	{
+	    Calendar prevYear = Calendar.getInstance();
+	    prevYear.add(Calendar.YEAR, -1);
+	    String returnDate = prevYear.get(Calendar.YEAR) + "-12-31";
+	    return returnDate;
+	}
+	
 	// function to round the number 
 	public static int roundToNearestMultipleOfTen(int n) 
 	{ 

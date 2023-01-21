@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -13,8 +14,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -30,6 +37,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
@@ -48,12 +57,16 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(RoundDAO.class);
 	
+	private Map<Integer,Round> fullRoundsMap = new HashMap<Integer,Round>();	
+	private List<Round> fullRoundsList = new ArrayList<Round>();
+	
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);	      
+	       setDataSource(dataSource);	
+	       readAllRoundsFromDB();
 	   } 
 	   catch (final Exception ex) 
 	   {
@@ -99,75 +112,146 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 						participantsList.add(rs.getString("playerName") + " (signed up: " + signupDateTime + ")");
 					}
 				}
+				
+				log.info("LoggedDBOperation: function-inquiry; table:game Participants; rows:" + participantsList.size());
+				
 				return participantsList;
 		    }
-		});
+		});	
 		
     }
-	public List<Round> readRoundsFromDB(Game selectedGame)
+	
+	private void readAllRoundsFromDB()
     {
-		String sql = "select * from round where idgame = :idgame order by dSignUpdatetime";		 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", selectedGame.getGameID());		 
-		List<Round> roundsList = namedParameterJdbcTemplate.query(sql, param, new RoundRowMapper());    
-	   	return roundsList;
+		String sql = "select * from round where dSignUpdatetime > :dSignUpdatetime order by dSignUpdatetime desc";	
+		SqlParameterSource param = new MapSqlParameterSource("dSignUpdatetime", Utils.getLastYearsLastDayDate());
+		this.setFullRoundsList(namedParameterJdbcTemplate.query(sql, param, new RoundRowMapper())); 
+	
+		log.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());
+		
+		this.setFullRoundsMap(this.getFullRoundsList().stream().collect(Collectors.toMap(Round::getRoundID, rd -> rd)));		
+    }
+	
+	public List<Round> getRoundsForGame(Game selectedGame)
+    {
+		List<Round> roundsByGameList = new ArrayList<>();
+		
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == selectedGame.getGameID())
+			{
+				roundsByGameList.add(rd);
+			}
+		}
+		
+		Collections.sort(roundsByGameList, new Comparator<Round>() 
+		{
+		   public int compare(Round o1, Round o2) 
+		   {
+		      return o1.getSignupDateTime().compareTo(o2.getSignupDateTime());
+		   }
+		});
+		
+	   	return roundsByGameList;
     }
 	
 	public List<Round> readPlayGroupRoundsFromDB(Game selectedGame, Integer teeTimeID)
     {
-		String sql = "select * from round where idgame = :idgame and idteeTimes = :teeTimeID";		 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", selectedGame.getGameID()).addValue("teeTimeID", teeTimeID);		 
-		List<Round> roundsList = namedParameterJdbcTemplate.query(sql, param, new RoundRowMapper()); 		
+		List<Round> roundsList = new ArrayList<>();
+		
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == selectedGame.getGameID() && rd.getTeeTimeID() == teeTimeID)
+			{
+				roundsList.add(rd);
+			}
+		}
+		
     	return roundsList;
     }
 	
 	public Integer countRoundsForGameFromDB(Game selectedGame)
     {
-		String sql = "select count(*) from round where idgame = ?";					
-		int count = jdbcTemplate.queryForObject(sql, new Object[] {selectedGame.getGameID()}, Integer.class);    	
+		int count = 0; 
+		
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == selectedGame.getGameID())
+			{
+				count++;
+			}
+		}
+		
     	return count;
     }
 	
-	public Round readRoundFromDB(Integer roundID)
+	public Round getRoundByRoundID(Integer roundID)
     {
-		String sql = "select * from round where idround = :idround";		 
-		SqlParameterSource param = new MapSqlParameterSource("idround", roundID);		 
-		Round round = namedParameterJdbcTemplate.queryForObject(sql, param, new RoundRowMapper()); 		
-    	return round;
+		Round round = this.getFullRoundsMap().get(roundID);
+	 	return round;
     }
 	
-	public Round readRoundFromDBByGameandPlayer(Integer gameID, Integer playerID)
+	public Round getRoundByGameandPlayer(Integer gameID, Integer playerID)
     {
-		String sql = "select * from round where idgame = :idgame  and idplayer = :idPlayer";		 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", gameID).addValue("idPlayer", playerID);		
-		List<Round> roundList = namedParameterJdbcTemplate.query(sql, param, new RoundRowMapper()); 
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == gameID && rd.getPlayerID() == playerID)
+			{
+				return rd;
+			}
+		}
 		
-		if (roundList == null || roundList.size() == 0)
-		{
-			return null;
-		}
-		else
-		{
-			return roundList.get(0);
-		}
-    	
+		return null;
+		    	
     }
 	
 	public void deleteRoundFromDB(Integer roundID)
     {
 		String deleteStr = "delete from round where idround = ?";
 		jdbcTemplate.update(deleteStr, roundID);	
+		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		
+		Round rd = new Round();
+		rd.setRoundID(roundID);
+		
+		refreshListsAndMaps("delete", rd);		
+		
 		log.info(getTempUserName() + " delete round table complete");
     }
 	
 	public void deleteRoundsFromDB(Integer gameID)
     {
 		String deleteStr = "delete from round where idgame = ?";
-		jdbcTemplate.update(deleteStr, gameID);	
+		int updatedRows = jdbcTemplate.update(deleteStr, gameID);	
+		log.info("LoggedDBOperation: function-update; table:round; rows:" + updatedRows);
+		
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == gameID)
+			{
+				this.getFullRoundsMap().remove(rd.getRoundID());
+			}
+		}
+		
+		refreshListsAndMaps("special", null);	
+		
 		log.info(getTempUserName() + " delete rounds table complete");		
     }
 
-	public void addRound(Round round)
+	public int addRound(Round round)
 	{
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
 		jdbcTemplate.update(new PreparedStatementCreator() 
 		{
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
@@ -178,7 +262,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				insertStr = insertStr + "front9Score, back9Score, totalScore, totalToPar, netScore, teamNumber, roundHandicap, idTeeTimes, dSignUpdatetime, idCourseTee)";
 				insertStr = insertStr + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
 		
-				PreparedStatement psmt = connection.prepareStatement(insertStr, new String[] {});
+				PreparedStatement psmt = connection.prepareStatement(insertStr, Statement.RETURN_GENERATED_KEYS);
 					
 				psmt.setInt(1, round.getGameID());
 				psmt.setInt(2, round.getPlayerID());
@@ -410,9 +494,17 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				}
 				return psmt;
 			}
-		});
-								
-		log.info(getTempUserName() + " insert round table complete");		
+		}, keyHolder);
+		
+		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		
+		round.setRoundID(keyHolder.getKey().intValue());
+		
+		refreshListsAndMaps("add", round);	
+		
+		log.info(getTempUserName() + " insert round table complete");
+		
+		return round.getRoundID();
 	}
 	
 	public void updateRound(Round round)
@@ -650,7 +742,11 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				return psmt;
 			}
 		});
-			
+		
+		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		
+		refreshListsAndMaps("update", round);	
+		
 		log.debug(getTempUserName() + " update round table complete.  Round id updated: " + round.getRoundID());
 		
 	}
@@ -658,7 +754,27 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	public void updateRoundHandicap(Game selectedGame, int playerID, BigDecimal handicap) 
 	{
 		String updateStr = " UPDATE round SET roundHandicap = ? WHERE idgame = ? AND idplayer = ?";	
-		jdbcTemplate.update(updateStr, handicap, selectedGame.getGameID(), playerID);		
+		jdbcTemplate.update(updateStr, handicap, selectedGame.getGameID(), playerID);	
+		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == selectedGame.getGameID() && rd.getPlayerID() == playerID)
+			{
+				rd.setRoundHandicap(handicap);
+				this.getFullRoundsMap().remove(rd.getRoundID());
+				this.getFullRoundsMap().put(rd.getRoundID(), rd);
+				this.getFullRoundsList().clear();
+				Collection<Round> values = this.getFullRoundsMap().values();
+				this.setFullRoundsList(new ArrayList<>(values));
+				break;
+			}
+		}
+		
+		refreshListsAndMaps("special", null);
+		
 		log.debug(getTempUserName() + " update player handicap for playerID: " + playerID + " to: " + handicap + " on round table complete");		
 	}	
 	
@@ -666,13 +782,80 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	{
 		String updateStr = " UPDATE round SET teamNumber = ? WHERE idgame = ? AND idplayer = ?";	
 		jdbcTemplate.update(updateStr, teamNumber, selectedGame.getGameID(), playerID);		
+		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		
+
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
+			
+			if (rd.getGameID() == selectedGame.getGameID() && rd.getPlayerID() == playerID)
+			{
+				rd.setTeamNumber(teamNumber);
+				this.getFullRoundsMap().remove(rd.getRoundID());
+				this.getFullRoundsMap().put(rd.getRoundID(), rd);
+				this.getFullRoundsList().clear();
+				Collection<Round> values = this.getFullRoundsMap().values();
+				this.setFullRoundsList(new ArrayList<>(values));
+				break;
+			}
+		}
+		
+		refreshListsAndMaps("special", null);
+		
 		log.debug(getTempUserName() + " update team number for playerID: " + playerID + " to: " + teamNumber + " on round table complete");		
 	}	
+	
+	private void refreshListsAndMaps(String function, Round round)
+	{
+		if (function.equalsIgnoreCase("delete"))
+		{
+			this.getFullRoundsMap().remove(round.getRoundID());	
+		}
+		else if (function.equalsIgnoreCase("add"))
+		{
+			this.getFullRoundsMap().put(round.getRoundID(), round);	
+		}
+		else if (function.equalsIgnoreCase("update"))
+		{
+			this.getFullRoundsMap().remove(round.getRoundID());	
+			this.getFullRoundsMap().put(round.getRoundID(), round);	
+		}
+		
+		this.getFullRoundsList().clear();
+		Collection<Round> values = this.getFullRoundsMap().values();
+		this.setFullRoundsList(new ArrayList<>(values));
+		
+		Collections.sort(this.getFullRoundsList(), new Comparator<Round>() 
+		{
+		   public int compare(Round o1, Round o2) 
+		   {
+		      return o2.getSignupDateTime().compareTo(o1.getSignupDateTime());
+		   }
+		});
+		
+	}
 	
 	private String getTempUserName() 
 	{
 		String username = "";		
 		username = Utils.getLoggedInUserName();			
 		return username;
+	}
+
+	public Map<Integer, Round> getFullRoundsMap() {
+		return fullRoundsMap;
+	}
+
+	public void setFullRoundsMap(Map<Integer, Round> fullRoundsMap) {
+		this.fullRoundsMap = fullRoundsMap;
+	}
+
+	public List<Round> getFullRoundsList() {
+		return fullRoundsList;
+	}
+
+	public void setFullRoundsList(List<Round> fullRoundsList) {
+		this.fullRoundsList = fullRoundsList;
 	}
 }

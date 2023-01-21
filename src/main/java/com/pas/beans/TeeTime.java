@@ -3,6 +3,7 @@ package com.pas.beans;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,8 +20,6 @@ import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.GameDAO;
-import com.pas.dao.TeeTimeDAO;
 import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
@@ -42,7 +41,8 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	private int gameID;
 	private int playGroupNumber;
 	private String teeTimeString;
-	private Game teeTimeGame;
+	private Date gameDate;
+	private String courseName;
 	
 	private TeeTime selectedTeeTime;
 	
@@ -52,17 +52,16 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
 	
-	@Autowired private TeeTimeDAO teeTimeDAO;
 	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;	
-	@Autowired private GameDAO gameDAO;
 	
-	public TeeTime(int teeTimeID, int gameID, int playGroupNumber, String teeTimeString, Game teeTimeGame) 
+	public TeeTime(int teeTimeID, int gameID, int playGroupNumber, String teeTimeString, Date gameDate, String courseName) 
 	{	
 		this.setTeeTimeID(teeTimeID);
 		this.setGameID(gameID);
 		this.setPlayGroupNumber(playGroupNumber);
 		this.setTeeTimeString(teeTimeString);
-		this.setTeeTimeGame(teeTimeGame);
+		this.setGameDate(gameDate);
+		this.setCourseName(courseName);
 	}
 
 	public TeeTime() 
@@ -87,13 +86,15 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
-		Game selectedOption = (Game)selectonemenu.getValue();
+		Integer selectedOption = (Integer)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
 			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			this.setTeeTimeGame(selectedOption);
-			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(selectedOption));
+			Game game = new Game();
+			game.setGameID(selectedOption);
+			this.getTeeTimeList().clear();
+			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(game));
 		}
 						
 	}
@@ -123,26 +124,23 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " is deleting a tee time");
 		
-		TeeTime tt = this.getSelectedTeeTime();
-		teeTimeDAO.deleteTeeTimeFromDB(this.getSelectedTeeTime().getTeeTimeID());
-		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		golfmain.removeTeeTimeFromMainList(tt);
-		this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(this.getTeeTimeGame()));
 		
+		TeeTime tt = this.getSelectedTeeTime();
+		golfmain.deleteTeeTimeFromDB(this.getSelectedTeeTime().getTeeTimeID());
+			
 		Game gm = BeanUtilJSF.getBean("pc_Game");		
 		
-		gm = gameDAO.readGameFromDB(tt.getGameID());
+		gm = golfmain.getGameByGameID(tt.getGameID());
 		
 		gm.setFieldSize(gm.getFieldSize() - 4);
 		gm.setTotalPlayers(gm.getFieldSize());
 		gm.selectTotalPlayers(gm.getTotalPlayers());
 		
-		gameDAO.updateGame(gm);
+		golfmain.updateGame(gm);
 		
-		this.setTeeTimeGame(gm);
-		
-		golfmain.refreshFullGameList();
+		this.getTeeTimeList().clear();
+		this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(gm));
 		
 		emailAdminsAboutTeeTimeRemoval(gm,tt);
 		
@@ -158,34 +156,40 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " user clicked Save Tee Time from maintain tee time dialog");	
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		Game game = BeanUtilJSF.getBean("pc_Game");		
+		
+		game = golfmain.getGameByGameID(this.getGameID());
+		
 		if (this.getOperation().equalsIgnoreCase("Add"))
 		{
-			teeTimeDAO.addTeeTime(this);
+			this.setCourseName(game.getCourseName());
+			this.setGameDate(game.getGameDate());
+			golfmain.addTeeTime(this);
+			game.setFieldSize(game.getFieldSize() + 4);
 		}
 		
 		if (this.getOperation().equalsIgnoreCase("Update"))
 		{
-			teeTimeDAO.updateTeeTime(this);
-		}
+			this.setCourseName(this.getSelectedTeeTime().getCourseName());
+			this.setGameDate(this.getSelectedTeeTime().getGameDate());
+			golfmain.updateTeeTime(this);
+		}	
 		
-		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
-		gm.refreshTeeTimeList();
-		this.setTeeTimeList(gm.getGameSpecificTeeTimes(this.getTeeTimeGame()));
-		
-		Game game = BeanUtilJSF.getBean("pc_Game");		
-		
-		game = gameDAO.readGameFromDB(this.getTeeTimeGame().getGameID());
-		
-		game.setFieldSize(game.getFieldSize() + 4);
 		game.setTotalPlayers(game.getFieldSize());
 		game.selectTotalPlayers(game.getTotalPlayers());
 		
-		gameDAO.updateGame(game);
+		golfmain.updateGame(game);
 		
-		this.setTeeTimeGame(game);
+		this.getTeeTimeList().clear();
+		this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(game));
 		
-		gm.refreshFullGameList();		
-		
+		for (int i = 0; i < this.getTeeTimeList().size(); i++) 
+		{
+			TeeTime tt = this.getTeeTimeList().get(i);
+			log.info("tee time id: " + tt.getTeeTimeID() + ", play group number: " + tt.getPlayGroupNumber() + ", tee time: " + tt.getTeeTimeString());
+		}
 		log.info(getTempUserName() + " exiting saveTeeTime");
 		
 		return "";
@@ -217,14 +221,14 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.clear();
 		}
 		
-		List<String> adminUsers = usersAndAuthoritiesDAO.readAdminUsers();
+		List<String> adminUsers = usersAndAuthoritiesDAO.getAdminUserList();
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		//anyone with admin role
 		for (int i = 0; i < adminUsers.size(); i++) 
 		{
-			Player tempPlayer2 = golfmain.getFullPlayerMapByUserName().get(adminUsers.get(i));			
+			Player tempPlayer2 = golfmain.getFullPlayersMapByUserName().get(adminUsers.get(i));			
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 			
@@ -283,14 +287,6 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 		this.disableDeleteTeeTime = disableDeleteTeeTime;
 	}
 
-	public Game getTeeTimeGame() {
-		return teeTimeGame;
-	}
-
-	public void setTeeTimeGame(Game teeTimeGame) {
-		this.teeTimeGame = teeTimeGame;
-	}
-
 	public String getTeeTimeString() {
 		return teeTimeString;
 	}
@@ -320,6 +316,22 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 
 	public void setTeeTimeList(List<TeeTime> teeTimeList) {
 		this.teeTimeList = teeTimeList;
+	}
+
+	public Date getGameDate() {
+		return gameDate;
+	}
+
+	public void setGameDate(Date gameDate) {
+		this.gameDate = gameDate;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 	
 }

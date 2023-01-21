@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.PlayerMoneyDAO;
+import com.pas.util.BeanUtilJSF;
 
 @Named("pc_PlayerMoney")
-@RequestScoped
+@SessionScoped
 public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -41,8 +40,6 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 	
 	private BigDecimal totalAmount;
 	
-	@Autowired private PlayerMoneyDAO playerMoneyDAO;
-	
 	public void onLoadPlayerMoney() 
 	{
 		log.info("about to run Player Money");
@@ -51,7 +48,9 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 	
 	public String runTheMoney()
 	{
-		this.setFullPlayerMoneyList(playerMoneyDAO.readPlayerMoneyFromDB());
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		this.setFullPlayerMoneyList(golfmain.getPlayerMoneyList());
 		
 		if (this.getFullPlayerMoneyList().size() > 0)
 		{
@@ -94,9 +93,11 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 	
 	public String getPlayerMoneyDetail(PlayerMoney pm)
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		this.setSelectedPlayerMoney(pm);
 		this.setTotalAmount(this.getSelectedPlayerMoney().getAmount());
-		this.setIndividualPlayerMoneyList(playerMoneyDAO.readPlayerMoneyFromDB(pm.getPlayer()));
+		this.setIndividualPlayerMoneyList(golfmain.getPlayerMoneyByPlayer(pm.getPlayer()));
 		
 		return "";
 	}

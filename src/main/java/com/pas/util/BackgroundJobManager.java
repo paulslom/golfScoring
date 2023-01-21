@@ -33,8 +33,12 @@ public class BackgroundJobManager implements ServletContextListener
 
     private long get8AMinEast() 
     {
-    	int hour = 8;
-    	int minute = 0;
+    	//int hour = 8;
+    	//int minute = 0;
+    	//int second = 0;
+    	
+    	int hour = 17;
+    	int minute = 58;
     	int second = 0;
     	
     	ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/New_York"));

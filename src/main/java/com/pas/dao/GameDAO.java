@@ -5,9 +5,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -42,9 +49,9 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(GameDAO.class);
-	private RoundDAO roundDAO;
-	private PlayerTeePreferenceDAO playerTeePreferenceDAO;
-	HashMap<Integer,Game> gamesMap = new HashMap<Integer,Game>();
+	
+	private Map<Integer,Game> fullGameMap = new HashMap<Integer,Game>();	
+	private List<Game> fullGameList = new ArrayList<Game>();
 		
 	@PostConstruct
 	private void initialize() 
@@ -60,13 +67,11 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	}
 
 	@Autowired
-    public GameDAO(DataSource dataSource, RoundDAO roundDAO, PlayerTeePreferenceDAO playerTeePreferenceDAO) 
+    public GameDAO(DataSource dataSource) 
 	{
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	    this.jdbcTemplate = new JdbcTemplate(dataSource);
+	    this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	    this.dataSource = dataSource;	
-	    this.roundDAO = roundDAO;
-	    this.playerTeePreferenceDAO = playerTeePreferenceDAO;
     }	
 	
 	public int addGame(Game game)
@@ -105,6 +110,11 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 			}
 		}, keyHolder);
  
+		log.info("LoggedDBOperation: function-update; table:game; rows:1");
+		
+		game.setGameID(keyHolder.getKey().intValue());
+		refreshListsAndMaps("add", game.getGameID(), game);
+		
 		return keyHolder.getKey().intValue();	
 	}
 	
@@ -123,7 +133,11 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 				game.getIndividualGrossPrize(), game.getIndividualNetPrize(), game.getPurseAmount(), game.getSkinsPot(), game.getTeamPot(),
 			    game.getFieldSize(), game.getTotalPlayers(), game.getTotalTeams(), game.getGameNoteForEmail(),
 			    game.getPlayTheBallMethod(), game.isGameClosedForSignups(), game.getGameID());
-			
+		
+		log.info("LoggedDBOperation: function-update; table:game; rows:1");
+		
+		refreshListsAndMaps("update", game.getGameID(), game);	
+       		
 		log.debug(getTempUserName() + " update game table complete");		
 	}
 	
@@ -131,35 +145,52 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	{		
 		String deleteStr = "delete from game where idgame = ?";
 		jdbcTemplate.update(deleteStr,gameID);	
+		
+		log.info("LoggedDBOperation: function-update; table:game; rows:1");
+		
+		refreshListsAndMaps("delete", gameID, null);		
+		
 		log.info(getTempUserName() + " deleteGame complete");	
 	}
 	
-	public List<Game> readGamesFromDB() 
+	public void readGamesFromDB() 
     {
-		String sql = "select * from game order by gameDate desc";		 
-		List<Game> gameList = jdbcTemplate.query(sql, new GameRowMapper()); 
+		String sql = "select * from game  where gameDate > :gameDate order by gameDate desc";	
+		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getLastYearsLastDayDate());
+		this.setFullGameList(namedParameterJdbcTemplate.query(sql, param, new GameRowMapper())); 
 		
-		for (int i = 0; i < gameList.size(); i++) 
-		{
-			Game tempGame = gameList.get(i);
-			gamesMap.put(i, tempGame);				
-		}
-		    	
-    	return gameList;
+		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + this.getFullGameList().size());
+		
+		this.setFullGameMap(this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, gm -> gm)));				
 	}
 	
-	public List<Game> readAvailableGamesFromDB(int playerID) 
+	public List<Game> getAvailableGames(int playerID) 
     {
-		String sql = "select * from game where gameDate >= CURDATE() order by gameDate";
-		 
-		List<Game> gameList = jdbcTemplate.query(sql, new GameRowMapper()); 
-	
+		List<Game> gameList = new ArrayList<>();
+		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		Calendar todayMidnight = new GregorianCalendar();
+		todayMidnight.set(Calendar.HOUR_OF_DAY, 0);
+		todayMidnight.set(Calendar.MINUTE, 0);
+		todayMidnight.set(Calendar.SECOND, 0);
+		todayMidnight.set(Calendar.MILLISECOND, 0);
+		
+		for (int i = 0; i < this.getFullGameList().size(); i++) 
+		{
+			Game availableGame = this.getFullGameList().get(i);
+			if (availableGame.getGameDate().after(todayMidnight.getTime()))
+			{
+				gameList.add(availableGame);
+			}
+		}
+				
     	for (int i = 0; i < gameList.size(); i++) 
     	{
 			Game gm = gameList.get(i);
-			Round rd = roundDAO.readRoundFromDBByGameandPlayer(gm.getGameID(), playerID);
+			Round rd = golfmain.getRoundByGameandPlayer(gm.getGameID(), playerID);
 			
-			Integer spotsTaken = roundDAO.countRoundsForGameFromDB(gm);
+			Integer spotsTaken = golfmain.countRoundsForGameFromDB(gm);
 			Integer spotsAvailable = gm.getFieldSize() - spotsTaken;
 			gm.setSpotsAvailable(spotsAvailable);
 			
@@ -184,8 +215,10 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	}
 	
 	public Integer getTeePreference(int playerID, int courseID) 
-	{		
-		PlayerTeePreference ptp = playerTeePreferenceDAO.readPlayerTeePreferenceTeeFromDB(playerID, courseID);
+	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		PlayerTeePreference ptp = golfmain.getPlayerTeePreference(playerID, courseID);
 		if (ptp != null)
 		{
 			return ptp.getCourseTeeID();
@@ -193,39 +226,58 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		return null;
 	}
 
-	public List<Game> readFutureGamesFromDB() 
+	public List<Game> getFutureGames() 
     {
-		String sql = "select * from game where gameDate >= CURDATE() order by gameDate";		 
-		List<Game> gameList = jdbcTemplate.query(sql, new GameRowMapper()); 
+		List<Game> gameList = new ArrayList<>();
+		
+		Calendar todayMidnight = new GregorianCalendar();
+		todayMidnight.set(Calendar.HOUR_OF_DAY, 0);
+		todayMidnight.set(Calendar.MINUTE, 0);
+		todayMidnight.set(Calendar.SECOND, 0);
+		todayMidnight.set(Calendar.MILLISECOND, 0);
+		
+		for (int i = 0; i < this.getFullGameList().size(); i++) 
+		{
+			Game availableGame = this.getFullGameList().get(i);
+			if (availableGame.getGameDate().after(todayMidnight.getTime()))
+			{
+				gameList.add(availableGame);
+			}
+		}
+		
 		assignCourseToGameList(gameList);
     	return gameList;
 	}
 	
-	public List<Game> readAvailableGamesByPlayerID(int playerID) 
+	public List<Game> getAvailableGamesByPlayerID(int playerID) 
     {
-		String sql = "select * from game where idgame in (select g.idgame from game g inner join round r on r.idgame = g.idgame" + 
-				" where g.gameDate >= CURDATE() and r.idplayer = :idplayer) order by gameDate";			
-		SqlParameterSource param = new MapSqlParameterSource("idplayer",playerID);		 
-		List<Game> gameList = namedParameterJdbcTemplate.query(sql, param, new GameRowMapper()); 
+		List<Game> gameList = new ArrayList<>();
+		
+		Calendar todayMidnight = new GregorianCalendar();
+		todayMidnight.set(Calendar.HOUR_OF_DAY, 0);
+		todayMidnight.set(Calendar.MINUTE, 0);
+		todayMidnight.set(Calendar.SECOND, 0);
+		todayMidnight.set(Calendar.MILLISECOND, 0);
+		
+		for (int i = 0; i < this.getFullGameList().size(); i++) 
+		{
+			Game availableGame = this.getFullGameList().get(i);
+			if (availableGame.getGameDate().after(todayMidnight.getTime()))
+			{
+				gameList.add(availableGame);
+				//this is not enough though - need to know if the player is a part of the game.
+			}
+		}
+		
 		assignCourseToGameList(gameList);
     	return gameList;
 	}
 	
-	public Game readGameFromDB(int gameID) 
+	public Game getGameByGameID(int gameID) 
     {
-		String sql = "select * from game where idgame = :idgame";		 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", gameID);		 
-		Game game = namedParameterJdbcTemplate.queryForObject(sql, param, new GameRowMapper()); 
+		Game game = this.getFullGameMap().get(gameID);
 		assignCourseToGame(game);
     	return game;		
-	}
-
-	public HashMap<Integer, Game> getGamesMap() {
-		return gamesMap;
-	}
-
-	public void setGamesMap(HashMap<Integer, Game> gamesMap) {
-		this.gamesMap = gamesMap;
 	}
 
 	private String getTempUserName() 
@@ -256,5 +308,62 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		List<SelectItem> courseTeeSelections = teeSelectionsMap.get(inGame.getCourseID());	
 		inGame.setTeeSelections(courseTeeSelections);
 	}
+	
+	private void refreshListsAndMaps(String function, int gameID, Game game)
+	{
+		if (function.equalsIgnoreCase("delete"))
+		{
+			this.getFullGameMap().remove(gameID);			
+		}
+		else if (function.equalsIgnoreCase("add"))
+		{
+			this.getFullGameMap().put(gameID, game);			
+		}
+		else if (function.equalsIgnoreCase("update"))
+		{
+			this.getFullGameMap().remove(game.getGameID());
+			this.getFullGameMap().put(game.getGameID(), game);
+		}
+		
+		this.getFullGameList().clear();
+		Collection<Game> values = this.getFullGameMap().values();
+		this.setFullGameList(new ArrayList<>(values));
+		
+		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
+		{
+		   public int compare(Game o1, Game o2) 
+		   {
+		      return o2.getGameDate().compareTo(o1.getGameDate());
+		   }
+		});
+		
+	}
+
+	public List<Game> getFullGameList() 
+	{
+		/* for debugging purposes
+		for (int i = 0; i < fullGameList.size(); i++) 
+		{
+			Game gm = fullGameList.get(i);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			log.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
+		}
+		*/
+		return fullGameList;
+	}
+
+	public void setFullGameList(List<Game> fullGameList) 
+	{
+		this.fullGameList = fullGameList;
+	}
+
+	public Map<Integer, Game> getFullGameMap() {
+		return fullGameMap;
+	}
+
+	public void setFullGameMap(Map<Integer, Game> fullGameMap) {
+		this.fullGameMap = fullGameMap;
+	}
+
 	
 }

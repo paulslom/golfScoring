@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +29,11 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
 import com.pas.dao.GameDAO;
+import com.pas.dao.GroupDAO;
 import com.pas.dao.PlayerDAO;
+import com.pas.dao.PlayerMoneyDAO;
 import com.pas.dao.PlayerTeePreferenceDAO;
+import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
 import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
@@ -58,29 +65,14 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	}
 	
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(GolfMain.class);		
-	
+	private static Logger log = LogManager.getLogger(GolfMain.class);	
+		
 	private List<SelectItem> totalPlayersSelections = new ArrayList<SelectItem>();
 	private List<SelectItem> totalTeamsSelections = new ArrayList<SelectItem>();
 	private List<SelectItem> howManyBallsSelections = new ArrayList<SelectItem>();
 	private List<SelectItem> playGroupSelections = new ArrayList<SelectItem>();
 	private List<SelectItem> holeSelections = new ArrayList<>();
 	private List<SelectItem> scoreSelections = new ArrayList<>();
-	
-	private Map<Integer,Course> coursesMap = new HashMap<Integer,Course>();	
-	private Map<Integer,CourseTee> courseTeesMap = new HashMap<Integer,CourseTee>();	
-	private Map<Integer,Game> gamesMap = new HashMap<Integer,Game>();	
-	private Map<Integer,TeeTime> teeTimesMap = new HashMap<Integer,TeeTime>();	
-	private Map<Integer,Player> fullPlayerMap = new HashMap<>();
-	private Map<String,Player> fullPlayerMapByUserName = new HashMap<>();
-	private Map<Integer,PlayerTeePreference> fullPlayerTeePreferencesMap = new HashMap<>();
-
-	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
-	private List<Game> fullGameList = new ArrayList<Game>();
-	private List<Course> courseSelections = new ArrayList<Course>();
-	private List<CourseTee> courseTees = new ArrayList<CourseTee>();
-	private List<Player> fullPlayerList = new ArrayList<Player>();	
-	private List<PlayerTeePreference> fullPlayerTeePreferencesList = new ArrayList<>();
 	
 	private boolean disableProceedToSelectGame = true;
 	private boolean disableProceedToSelectPlayers = true;
@@ -90,6 +82,8 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	private String groupEmailMessage = "";
 	private String groupEmailDisclaimer = "";  
 	private String groupEmailSender;
+	
+	private Group defaultGroup = null;
 	
 	private ArrayList<String> emailRecipients = new ArrayList<String>();
 	
@@ -111,11 +105,13 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	@Autowired private TeeTimeDAO teeTimeDAO;
 	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
 	@Autowired private GameDAO gameDAO;
+	@Autowired private RoundDAO roundDAO;
 	@Autowired private CourseDAO courseDAO;
 	@Autowired private CourseTeeDAO courseTeeDAO;
 	@Autowired private PlayerDAO playerDAO;
+	@Autowired private PlayerMoneyDAO playerMoneyDAO;
 	@Autowired private PlayerTeePreferenceDAO playerTeePreferencesDAO;
-	@Autowired private Group group;
+	@Autowired private GroupDAO groupDAO;
 	
 	@PostConstruct
 	public void init()
@@ -185,20 +181,134 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			playGroupSelections.add(selItem3);
 		}
 		
-		refreshCourseSelections();
-		refreshCourseTees();
-		refreshFullGameList();
-		refreshTeeTimeList();
-		refreshFullPlayerList();
+		//this gets populated at app startup, no need to do it again when someone logs in.
+		if (usersAndAuthoritiesDAO.getFullUserMap().isEmpty())
+		{
+			groupDAO.readGroupsFromDB();
+			Group defaultGroup = this.getGroupsList().get(0);
+			this.setDefaultGroup(defaultGroup);
+			
+			refreshCourseSelections();
+			refreshCourseTees();
+			refreshFullGameList();
+			refreshTeeTimeList();
+			refreshFullPlayerList();
+			refreshFullPlayerTeePreferencesList();
+			refreshPlayerMoneyList();
+		}	
+				
+	}
+
+	public void refreshCourseSelections()
+	{
+		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
+		log.info("Courses read in. List size = " + this.getCourseSelections().size());		
+    }
+	
+	public void refreshCourseTees()
+	{
+		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
+		log.info("Course Tees read in. List size = " + this.getCourseTees().size());		
+    }
+	
+	public void refreshFullGameList()
+	{
+		gameDAO.readGamesFromDB();			
+		log.info("Full Game list read in. List size = " + this.getFullGameList().size());			
+	}
+	
+	public void refreshTeeTimeList()
+	{
+		teeTimeDAO.readTeeTimesFromDB();			
+		log.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
+	}
+	
+	public void refreshPlayerMoneyList()
+	{
+		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
+		Map<Integer,PlayerMoney> tempMap = new HashMap<Integer,PlayerMoney>();
+		
+		for (int i = 0; i < playerMoneyDAO.getPlayerMoneyList().size(); i++) 
+		{
+			PlayerMoney pm = playerMoneyDAO.getPlayerMoneyList().get(i);			
+			Game game = getGamesMap().get(pm.getGameID());
+			Player player = getFullPlayersMapByPlayerID().get(pm.getPlayerID());	
+			pm.setGame(game);
+			pm.setPlayer(player);
+			tempMap.put(pm.getPlayerMoneyID(), pm);
+		}
+		
+		playerMoneyDAO.getPlayerMoneyMap().clear();
+		playerMoneyDAO.setPlayerMoneyMap(tempMap);
+		
+		Collection<PlayerMoney> values = playerMoneyDAO.getPlayerMoneyMap().values();
+		playerMoneyDAO.setPlayerMoneyList(new ArrayList<>(values));		
+		
+		log.info("Player Money read in. List size = " + this.getPlayerMoneyList().size());			
+	}
+	
+	public void refreshFullPlayerList() 
+	{
+		playerDAO.readPlayersFromDB();			
+		usersAndAuthoritiesDAO.readAllUsersFromDB();
+						
+		Map<String, GolfUser> golfUsersMap = usersAndAuthoritiesDAO.getFullUserMap();
+		
+		for (int i = 0; i < this.getFullPlayerList().size(); i++) 
+		{
+			Player tempPlayer = this.getFullPlayerList().get(i);			
+			
+			//get the role for this player
+			GolfUser gu = golfUsersMap.get(tempPlayer.getUsername());
+			
+			if (gu == null)
+			{
+				log.error("golfuser is null for player: " + tempPlayer.getUsername());
+			}
+			else
+			{
+				String userRole = gu.getUserRoles()[0];
+				tempPlayer.setRole(userRole);
+			}			
+			
+		}
+			
+		log.info("Players read in. List size = " + this.getFullPlayerList().size());
 	}
 
 	public void refreshFullPlayerTeePreferencesList() 
 	{
-		this.setFullPlayerTeePreferencesList(playerTeePreferencesDAO.readPlayerTeePreferencesFromDB(group));	
+		playerTeePreferencesDAO.readPlayerTeePreferencesFromDB(this.getDefaultGroup());
 		
-		fullPlayerTeePreferencesMap.clear();		
-		fullPlayerTeePreferencesMap = fullPlayerTeePreferencesList.stream().collect(Collectors.toMap(PlayerTeePreference::getPlayerTeePreferenceID, plyrt -> plyrt));
+		Map<Integer,PlayerTeePreference> tempMap = new HashMap<Integer,PlayerTeePreference>();
+		
+		for (int i = 0; i < playerTeePreferencesDAO.getPlayerTeePreferencesList().size(); i++) 
+		{
+			PlayerTeePreference ptp = playerTeePreferencesDAO.getPlayerTeePreferencesList().get(i);
+			CourseTee ct = getCourseTeesMap().get(ptp.getCourseTeeID());
+	       	Course cs = getCoursesMap().get(ptp.getCourseID());
+	   		Player player = getFullPlayersMapByPlayerID().get(ptp.getPlayerID());
+	   		ptp.setTeeColor(ct.getTeeColor());       
+	        ptp.setCourseName(cs.getCourseName());
+	        ptp.setPlayerUserName(player.getUsername());
+			ptp.setPlayerFullName(player.getFullName());	
+			tempMap.put(ptp.getPlayerTeePreferenceID(), ptp);
+		}
+		
+		playerTeePreferencesDAO.getPlayerTeePreferencesMap().clear();
+		playerTeePreferencesDAO.setPlayerTeePreferencesMap(tempMap);
+		
+		Collection<PlayerTeePreference> values = playerTeePreferencesDAO.getPlayerTeePreferencesMap().values();
+		playerTeePreferencesDAO.setPlayerTeePreferencesList(new ArrayList<>(values));
+		
+		Collections.sort(playerTeePreferencesDAO.getPlayerTeePreferencesList(), new Comparator<PlayerTeePreference>() 
+		{
+		   public int compare(PlayerTeePreference o1, PlayerTeePreference o2) 
+		   {
+		      return o1.getPlayerFullName().compareTo(o2.getPlayerFullName());
+		   }
+		});        	
 		
 		log.info("Player Tee Preferences read in. List size = " + this.getFullPlayerTeePreferencesList().size());		
 	}
@@ -209,119 +319,29 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		
 		groupEmailDisclaimer = "The note you compose here will go to the entire group so please use wisely!  Thank you";
 		groupEmailSender = getTempUserName();
-	}
-		
-	public void refreshFullPlayerList() 
-	{
-		this.setFullPlayerList(playerDAO.readPlayersFromDB());	
-		
-		for (int i = 0; i < this.getFullPlayerList().size(); i++) 
-		{
-			Player tempPlayer = this.getFullPlayerList().get(i);			
-			
-			//get the role for this player on the authorities table
-			GolfUser gu = usersAndAuthoritiesDAO.readUserFromDB(tempPlayer.getUsername());
-			
-			if (gu == null)
-			{
-				log.error("golfuser read from usersAndAuthorities is null for player: " + tempPlayer.getUsername());
-			}
-			else
-			{
-				String userRole = gu.getUserRoles()[0];
-				tempPlayer.setRole(userRole);
-			}			
-			
-		}
-		
-		fullPlayerMap.clear();
-		fullPlayerMapByUserName.clear();
-		
-		fullPlayerMap = fullPlayerList.stream().collect(Collectors.toMap(Player::getPlayerID, ply -> ply));
-		fullPlayerMapByUserName = fullPlayerList.stream().collect(Collectors.toMap(Player::getUsername, ply -> ply));
-		
-		log.info("Players read in. List size = " + this.getFullPlayerList().size());
-	}
-
-	public void refreshCourseSelections()
-	{
-		this.setCourseSelections(courseDAO.readCoursesFromDB(group));	
-		
-		coursesMap.clear();		
-		coursesMap = courseSelections.stream().collect(Collectors.toMap(Course::getCourseID, crs -> crs));
-		
-		log.info("Courses read in. List size = " + this.getCourseSelections().size());		
-    }
-	
-	public void refreshCourseTees()
-	{
-		this.setCourseTees(courseTeeDAO.readCourseTeesFromDB(group));	
-		
-		courseTeesMap.clear();		
-		courseTeesMap = courseTees.stream().collect(Collectors.toMap(CourseTee::getCourseTeeID, crsTee -> crsTee));
-		
-		log.info("Course Tees read in. List size = " + this.getCourseTees().size());		
-    }
-	
-	public void refreshTeeTimeList()
-	{
-		this.setTeeTimeList(teeTimeDAO.readTeeTimesFromDB());
-		
-		for (int i = 0; i < this.getTeeTimeList().size(); i++) 
-		{
-			TeeTime tempTeeTime = this.getTeeTimeList().get(i);
-			tempTeeTime.setTeeTimeGame(gamesMap.get(tempTeeTime.getGameID()));
-		}
-		
-		teeTimesMap.clear();
-		teeTimesMap = this.getTeeTimeList().stream().collect(Collectors.toMap(TeeTime::getTeeTimeID, ttm -> ttm));	
-		
-		log.info("Tee Times read in. List size = " + this.getTeeTimeList().size());	
-		
-	}
-	
-	public void refreshFullGameList()
-	{
-		this.setFullGameList(gameDAO.readGamesFromDB());
-		
-		for (int i = 0; i < this.getFullGameList().size(); i++) 
-		{
-			Game tempGame = this.getFullGameList().get(i);
-			tempGame.setCourse(coursesMap.get(tempGame.getCourseID()));
-			tempGame.setCourseName(tempGame.getCourse().getCourseName());		
-		}
-		
-		gamesMap.clear();
-		gamesMap = fullGameList.stream().collect(Collectors.toMap(Game::getGameID, gm -> gm));		
-		
-		log.info("Full Game list read in. List size = " + this.getFullGameList().size());		
-		
-	}
+	}		
 	
 	public List<TeeTime> getGameSpecificTeeTimes(Game game)
 	{
 		List<TeeTime> gameTeeTimes = this.getTeeTimeList().stream()
 			.filter(p -> p.getGameID() == game.getGameID())
 			.collect(Collectors.mapping(
-				      p -> new TeeTime(p.getTeeTimeID(), p.getGameID(), p.getPlayGroupNumber(), p.getTeeTimeString(), p.getTeeTimeGame()),
+				      p -> new TeeTime(p.getTeeTimeID(), p.getGameID(), p.getPlayGroupNumber(), p.getTeeTimeString(), p.getGameDate(), p.getCourseName()),
 				      Collectors.toList()));
+		
+		Collections.sort(gameTeeTimes, new Comparator<TeeTime>() 
+		{
+		   public int compare(TeeTime o1, TeeTime o2) 
+		   {
+			   Integer o1Int = o1.getPlayGroupNumber();
+			   Integer o2Int = o2.getPlayGroupNumber();
+		      return o1Int.compareTo(o2Int);
+		   }
+		});		
 		
 		return gameTeeTimes;	
 	}
-	
-	public void removeTeeTimeFromMainList(TeeTime tt) 
-	{	
-		for (int i = 0; i < this.getTeeTimeList().size(); i++) 
-		{
-			TeeTime teeTime = teeTimeList.get(i);
-			if (teeTime.getTeeTimeID() == tt.getTeeTimeID())
-			{
-				teeTimeList.remove(i);
-				break;
-			}
-		}
-	}
-	
+		
 	public void setRecommendations(Integer inputPlayers)
 	{
 		switch (inputPlayers) 
@@ -705,7 +725,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	{
 		log.info("User clicked sendGroupEmail");
 		
-		String subjectLine = "TMG Group email";
+		String subjectLine = "Group Email";
 		
 		if (emailRecipients == null)
 		{
@@ -924,86 +944,81 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return username;
 	}
 
-	public List<SelectItem> getPlayGroupSelections() {
+	public List<SelectItem> getPlayGroupSelections() 
+	{
 		return playGroupSelections;
 	}
 
-	public void setPlayGroupSelections(List<SelectItem> playGroupSelections) {
+	public void setPlayGroupSelections(List<SelectItem> playGroupSelections) 
+	{
 		this.playGroupSelections = playGroupSelections;
 	}
 
-	public List<TeeTime> getTeeTimeList() {
-		return teeTimeList;
+	public List<TeeTime> getTeeTimeList()
+	{
+		return teeTimeDAO.getTeeTimeList();
 	}
 
-	public void setTeeTimeList(List<TeeTime> teeTimeList) {
-		this.teeTimeList = teeTimeList;
+	public List<Game> getFullGameList() 
+	{
+		return gameDAO.getFullGameList();
 	}
 
-	public List<Game> getFullGameList() {
-		return fullGameList;
+	public List<Course> getCourseSelections() 
+	{
+		return courseDAO.getCourseSelections();
 	}
 
-	public void setFullGameList(List<Game> fullGameList) {
-		this.fullGameList = fullGameList;
+	public List<Player> getFullPlayerList() 
+	{
+		return playerDAO.getFullPlayerList();
 	}
 
-	public List<Course> getCourseSelections() {
-		return courseSelections;
+	public Map<Integer, Player> getFullPlayersMapByPlayerID() 
+	{
+		return playerDAO.getFullPlayersMapByPlayerID();
 	}
 
-	public void setCourseSelections(List<Course> courseSelections) {
-		this.courseSelections = courseSelections;
+	public Map<String, Player> getFullPlayersMapByUserName() 
+	{
+		return playerDAO.getFullPlayersMapByUserName();
+	}
+	
+	public Map<Integer, Course> getCoursesMap() 
+	{
+		return courseDAO.getCoursesMap();
 	}
 
-	public Map<Integer, Player> getFullPlayerMap() {
-		return fullPlayerMap;
+	public Map<Integer, Game> getGamesMap() 
+	{
+		return gameDAO.getFullGameMap();
 	}
 
-	public void setFullPlayerMap(Map<Integer, Player> fullPlayerMap) {
-		this.fullPlayerMap = fullPlayerMap;
+	public Map<Integer, TeeTime> getTeeTimesMap()
+	{
+		return teeTimeDAO.getTeeTimesMap();
+	}
+	
+	public Map<Integer, CourseTee> getCourseTeesMap() 
+	{
+		return courseTeeDAO.getCourseTeesMap();
 	}
 
-	public Map<String, Player> getFullPlayerMapByUserName() {
-		return fullPlayerMapByUserName;
+	public List<CourseTee> getCourseTees() 
+	{
+		return courseTeeDAO.getCourseTeesList();
 	}
 
-	public void setFullPlayerMapByUserName(Map<String, Player> fullPlayerMapByUserName) {
-		this.fullPlayerMapByUserName = fullPlayerMapByUserName;
+	public List<PlayerTeePreference> getFullPlayerTeePreferencesList() 
+	{
+		return playerTeePreferencesDAO.getPlayerTeePreferencesList();
 	}
 
-	public List<Player> getFullPlayerList() {
-		return fullPlayerList;
+	public Map<Integer, PlayerTeePreference> getFullPlayerTeePreferencesMap() 
+	{
+		return playerTeePreferencesDAO.getPlayerTeePreferencesMap();
 	}
-
-	public void setFullPlayerList(List<Player> fullPlayerList) {
-		this.fullPlayerList = fullPlayerList;
-	}
-
-	public Map<Integer, Course> getCoursesMap() {
-		return coursesMap;
-	}
-
-	public void setCoursesMap(Map<Integer, Course> coursesMap) {
-		this.coursesMap = coursesMap;
-	}
-
-	public Map<Integer, Game> getGamesMap() {
-		return gamesMap;
-	}
-
-	public void setGamesMap(Map<Integer, Game> gamesMap) {
-		this.gamesMap = gamesMap;
-	}
-
-	public Map<Integer, TeeTime> getTeeTimesMap() {
-		return teeTimesMap;
-	}
-
-	public void setTeeTimesMap(Map<Integer, TeeTime> teeTimesMap) {
-		this.teeTimesMap = teeTimesMap;
-	}
-
+	
 	public List<SelectItem> getScoreSelections() {
 		return scoreSelections;
 	}
@@ -1043,37 +1058,6 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return username;
 	}
 
-	public Map<Integer, CourseTee> getCourseTeesMap() {
-		return courseTeesMap;
-	}
-
-	public void setCourseTeesMap(Map<Integer, CourseTee> courseTeesMap) {
-		this.courseTeesMap = courseTeesMap;
-	}
-
-	public List<CourseTee> getCourseTees() {
-		return courseTees;
-	}
-
-	public void setCourseTees(List<CourseTee> courseTees) {
-		this.courseTees = courseTees;
-	}
-
-	public List<PlayerTeePreference> getFullPlayerTeePreferencesList() {
-		return fullPlayerTeePreferencesList;
-	}
-
-	public void setFullPlayerTeePreferencesList(List<PlayerTeePreference> fullPlayerTeePreferencesList) {
-		this.fullPlayerTeePreferencesList = fullPlayerTeePreferencesList;
-	}
-
-	public Map<Integer, PlayerTeePreference> getFullPlayerTeePreferencesMap() {
-		return fullPlayerTeePreferencesMap;
-	}
-
-	public void setFullPlayerTeePreferencesMap(Map<Integer, PlayerTeePreference> fullPlayerTeePreferencesMap) {
-		this.fullPlayerTeePreferencesMap = fullPlayerTeePreferencesMap;
-	}
 
 	public static String getRecommendedGameNote() {
 		return recommendedGameNote;
@@ -1081,6 +1065,199 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 
 	public static void setRecommendedGameNote(String recommendedGameNote) {
 		GolfMain.recommendedGameNote = recommendedGameNote;
+	}
+
+	public int addGame(Game game) 
+	{
+		return gameDAO.addGame(game);
+	}
+
+	public void deleteGame(int gameID) 
+	{
+		gameDAO.deleteGame(gameID);		
+	}
+
+	public void updateGame(Game game) 
+	{
+		gameDAO.updateGame(game);		
+	}
+
+	public List<Game> getFutureGames() 
+	{
+		return gameDAO.getFutureGames();
+	}
+
+	public List<Game> getAvailableGamesByPlayerID(int playerID) 
+	{
+		return gameDAO.getAvailableGames(playerID);
+	}
+
+	public Integer getTeePreference(int playerID, int courseID)
+	{
+		return gameDAO.getTeePreference(playerID, courseID);
+	}
+
+	public Game getGameByGameID(int gameID) 
+	{
+		return gameDAO.getGameByGameID(gameID);
+	}
+	
+	public Player getPlayerByPlayerID(int playerID)
+	{
+		return playerDAO.getFullPlayersMapByPlayerID().get(playerID);
+	}
+	
+	public void updatePlayerHandicap(int playerID, BigDecimal handicap)
+	{
+		playerDAO.updatePlayerHandicap(playerID, handicap);
+	}
+	
+	public int addPlayer(Player player) 
+	{
+		return playerDAO.addPlayer(player);
+	}
+	
+	public void updatePlayer(Player player) 
+	{
+		playerDAO.updatePlayer(player);
+	}
+	
+	public List<Round> getRoundsForGame(Game game) 
+	{
+		return roundDAO.getRoundsForGame(game);
+	}
+	
+	public int addRound(Round round) 
+	{
+		return roundDAO.addRound(round);
+	}
+	
+	public void updateRound(Round round) 
+	{
+		roundDAO.updateRound(round);
+	}
+	
+	public void deleteRoundFromDB(int roundID) 
+	{
+		roundDAO.deleteRoundFromDB(roundID);
+	}
+
+	public void deleteRoundsFromDB(int gameID) 
+	{
+		roundDAO.deleteRoundsFromDB(gameID);		
+	}
+
+	public Round getRoundByGameandPlayer(int gameID, int playerID) 
+	{
+		return roundDAO.getRoundByGameandPlayer(gameID, playerID);
+	}
+
+	public List<String> getGameParticipantsFromDB(Game selectedGame) 
+	{
+		return roundDAO.getGameParticipantsFromDB(selectedGame);
+	}
+
+	public Integer countRoundsForGameFromDB(Game gm) 
+	{
+		return roundDAO.countRoundsForGameFromDB(gm);
+	}
+
+	public void updateRoundHandicap(Game selectedGame, int playerID, BigDecimal newRoundHandicap) 
+	{
+		roundDAO.updateRoundHandicap(selectedGame, playerID, newRoundHandicap);		
+	}
+
+	public void updateRoundTeamNumber(Game selectedGame, int playerID, int teamNumber) 
+	{
+		roundDAO.updateRoundTeamNumber(selectedGame, playerID, teamNumber);		
+	}
+
+	public void addPlayerTeePreference(PlayerTeePreference ptp) 
+	{
+		playerTeePreferencesDAO.addPlayerTeePreference(ptp);		
+	}
+
+	public void updatePlayerTeePreference(PlayerTeePreference ptp) 
+	{
+		playerTeePreferencesDAO.updatePlayerTeePreference(ptp);				
+	}
+
+	public PlayerTeePreference getPlayerTeePreference(int playerID, int courseID) 
+	{
+		return playerTeePreferencesDAO.getPlayerTeePreference(playerID, courseID);
+	}
+
+	public List<CourseTee> getCourseTeesList()
+	{
+		return courseTeeDAO.getCourseTeesList();
+	}
+
+	public List<TeeTime> getTeeTimesByGame(Game selectedGame) 
+	{
+		return teeTimeDAO.getTeeTimesByGame(selectedGame);
+	}
+
+	public void deleteTeeTimeFromDB(int teeTimeID) 
+	{
+		teeTimeDAO.deleteTeeTimeFromDB(teeTimeID);		
+	}
+
+	public void addTeeTime(TeeTime teeTime) 
+	{
+		teeTimeDAO.addTeeTime(teeTime);		
+	}
+
+	public void updateTeeTime(TeeTime teeTime) 
+	{
+		teeTimeDAO.updateTeeTime(teeTime);		
+	}
+
+	public void addTeeTimes(int newGameID, String teeTimesString, Date gameDate, String courseName) 
+	{
+		teeTimeDAO.addTeeTimes(newGameID, teeTimesString, gameDate, courseName);		
+	}
+
+	public void deleteTeeTimesForGameFromDB(int gameID) 
+	{
+		teeTimeDAO.deleteTeeTimesForGameFromDB(gameID);		
+	}
+
+	public void deletePlayerMoneyFromDB(int gameID)
+	{
+		playerMoneyDAO.deletePlayerMoneyFromDB(gameID);		
+	}
+
+	public List<PlayerMoney> getPlayerMoneyByGame(Game selectedGame) 
+	{
+		return playerMoneyDAO.getPlayerMoneyByGame(selectedGame);
+	}
+
+	public void addPlayerMoney(PlayerMoney pm) 
+	{
+		playerMoneyDAO.addPlayerMoney(pm);		
+	}
+
+	public List<PlayerMoney> getPlayerMoneyByPlayer(Player player) 
+	{
+		return playerMoneyDAO.getPlayerMoneyByPlayer(player);
+	}
+	
+	public List<PlayerMoney> getPlayerMoneyList()
+	{
+		return playerMoneyDAO.getPlayerMoneyList();
+	}
+	
+	public List<Group> getGroupsList()
+	{
+		return groupDAO.getGroupsList();
+	}
+
+	public Group getDefaultGroup() {
+		return defaultGroup;
+	}
+
+	public void setDefaultGroup(Group defaultGroup) {
+		this.defaultGroup = defaultGroup;
 	}
 		
 }

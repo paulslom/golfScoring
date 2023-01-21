@@ -1,28 +1,20 @@
 package com.pas.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.SelectEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.PlayerTeePreferenceDAO;
 import com.pas.util.BeanUtilJSF;
 
 @Named("pc_PlayerTeePreference")
-@RequestScoped
+@SessionScoped
 public class PlayerTeePreference extends SpringBeanAutowiringSupport implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
@@ -36,14 +28,11 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 	private String courseName;
 	private Integer courseTeeID;
 	private String teeColor;
-	private List<SelectItem> teeSelections = new ArrayList<>();
+	
+	private boolean disableDialogButton = true;
 	
 	private PlayerTeePreference selectedPlayerTeePreference;
-	
-	private List<PlayerTeePreference> fullPlayerTeePreferencesList = new ArrayList<>();
-	
-	@Autowired PlayerTeePreferenceDAO playerTeePreferenceDAO;
-	
+			
 	public String selectRowAjax(SelectEvent<PlayerTeePreference> event)
 	{
 		log.info("User clicked on a row in Player Tee Preference list");
@@ -51,72 +40,48 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 		PlayerTeePreference item = event.getObject();
 		
 		this.setSelectedPlayerTeePreference(item);
-		
+		this.setDisableDialogButton(false);
+				
 		return "";
 	}	
 	
+	public String setUpForUpdate()
+	{
+		this.setPlayerTeePreferenceID(this.getSelectedPlayerTeePreference().getPlayerTeePreferenceID());
+		this.setPlayerID(this.getSelectedPlayerTeePreference().getPlayerID());
+		this.setCourseTeeID(this.getSelectedPlayerTeePreference().getCourseTeeID());
+		this.setCourseID(this.getSelectedPlayerTeePreference().getCourseID());
+		this.setPlayerFullName(this.getSelectedPlayerTeePreference().getPlayerFullName());
+		this.setCourseName(this.getSelectedPlayerTeePreference().getCourseName());
+		this.setTeeColor(this.getSelectedPlayerTeePreference().getTeeColor());	
+		
+		return "";
+	}
+	
 	public String updatePrefs()
 	{
-		log.info("entering updatePrefs");	
-	
-		try
-		{
-			for (int i = 0; i <  getFullPlayerTeePreferencesList().size(); i++) 
-			{
-				PlayerTeePreference ptp = getFullPlayerTeePreferencesList().get(i);			
-				playerTeePreferenceDAO.updatePlayerTeePreference(ptp);			
-			}
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Update all tee prefs successful",null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		catch (Exception e)
-		{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Update all tee prefs unsuccessful: " + e.getMessage(),null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);	
-		}
-		return "";
-	}
-	
-	public String selectGoldAll()
-	{
-		log.info("entering selectGoldAll");
+		log.info("entering updatePrefs");
 		
-		try
+		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		for (int i = 0; i < gm.getCourseTeesList().size(); i++) 
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-			CourseTee courseTee = BeanUtilJSF.getBean("pc_CourseTee");	
-			Map<Integer, List<SelectItem>> teeSelectionsMap = courseTee.getTeeSelectionsMap();
+			CourseTee courseTee = gm.getCourseTeesList().get(i);
 			
-			for (int i = 0; i <  golfmain.getFullPlayerTeePreferencesList().size(); i++) 
+			if (courseTee.getCourseID() == this.getCourseID())
 			{
-				PlayerTeePreference ptp = golfmain.getFullPlayerTeePreferencesList().get(i);
-				List<SelectItem> courseTeeSelections = teeSelectionsMap.get(ptp.getCourseID());
-				for (int j = 0; j < courseTeeSelections.size(); j++) 
+				if (this.getTeeColor().equalsIgnoreCase(courseTee.getTeeColor()))
 				{
-					SelectItem selItem = courseTeeSelections.get(j);
-					if (selItem.getLabel().equalsIgnoreCase("Gold"))
-					{
-						ptp.setTeeColor("Gold");
-						ptp.setCourseTeeID((Integer)selItem.getValue());
-						break;
-					}
+					this.setCourseTeeID(courseTee.getCourseTeeID());
+					break;
 				}
-				
 			}
-			
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Change to all golds successful",null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		catch (Exception e)
-		{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Change to all golds unsuccessful: " + e.getMessage(),null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);	
-		}
-	
-		return "";
 		
+		gm.updatePlayerTeePreference(this);
+		return "";
 	}
-	
+		
 	@Override
     public boolean equals(final Object o) 
 	{
@@ -205,26 +170,12 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 		this.courseName = courseName;
 	}
 
-	public List<SelectItem> getTeeSelections() {
-		return teeSelections;
+	public boolean isDisableDialogButton() {
+		return disableDialogButton;
 	}
 
-	public void setTeeSelections(List<SelectItem> teeSelections) {
-		this.teeSelections = teeSelections;
-	}
-
-	public List<PlayerTeePreference> getFullPlayerTeePreferencesList() 
-	{
-		if (fullPlayerTeePreferencesList == null || fullPlayerTeePreferencesList.size() == 0)
-		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			fullPlayerTeePreferencesList = golfmain.getFullPlayerTeePreferencesList();
-		}
-		return fullPlayerTeePreferencesList;
-	}
-
-	public void setFullPlayerTeePreferencesList(List<PlayerTeePreference> fullPlayerTeePreferencesList) {
-		this.fullPlayerTeePreferencesList = fullPlayerTeePreferencesList;
+	public void setDisableDialogButton(boolean disableDialogButton) {
+		this.disableDialogButton = disableDialogButton;
 	}
 	
 	

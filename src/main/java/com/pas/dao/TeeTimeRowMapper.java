@@ -12,9 +12,6 @@ import com.pas.beans.TeeTime;
 @Repository
 public class TeeTimeRowMapper implements RowMapper<TeeTime>, Serializable
 {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -26,6 +23,8 @@ public class TeeTimeRowMapper implements RowMapper<TeeTime>, Serializable
 		teeTime.setGameID(rs.getInt("idgame"));
 		teeTime.setPlayGroupNumber(rs.getInt("playGroupNumber"));
 		teeTime.setTeeTimeString(rs.getString("teeTime"));
+		teeTime.setGameDate(rs.getDate("gameDate"));
+		teeTime.setCourseName(rs.getString("courseName"));
 								 		
  		return teeTime;     	
     }

@@ -80,7 +80,7 @@ public class SAMailUtility
 		    {
 	            protected PasswordAuthentication getPasswordAuthentication() 
 	            {
-	            	String mailPW = genericProps.getString("mail_golfTMG_password");
+	            	String mailPW = genericProps.getString("mail_golf_password");
 	                return new PasswordAuthentication(mailFrom, mailPW);
 	            }
 
@@ -110,7 +110,7 @@ public class SAMailUtility
 
 			message.saveChanges();
 
-			Transport.send(message);
+			//Transport.send(message);
 			
 			if (useJSF)
 		    {

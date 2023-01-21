@@ -1,6 +1,7 @@
 package com.pas.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class CourseDAO extends JdbcDaoSupport implements Serializable
 	private final DataSource dataSource;
 	
 	private Map<Integer,Course> coursesMap = new HashMap<Integer,Course>();
+	private List<Course> courseSelections = new ArrayList<Course>();
 	
 	@PostConstruct
 	private void initialize() 
@@ -53,30 +55,17 @@ public class CourseDAO extends JdbcDaoSupport implements Serializable
 	     this.dataSource = dataSource;
     }
 
-	public List<Course> readCoursesFromDB(Group grp)
+	public void readCoursesFromDB(Group grp)
     {
-		String sql = "select * from golfcourse where idgroup = :groupID";
-		 
-		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getSelectedGroup().getGroupID());
-		 
-		List<Course> coursesList = namedParameterJdbcTemplate.query(sql, param, new CourseRowMapper()); 
+		String sql = "select * from golfcourse where idgroup = :groupID";		 
+		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getGroupID());
+		this.setCourseSelections(namedParameterJdbcTemplate.query(sql, param, new CourseRowMapper())); 
 		
-		coursesMap = coursesList.stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
-			
-		return coursesList;
+		log.info("LoggedDBOperation: function-inquiry; table:course; rows:" + this.getCourseSelections().size());
+		
+		coursesMap = this.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
     }
 	
-	public Course readCourseFromDB(Integer courseID)
-    {
-		String sql = "select * from golfcourse where idgolfCourse = :courseID";
-		 
-		SqlParameterSource param = new MapSqlParameterSource("courseID", courseID);
-		 
-		Course course = namedParameterJdbcTemplate.queryForObject(sql, param, new CourseRowMapper()); 	
-    	
-    	return course;
-    }
-
 	public Map<Integer, Course> getCoursesMap() 
 	{
 		return coursesMap;
@@ -85,5 +74,13 @@ public class CourseDAO extends JdbcDaoSupport implements Serializable
 	public void setCoursesMap(Map<Integer, Course> coursesMap) 
 	{
 		this.coursesMap = coursesMap;
+	}
+
+	public List<Course> getCourseSelections() {
+		return courseSelections;
+	}
+
+	public void setCourseSelections(List<Course> courseSelections) {
+		this.courseSelections = courseSelections;
 	}
 }

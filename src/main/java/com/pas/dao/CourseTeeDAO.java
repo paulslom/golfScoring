@@ -1,6 +1,7 @@
 package com.pas.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class CourseTeeDAO extends JdbcDaoSupport implements Serializable
 	private final DataSource dataSource;
 	
 	private Map<Integer,CourseTee> CourseTeesMap = new HashMap<Integer,CourseTee>();
+	private List<CourseTee> courseTeesList = new ArrayList<CourseTee>();
 	
 	@PostConstruct
 	private void initialize() 
@@ -57,26 +59,16 @@ public class CourseTeeDAO extends JdbcDaoSupport implements Serializable
     {
 		String sql = "select gcTee.* from golfcoursetees gcTee inner join golfcourse gc on gc.idgolfcourse = gcTee.idgolfCourse where gc.idgroup = :groupID";
 		 
-		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getSelectedGroup().getGroupID());
-		 
-		List<CourseTee> CourseTeesList = namedParameterJdbcTemplate.query(sql, param, new CourseTeeRowMapper()); 
+		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getGroupID());
+		this.setCourseTeesList(namedParameterJdbcTemplate.query(sql, param, new CourseTeeRowMapper())); 
 		
-		CourseTeesMap = CourseTeesList.stream().collect(Collectors.toMap(CourseTee::getCourseTeeID, CourseTee -> CourseTee));
+		log.info("LoggedDBOperation: function-inquiry; table:courseTee; rows:" + this.getCourseTeesList().size());
+		
+		CourseTeesMap = this.getCourseTeesList().stream().collect(Collectors.toMap(CourseTee::getCourseTeeID, CourseTee -> CourseTee));
 			
-		return CourseTeesList;
+		return this.getCourseTeesList();
     }
 	
-	public CourseTee readCourseTeeTeeFromDB(Integer CourseTeeID)
-    {
-		String sql = "select * from golfCourseTee where idgolfCourseTee = :CourseTeeID";
-		 
-		SqlParameterSource param = new MapSqlParameterSource("CourseTeeID", CourseTeeID);
-		 
-		CourseTee CourseTee = namedParameterJdbcTemplate.queryForObject(sql, param, new CourseTeeRowMapper()); 	
-    	
-    	return CourseTee;
-    }
-
 	public Map<Integer, CourseTee> getCourseTeesMap() 
 	{
 		return CourseTeesMap;
@@ -85,6 +77,14 @@ public class CourseTeeDAO extends JdbcDaoSupport implements Serializable
 	public void setCourseTeesMap(Map<Integer, CourseTee> CourseTeesMap) 
 	{
 		this.CourseTeesMap = CourseTeesMap;
+	}
+
+	public List<CourseTee> getCourseTeesList() {
+		return courseTeesList;
+	}
+
+	public void setCourseTeesList(List<CourseTee> courseTeesList) {
+		this.courseTeesList = courseTeesList;
 	}
 
 	

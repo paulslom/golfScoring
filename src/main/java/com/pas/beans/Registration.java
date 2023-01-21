@@ -53,7 +53,7 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 		String whoIsThis = Utils.getLoggedInUserName();
 		//SecurityController sc = new SecurityController();
 		//String whoIsThis = sc.getCurrentUserName();
-		GolfUser gu = usersAndAuthoritiesDAO.readUserFromDB(whoIsThis);
+		GolfUser gu = usersAndAuthoritiesDAO.getGolfUser(whoIsThis);
 		String currentEncryptedPW = gu.getPassword();
 		
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

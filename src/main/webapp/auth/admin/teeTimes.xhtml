@@ -22,21 +22,17 @@
              
 	               <td class="text">
 					
-				      <p:selectOneMenu id="gameListID" value="#{pc_TeeTime.teeTimeGame}" required="true"  hideNoSelectionOption="true">
+				      <p:selectOneMenu id="gameListID" value="#{pc_TeeTime.gameID}" required="true"  hideNoSelectionOption="true">
 				         <p:ajax listener="#{pc_TeeTime.valueChangeGame}" event="change" 
-				         	update="teeTimesForm:label1 teeTimesForm:label2 teeTimesForm:teeTimesTableID"/>
+				         	update="teeTimesForm:label2 teeTimesForm:teeTimesTableID"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
 						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					
 				   </td>
-				   
+				 
 				   <td class="textLabel">
-						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_TeeTime.teeTimeGame.totalPlayers}"/>
-				   </td>
-				   
-				   <td class="textLabel">
-						<p:outputLabel id="label2" value="#{pc_TeeTime.teeTimeGame.courseName}"/>
+						<p:outputLabel id="label2" value="#{pc_TeeTime.courseName}"/>
 				   </td>
 				   
 				</tr>
@@ -64,12 +60,12 @@
 							  <h:outputText value="#{teeTime.gameID}"/>														
 						  </p:column>
 						  
-						  <p:column style="width:20%" headerText="Date" sortBy="#{teeTime.teeTimeGame.gameDate}">												
-							  <h:outputText value="#{teeTime.teeTimeGame.gameDate}"/>														
+						  <p:column style="width:20%" headerText="Date" sortBy="#{teeTime.gameDate}">												
+							  <h:outputText value="#{teeTime.gameDate}"/>														
 						  </p:column>
 						  
-						  <p:column style="width:20%" headerText="Course" sortBy="#{teeTime.teeTimeGame.course.courseName}">										
-							  <h:outputText value="#{teeTime.teeTimeGame.course.courseName}"/>														
+						  <p:column style="width:20%" headerText="Course" sortBy="#{teeTime.courseName}">										
+							  <h:outputText value="#{teeTime.courseName}"/>														
 						  </p:column>
 						  
 						  <p:column style="width:20%" headerText="Time" sortBy="#{teeTime.teeTimeString}">												
@@ -100,8 +96,11 @@
 						  oncomplete="PF('maintainTeeTimeDialog').show();">
 					  </p:commandButton>
 					
-					  <p:commandButton id="deleteButtonID" value="#{bundle.deleteTeeTime}" disabled="#{pc_TeeTime.disableDeleteTeeTime}"
-		                  action="#{pc_TeeTime.deleteSelectedTeeTime}" update="teeTimesTableID label1">
+					  <p:commandButton id="deleteButtonID" 
+					  	  value="#{bundle.deleteTeeTime}" 
+					  	  disabled="#{pc_TeeTime.disableDeleteTeeTime}"
+					  	  update="teeTimesForm"	
+		                  action="#{pc_TeeTime.deleteSelectedTeeTime}">
 		                  <p:confirm header="Confirmation" message="Really delete this tee time?" icon="pi pi-exclamation-triangle" />
 					  </p:commandButton>
 					  
@@ -156,7 +155,7 @@
 		             
 		             <td colspan="2" class="text">
 						
-					    <p:selectOneMenu id="gameList2ID" value="#{pc_TeeTime.teeTimeGame}" required="true"  hideNoSelectionOption="true">
+					    <p:selectOneMenu id="gameList2ID" value="#{pc_TeeTime.gameID}" required="true"  hideNoSelectionOption="true">
 				            <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
 						    <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
 					    </p:selectOneMenu>
@@ -195,9 +194,9 @@
 						<td colspan="3" align="center">
 						
 						   <p:commandButton 
-							   value="#{bundle.ok}" 
-							   action="#{pc_TeeTime.saveTeeTime}"
-							   update="teeTimesForm:label1"																   
+							   value="#{bundle.ok}" 							   
+							   action="#{pc_TeeTime.saveTeeTime}"	
+							   update="teeTimesForm"												   
 							   oncomplete="PF('maintainTeeTimeDialog').hide();">
 						   </p:commandButton> 
 						   

@@ -38,11 +38,6 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
-import com.pas.dao.CourseTeeDAO;
-import com.pas.dao.GameDAO;
-import com.pas.dao.PlayerMoneyDAO;
-import com.pas.dao.RoundDAO;
-import com.pas.dao.TeeTimeDAO;
 import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
@@ -122,13 +117,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	private List<SelectItem> teeSelections = new ArrayList<>();
 	
 	private String operation = "";
-
-	@Autowired private GameDAO gameDAO;
-	@Autowired private TeeTimeDAO teeTimeDAO;
-	@Autowired private PlayerMoneyDAO playerMoneyDAO;
-	@Autowired private RoundDAO roundDAO;
+	
 	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
-	@Autowired private CourseTeeDAO courseTeeDAO;
 	
 	public void onLoadGameList() 
 	{
@@ -196,17 +186,14 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		if (operation.equalsIgnoreCase("Add"))
 		{
 			log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");	
-			int newGameID = gameDAO.addGame(this);
-			teeTimeDAO.addTeeTimes(newGameID, teeTimesString);
-			golfmain.refreshFullGameList();
-			golfmain.refreshTeeTimeList();
+			int newGameID = golfmain.addGame(this);
+			golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
 			log.info(getTempUserName() + " after add Game");
 		}
 		else if (operation.equalsIgnoreCase("Update"))
 		{
 			log.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");			
-			gameDAO.updateGame(this);
-			golfmain.refreshFullGameList();
+			golfmain.updateGame(this);
 			log.info(getTempUserName() + " after update Game");
 		}
 		else
@@ -222,8 +209,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String onLoadEmailFuture()
 	{
-		log.info(getTempUserName() + " in onLoadEmailFuture");		
-		this.setFutureGamesList(gameDAO.readFutureGamesFromDB());
+		log.info(getTempUserName() + " in onLoadEmailFuture");	
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		this.setFutureGamesList(golfmain.getFutureGames());
 		return "";
 	}
 	
@@ -232,9 +220,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		log.info(getTempUserName() + " in onLoadGameSignUp");
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(getTempUserName());	
+		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());	
 		
-		this.setAvailableGameList(gameDAO.readAvailableGamesFromDB(tempPlayer.getPlayerID()));	
+		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
 		log.info(getTempUserName() + " At end of onLoadGameSignUp method in Game.java - size of available game list is: " + this.getAvailableGameList().size());		
 
 		if (this.getAvailableGameList().size() == 0)
@@ -261,7 +249,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
 		signupSDF.setTimeZone(etTimeZone);
 		
-		List<Round> roundList = roundDAO.readRoundsFromDB(item);
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
+		List<Round> roundList = golfmain.getRoundsForGame(item);
 		
 		for (int i = 0; i < roundList.size(); i++) 
 		{
@@ -443,7 +433,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
-		Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(getTempUserName());
+		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 		
 		newRound.setGameID(game1.getGameID());
 		newRound.setPlayerID(tempPlayer.getPlayerID());
@@ -459,10 +449,10 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		newRound.setRoundHandicap(tempPlayer.getHandicap()); //set this to their usga ghin handicap index when they sign up.  We'll tweak this later when entering them on the set game handicaps page
 				
-		roundDAO.addRound(newRound);
+		golfmain.addRound(newRound);
 		
 		this.getAvailableGameList().clear();
-		this.setAvailableGameList(gameDAO.readAvailableGamesFromDB(tempPlayer.getPlayerID()));	
+		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
 		
 		resetSignedUpMessage(game1);
 		
@@ -484,14 +474,14 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
-		Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(getTempUserName());
+		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 	
-		Round theRound = roundDAO.readRoundFromDBByGameandPlayer(game1.gameID, tempPlayer.getPlayerID());
+		Round theRound = golfmain.getRoundByGameandPlayer(game1.gameID, tempPlayer.getPlayerID());
 		
-		roundDAO.deleteRoundFromDB(theRound.getRoundID());
+		golfmain.deleteRoundFromDB(theRound.getRoundID());
 		
 		this.getAvailableGameList().clear();
-		this.setAvailableGameList(gameDAO.readAvailableGamesFromDB(tempPlayer.getPlayerID()));	
+		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
 	
 		resetSignedUpMessage(game1);
 		
@@ -538,14 +528,14 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.clear();
 		}
 		
-		List<String> adminUsers = usersAndAuthoritiesDAO.readAdminUsers();
+		List<String> adminUsers = usersAndAuthoritiesDAO.getAdminUserList();
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");			
 		
 		//anyone with admin role
 		for (int i = 0; i < adminUsers.size(); i++) 
 		{
-			Player tempPlayer2 = golfmain.getFullPlayerMapByUserName().get(adminUsers.get(i));			
+			Player tempPlayer2 = golfmain.getFullPlayersMapByUserName().get(adminUsers.get(i));			
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 			
@@ -591,6 +581,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " entering runSelectedGame method");
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		//first assign selected game into current game
 		this.setBetAmount(this.getSelectedGame().getBetAmount());
 		this.setCourse(this.getSelectedGame().getCourse());
@@ -606,10 +598,10 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
 		this.setTotalTeams(this.getSelectedGame().getTotalTeams());		
 		
-		this.setPlayerScores(roundDAO.readRoundsFromDB(this));		
+		this.setPlayerScores(golfmain.getRoundsForGame(this));		
 		
 		//clear out first for this - in case it has been run before
-		playerMoneyDAO.deletePlayerMoneyFromDB(this.getGameID());
+		golfmain.deletePlayerMoneyFromDB(this.getGameID());
 		this.getTeamResultsList().clear();
 		
 		addEntryFees();
@@ -618,13 +610,15 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		calculateTeams();	
 		calculateIndividualGrossAndNet();
 		
-		this.setPlayerMoneyForSelectedGameList(playerMoneyDAO.readPlayerMoneyFromDB(this.getSelectedGame()));
+		this.setPlayerMoneyForSelectedGameList(golfmain.getPlayerMoneyByGame(this.getSelectedGame()));
 		
 		return "";
 	}
 		
 	private void addEntryFees() 
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		for (int i = 0; i < this.getPlayerScores().size(); i++) 
 		{
 			Round rd = this.getPlayerScores().get(i);
@@ -645,12 +639,14 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			pm.setAmount(entryFeeAmount);
 			pm.setDescription("Entry Fee: " + entryFeeAmount);
 			
-			playerMoneyDAO.addPlayerMoney(pm);	
+			golfmain.addPlayerMoney(pm);	
 		}		
 	}
 
 	private void calculateIndividualGrossAndNet() 
-	{		
+	{	
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		//First get all the scores
 		List<Integer> grossScores = new ArrayList<Integer>();
 		List<BigDecimal> netScores = new ArrayList<BigDecimal>();
@@ -790,7 +786,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 					pm.setAmount(grossPrize);
 					pm.setDescription("Low Individual Gross: " + lowestGrossScore);
 					
-					playerMoneyDAO.addPlayerMoney(pm);		
+					golfmain.addPlayerMoney(pm);		
 					
 					totalFound++;
 					if (totalFound == totalGrossWinners)
@@ -836,7 +832,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 					pm.setAmount(netPrize);
 					pm.setDescription("Low Individual Net: " + lowestNetScore);
 						
-					playerMoneyDAO.addPlayerMoney(pm);
+					golfmain.addPlayerMoney(pm);
 									
 					totalFound++;
 					if (totalFound == totalNetWinners)
@@ -935,6 +931,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	private void calcTeamIndividualWinnings() 
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		//First, which team(s) won each ball
 		
 		Integer playersPerTeamInt = totalPlayers / totalTeams;
@@ -1012,7 +1010,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 						pm.setAmount(individualBallPrize);
 						pm.setDescription("Ball " + i);
 						
-						playerMoneyDAO.addPlayerMoney(pm);							
+						golfmain.addPlayerMoney(pm);							
 					}
 				}
 				
@@ -1024,6 +1022,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	private void calculateSkins() 
 	{
 		log.info(getTempUserName() + " entering calculateSkins");
+		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
 		int totalSkins = 0;
 		List<SkinWinnings> tempSkinsList = new ArrayList<SkinWinnings>();
@@ -1103,7 +1103,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				pm.setAmount(skinValue);
 				pm.setDescription("Skin: " + skinWinnings.getWinDescription());
 				
-				playerMoneyDAO.addPlayerMoney(pm);				
+				golfmain.addPlayerMoney(pm);				
 			}
 		}		
 		
@@ -1199,11 +1199,11 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String composeTestEmail()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("<H3>TMG Test Email sent to admin</H3>");
+		sb.append("<H3>Golf Test Email sent to admin</H3>");
 		
 		sb.append(NEWLINE);
 		sb.append(NEWLINE);
-		sb.append("<a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>TMG Golf Scoring</a>");
+		sb.append("<a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>Golf Scoring</a>");
 		
 		this.setTestEmailMessage(sb.toString());
 		
@@ -1228,7 +1228,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String composePostGameEmail()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("<H3>TMG Results</H3>");
+		sb.append("<H3>Golf Results</H3>");
 		
 		StringBuffer sbGameDetails = getEmailGameDetails();
 		sb.append(sbGameDetails);
@@ -2253,23 +2253,30 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		
-		String subjectLine = "<H3>TMG game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDate()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName() + "</H3>";
+		String subjectLine = "<H3>Golf game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDate()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName() + "</H3>";
 		sb.append(subjectLine);
 		
 		sb.append(NEWLINE);
 		
-		StringBuffer sbFutureGameDetails = getFutureEmailGameDetails();
-		sb.append(sbFutureGameDetails);
-	
+		StringBuffer sbFutureGameDetails = getFutureEmailGameDetails(useJSFBean);
+		sb.append(sbFutureGameDetails);	
 		sb.append(NEWLINE);
-		
-		StringBuffer whosIn = getGameParticipants();
-		sb.append(whosIn);
-		
-		sb.append(NEWLINE);
+				
+		if (useJSFBean)
+		{
+			StringBuffer whosIn = getGameParticipants();
+			sb.append(whosIn);		
+			sb.append(NEWLINE);		
+		}
+		else
+		{
+			sb.append("~~~gameDetails~~~");
+			sb.append(NEWLINE);	
+		}			
+				
 		sb.append("To sign up to play (or withdraw if you've already signed up but can no longer play), go to this site:");
 		sb.append(NEWLINE);
-		sb.append("<a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>TMG Golf Scoring</a>");	
+		sb.append("<a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>Golf Scoring</a>");	
 		sb.append(NEWLINE);
 		sb.append("Please do not send email requests to sign up to play - the way to sign up or withdraw now is the website above.  The gmail box is not monitored regularly and you may be left out of a game if you request to get in that way.");
 		sb.append(NEWLINE);
@@ -2295,35 +2302,36 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 
-		return "";
+		return sb.toString();
 	}
 	
 	public String deleteGame()
 	{
 		log.info(getTempUserName() + " entering Delete Game.  About to delete: " + this.getSelectedGame().getGameDate());
 		
-		roundDAO.deleteRoundsFromDB(this.getSelectedGame().getGameID());		
-		teeTimeDAO.deleteTeeTimesForGameFromDB(this.getSelectedGame().getGameID());
-		playerMoneyDAO.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
-		gameDAO.deleteGame(this.getSelectedGame().getGameID());
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		golfmain.deleteRoundsFromDB(this.getSelectedGame().getGameID());		
+		golfmain.deleteTeeTimesForGameFromDB(this.getSelectedGame().getGameID());
+		golfmain.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
+		golfmain.deleteGame(this.getSelectedGame().getGameID());
 		
 		log.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		golfmain.refreshFullGameList();
 		this.setSelectedGame(golfmain.getFullGameList().get(0));
 		
 		return "";
 	}
+	
 	private StringBuffer getGameParticipants() 
 	{
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
+	
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
-		
-		List<String> roundPlayers = roundDAO.getGameParticipantsFromDB(this.getSelectedGame());
+		List<String> roundPlayers = golfmain.getGameParticipantsFromDB(this.getSelectedGame());
 		
 		for (int i = 0; i < roundPlayers.size(); i++) 
 		{
@@ -2351,7 +2359,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String sendFutureGameEmail()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "TMG game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDate()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName();		
+		String subjectLine = "Golf game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDate()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName();		
 		SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients, true); //last param means use jsf
 		return "";
 	}
@@ -2379,7 +2387,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String composePreGameEmail()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("<H3>TMG Weekly Game</H3>");
+		sb.append("<H3>Weekly Game</H3>");
 		
 		StringBuffer sbGameDetails = getEmailGameDetails();
 		sb.append(sbGameDetails);
@@ -2406,7 +2414,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(NEWLINE);
-		sb.append("When done with your round if one person in the group could login to the website <a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>TMG Golf Scoring</a> ");
+		sb.append("When done with your round if one person in the group could login to the website <a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>Golf Scoring</a> ");
 		sb.append(NEWLINE);
 		sb.append("and post all the scores for your play group it would be greatly appreciated.  Click on Scores menu, and then choose the Enter scores for game option");
 		sb.append(NEWLINE);
@@ -2420,6 +2428,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		String mailTo = genericProps.getString("mailTo");
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		if (emailRecipients == null)
 		{
 			emailRecipients = new ArrayList<String>();
@@ -2429,7 +2439,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.clear();
 		}
 		
-		List<Round> roundList = roundDAO.readRoundsFromDB(this.getSelectedGame());
+		List<Round> roundList = golfmain.getRoundsForGame(this.getSelectedGame());
 			
 		for (int i = 0; i < roundList.size(); i++) 
 		{
@@ -2456,6 +2466,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	private StringBuffer getEmailMoneyTeamDetails() 
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		StringBuffer sb = new StringBuffer();
 		
 		StringBuffer sbSkinsOnlyPlayers = new StringBuffer();
@@ -2466,7 +2478,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		sb.append(NEWLINE);
 		
-		List<Round> roundList = roundDAO.readRoundsFromDB(this.getSelectedGame());
+		List<Round> roundList = golfmain.getRoundsForGame(this.getSelectedGame());
 		Collections.sort(roundList, new RoundComparatorByTeamNumberAndHandicap());
 		
 		//ferret out any skins only players first.
@@ -2532,6 +2544,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	private StringBuffer getEmailPlayGroupDetails() 
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(NEWLINE);
@@ -2540,7 +2554,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		sb.append(NEWLINE);
 		
-		List<Round> roundList = roundDAO.readRoundsFromDB(this.getSelectedGame());
+		List<Round> roundList = golfmain.getRoundsForGame(this.getSelectedGame());
 		Collections.sort(roundList, new RoundComparatorByPlayGroup());
 		
 		int priorPlayGroupNumber = 1;
@@ -2584,7 +2598,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		return sb;
 	}
 
-	private StringBuffer getFutureEmailGameDetails() 
+	private StringBuffer getFutureEmailGameDetails(boolean useJSFBean) 
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		DecimalFormat currencyFmt = new DecimalFormat("$0.00");
@@ -2597,14 +2611,25 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		sb.append("Bet Amt: " + currencyFmt.format(gm.getBetAmount()) + NEWLINE);
 		sb.append("Field Size: " + gm.getFieldSize() + NEWLINE);
 		sb.append("Tee Times: ");
-		List<TeeTime> teeTimeList = teeTimeDAO.readTeeTimesFromDB(gm);
-		for (int i = 0; i < teeTimeList.size(); i++) 
-		{
-			TeeTime teeTime = teeTimeList.get(i);
-			sb.append(teeTime.getTeeTimeString() + " ");
-		}
 		
-		sb.append(NEWLINE);
+		if (useJSFBean)
+		{
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+			
+			List<TeeTime> teeTimeList = golfmain.getTeeTimesByGame(gm);
+			for (int i = 0; i < teeTimeList.size(); i++) 
+			{
+				TeeTime teeTime = teeTimeList.get(i);
+				sb.append(teeTime.getTeeTimeString() + " ");
+			}
+			
+			sb.append(NEWLINE);
+		}
+		else
+		{
+			sb.append("~~~teeTimes~~~");
+			sb.append(NEWLINE);	
+		}			
 		
 		return sb;
 	}
@@ -2637,21 +2662,15 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		//anyone with admin role
-		for (int i = 0; i < getAdminUsers().size(); i++) 
+		for (int i = 0; i < usersAndAuthoritiesDAO.getAdminUserList().size(); i++) 
 		{
-			Player tempPlayer2 = golfmain.getFullPlayerMapByUserName().get(getAdminUsers().get(i));			
+			Player tempPlayer2 = golfmain.getFullPlayersMapByUserName().get(usersAndAuthoritiesDAO.getAdminUserList().get(i));			
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 		
 		return emailRecipients;
 	}
-	
-	public List<String> getAdminUsers()
-	{		
-		List<String> adminUsers = usersAndAuthoritiesDAO.readAdminUsers();
-		return adminUsers;	
-	}
-	
+		
 	private StringBuffer getEmailGameDetails() 
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
@@ -2754,7 +2773,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String sendPreGameEmail()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "TMG game setup for " + sdf.format(this.getSelectedGame().getGameDate());
+		String subjectLine = "Golf game setup for " + sdf.format(this.getSelectedGame().getGameDate());
 		SAMailUtility.sendEmail(subjectLine, preGameEmailMessage, emailRecipients, true); //last param means use jsf
 		return "";
 	}
@@ -2762,7 +2781,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String sendPostGameEmail()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "TMG results for " + sdf.format(this.getSelectedGame().getGameDate());
+		String subjectLine = "Golf results for " + sdf.format(this.getSelectedGame().getGameDate());
 		SAMailUtility.sendEmail(subjectLine, postGameEmailMessage, emailRecipients, true); //last param means use jsf
 		return "";
 	}
@@ -2770,7 +2789,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String sendTestEmail()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "TMG Test email sent to admin on " + sdf.format(new Date());
+		String subjectLine = "Golf Test email sent to admin on " + sdf.format(new Date());
 		SAMailUtility.sendEmail(subjectLine, testEmailMessage, emailRecipients, true); //last param means use jsf
 		return "";
 	}
@@ -3238,10 +3257,12 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	public String getCourseTeeColor() 
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		if (courseTeeID != null && courseTeeID != 0 && (courseTeeColor == null || courseTeeColor.trim().length() == 0))
 		{
 			String tempColor = "";
-			Map<Integer,CourseTee> ctMap = courseTeeDAO.getCourseTeesMap();
+			Map<Integer,CourseTee> ctMap = golfmain.getCourseTeesMap();
 			CourseTee ct = ctMap.get(courseTeeID);
 			tempColor = ct.getTeeColor();
 			setCourseTeeColor(tempColor);

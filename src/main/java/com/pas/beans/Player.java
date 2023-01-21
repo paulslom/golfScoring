@@ -29,14 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.CourseDAO;
-import com.pas.dao.CourseTeeDAO;
-import com.pas.dao.GameDAO;
-import com.pas.dao.GroupDAO;
-import com.pas.dao.PlayerDAO;
-import com.pas.dao.PlayerTeePreferenceDAO;
-import com.pas.dao.RoundDAO;
-import com.pas.dao.TeeTimeDAO;
 import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
@@ -110,14 +102,6 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	private String operation = "";
 	
 	@Autowired UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
-	@Autowired TeeTimeDAO teeTimeDAO;
-	@Autowired PlayerDAO playerDAO;
-	@Autowired RoundDAO roundDAO;
-	@Autowired GameDAO gameDAO;
-	@Autowired PlayerTeePreferenceDAO playerTeePreferenceDAO;
-	@Autowired GroupDAO groupDAO;
-	@Autowired CourseDAO courseDAO;
-	@Autowired CourseTeeDAO courseTeeDAO;
 	
 	public void onLoadPlayerPickList() 
 	{			
@@ -149,7 +133,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			loadSelectedPlayers(game.getSelectedGame());
 		}	
 		
-		this.setTeeTimeList(teeTimeDAO.readTeeTimesFromDB(game.getSelectedGame()));		
+		this.setTeeTimeList(golfmain.getTeeTimesByGame(game.getSelectedGame()));		
 		
 		showTeeTimePicklist();
 	}
@@ -214,7 +198,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
 		log.info("User picked a game on select players for game form");
-		
+			
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
 		Game selectedOption = (Game)selectonemenu.getValue();
@@ -225,9 +209,11 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			
 			setPlayerPickLists(selectedOption);
 			
-			this.setTeeTimeList(teeTimeDAO.readTeeTimesFromDB(selectedOption));		
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 			
-			this.setRoundsForGame(roundDAO.readRoundsFromDB(selectedOption));
+			this.setTeeTimeList(golfmain.getTeeTimesByGame(selectedOption));		
+			
+			this.setRoundsForGame(golfmain.getRoundsForGame(selectedOption));
 			
 			showTeeTimePicklist();
 		}
@@ -241,11 +227,11 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		
 		this.getSelectedPlayers().clear();
 			
-		roundsForGame = roundDAO.readRoundsFromDB(game);
+		roundsForGame = golfmain.getRoundsForGame(game);
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
 			Round round = roundsForGame.get(i);
-			Player player = playerDAO.readPlayerFromDB(round.getPlayerID());
+			Player player = golfmain.getPlayerByPlayerID(round.getPlayerID());
 			round.setPlayer(player);
 			player.setTeamNumber(round.getTeamNumber());
 			player.setTeeTime(round.getTeeTime());
@@ -313,19 +299,18 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		if (operation.equalsIgnoreCase("Add"))
 		{
 			log.info("user clicked Save Player from maintain player dialog, from an add");	
-			playerDAO.addPlayer(this);
+			int newPlayerID = golfmain.addPlayer(this);
 			usersAndAuthoritiesDAO.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
 			
 			//need to save off the initial tee preferences here
-			addInitialTeePrefs();
-			
-			golfmain.refreshFullPlayerList();			
+			addInitialTeePrefs(newPlayerID);
+				
 			log.info("after add Player");
 		}
 		else if (operation.equalsIgnoreCase("Update"))
 		{
 			log.info("user clicked Save Player from maintain player dialog; from an update");			
-			playerDAO.updatePlayer(this);
+			golfmain.updatePlayer(this);
 			
 			if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
 			{
@@ -339,9 +324,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			{
 				usersAndAuthoritiesDAO.updateRole(this.getUsername(), this.getRole()); 
 			}
-			
-			golfmain.refreshFullPlayerList();
-			
+						
 			log.info("after update Player");
 		}
 		else
@@ -353,42 +336,32 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			
 	}
 	
-	private void addInitialTeePrefs() 
+	private void addInitialTeePrefs(int newPlayerID) 
 	{
-		Player thisPlayer = playerDAO.readPlayerFromDB(this.getUsername()); 
-		int playerID = thisPlayer.getPlayerID();
-		
 		String teePreference = this.getTeePreference();
 		
-		//loop all courses and assign what they picked for each one
-		List<Group> groups = groupDAO.readGroupsFromDB();
-		for (int i = 0; i < groups.size(); i++) 
+		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		List<CourseTee> courseTees = gm.getCourseTeesList(); 			
+		List<Course> courses = gm.getCourseSelections();
+		
+		for (int j = 0; j < courses.size(); j++) 
 		{
-			Group grp = groups.get(i);
+			Course course = courses.get(j);
+			PlayerTeePreference ptp = new PlayerTeePreference();
+			ptp.setPlayerID(newPlayerID);
+			ptp.setCourseID(course.getCourseID());
 			
-			grp.setSelectedGroup(grp);
-			
-			List<CourseTee> courseTees = courseTeeDAO.readCourseTeesFromDB(grp);
-			
-			List<Course> courses = courseDAO.readCoursesFromDB(grp);
-			for (int j = 0; j < courses.size(); j++) 
+			for (int k = 0; k < courseTees.size(); k++) 
 			{
-				Course course = courses.get(j);
-				PlayerTeePreference ptp = new PlayerTeePreference();
-				ptp.setPlayerID(playerID);
-				ptp.setCourseID(course.getCourseID());
+				CourseTee courseTee = courseTees.get(k);
 				
-				for (int k = 0; k < courseTees.size(); k++) 
+				if (courseTee.getCourseID() == course.getCourseID()
+				&&  courseTee.getTeeColor().equalsIgnoreCase(teePreference))
 				{
-					CourseTee courseTee = courseTees.get(k);
-					
-					if (courseTee.getCourseID() == course.getCourseID()
-					&&  courseTee.getTeeColor().equalsIgnoreCase(teePreference))
-					{
-						ptp.setCourseTeeID(courseTee.getCourseTeeID());
-						playerTeePreferenceDAO.addPlayerTeePreference(ptp);	
-						break;
-					}
+					ptp.setCourseTeeID(courseTee.getCourseTeeID());
+					gm.addPlayerTeePreference(ptp);	
+					break;
 				}
 			}
 		}		
@@ -417,6 +390,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	private void saveRounds(Map<Integer, Date> roundSignupDateTimesMap, Map<Integer, Integer> roundTeeSelectionsMap)
 	{
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		Game game = BeanUtilJSF.getBean("pc_Game");
 		Round roundBean = BeanUtilJSF.getBean("pc_Round");
 		
@@ -457,7 +431,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 					
 					if (courseTeeID == null)
 					{
-						newRound.setCourseTeeID(gameDAO.getTeePreference(newRound.getPlayerID(), game.getSelectedGame().getCourseID()));
+						newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), game.getSelectedGame().getCourseID()));
 					}
 					else
 					{
@@ -465,7 +439,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 					}
 				}		
 				
-				roundDAO.addRound(newRound);					
+				golfmain.addRound(newRound);					
 				
 				roundBean.getSyncGameRoundList().add(newRound);				
 			} 
@@ -477,7 +451,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		log.info("saving player round records with tee times");
 		
 		Game game = BeanUtilJSF.getBean("pc_Game");
-				
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		if (game != null && game.getSelectedGame() != null)
 		{
 			for (int i = 0; i < this.getTeeTimeList().size(); i++) 
@@ -536,9 +511,9 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				{
 					int playerID = tempPlayerList.get(j).getPlayerID();
 					int gameID = game.getSelectedGame().getGameID();
-					Round rd = roundDAO.readRoundFromDBByGameandPlayer(gameID, playerID);
+					Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
 					rd.setTeeTimeID(teeTime.getTeeTimeID());
-					roundDAO.updateRound(rd);
+					golfmain.updateRound(rd);
 				}
 				
 			}
@@ -557,6 +532,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		//clear out first for this
 		Game game = BeanUtilJSF.getBean("pc_Game");
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		//we want to preserve the signup dates/times here
 		Map<Integer,Date> roundSignupDateTimesMap = null;
 		
@@ -567,7 +544,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		{
 			roundSignupDateTimesMap = preserveSignupDateTimes(game.getSelectedGame());
 			roundTeeSelectionsMap = preserveTeeSelections(game.getSelectedGame());
-			roundDAO.deleteRoundsFromDB(game.getSelectedGame().getGameID());
+			golfmain.deleteRoundsFromDB(game.getSelectedGame().getGameID());
 		}
 		
 		this.getSelectedPlayers().clear();
@@ -588,8 +565,10 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	{
 		Map<Integer,Date> roundSignupDateTimesMap = new HashMap<>();
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		//get all the rounds for this game first.		
-		List<Round> roundsForGame = roundDAO.readRoundsFromDB(selectedGame);
+		List<Round> roundsForGame = golfmain.getRoundsForGame(selectedGame);
 		
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
@@ -604,8 +583,10 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	{
 		Map<Integer,Integer> roundTeeSelectionsMap = new HashMap<>();
 		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		//get all the rounds for this game first.		
-		List<Round> roundsForGame = roundDAO.readRoundsFromDB(selectedGame);
+		List<Round> roundsForGame = golfmain.getRoundsForGame(selectedGame);
 		
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
@@ -616,8 +597,6 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		return roundTeeSelectionsMap;
 	}
 
-
-	
 	public static class PlayerComparatorByHandicap implements Comparator<Player> 
 	{
 		public int compare(Player player1, Player player2)
@@ -863,6 +842,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		
 		//clear out first for this
 		Game game = BeanUtilJSF.getBean("pc_Game");//we want to preserve the signup dates/times here
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		
 		Map<Integer,Date> roundSignupDateTimesMap = null;
 		
 		//we want to preserve the tee selections here
@@ -873,7 +854,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		{
 			roundSignupDateTimesMap = preserveSignupDateTimes(game.getSelectedGame());
 			roundTeeSelectionsMap = preserveTeeSelections(game.getSelectedGame());
-			roundDAO.deleteRoundsFromDB(game.getSelectedGame().getGameID());
+			golfmain.deleteRoundsFromDB(game.getSelectedGame().getGameID());
 		}
 				
 		saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap);
@@ -909,7 +890,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		this.setDisablePlayersDialogButton(false); //if they've picked one, then they can update it
 		
 		//get the role for this player on the authorities table
-		GolfUser gu = usersAndAuthoritiesDAO.readUserFromDB(item.getUsername());
+		GolfUser gu = usersAndAuthoritiesDAO.getGolfUser(item.getUsername());
 		
 		String userRole = gu.getUserRoles()[0];
 		this.setRole(userRole);
@@ -1847,11 +1828,11 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		if (gu == null || gu.getUserName() == null) //first time here gu will have no user name.  henceforth it should..
 		{
 			String tempUserName = getTempUserName();
-			gu = usersAndAuthoritiesDAO.readUserFromDB(tempUserName);
+			gu = usersAndAuthoritiesDAO.getGolfUser(tempUserName);
 			
 			if (gu != null && gu.getUserName() != null)
 			{
-				Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(gu.getUserName());			
+				Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
 				if (tempPlayer != null)
 				{
 					this.setLoggedInPlayerName(tempPlayer.getFullName());
@@ -1868,7 +1849,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		}
 		else
 		{
-			Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(gu.getUserName());			
+			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
 			if (tempPlayer != null)
 			{
 				this.setLoggedInPlayerName(tempPlayer.getFullName());
@@ -1926,11 +1907,11 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		if (gu == null || gu.getUserName() == null) //first time here gu will have no user name.  henceforth it should..
 		{
 			String tempUserName = getTempUserName();
-			gu = usersAndAuthoritiesDAO.readUserFromDB(tempUserName);
+			gu = usersAndAuthoritiesDAO.getGolfUser(tempUserName);
 			
 			if (gu != null && gu.getUserName() != null)
 			{
-				Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(gu.getUserName());			
+				Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
 				if (tempPlayer != null)
 				{
 					this.setLoggedInPlayerEmail(tempPlayer.getEmailAddress());
@@ -1947,7 +1928,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		}
 		else
 		{
-			Player tempPlayer = golfmain.getFullPlayerMapByUserName().get(gu.getUserName());			
+			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
 			if (tempPlayer != null)
 			{
 				this.setLoggedInPlayerEmail(tempPlayer.getEmailAddress());
