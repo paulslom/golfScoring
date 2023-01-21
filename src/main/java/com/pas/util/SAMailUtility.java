@@ -110,7 +110,7 @@ public class SAMailUtility
 
 			message.saveChanges();
 
-			//Transport.send(message);
+			Transport.send(message);
 			
 			if (useJSF)
 		    {
