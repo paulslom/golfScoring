@@ -188,42 +188,144 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			Group defaultGroup = this.getGroupsList().get(0);
 			this.setDefaultGroup(defaultGroup);
 			
-			refreshCourseSelections();
-			refreshCourseTees();
-			refreshFullGameList();
-			refreshTeeTimeList();
-			refreshFullPlayerList();
-			refreshFullPlayerTeePreferencesList();
-			refreshPlayerMoneyList();
+			loadCourseSelections();
+			loadCourseTees();
+			loadFullGameList();
+			loadTeeTimeList();
+			loadFullPlayerList();
+			loadFullPlayerTeePreferencesList();
+			loadPlayerMoneyList();
+			loadRoundList();
 		}	
 				
 	}
 
-	public void refreshCourseSelections()
+	private void loadRoundList() 
+	{
+		roundDAO.readAllRoundsFromDB();
+		log.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
+		
+		Map<Integer,Round> tempMap = new HashMap<Integer,Round>();
+		
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round round = this.getFullRoundsList().get(i);
+				
+			CourseTee ct = getCourseTeesMap().get(round.getCourseTeeID());
+			if (ct != null)
+		    {
+				round.setCourseTeeColor(ct.getTeeColor());	    
+		    }
+		        
+			Game game = this.getGamesMap().get(round.getGameID());
+			Course course = game.getCourse();
+			
+			Player player = this.getFullPlayersMapByPlayerID().get(round.getPlayerID());
+			
+			TeeTime teeTime = this.getTeeTimesMap().get(round.getTeeTimeID());
+			
+			round.setPlayer(player);
+			
+			round.setPlayerName(player.getFirstName() + " " + player.getLastName());		
+			
+			if (round.getRoundHandicap() == null)
+			{
+				round.setRoundHandicapDifferential(new BigDecimal(0.0));
+			}
+			else
+			{
+				BigDecimal hcpIndex = player.getHandicap();
+				BigDecimal hcpDifferential = hcpIndex.subtract(round.getRoundHandicap());
+				round.setRoundHandicapDifferential(hcpDifferential);
+			}
+			
+			round.setTeeTime(teeTime);
+			
+			round.setHole1StyleClass(Utils.getStyleForHole(1, round.getHole1Score(), course));			
+			round.setHole2StyleClass(Utils.getStyleForHole(2, round.getHole2Score(), course));		
+			round.setHole3StyleClass(Utils.getStyleForHole(3, round.getHole3Score(), course));		
+			round.setHole4StyleClass(Utils.getStyleForHole(4, round.getHole4Score(), course));		
+			round.setHole5StyleClass(Utils.getStyleForHole(5, round.getHole5Score(), course));	
+			round.setHole6StyleClass(Utils.getStyleForHole(6, round.getHole6Score(), course));
+			round.setHole7StyleClass(Utils.getStyleForHole(7, round.getHole7Score(), course));			
+			round.setHole8StyleClass(Utils.getStyleForHole(8, round.getHole8Score(), course));	
+			round.setHole9StyleClass(Utils.getStyleForHole(9, round.getHole9Score(), course));	
+			round.setHole10StyleClass(Utils.getStyleForHole(10, round.getHole10Score(), course));	
+			round.setHole11StyleClass(Utils.getStyleForHole(11, round.getHole11Score(), course));						
+			round.setHole12StyleClass(Utils.getStyleForHole(12, round.getHole12Score(), course));					
+			round.setHole13StyleClass(Utils.getStyleForHole(13, round.getHole13Score(), course));					
+			round.setHole14StyleClass(Utils.getStyleForHole(14, round.getHole14Score(), course));	
+			round.setHole15StyleClass(Utils.getStyleForHole(15, round.getHole15Score(), course));	
+			round.setHole16StyleClass(Utils.getStyleForHole(16, round.getHole16Score(), course));	
+			round.setHole17StyleClass(Utils.getStyleForHole(17, round.getHole17Score(), course));	
+			round.setHole18StyleClass(Utils.getStyleForHole(18, round.getHole18Score(), course));	
+			
+			round.setFront9StyleClass(Utils.getFront9StyleClass(round.getFront9Total(), course));	
+			round.setBack9StyleClass(Utils.getBack9StyleClass(round.getBack9Total(), course));		
+			round.setTotalStyleClass(Utils.getTotalStyleClass(round.getTotalScore(), course));		
+			round.setNetStyleClass(Utils.getNetStyleClass(round.getNetScore(), course));
+			round.setTotalToParClass(Utils.getTotalStyleClass(round.getTotalScore(), course));		
+			
+			tempMap.put(round.getRoundID(), round);
+		}
+		
+		roundDAO.getFullRoundsMap().clear();
+		roundDAO.setFullRoundsMap(tempMap);
+		
+		Collection<Round> values = roundDAO.getFullRoundsMap().values();
+		roundDAO.setFullRoundsList(new ArrayList<>(values));
+		
+		Collections.sort(this.getFullRoundsList(), new Comparator<Round>() 
+		{
+		   public int compare(Round o1, Round o2) 
+		   {
+		      return o1.getSignupDateTime().compareTo(o2.getSignupDateTime());
+		   }
+		});
+		
+	}
+
+	public void loadCourseSelections()
 	{
 		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
 		log.info("Courses read in. List size = " + this.getCourseSelections().size());		
     }
 	
-	public void refreshCourseTees()
+	public void loadCourseTees()
 	{
 		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
 		log.info("Course Tees read in. List size = " + this.getCourseTees().size());		
     }
 	
-	public void refreshFullGameList()
+	public void loadFullGameList()
 	{
 		gameDAO.readGamesFromDB();			
-		log.info("Full Game list read in. List size = " + this.getFullGameList().size());			
+		log.info("Full Game list read in. List size = " + this.getFullGameList().size());	
+		
+		Map<Integer,Game> tempMap = new HashMap<Integer,Game>();
+		
+		for (int i = 0; i < this.getFullGameList().size(); i++) 
+		{
+			Game game = this.getFullGameList().get(i);
+			Course course = this.getCoursesMap().get(game.getCourseID());
+			game.setCourse(course);
+			tempMap.put(game.getGameID(), game);
+		}
+		
+		this.getFullGameMap().clear();
+		gameDAO.setFullGameMap(tempMap);
+		
+		Collection<Game> values = this.getFullGameMap().values();
+		gameDAO.setFullGameList(new ArrayList<>(values));		
 	}
 	
-	public void refreshTeeTimeList()
+	public void loadTeeTimeList()
 	{
 		teeTimeDAO.readTeeTimesFromDB();			
 		log.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
 	}
 	
-	public void refreshPlayerMoneyList()
+	public void loadPlayerMoneyList()
 	{
 		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
@@ -248,7 +350,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Player Money read in. List size = " + this.getPlayerMoneyList().size());			
 	}
 	
-	public void refreshFullPlayerList() 
+	public void loadFullPlayerList() 
 	{
 		playerDAO.readPlayersFromDB();			
 		usersAndAuthoritiesDAO.readAllUsersFromDB();
@@ -277,7 +379,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Players read in. List size = " + this.getFullPlayerList().size());
 	}
 
-	public void refreshFullPlayerTeePreferencesList() 
+	public void loadFullPlayerTeePreferencesList() 
 	{
 		playerTeePreferencesDAO.readPlayerTeePreferencesFromDB(this.getDefaultGroup());
 		
@@ -963,6 +1065,11 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	{
 		return gameDAO.getFullGameList();
 	}
+	
+	public Map<Integer, Game> getFullGameMap()
+	{
+		return gameDAO.getFullGameMap();
+	}
 
 	public List<Course> getCourseSelections() 
 	{
@@ -1012,6 +1119,11 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	public List<PlayerTeePreference> getFullPlayerTeePreferencesList() 
 	{
 		return playerTeePreferencesDAO.getPlayerTeePreferencesList();
+	}
+	
+	public List<Round> getFullRoundsList() 
+	{
+		return roundDAO.getFullRoundsList();
 	}
 
 	public Map<Integer, PlayerTeePreference> getFullPlayerTeePreferencesMap() 

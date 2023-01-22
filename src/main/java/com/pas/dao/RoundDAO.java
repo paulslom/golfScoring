@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +66,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);	
-	       readAllRoundsFromDB();
+	       setDataSource(dataSource);
 	   } 
 	   catch (final Exception ex) 
 	   {
@@ -121,7 +121,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		
     }
 	
-	private void readAllRoundsFromDB()
+	public void readAllRoundsFromDB()
     {
 		String sql = "select * from round where dSignUpdatetime > :dSignUpdatetime order by dSignUpdatetime desc";	
 		SqlParameterSource param = new MapSqlParameterSource("dSignUpdatetime", Utils.getLastYearsLastDayDate());
@@ -472,9 +472,11 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				
 				if (round.getSignupDateTime() == null)
 				{					
-					LocalDateTime currentDateTime = LocalDateTime.now();			         
+					LocalDateTime currentDateTime = LocalDateTime.now();
+					Date rightNow = new Date();
+					round.setSignupDateTime(rightNow);
 			        ZonedDateTime currentETTime = currentDateTime.atZone(etZoneId); //ET Time
-			    	String signupDateTime = etFormat.format(currentETTime);
+			    	String signupDateTime = etFormat.format(currentETTime);			    	
 					psmt.setString(29, signupDateTime);
 				}
 				else
@@ -829,7 +831,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		Collections.sort(this.getFullRoundsList(), new Comparator<Round>() 
 		{
 		   public int compare(Round o1, Round o2) 
-		   {
+		   {			   
 		      return o2.getSignupDateTime().compareTo(o1.getSignupDateTime());
 		   }
 		});

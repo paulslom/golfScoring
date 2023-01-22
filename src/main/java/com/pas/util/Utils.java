@@ -217,9 +217,13 @@ public class Utils
 		}
 	}
 	
-	public static String getStyleForHole(int holeNumber, int score, Course course)
-	{		
-		if (course.getHolesMap().get(holeNumber).getPar() > score)
+	public static String getStyleForHole(int holeNumber, Integer score, Course course)
+	{
+		if (score == null)
+		{
+			return PAR_OR_WORSE_STYLECLASS;
+		}
+		else if (course.getHolesMap().get(holeNumber).getPar() > score)
 		{
 			return BIRDIE_OR_BETTER_STYLECLASS;
 		}

@@ -26,7 +26,7 @@
 				<p:menuitem value="Sign Up for Game" url="#{request.contextPath}/auth/gameSignUp.xhtml"/>											
 			</p:submenu>
 			
-			<p:submenu label="Player">
+			<p:submenu rendered="#{request.isUserInRole('ROLE_ADMIN')}" label="Player">
 				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Players" url="#{request.contextPath}/auth/admin/player.xhtml"/>			
 				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Money" url="#{request.contextPath}/auth/admin/playerMoney.xhtml"/>
 				<p:menuitem rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="Tee Prefs" url="#{request.contextPath}/auth/admin/playerTeePrefs.xhtml"/>

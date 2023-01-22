@@ -3,7 +3,6 @@ package com.pas.beans;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
@@ -40,7 +39,7 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 			log.info("loading up golf courses from MySQL DB golfScoring");	 
 			GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
 			
-			gm.refreshCourseSelections();			
+			gm.loadCourseSelections();			
 			
 			gm.setDisableProceedToSelectGame(false);			
 		}
