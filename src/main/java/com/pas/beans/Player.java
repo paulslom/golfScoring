@@ -513,6 +513,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 					int gameID = game.getSelectedGame().getGameID();
 					Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
 					rd.setTeeTimeID(teeTime.getTeeTimeID());
+					rd.setTeeTime(teeTime);
 					golfmain.updateRound(rd);
 				}
 				

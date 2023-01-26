@@ -309,6 +309,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			Game game = this.getFullGameList().get(i);
 			Course course = this.getCoursesMap().get(game.getCourseID());
 			game.setCourse(course);
+			game.setCourseName(course.getCourseName());
 			tempMap.put(game.getGameID(), game);
 		}
 		
@@ -316,7 +317,15 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		gameDAO.setFullGameMap(tempMap);
 		
 		Collection<Game> values = this.getFullGameMap().values();
-		gameDAO.setFullGameList(new ArrayList<>(values));		
+		gameDAO.setFullGameList(new ArrayList<>(values));
+		
+		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
+		{
+		   public int compare(Game o1, Game o2) 
+		   {
+		      return o2.getGameDate().compareTo(o1.getGameDate());
+		   }
+		});
 	}
 	
 	public void loadTeeTimeList()
