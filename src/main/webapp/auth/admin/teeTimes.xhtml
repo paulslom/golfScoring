@@ -26,7 +26,7 @@
 				         <p:ajax listener="#{pc_TeeTime.valueChangeGame}" event="change" 
 				         	update="teeTimesForm:label2 teeTimesForm:teeTimesTableID"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>
 					  </p:selectOneMenu>
 					
 				   </td>
@@ -61,7 +61,9 @@
 						  </p:column>
 						  
 						  <p:column style="width:20%" headerText="Date" sortBy="#{teeTime.gameDate}">												
-							  <h:outputText value="#{teeTime.gameDate}"/>														
+							  <h:outputText value="#{teeTime.gameDate}">
+							  	<f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>	
+							  </h:outputText>													
 						  </p:column>
 						  
 						  <p:column style="width:20%" headerText="Course" sortBy="#{teeTime.courseName}">										

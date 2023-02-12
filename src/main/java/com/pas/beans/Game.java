@@ -99,6 +99,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	private Course course;
 	private Date gameDate = new Date();
+	private String gameDateDisplay;
+
 	private Group group;
 	
 	private Game selectedGame;
@@ -444,6 +446,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		{
 			newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
 			newRound.setTeeTime(tempPlayer.getTeeTime());
+			//comment 1
 		}
 		newRound.setCourseTeeID(game1.getCourseTeeID());
 		
@@ -3272,6 +3275,18 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	public void setCourseTeeColor(String courseTeeColor) {
 		this.courseTeeColor = courseTeeColor;
+	}
+	
+	public String getGameDateDisplay()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		gameDateDisplay = sdf.format(this.getGameDate());
+		return gameDateDisplay;
+	}
+
+	public void setGameDateDisplay(String gameDateDisplay) 
+	{
+		this.gameDateDisplay = gameDateDisplay;
 	}
 	
 }
