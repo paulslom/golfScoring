@@ -17,10 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -51,8 +49,6 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	private String operation = "";
 	
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
-	
-	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;	
 	
 	public TeeTime(int teeTimeID, int gameID, int playGroupNumber, String teeTimeString, Date gameDate, String courseName) 
 	{	
@@ -221,9 +217,9 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.clear();
 		}
 		
-		List<String> adminUsers = usersAndAuthoritiesDAO.getAdminUserList();
-		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		List<String> adminUsers = golfmain.getAdminUserList();		
 		
 		//anyone with admin role
 		for (int i = 0; i < adminUsers.size(); i++) 

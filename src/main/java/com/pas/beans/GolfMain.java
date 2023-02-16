@@ -102,10 +102,10 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	
 	private static String NEWLINE = "<br/>";	
 	
-	@Autowired private TeeTimeDAO teeTimeDAO;
-	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
 	@Autowired private GameDAO gameDAO;
+	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
 	@Autowired private RoundDAO roundDAO;
+	@Autowired private TeeTimeDAO teeTimeDAO;
 	@Autowired private CourseDAO courseDAO;
 	@Autowired private CourseTeeDAO courseTeeDAO;
 	@Autowired private PlayerDAO playerDAO;
@@ -1379,6 +1379,36 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 
 	public void setDefaultGroup(Group defaultGroup) {
 		this.defaultGroup = defaultGroup;
+	}
+
+	public List<String> getAdminUserList() 
+	{
+		return usersAndAuthoritiesDAO.getAdminUserList();
+	}
+
+	public GolfUser getGolfUser(String whoIsThis) 
+	{
+		return usersAndAuthoritiesDAO.getGolfUser(whoIsThis);
+	}
+
+	public void updateUserAndAuthority(String whoIsThis, String newPassword, String string) 
+	{
+		usersAndAuthoritiesDAO.updateUserAndAuthority(whoIsThis, newPassword, "USER");		
+	}
+
+	public void addUserAndAuthority(String username, String username2, String string) 
+	{
+		usersAndAuthoritiesDAO.addUserAndAuthority(username, username2, "USER"); //default their password to their username		
+	}
+
+	public void resetPassword(String username) 
+	{
+		usersAndAuthoritiesDAO.resetPassword(username); //default their password to their username		
+	}
+
+	public void updateRole(String username, String role) 
+	{
+		usersAndAuthoritiesDAO.updateRole(username, role); 		
 	}
 		
 }

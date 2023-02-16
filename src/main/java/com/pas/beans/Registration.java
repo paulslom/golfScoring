@@ -14,11 +14,10 @@ import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.UsersAndAuthoritiesDAO;
+import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
@@ -43,8 +42,6 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 
 	private static Logger log = LogManager.getLogger(Registration.class);	
 	
-	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
-
 	public String changePassword()
 	{
 		boolean valid = true;
@@ -53,7 +50,9 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 		String whoIsThis = Utils.getLoggedInUserName();
 		//SecurityController sc = new SecurityController();
 		//String whoIsThis = sc.getCurrentUserName();
-		GolfUser gu = usersAndAuthoritiesDAO.getGolfUser(whoIsThis);
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		
+		GolfUser gu = golfmain.getGolfUser(whoIsThis);		
 		String currentEncryptedPW = gu.getPassword();
 		
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -73,7 +72,7 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 			{
 				if (this.getNewPassword().equals(this.getConfirmNewPassword()))
 				{
-					usersAndAuthoritiesDAO.updateUserAndAuthority(whoIsThis, this.getNewPassword(), "USER");
+					golfmain.updateUserAndAuthority(whoIsThis, this.getNewPassword(), "USER");
 				}
 				else
 				{

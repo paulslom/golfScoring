@@ -33,12 +33,10 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
-import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -119,8 +117,6 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	private List<SelectItem> teeSelections = new ArrayList<>();
 	
 	private String operation = "";
-	
-	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
 	
 	public void onLoadGameList() 
 	{
@@ -530,10 +526,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		{
 			emailRecipients.clear();
 		}
-		
-		List<String> adminUsers = usersAndAuthoritiesDAO.getAdminUserList();
-		
+				
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");			
+		List<String> adminUsers = golfmain.getAdminUserList();
 		
 		//anyone with admin role
 		for (int i = 0; i < adminUsers.size(); i++) 
@@ -2665,9 +2660,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		//anyone with admin role
-		for (int i = 0; i < usersAndAuthoritiesDAO.getAdminUserList().size(); i++) 
+		for (int i = 0; i < golfmain.getAdminUserList().size(); i++) 
 		{
-			Player tempPlayer2 = golfmain.getFullPlayersMapByUserName().get(usersAndAuthoritiesDAO.getAdminUserList().get(i));			
+			Player tempPlayer2 = golfmain.getFullPlayersMapByUserName().get(golfmain.getAdminUserList().get(i));			
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 		

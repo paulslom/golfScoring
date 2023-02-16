@@ -25,11 +25,10 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.pas.dao.UsersAndAuthoritiesDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
@@ -100,8 +99,6 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
 	
 	private String operation = "";
-	
-	@Autowired UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
 	
 	public void onLoadPlayerPickList() 
 	{			
@@ -300,7 +297,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		{
 			log.info("user clicked Save Player from maintain player dialog, from an add");	
 			int newPlayerID = golfmain.addPlayer(this);
-			usersAndAuthoritiesDAO.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
+			golfmain.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
 			
 			//need to save off the initial tee preferences here
 			addInitialTeePrefs(newPlayerID);
@@ -314,15 +311,15 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			
 			if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
 			{
-				usersAndAuthoritiesDAO.addUserAndAuthority(this.getOldUsername(), this.getUsername(), "USER"); //default their password to their username
+				golfmain.addUserAndAuthority(this.getOldUsername(), this.getUsername(), "USER"); //default their password to their username
 			}
 			if (this.isResetPassword())
 			{
-				usersAndAuthoritiesDAO.resetPassword(this.getUsername()); //default their password to their username
+				golfmain.resetPassword(this.getUsername()); //default their password to their username
 			}
 			if (!this.getOldRole().equalsIgnoreCase(this.getRole()))
 			{
-				usersAndAuthoritiesDAO.updateRole(this.getUsername(), this.getRole()); 
+				golfmain.updateRole(this.getUsername(), this.getRole()); 
 			}
 						
 			log.info("after update Player");
@@ -891,7 +888,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		this.setDisablePlayersDialogButton(false); //if they've picked one, then they can update it
 		
 		//get the role for this player on the authorities table
-		GolfUser gu = usersAndAuthoritiesDAO.getGolfUser(item.getUsername());
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+		GolfUser gu = golfmain.getGolfUser(item.getUsername());
 		
 		String userRole = gu.getUserRoles()[0];
 		this.setRole(userRole);
@@ -1829,7 +1827,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		if (gu == null || gu.getUserName() == null) //first time here gu will have no user name.  henceforth it should..
 		{
 			String tempUserName = getTempUserName();
-			gu = usersAndAuthoritiesDAO.getGolfUser(tempUserName);
+			gu = golfmain.getGolfUser(tempUserName);
 			
 			if (gu != null && gu.getUserName() != null)
 			{
@@ -1908,7 +1906,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		if (gu == null || gu.getUserName() == null) //first time here gu will have no user name.  henceforth it should..
 		{
 			String tempUserName = getTempUserName();
-			gu = usersAndAuthoritiesDAO.getGolfUser(tempUserName);
+			gu = golfmain.getGolfUser(tempUserName);
 			
 			if (gu != null && gu.getUserName() != null)
 			{
