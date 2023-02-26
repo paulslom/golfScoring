@@ -57,7 +57,7 @@
 		  
 		  </p:dataTable>
 			 	
-	      <p:messages id="facesMessages" showDetail="false">
+	      <p:messages id="facesMessagesID" showDetail="false">
 	        <p:autoUpdate/>
 	      </p:messages>   
 				        
@@ -209,8 +209,9 @@
 						
 						   <p:commandButton 
 							   value="#{bundle.ok}" 
-							   action="#{pc_Player.savePlayer}"																   
-							   oncomplete="PF('maintainPlayersDialog').hide();">
+							   action="#{pc_Player.savePlayer}"	
+							   update="playerForm playerForm:facesMessagesID"
+							   oncomplete="if (args &amp;&amp; !args.validationFailed) PF('maintainPlayersDialog').hide()">	
 						   </p:commandButton> 
 						   
 						   <p:commandButton value="#{bundle.cancel}" 
@@ -220,7 +221,7 @@
 						   
 						</td>
 					</tr>
-					
+									
 				</table>
 				
 			</h:form> 			

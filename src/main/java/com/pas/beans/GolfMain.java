@@ -1228,6 +1228,11 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return playerDAO.getFullPlayersMapByPlayerID().get(playerID);
 	}
 	
+	public Player getPlayerByUserName(String username)
+	{
+		return playerDAO.getFullPlayersMapByUserName().get(username);
+	}
+	
 	public void updatePlayerHandicap(int playerID, BigDecimal handicap)
 	{
 		playerDAO.updatePlayerHandicap(playerID, handicap);

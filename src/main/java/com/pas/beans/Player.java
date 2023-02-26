@@ -296,11 +296,28 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		if (operation.equalsIgnoreCase("Add"))
 		{
 			log.info("user clicked Save Player from maintain player dialog, from an add");	
-			int newPlayerID = golfmain.addPlayer(this);
-			golfmain.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
 			
-			//need to save off the initial tee preferences here
-			addInitialTeePrefs(newPlayerID);
+			//first need to make sure the chosen userid does not already exist in the system.
+			Player existingPlayer = golfmain.getPlayerByUserName(this.getUsername());
+			
+			if (existingPlayer == null)
+			{
+				int newPlayerID = golfmain.addPlayer(this);
+				golfmain.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
+				
+				//need to save off the initial tee preferences here
+				addInitialTeePrefs(newPlayerID);
+				
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player successfully added",null);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			else
+			{
+				//throw an error that this username already exists
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"this username already exists on the Database.  Pick another",null);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				FacesContext.getCurrentInstance().validationFailed();
+			}
 				
 			log.info("after add Player");
 		}
@@ -348,7 +365,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			PlayerTeePreference ptp = new PlayerTeePreference();
 			ptp.setPlayerID(newPlayerID);
 			ptp.setCourseID(course.getCourseID());
-			
+			ptp.setPlayerFullName(this.getFirstName() + " " +this.getLastName());
 			for (int k = 0; k < courseTees.size(); k++) 
 			{
 				CourseTee courseTee = courseTees.get(k);
