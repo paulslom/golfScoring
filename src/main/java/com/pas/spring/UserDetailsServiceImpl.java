@@ -9,27 +9,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.pas.beans.GolfMain;
 import com.pas.beans.GolfUser;
-import com.pas.dao.UsersAndAuthoritiesDAO;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService 
 {
 	  private static Logger log = LogManager.getLogger(UserDetailsServiceImpl.class);	
 	  
-	  private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
-	  
 	  @Autowired
-	  public UserDetailsServiceImpl(final UsersAndAuthoritiesDAO usersAndAuthoritiesDAO)
-	  {	
-		  this.usersAndAuthoritiesDAO = usersAndAuthoritiesDAO;
-	  }	
-	  
+	  GolfMain golfmain;
+	  	  
 	  @Override
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
 	  {
 		  log.info("User " + username + " attempting to log in");
-	      GolfUser golfuser = usersAndAuthoritiesDAO.getGolfUser(username);
+	      GolfUser golfuser = golfmain.getGolfUser(username);
 
 	      UserBuilder builder = null;
 	   

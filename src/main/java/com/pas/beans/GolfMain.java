@@ -1396,24 +1396,39 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return usersAndAuthoritiesDAO.getGolfUser(whoIsThis);
 	}
 
-	public void updateUserAndAuthority(String whoIsThis, String newPassword, String string) 
+	public void updateUserAndAuthority(String whoIsThis, String newPassword, String userrole) 
 	{
-		usersAndAuthoritiesDAO.updateUserAndAuthority(whoIsThis, newPassword, "USER");		
+		GolfUser gu = new GolfUser();
+		gu.setPassword(newPassword);
+		gu.setUserName(whoIsThis);
+		
+		String[] arr = new String[1];
+		arr[0] = userrole;
+		gu.setUserRoles(arr);
+		usersAndAuthoritiesDAO.updateUserAndAuthority(whoIsThis, gu);		
 	}
 
-	public void addUserAndAuthority(String username, String username2, String string) 
+	public void addUserAndAuthority(String username, String password, String userrole) 
 	{
-		usersAndAuthoritiesDAO.addUserAndAuthority(username, username2, "USER"); //default their password to their username		
+		GolfUser gu = new GolfUser();
+		gu.setPassword(password);
+		gu.setUserName(username);
+		
+		String[] arr = new String[1];
+		arr[0] = userrole;
+		gu.setUserRoles(arr);
+		
+		usersAndAuthoritiesDAO.addUserAndAuthority(gu); //default their password to their username		
 	}
 
-	public void resetPassword(String username) 
+	public void resetPassword(GolfUser gu) 
 	{
-		usersAndAuthoritiesDAO.resetPassword(username); //default their password to their username		
+		usersAndAuthoritiesDAO.resetPassword(gu); //default their password to their username		
 	}
 
-	public void updateRole(String username, String role) 
+	public void updateRole(GolfUser gu) 
 	{
-		usersAndAuthoritiesDAO.updateRole(username, role); 		
+		usersAndAuthoritiesDAO.updateRole(gu); 		
 	}
 		
 }

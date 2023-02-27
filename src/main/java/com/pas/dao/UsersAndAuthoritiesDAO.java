@@ -215,43 +215,73 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 		String deleteStrUsers = "DELETE from users where username = ?";	
 		jdbcTemplate.update(deleteStrUsers, username);	
 		log.info("LoggedDBOperation: function-update; table:users; rows:1");
+		
+		GolfUser gu = new GolfUser();
+		gu.setUserName(username);
+		refreshListsAndMaps("delete", gu);	
 	}
 	
-	public void addUserAndAuthority(String username, String password, String userrole)
+	public void addUserAndAuthority(GolfUser gu)
 	{
 		String insertStrUsers = "INSERT INTO users (username, password, enabled) VALUES (?,?,?)";
-		String encodedPW=new BCryptPasswordEncoder().encode(password);		
-		jdbcTemplate.update(insertStrUsers, new Object[] {username, encodedPW, true});
+		String encodedPW=new BCryptPasswordEncoder().encode(gu.getPassword());	
+		gu.setPassword(encodedPW);
+		jdbcTemplate.update(insertStrUsers, new Object[] {gu.getUserName(), encodedPW, true});
 		log.info("LoggedDBOperation: function-update; table:users; rows:1");
 		
 		String insertStrAuthorities = "INSERT INTO authorities (username, authority) VALUES (?,?)";			
-		jdbcTemplate.update(insertStrAuthorities, new Object[] {username, userrole});	
+		jdbcTemplate.update(insertStrAuthorities, new Object[] {gu.getUserName(), gu.getUserRoles()[0]});	
 		log.info("LoggedDBOperation: function-update; table:authorities; rows:1");
+				
+		refreshListsAndMaps("add", gu);	
 	}
 	
-	public void updateUserAndAuthority(String username, String password, String userrole)
+	public void updateUserAndAuthority(String username, GolfUser gu)
 	{
 		deleteUserAndAuthority(username);
-		addUserAndAuthority(username, password, userrole);
+		addUserAndAuthority(gu);		
+		refreshListsAndMaps("update", gu);	
 	}
 
-	public void resetPassword(String username) 
+	private void refreshListsAndMaps(String function, GolfUser golfuser) 
+	{
+		if (function.equalsIgnoreCase("delete"))
+		{
+			this.getFullUserMap().remove(golfuser.getUserName());	
+		}
+		else if (function.equalsIgnoreCase("add"))
+		{
+			this.getFullUserMap().put(golfuser.getUserName(), golfuser);	
+		}
+		else if (function.equalsIgnoreCase("update"))
+		{
+			this.getFullUserMap().remove(golfuser.getUserName());	
+			this.getFullUserMap().put(golfuser.getUserName(), golfuser);		
+		}
+		
+	}
+
+	public void resetPassword(GolfUser gu) 
 	{
 		String updateStr = " UPDATE users SET password = ? WHERE username = ?";
-		String encodedPW=new BCryptPasswordEncoder().encode(username); //resets to their username		
-		jdbcTemplate.update(updateStr, encodedPW, username);
+		String encodedPW=new BCryptPasswordEncoder().encode(gu.getUserName()); //resets to their username		
+		jdbcTemplate.update(updateStr, encodedPW, gu);
 		log.info("LoggedDBOperation: function-update; table:users; rows:1");
 		
-		log.debug("successfully reset password for user " + username);			
+		refreshListsAndMaps("update", gu);	
+		
+		log.debug("successfully reset password for user " + gu);			
 	}
 	
-	public void updateRole(String username, String newRole) 
+	public void updateRole(GolfUser gu) 
 	{
 		String updateStr = " UPDATE authorities SET authority = ? WHERE username = ?";
-		jdbcTemplate.update(updateStr, newRole, username);
+		jdbcTemplate.update(updateStr, gu.getUserRoles(), gu.getUserName());
 		log.info("LoggedDBOperation: function-update; table:authorities; rows:1");
 		
-		log.debug("successfully reset role for user " + username);			
+		refreshListsAndMaps("update", gu);	
+		
+		log.debug("successfully reset role for user " + gu.getUserName());			
 	}	
 
 	public Map<String, GolfUser> getFullUserMap() 

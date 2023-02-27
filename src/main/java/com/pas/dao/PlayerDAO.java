@@ -81,7 +81,7 @@ public class PlayerDAO extends JdbcDaoSupport implements Serializable
 			}
 		}, keyHolder);
  
-		log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");
+		log.info("LoggedDBOperation: function-add; table:player; rows:1");
 		
 		player.setPlayerID(keyHolder.getKey().intValue());
 		

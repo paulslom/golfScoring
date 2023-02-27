@@ -332,11 +332,16 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			}
 			if (this.isResetPassword())
 			{
-				golfmain.resetPassword(this.getUsername()); //default their password to their username
+				GolfUser gu = golfmain.getGolfUser(this.getUsername());
+				golfmain.resetPassword(gu); //default their password to their username
 			}
 			if (!this.getOldRole().equalsIgnoreCase(this.getRole()))
 			{
-				golfmain.updateRole(this.getUsername(), this.getRole()); 
+				GolfUser gu = golfmain.getGolfUser(this.getUsername());
+				String[] arr = new String[1];
+				arr[0] = this.getRole();
+				gu.setUserRoles(arr);
+				golfmain.updateRole(gu); 
 			}
 						
 			log.info("after update Player");
