@@ -617,6 +617,7 @@ public class Utils
 			if (emailAddress == null 
 			|| emailAddress.trim().length() == 0 
 			|| emailAddress.equalsIgnoreCase("unknown")
+			|| !player.isActive()
 			|| emailAddress.equalsIgnoreCase(mailTo))
 			{
 				continue;
@@ -625,8 +626,11 @@ public class Utils
 			emailRecipients.add(emailAddress);
 		}
 		
-		//always add Chris LeClerc
-		emailRecipients.add("cleclerc@bryanpark.com");
+		boolean containsSearchStr = emailRecipients.stream().anyMatch("cleclerc@bryanpark.com"::equalsIgnoreCase);
+		if (!containsSearchStr) //always add Chris LeClerc if not already there
+		{
+			emailRecipients.add("cleclerc@bryanpark.com");
+		}	
 		
 		return emailRecipients;
 	}	

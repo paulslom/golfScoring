@@ -27,15 +27,15 @@
 				  <h:outputText value="#{plyr.playerID}"/>														
 			  </p:column>
 			  
-			  <p:column style="width:20%" headerText="First" sortBy="#{plyr.firstName}">												
+			  <p:column style="width:17%" headerText="First" sortBy="#{plyr.firstName}">												
 				  <h:outputText value="#{plyr.firstName}"/>														
 			  </p:column>
 			  
-			  <p:column style="width:20%" headerText="Last" sortBy="#{plyr.lastName}">												
+			  <p:column style="width:17%" headerText="Last" sortBy="#{plyr.lastName}">												
 				  <h:outputText value="#{plyr.lastName}"/>														
 			  </p:column>
 			  
-			  <p:column style="width:20%" headerText="Current Handicap Index" sortBy="#{plyr.handicap}">												
+			  <p:column style="width:18%" headerText="Current Handicap Index" sortBy="#{plyr.handicap}">												
 				  <h:outputText value="#{plyr.handicap}">
 				     <f:convertNumber type="number"
                              		maxIntegerDigits="2"
@@ -49,6 +49,10 @@
 			  
 			  <p:column style="width:7%" headerText="role" sortBy="#{plyr.role}">												
 				  <h:outputText value="#{plyr.role}"/>														
+			  </p:column>
+			  
+			  <p:column style="width:8%" headerText="Active" sortBy="#{plyr.active}">												
+				  <h:outputText value="#{plyr.active}"/>														
 			  </p:column>
 			  
 			  <p:column style="width:13%" headerText="email" sortBy="#{plyr.emailAddress}">												
@@ -162,6 +166,18 @@
 		                <p:inputText id="usernameID" size="50" value="#{pc_Player.username}" required="true"/>
 		             </td>
 		             
+		          </tr>
+		          
+		           <tr>
+				  		
+		  			 <td class="text" colspan="2">
+		  			 	<p:selectBooleanCheckbox
+		  			 	    rendered="#{pc_Player.operation=='Update'}"
+							value="#{pc_Player.active}">
+						</p:selectBooleanCheckbox>
+						<p:outputLabel  rendered="#{pc_Player.operation=='Update'}" value="Active"/>
+					 </td>	
+					
 		          </tr>
 		          
 		          <tr>

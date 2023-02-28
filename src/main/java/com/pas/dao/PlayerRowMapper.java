@@ -29,7 +29,16 @@ public class PlayerRowMapper implements RowMapper<Player>, Serializable
 		player.setHandicap(rs.getBigDecimal("currentHandicapIndex"));
 		player.setUsername(rs.getString("username"));
 		player.setEmailAddress(rs.getString("emailAddress"));
-								 		
+		
+		Integer active = rs.getInt("bactive");
+		if (active == 1)
+		{
+			player.setActive(true);
+		}
+		else
+		{
+			player.setActive(false);
+		}
  		return player; 	
     	
     }

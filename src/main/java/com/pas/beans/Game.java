@@ -2358,7 +2358,16 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		String subjectLine = "Golf game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDate()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName();		
-		SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients, true); //last param means use jsf
+		if (emailRecipients.size() >= 100)
+		{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"100 or more recipients on Email list - google will not send it, preventing before trying",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else
+		{
+			SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients, true); //last param means use jsf
+		}
+		
 		return "";
 	}
 	
@@ -2455,8 +2464,11 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.add(emailAddress);
 		}
 		
-		//always add Chris LeClerc
-		emailRecipients.add("cleclerc@bryanpark.com");
+		boolean containsSearchStr = emailRecipients.stream().anyMatch("cleclerc@bryanpark.com"::equalsIgnoreCase);
+		if (!containsSearchStr) //always add Chris LeClerc if not already there
+		{
+			emailRecipients.add("cleclerc@bryanpark.com");
+		}	
 				
 		log.info(getTempUserName() + " emailing to: " + emailRecipients);
 		

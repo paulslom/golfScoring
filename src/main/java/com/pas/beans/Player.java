@@ -52,6 +52,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	private int grossScore;
 	private BigDecimal netScore;
 	private String emailAddress;
+	private boolean active;
+	
 	private boolean resetPassword;
 	
 	private Player selectedPlayer;
@@ -284,6 +286,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		this.setOldUsername(this.getSelectedPlayer().getUsername());
 		this.setUsername(this.getSelectedPlayer().getUsername());
 		this.setHandicap(this.getSelectedPlayer().getHandicap());
+		this.setActive(this.getSelectedPlayer().isActive());
 		return "";
 	}
 	
@@ -1961,16 +1964,29 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		return loggedInPlayerEmail;
 	}
 
-	public void setLoggedInPlayerEmail(String loggedInPlayerEmail) {
+	public void setLoggedInPlayerEmail(String loggedInPlayerEmail) 
+	{
 		this.loggedInPlayerEmail = loggedInPlayerEmail;
 	}
 
-	public String getTeePreference() {
+	public String getTeePreference() 
+	{
 		return teePreference;
 	}
 
-	public void setTeePreference(String teePreference) {
+	public void setTeePreference(String teePreference) 
+	{
 		this.teePreference = teePreference;
 	}
+	public boolean isActive() 
+	{
+		return active;
+	}
+
+	public void setActive(boolean active) 
+	{
+		this.active = active;
+	}
+
 
 }

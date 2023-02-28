@@ -114,7 +114,7 @@ public class SAMailUtility
 			
 			if (useJSF)
 		    {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Email successfully sent to " + ccArrayList,null);
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Email successfully sent to " + ccArrayList.size() + " recipients: " + ccArrayList, null);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 		    }
 		} 		

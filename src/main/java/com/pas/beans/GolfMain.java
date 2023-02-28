@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
@@ -868,8 +870,16 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Group email message about to be sent: " + sb.toString());		
 		
 		emailRecipients = Utils.setEmailFullRecipientList(fullPlayerList);
-		//emailRecipients.add("paulslomkowski@yahoo.com"); //to just me for testing
-		SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients, true); //last param means use jsf
+		if (emailRecipients.size() >= 100)
+		{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"100 or more recipients on Email list - google will not send it, preventing before trying",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else
+		{
+			//emailRecipients.add("paulslomkowski@yahoo.com"); //to just me for testing
+			SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients, true); //last param means use jsf
+		}		
 		
 		log.info("User sent email to entire group successfully");
 		

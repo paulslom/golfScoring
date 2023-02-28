@@ -116,10 +116,11 @@ public class PlayerDAO extends JdbcDaoSupport implements Serializable
 		updateStr = updateStr + " lastName = ?," ;
 		updateStr = updateStr + " currentHandicapIndex = ?," ;
 		updateStr = updateStr + " username = ?," ;
-		updateStr = updateStr + " emailAddress = ?";			
+		updateStr = updateStr + " emailAddress = ?,";	
+		updateStr = updateStr + " bactive = ?";			
 		updateStr = updateStr + " WHERE idplayer = ?";
 	
-		jdbcTemplate.update(updateStr, player.getFirstName(), player.getLastName(), player.getHandicap(), player.getUsername(), player.getEmailAddress(), player.getPlayerID());
+		jdbcTemplate.update(updateStr, player.getFirstName(), player.getLastName(), player.getHandicap(), player.getUsername(), player.getEmailAddress(), player.isActive(), player.getPlayerID());
 		
 		log.info("LoggedDBOperation: function-update; table:player; rows:1");
 		
