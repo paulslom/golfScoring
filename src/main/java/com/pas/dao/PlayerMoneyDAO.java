@@ -96,7 +96,7 @@ public class PlayerMoneyDAO extends JdbcDaoSupport implements Serializable
 	public void readPlayerMoneyFromDB()
     {
 		String sql = "select pm.*, game.gameDate from playermoney pm inner join game on pm.idgame = game.idgame where game.gameDate > :gameDate order by game.gameDate";
-		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getLastYearsLastDayDate());
+		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getOneMonthAgoDate());
 		this.setPlayerMoneyList(namedParameterJdbcTemplate.query(sql, param, new PlayerMoneyRowMapper()));  
 		
 		this.setPlayerMoneyMap(this.getPlayerMoneyList().stream().collect(Collectors.toMap(PlayerMoney::getPlayerMoneyID, gm -> gm)));		

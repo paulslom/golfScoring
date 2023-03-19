@@ -1,6 +1,7 @@
 package com.pas.dao;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,8 +11,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.pas.beans.Course;
 import com.pas.beans.CourseTee;
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -50,7 +52,6 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(GameDAO.class);
 	
-	private Map<Integer,Game> fullGameMap = new HashMap<Integer,Game>();	
 	private List<Game> fullGameList = new ArrayList<Game>();
 		
 	@PostConstruct
@@ -113,7 +114,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		log.info("LoggedDBOperation: function-update; table:game; rows:1");
 		
 		game.setGameID(keyHolder.getKey().intValue());
-		refreshListsAndMaps("add", game.getGameID(), game);
+		refreshGameList("add", game.getGameID(), game);
 		
 		return keyHolder.getKey().intValue();	
 	}
@@ -136,7 +137,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		
 		log.info("LoggedDBOperation: function-update; table:game; rows:1");
 		
-		refreshListsAndMaps("update", game.getGameID(), game);	
+		refreshGameList("update", game.getGameID(), game);	
        		
 		log.debug(getTempUserName() + " update game table complete");		
 	}
@@ -148,7 +149,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		
 		log.info("LoggedDBOperation: function-update; table:game; rows:1");
 		
-		refreshListsAndMaps("delete", gameID, null);		
+		refreshGameList("delete", gameID, null);		
 		
 		log.info(getTempUserName() + " deleteGame complete");	
 	}
@@ -156,12 +157,10 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	public void readGamesFromDB() 
     {
 		String sql = "select * from game  where gameDate > :gameDate order by gameDate desc";	
-		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getLastYearsLastDayDate());
+		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getOneMonthAgoDate());
 		this.setFullGameList(namedParameterJdbcTemplate.query(sql, param, new GameRowMapper())); 
 		
 		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + this.getFullGameList().size());
-		
-		this.setFullGameMap(this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, gm -> gm)));				
 	}
 	
 	public List<Game> getAvailableGames(int playerID) 
@@ -275,7 +274,8 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	
 	public Game getGameByGameID(int gameID) 
     {
-		Game game = this.getFullGameMap().get(gameID);
+		Map<Integer, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		Game game = fullGameMap.get(gameID);
 		assignCourseToGame(game);
     	return game;		
 	}
@@ -309,25 +309,49 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		inGame.setTeeSelections(courseTeeSelections);
 	}
 	
-	private void refreshListsAndMaps(String function, int gameID, Game game)
-	{
-		if (function.equalsIgnoreCase("delete"))
+	private void refreshGameList(String function, int gameID, Game inputgame)
+	{		
+		if (function.equalsIgnoreCase("add"))
 		{
-			this.getFullGameMap().remove(gameID);			
+			Game gm = new Game();
+			
+			gm.setGameID(inputgame.getGameID());
+			gm.setCourseName(inputgame.getCourseName());
+			gm.setCourse(inputgame.getCourse());		
+			gm.setCourseID(inputgame.getCourseID());
+			gm.setGameDate(inputgame.getGameDate());
+			gm.setBetAmount(inputgame.getBetAmount());
+			gm.setEachBallWorth(inputgame.getEachBallWorth());
+			gm.setHowManyBalls(inputgame.getHowManyBalls());
+			gm.setIndividualGrossPrize(inputgame.getIndividualGrossPrize());
+			gm.setIndividualNetPrize(inputgame.getIndividualNetPrize());
+			gm.setPurseAmount(inputgame.getPurseAmount());
+			gm.setSkinsPot(inputgame.getSkinsPot());
+			gm.setTeamPot(inputgame.getTeamPot());
+			gm.setFieldSize(inputgame.getFieldSize());
+			gm.setTotalPlayers(inputgame.getTotalPlayers());
+			gm.setTotalTeams(inputgame.getTotalTeams());
+			
+			this.getFullGameList().add(gm);
 		}
-		else if (function.equalsIgnoreCase("add"))
+		else
 		{
-			this.getFullGameMap().put(gameID, game);			
-		}
-		else if (function.equalsIgnoreCase("update"))
-		{
-			this.getFullGameMap().remove(game.getGameID());
-			this.getFullGameMap().put(game.getGameID(), game);
-		}
-		
-		this.getFullGameList().clear();
-		Collection<Game> values = this.getFullGameMap().values();
-		this.setFullGameList(new ArrayList<>(values));
+			Map<Integer, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+			
+			if (function.equalsIgnoreCase("delete"))
+			{
+				fullGameMap.remove(gameID);			
+			}
+			else if (function.equalsIgnoreCase("update"))
+			{
+				fullGameMap.remove(inputgame.getGameID());
+				fullGameMap.put(inputgame.getGameID(), inputgame);
+			}
+			
+			this.getFullGameList().clear();
+			Collection<Game> values = fullGameMap.values();
+			this.setFullGameList(new ArrayList<>(values));
+		}		
 		
 		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
 		{
@@ -336,6 +360,15 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		      return o2.getGameDate().compareTo(o1.getGameDate());
 		   }
 		});
+		
+		/* for debugging purposes */
+		for (int i = 0; i < fullGameList.size(); i++) 
+		{
+			Game gm = fullGameList.get(i);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			log.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
+		}
+		
 		
 	}
 
@@ -356,14 +389,5 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	{
 		this.fullGameList = fullGameList;
 	}
-
-	public Map<Integer, Game> getFullGameMap() {
-		return fullGameMap;
-	}
-
-	public void setFullGameMap(Map<Integer, Game> fullGameMap) {
-		this.fullGameMap = fullGameMap;
-	}
-
 	
 }

@@ -122,7 +122,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " In onLoadGameList Game.java");
 	}
-		
+	
 	public String addGame()
 	{
 		operation = "Add";		
@@ -184,6 +184,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		if (operation.equalsIgnoreCase("Add"))
 		{
 			log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");	
+			Course course = golfmain.getCoursesMap().get(this.getCourseID());
+			this.setCourse(course);
+			this.setCourseName(course.getCourseName());
 			int newGameID = golfmain.addGame(this);
 			golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
 			log.info(getTempUserName() + " after add Game");

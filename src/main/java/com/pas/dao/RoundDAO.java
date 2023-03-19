@@ -124,7 +124,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	public void readAllRoundsFromDB()
     {
 		String sql = "select * from round where dSignUpdatetime > :dSignUpdatetime order by dSignUpdatetime desc";	
-		SqlParameterSource param = new MapSqlParameterSource("dSignUpdatetime", Utils.getLastYearsLastDayDate());
+		SqlParameterSource param = new MapSqlParameterSource("dSignUpdatetime", Utils.getOneMonthAgoDate());
 		this.setFullRoundsList(namedParameterJdbcTemplate.query(sql, param, new RoundRowMapper())); 
 	
 		log.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());

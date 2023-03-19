@@ -51,6 +51,17 @@ public class Utils
 	    return returnDate;
 	}
 	
+	public static String getOneMonthAgoDate() 
+	{
+	    Calendar calOneMonthAgo = Calendar.getInstance();
+	    calOneMonthAgo.add(Calendar.MONTH, -1);
+	    Date dateOneMonthAgo = calOneMonthAgo.getTime();
+	    Locale locale = Locale.getDefault();
+	    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
+	    String returnDate = formatter.format(dateOneMonthAgo);
+	    return returnDate;
+	}
+	
 	// function to round the number 
 	public static int roundToNearestMultipleOfTen(int n) 
 	{ 

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -209,6 +210,8 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		
 		Map<Integer,Round> tempMap = new HashMap<Integer,Round>();
 		
+		Map<Integer, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
 			Round round = this.getFullRoundsList().get(i);
@@ -218,8 +221,10 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		    {
 				round.setCourseTeeColor(ct.getTeeColor());	    
 		    }
-		        
-			Game game = this.getGamesMap().get(round.getGameID());
+		    
+			
+			Game game = fullGameMap.get(round.getGameID());
+			assignCourseToGame(game);
 			Course course = game.getCourse();
 			
 			Player player = this.getFullPlayersMapByPlayerID().get(round.getPlayerID());
@@ -314,11 +319,8 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			game.setCourseName(course.getCourseName());
 			tempMap.put(game.getGameID(), game);
 		}
-		
-		this.getFullGameMap().clear();
-		gameDAO.setFullGameMap(tempMap);
-		
-		Collection<Game> values = this.getFullGameMap().values();
+			
+		Collection<Game> values = tempMap.values();
 		gameDAO.setFullGameList(new ArrayList<>(values));
 		
 		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
@@ -345,7 +347,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		for (int i = 0; i < playerMoneyDAO.getPlayerMoneyList().size(); i++) 
 		{
 			PlayerMoney pm = playerMoneyDAO.getPlayerMoneyList().get(i);			
-			Game game = getGamesMap().get(pm.getGameID());
+			Game game = gameDAO.getGameByGameID(pm.getGameID());
 			Player player = getFullPlayersMapByPlayerID().get(pm.getPlayerID());	
 			pm.setGame(game);
 			pm.setPlayer(player);
@@ -426,6 +428,28 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Player Tee Preferences read in. List size = " + this.getFullPlayerTeePreferencesList().size());		
 	}
 
+	private void assignCourseToGame(Game inGame)
+	{
+		inGame.setCourse(getCoursesMap().get(inGame.getCourseID()));
+		inGame.setCourseName(inGame.getCourse().getCourseName());
+		
+		List<SelectItem> courseTeeSelections = new ArrayList<>();
+		
+		for (int i = 0; i < getCourseTees().size(); i++) 
+		{
+			CourseTee courseTee = getCourseTees().get(i);
+			if (courseTee.getCourseID() == inGame.getCourseID())
+			{
+				SelectItem selItem = new SelectItem();
+				selItem.setLabel(courseTee.getTeeColor());
+				selItem.setValue(courseTee.getCourseTeeID());
+				courseTeeSelections.add(selItem);
+			}
+		}
+		
+		inGame.setTeeSelections(courseTeeSelections);
+	}
+	
 	public void onLoadEmailGroup() 
 	{
 		log.info(getTempUserName() + " In onLoadEmailGroup GolfMain.java");
@@ -1085,11 +1109,6 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return gameDAO.getFullGameList();
 	}
 	
-	public Map<Integer, Game> getFullGameMap()
-	{
-		return gameDAO.getFullGameMap();
-	}
-
 	public List<Course> getCourseSelections() 
 	{
 		return courseDAO.getCourseSelections();
@@ -1113,11 +1132,6 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	public Map<Integer, Course> getCoursesMap() 
 	{
 		return courseDAO.getCoursesMap();
-	}
-
-	public Map<Integer, Game> getGamesMap() 
-	{
-		return gameDAO.getFullGameMap();
 	}
 
 	public Map<Integer, TeeTime> getTeeTimesMap()
