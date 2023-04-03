@@ -327,7 +327,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		{
 		   public int compare(Game o1, Game o2) 
 		   {
-		      return o2.getGameDate().compareTo(o1.getGameDate());
+		      return o1.getGameDate().compareTo(o2.getGameDate());
 		   }
 		});
 	}

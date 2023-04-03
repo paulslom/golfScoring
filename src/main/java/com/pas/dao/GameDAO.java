@@ -1,7 +1,6 @@
 package com.pas.dao;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +32,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.pas.beans.Course;
 import com.pas.beans.CourseTee;
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -160,6 +157,14 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getOneMonthAgoDate());
 		this.setFullGameList(namedParameterJdbcTemplate.query(sql, param, new GameRowMapper())); 
 		
+		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
+		{
+		   public int compare(Game o1, Game o2) 
+		   {
+		      return o1.getGameDate().compareTo(o2.getGameDate());
+		   }
+		});
+		
 		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + this.getFullGameList().size());
 	}
 	
@@ -210,6 +215,14 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
     	
     	assignCourseToGameList(gameList);
     	
+    	Collections.sort(gameList, new Comparator<Game>() 
+		{
+		   public int compare(Game o1, Game o2) 
+		   {
+		      return o1.getGameDate().compareTo(o2.getGameDate());
+		   }
+		});
+    	
     	return gameList;
 	}
 	
@@ -245,6 +258,15 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		}
 		
 		assignCourseToGameList(gameList);
+		
+		Collections.sort(gameList, new Comparator<Game>() 
+		{
+		   public int compare(Game o1, Game o2) 
+		   {
+		      return o1.getGameDate().compareTo(o2.getGameDate());
+		   }
+		});
+		
     	return gameList;
 	}
 	
@@ -269,6 +291,15 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		}
 		
 		assignCourseToGameList(gameList);
+		
+		Collections.sort(gameList, new Comparator<Game>() 
+		{
+		   public int compare(Game o1, Game o2) 
+		   {
+		      return o1.getGameDate().compareTo(o2.getGameDate());
+		   }
+		});
+		
     	return gameList;
 	}
 	
@@ -310,13 +341,22 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	}
 	
 	private void refreshGameList(String function, int gameID, Game inputgame)
-	{		
-		if (function.equalsIgnoreCase("add"))
+	{	
+		Game gm = new Game();
+		
+		if (!function.equalsIgnoreCase("delete"))
 		{
-			Game gm = new Game();
-			
 			gm.setGameID(inputgame.getGameID());
-			gm.setCourseName(inputgame.getCourseName());
+					
+			if (inputgame.getCourseName() != null)
+			{
+				gm.setCourseName(inputgame.getCourseName());
+			}
+			else if (inputgame.getCourse() != null)
+			{
+				gm.setCourseName(inputgame.getCourse().getCourseName());
+			}
+			
 			gm.setCourse(inputgame.getCourse());		
 			gm.setCourseID(inputgame.getCourseID());
 			gm.setGameDate(inputgame.getGameDate());
@@ -331,7 +371,10 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 			gm.setFieldSize(inputgame.getFieldSize());
 			gm.setTotalPlayers(inputgame.getTotalPlayers());
 			gm.setTotalTeams(inputgame.getTotalTeams());
-			
+		}		
+		
+		if (function.equalsIgnoreCase("add"))
+		{			
 			this.getFullGameList().add(gm);
 		}
 		else
@@ -345,7 +388,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 			else if (function.equalsIgnoreCase("update"))
 			{
 				fullGameMap.remove(inputgame.getGameID());
-				fullGameMap.put(inputgame.getGameID(), inputgame);
+				fullGameMap.put(inputgame.getGameID(), gm);
 			}
 			
 			this.getFullGameList().clear();
@@ -357,18 +400,18 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		{
 		   public int compare(Game o1, Game o2) 
 		   {
-		      return o2.getGameDate().compareTo(o1.getGameDate());
+		      return o1.getGameDate().compareTo(o2.getGameDate());
 		   }
 		});
 		
-		/* for debugging purposes */
+		/* for debugging purposes 
 		for (int i = 0; i < fullGameList.size(); i++) 
 		{
 			Game gm = fullGameList.get(i);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			log.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
 		}
-		
+		*/
 		
 	}
 
