@@ -371,6 +371,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 			gm.setFieldSize(inputgame.getFieldSize());
 			gm.setTotalPlayers(inputgame.getTotalPlayers());
 			gm.setTotalTeams(inputgame.getTotalTeams());
+			gm.setPlayTheBallMethod(inputgame.getPlayTheBallMethod());
 		}		
 		
 		if (function.equalsIgnoreCase("add"))
