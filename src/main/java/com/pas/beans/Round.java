@@ -541,25 +541,33 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String updateGameHandicaps()
 	{
-		Game game = BeanUtilJSF.getBean("pc_Game");		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		for (int i = 0; i < this.getRoundsForGame().size(); i++) 
+		try
 		{
-			Round rd = this.getRoundsForGame().get(i);
-			Player player = rd.getPlayer();
-			golfmain.updatePlayerHandicap(player.getPlayerID(), rd.getPlayer().getHandicap());
+			Game game = BeanUtilJSF.getBean("pc_Game");		
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 			
-			CourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());			
-			BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
+			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
+			{
+				Round rd = this.getRoundsForGame().get(i);
+				Player player = rd.getPlayer();
+				golfmain.updatePlayerHandicap(player.getPlayerID(), rd.getPlayer().getHandicap());
+				
+				CourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());			
+				BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
+				
+				golfmain.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);			
+			}
 			
-			golfmain.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);			
+			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
 		}
-		
-		this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-	    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
+		catch (Exception e) 
+		{
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}		
 	 
 		return "";
 	}

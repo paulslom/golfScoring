@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,12 +58,14 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		||  currentMonth.equalsIgnoreCase("Mar"))
 		{
 			recommendedPlayTheBallMethod = "Up in fairway and up in bunkers";
-			recommendedGameNote = "White tee players stay within 25 yds of Golds";
 		}
 		else
 		{
 			recommendedPlayTheBallMethod = "Down everywhere but up in bunkers";
 		}
+		
+		recommendedGameNote = "Play well and have fun!";
+
 	}
 	
 	private static final long serialVersionUID = 1L;

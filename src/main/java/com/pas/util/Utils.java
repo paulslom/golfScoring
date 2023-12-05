@@ -653,7 +653,7 @@ public class Utils
 	    return formatter.format(date);
 	}
 	
-	public static BigDecimal getCourseHandicap(CourseTee courseTee, BigDecimal handicapIndex)
+	public static BigDecimal getCourseHandicap(CourseTee courseTee, BigDecimal handicapIndex) throws Exception
 	{
 		//From here: http://www.scga.org/pdfs/Course%20Handicap%20Calculation.pdf
 		//Course Handicap = Handicap Index × (Slope Rating ÷ 113) + (Course Rating – Par)

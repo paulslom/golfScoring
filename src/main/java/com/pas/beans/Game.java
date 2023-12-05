@@ -450,23 +450,32 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		newRound.setCourseTeeID(game1.getCourseTeeID());
 		
 		newRound.setRoundHandicap(tempPlayer.getHandicap()); //set this to their usga ghin handicap index when they sign up.  We'll tweak this later when entering them on the set game handicaps page
-				
-		golfmain.addRound(newRound);
 		
-		this.getAvailableGameList().clear();
-		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
+		if (game1.getCourseTeeID() == null || game1.getCourseTeeID() == 0)
+		{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No tee selected - please select tees to play from",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else
+		{
+			golfmain.addRound(newRound);
+			
+			this.getAvailableGameList().clear();
+			this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
+			
+			resetSignedUpMessage(game1);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String displayedGameDate = sdf.format(game1.getGameDate());		
 		
-		resetSignedUpMessage(game1);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String displayedGameDate = sdf.format(game1.getGameDate());		
-	
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate,null);
-		
-		log.info("Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate);
-		
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate,null);
+			
+			log.info("Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate);
+			
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+		}
+		        
 		return "";
 	}
 	
@@ -2720,8 +2729,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		sb.append(NEWLINE);
 		
-		sb.append("With COVID in full swing we had no choice but to settle up our games using the website and Venmo.  That is no longer the case. " + NEWLINE);
+		sb.append("Gold tee players move back a tee box if necessary to stay within 1 tee box of whites. " + NEWLINE);
 		sb.append("All scores and settling of bets must happen manually in the Pro Shop grill after the round. " + NEWLINE);
+		sb.append("If you are unable to stay after the round for whatever reason, please arrange with someone to settle up your entry fee and how you want any winnings to be paid. " + NEWLINE);
 		//sb.append("In a pinch we could still use the website and venmo but that MUST BE PRE-ORGANIZED WITH A SITE ADMIN like Paul Slomkowski");
 		//sb.append("or Kenton Robertson or whomever is temporarily assigned an admin for a given game." + NEWLINE);		
 		
