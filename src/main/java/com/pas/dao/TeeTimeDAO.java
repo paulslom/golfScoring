@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +39,7 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 
 	private static Logger log = LogManager.getLogger(TeeTimeDAO.class);
 	
-	private final JdbcTemplate jdbcTemplate;
+	private final transient JdbcTemplate jdbcTemplate;
 	private final DataSource dataSource;
 	
 	private Map<Integer,TeeTime> teeTimesMap = new HashMap<Integer, TeeTime>(); //we need this for the TeeTimeConverter class
@@ -160,7 +160,7 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
  			String teeTimeStr = st.nextToken();
  			tokenCount++;
  			
- 			final Integer tkcInt = new Integer(tokenCount);
+ 			final Integer tkcInt = Integer.valueOf(tokenCount);
  			
  			KeyHolder keyHolder = new GeneratedKeyHolder();
  			

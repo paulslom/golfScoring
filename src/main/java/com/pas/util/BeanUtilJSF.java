@@ -1,7 +1,7 @@
 package com.pas.util;
 
-import javax.el.ELContext;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELContext;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,8 +33,8 @@ public class PlayerMoneyDAO extends JdbcDaoSupport implements Serializable
 
 	private static Logger log = LogManager.getLogger(PlayerMoneyDAO.class);
 	
-	private final JdbcTemplate jdbcTemplate;
-	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final transient JdbcTemplate jdbcTemplate;
+	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private final DataSource dataSource;
 	
 	private List<PlayerMoney> playerMoneyList = new ArrayList<>();

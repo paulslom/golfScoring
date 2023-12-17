@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.faces.model.SelectItem;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.model.SelectItem;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -44,8 +44,8 @@ import com.pas.util.Utils;
 public class GameDAO extends JdbcDaoSupport implements Serializable 
 {	
 	private static final long serialVersionUID = 1L;
-	private final JdbcTemplate jdbcTemplate;
-	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final transient JdbcTemplate jdbcTemplate;
+	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(GameDAO.class);
 	
@@ -72,7 +72,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 	    this.dataSource = dataSource;	
     }	
 	
-	public int addGame(Game game)
+	public int addGame(Game game) throws Exception
 	{
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
@@ -116,7 +116,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		return keyHolder.getKey().intValue();	
 	}
 	
-	public void updateGame(Game game)
+	public void updateGame(Game game) throws Exception
 	{
 		String updateStr = " UPDATE game SET idgolfcourse = ?, gameDate = ?, betAmount = ?," ;
 			updateStr = updateStr + " teamBallValue = ?, teamBalls =  ?, individualLowGrossPrize = ?," ;
@@ -139,7 +139,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		log.debug(getTempUserName() + " update game table complete");		
 	}
 	
-	public void deleteGame(int gameID) 
+	public void deleteGame(int gameID) throws Exception 
 	{		
 		String deleteStr = "delete from game where idgame = ?";
 		jdbcTemplate.update(deleteStr,gameID);	
@@ -340,7 +340,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		inGame.setTeeSelections(courseTeeSelections);
 	}
 	
-	private void refreshGameList(String function, int gameID, Game inputgame)
+	private void refreshGameList(String function, int gameID, Game inputgame) throws Exception
 	{	
 		Game gm = new Game();
 		

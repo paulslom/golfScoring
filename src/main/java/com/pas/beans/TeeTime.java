@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -120,31 +120,40 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " is deleting a tee time");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		TeeTime tt = this.getSelectedTeeTime();
-		golfmain.deleteTeeTimeFromDB(this.getSelectedTeeTime().getTeeTimeID());
+		try
+		{
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 			
-		Game gm = BeanUtilJSF.getBean("pc_Game");		
-		
-		gm = golfmain.getGameByGameID(tt.getGameID());
-		
-		gm.setFieldSize(gm.getFieldSize() - 4);
-		gm.setTotalPlayers(gm.getFieldSize());
-		gm.selectTotalPlayers(gm.getTotalPlayers());
-		
-		golfmain.updateGame(gm);
-		
-		this.getTeeTimeList().clear();
-		this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(gm));
-		
-		emailAdminsAboutTeeTimeRemoval(gm,tt);
-		
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"tee time successfully removed",null);
-        FacesContext.getCurrentInstance().addMessage(null, msg);    
-		
-		log.info(getTempUserName() + " successfully deleted tee time from game");
-		
+			TeeTime tt = this.getSelectedTeeTime();
+			golfmain.deleteTeeTimeFromDB(this.getSelectedTeeTime().getTeeTimeID());
+				
+			Game gm = BeanUtilJSF.getBean("pc_Game");		
+			
+			gm = golfmain.getGameByGameID(tt.getGameID());
+			
+			gm.setFieldSize(gm.getFieldSize() - 4);
+			gm.setTotalPlayers(gm.getFieldSize());
+			gm.selectTotalPlayers(gm.getTotalPlayers());
+			
+			golfmain.updateGame(gm);
+			
+			this.getTeeTimeList().clear();
+			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(gm));
+			
+			emailAdminsAboutTeeTimeRemoval(gm,tt);
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"tee time successfully removed",null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);  
+	        
+	        log.info(getTempUserName() + " successfully deleted tee time from game");
+		}
+		catch (Exception e)
+		{
+			log.error("Exception when deleting tee time: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when deleting tee time: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
+			
 		return "";
 	}
 	
@@ -152,39 +161,48 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " user clicked Save Tee Time from maintain tee time dialog");	
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		Game game = BeanUtilJSF.getBean("pc_Game");		
-		
-		game = golfmain.getGameByGameID(this.getGameID());
-		
-		if (this.getOperation().equalsIgnoreCase("Add"))
+		try
 		{
-			this.setCourseName(game.getCourseName());
-			this.setGameDate(game.getGameDate());
-			golfmain.addTeeTime(this);
-			game.setFieldSize(game.getFieldSize() + 4);
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+			
+			Game game = BeanUtilJSF.getBean("pc_Game");		
+			
+			game = golfmain.getGameByGameID(this.getGameID());
+			
+			if (this.getOperation().equalsIgnoreCase("Add"))
+			{
+				this.setCourseName(game.getCourseName());
+				this.setGameDate(game.getGameDate());
+				golfmain.addTeeTime(this);
+				game.setFieldSize(game.getFieldSize() + 4);
+			}
+			
+			if (this.getOperation().equalsIgnoreCase("Update"))
+			{
+				this.setCourseName(this.getSelectedTeeTime().getCourseName());
+				this.setGameDate(this.getSelectedTeeTime().getGameDate());
+				golfmain.updateTeeTime(this);
+			}	
+			
+			game.setTotalPlayers(game.getFieldSize());
+			game.selectTotalPlayers(game.getTotalPlayers());
+			
+			golfmain.updateGame(game);
+			
+			this.getTeeTimeList().clear();
+			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(game));
+			
+			for (int i = 0; i < this.getTeeTimeList().size(); i++) 
+			{
+				TeeTime tt = this.getTeeTimeList().get(i);
+				log.info("tee time id: " + tt.getTeeTimeID() + ", play group number: " + tt.getPlayGroupNumber() + ", tee time: " + tt.getTeeTimeString());
+			}
 		}
-		
-		if (this.getOperation().equalsIgnoreCase("Update"))
+		catch (Exception e)
 		{
-			this.setCourseName(this.getSelectedTeeTime().getCourseName());
-			this.setGameDate(this.getSelectedTeeTime().getGameDate());
-			golfmain.updateTeeTime(this);
-		}	
-		
-		game.setTotalPlayers(game.getFieldSize());
-		game.selectTotalPlayers(game.getTotalPlayers());
-		
-		golfmain.updateGame(game);
-		
-		this.getTeeTimeList().clear();
-		this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(game));
-		
-		for (int i = 0; i < this.getTeeTimeList().size(); i++) 
-		{
-			TeeTime tt = this.getTeeTimeList().get(i);
-			log.info("tee time id: " + tt.getTeeTimeID() + ", play group number: " + tt.getPlayGroupNumber() + ", tee time: " + tt.getTeeTimeString());
+			log.error("Exception when saving tee time: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when saving tee time: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
 		log.info(getTempUserName() + " exiting saveTeeTime");
 		

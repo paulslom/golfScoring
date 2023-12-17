@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +29,7 @@ public class CourseDAO extends JdbcDaoSupport implements Serializable
 
 	private static Logger log = LogManager.getLogger(CourseDAO.class);
 	
-	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private final DataSource dataSource;
 	
 	private Map<Integer,Course> coursesMap = new HashMap<Integer,Course>();

@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	     {
 	         builder = org.springframework.security.core.userdetails.User.withUsername(username);
 	         builder.password(golfuser.getPassword());
-	         builder.roles(golfuser.getUserRoles());
+	         builder.roles(golfuser.getUserRole());
 	         
 	         log.info("User " + username + " successfully found on database as " + golfuser.getUserName());
 	     } 

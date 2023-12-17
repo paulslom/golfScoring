@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +24,7 @@ public class GroupDAO extends JdbcDaoSupport implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = LogManager.getLogger(GroupDAO.class);
-	private final JdbcTemplate jdbcTemplate;
+	private final transient JdbcTemplate jdbcTemplate;
 	private final DataSource dataSource;
 	
 	private Map<Integer,Group> groupsMap = new HashMap<Integer,Group>();

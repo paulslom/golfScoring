@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -53,8 +53,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
     static ZoneId etZoneId = ZoneId.of("America/New_York");
   
 	private static final long serialVersionUID = 1L;
-	private final JdbcTemplate jdbcTemplate;
-	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final transient JdbcTemplate jdbcTemplate;
+	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(RoundDAO.class);
 	

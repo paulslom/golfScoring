@@ -18,15 +18,15 @@ import java.util.ResourceBundle;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIColumn;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.ValueHolder;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,8 +35,6 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -135,43 +133,60 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		operation = "Add";
 		
-		this.setCourse(null);		
-		this.setCourseID(0);
-		this.setGameDate(null);
-		this.setBetAmount(new BigDecimal(20.0));
-		this.setEachBallWorth(new BigDecimal(0.0));
-		this.setHowManyBalls(2);
-		this.setIndividualGrossPrize(new BigDecimal(10.0));
-		this.setIndividualNetPrize(new BigDecimal(10.0));
-		this.setPurseAmount(new BigDecimal(0.0));
-		this.setSkinsPot(new BigDecimal(0.0));
-		this.setTeamPot(new BigDecimal(0.0));
-		this.setFieldSize(16);
-		this.setTotalPlayers(16);
-		this.setTotalTeams(4);
+		try
+		{
+			this.setCourse(null);		
+			this.setCourseID(0);
+			this.setGameDate(null);
+			this.setBetAmount(new BigDecimal(20.0));
+			this.setEachBallWorth(new BigDecimal(0.0));
+			this.setHowManyBalls(2);
+			this.setIndividualGrossPrize(new BigDecimal(10.0));
+			this.setIndividualNetPrize(new BigDecimal(10.0));
+			this.setPurseAmount(new BigDecimal(0.0));
+			this.setSkinsPot(new BigDecimal(0.0));
+			this.setTeamPot(new BigDecimal(0.0));
+			this.setFieldSize(16);
+			this.setTotalPlayers(16);
+			this.setTotalTeams(4);
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in addGameFromGameList: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in addGameFromGameList: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		
 		return "addGame";
 	}
 	
 	public String updateGame()
 	{
-		this.setCourse(this.getSelectedGame().getCourse());	
-		this.setGameID(this.getSelectedGame().getGameID());
-		this.setCourseID(this.getSelectedGame().getCourseID());
-		this.setGameDate(this.getSelectedGame().getGameDate());
-		this.setBetAmount(this.getSelectedGame().getBetAmount());
-		this.setEachBallWorth(this.getSelectedGame().getEachBallWorth());
-		this.setHowManyBalls(this.getSelectedGame().getHowManyBalls());
-		this.setIndividualGrossPrize(this.getSelectedGame().getIndividualGrossPrize());
-		this.setIndividualNetPrize(this.getSelectedGame().getIndividualNetPrize());
-		this.setPurseAmount(this.getSelectedGame().getPurseAmount());
-		this.setSkinsPot(this.getSelectedGame().getSkinsPot());
-		this.setTeamPot(this.getSelectedGame().getTeamPot());
-		this.setFieldSize(this.getSelectedGame().getFieldSize());
-		this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
-		this.setPlayTheBallMethod(this.getSelectedGame().getPlayTheBallMethod());
-		this.setGameClosedForSignups(this.getSelectedGame().isGameClosedForSignups());
-		
+		try
+		{
+			this.setCourse(this.getSelectedGame().getCourse());	
+			this.setGameID(this.getSelectedGame().getGameID());
+			this.setCourseID(this.getSelectedGame().getCourseID());
+			this.setGameDate(this.getSelectedGame().getGameDate());
+			this.setBetAmount(this.getSelectedGame().getBetAmount());
+			this.setEachBallWorth(this.getSelectedGame().getEachBallWorth());
+			this.setHowManyBalls(this.getSelectedGame().getHowManyBalls());
+			this.setIndividualGrossPrize(this.getSelectedGame().getIndividualGrossPrize());
+			this.setIndividualNetPrize(this.getSelectedGame().getIndividualNetPrize());
+			this.setPurseAmount(this.getSelectedGame().getPurseAmount());
+			this.setSkinsPot(this.getSelectedGame().getSkinsPot());
+			this.setTeamPot(this.getSelectedGame().getTeamPot());
+			this.setFieldSize(this.getSelectedGame().getFieldSize());
+			this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
+			this.setPlayTheBallMethod(this.getSelectedGame().getPlayTheBallMethod());
+			this.setGameClosedForSignups(this.getSelectedGame().isGameClosedForSignups());
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in updateGame: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in updateGame: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		return "";
 	}
 	
@@ -179,31 +194,40 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " user clicked Save Player from maintain player dialog");	
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		if (operation.equalsIgnoreCase("Add"))
+		try
 		{
-			log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");	
-			Course course = golfmain.getCoursesMap().get(this.getCourseID());
-			this.setCourse(course);
-			this.setCourseName(course.getCourseName());
-			int newGameID = golfmain.addGame(this);
-			golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
-			log.info(getTempUserName() + " after add Game");
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+			
+			if (operation.equalsIgnoreCase("Add"))
+			{
+				log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");	
+				Course course = golfmain.getCoursesMap().get(this.getCourseID());
+				this.setCourse(course);
+				this.setCourseName(course.getCourseName());
+				int newGameID = golfmain.addGame(this);
+				golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
+				log.info(getTempUserName() + " after add Game");
+			}
+			else if (operation.equalsIgnoreCase("Update"))
+			{
+				log.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");			
+				golfmain.updateGame(this);
+				log.info(getTempUserName() + " after update Game");
+			}
+			else
+			{
+				log.info(getTempUserName() + " neither add nor update from maintain player dialog - doing nothing");
+			}
+			
+			this.setSelectedGame(this);
+			
 		}
-		else if (operation.equalsIgnoreCase("Update"))
+		catch (Exception e)
 		{
-			log.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");			
-			golfmain.updateGame(this);
-			log.info(getTempUserName() + " after update Game");
+			log.error("Exception in saveGame: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveGame: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
-		else
-		{
-			log.info(getTempUserName() + " neither add nor update from maintain player dialog - doing nothing");
-		}
-		
-		this.setSelectedGame(this);
-		
 		return "success";
 			
 	}
@@ -329,14 +353,23 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " changed total players on update game dialog");
 		
-		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		Integer selectedOption = (Integer)selectonemenu.getValue();
-		
-		if (selectedOption != null)
+		try
 		{
-			this.setOperation("Add");
-			selectTotalPlayers(selectedOption);
+			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
+		
+			Integer selectedOption = (Integer)selectonemenu.getValue();
+			
+			if (selectedOption != null)
+			{
+				this.setOperation("Add");
+				selectTotalPlayers(selectedOption);
+			}
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in valueChgTotalPlayersAdd: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in valueChgTotalPlayersAdd: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
 	}
 	
@@ -344,15 +377,24 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " changed field size on update game dialog");
 		
-		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		Integer selectedOption = (Integer)selectonemenu.getValue();
-		
-		if (selectedOption != null)
+		try
 		{
-			this.setOperation("Update");
-			this.setTotalPlayers(selectedOption);
-			selectTotalPlayers(selectedOption);
+			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
+		
+			Integer selectedOption = (Integer)selectonemenu.getValue();
+			
+			if (selectedOption != null)
+			{
+				this.setOperation("Update");
+				this.setTotalPlayers(selectedOption);
+				selectTotalPlayers(selectedOption);
+			}
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in valueChgFieldSize: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in valueChgFieldSize: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
 	}
 	
@@ -360,18 +402,27 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " changed total players on update game dialog");
 		
-		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		Integer selectedOption = (Integer)selectonemenu.getValue();
-		
-		if (selectedOption != null)
+		try
 		{
-			this.setOperation("Update");
-			selectTotalPlayers(selectedOption);
+			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
+		
+			Integer selectedOption = (Integer)selectonemenu.getValue();
+			
+			if (selectedOption != null)
+			{
+				this.setOperation("Update");
+				selectTotalPlayers(selectedOption);
+			}
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in valueChgTotalPlayersUpdate: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in valueChgTotalPlayersUpdate: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
 	}
 	
-	public void selectTotalPlayers(Integer totalPlayers) 
+	public void selectTotalPlayers(Integer totalPlayers) throws Exception 
 	{		
 		log.debug(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
 		
@@ -591,37 +642,45 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " entering runSelectedGame method");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
-		//first assign selected game into current game
-		this.setBetAmount(this.getSelectedGame().getBetAmount());
-		this.setCourse(this.getSelectedGame().getCourse());
-		this.setEachBallWorth(this.getSelectedGame().getEachBallWorth());
-		this.setGameDate(this.getSelectedGame().getGameDate());
-		this.setGameID(this.getSelectedGame().getGameID());
-		this.setHowManyBalls(this.getSelectedGame().getHowManyBalls());
-		this.setIndividualGrossPrize(this.getSelectedGame().getIndividualGrossPrize());
-		this.setIndividualNetPrize(this.getSelectedGame().getIndividualNetPrize());
-		this.setPurseAmount(this.getSelectedGame().getPurseAmount());
-		this.setSkinsPot(this.getSelectedGame().getSkinsPot());
-		this.setTeamPot(this.getSelectedGame().getTeamPot());
-		this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
-		this.setTotalTeams(this.getSelectedGame().getTotalTeams());		
-		
-		this.setPlayerScores(golfmain.getRoundsForGame(this));		
-		
-		//clear out first for this - in case it has been run before
-		golfmain.deletePlayerMoneyFromDB(this.getGameID());
-		this.getTeamResultsList().clear();
-		
-		addEntryFees();
-		
-		calculateSkins();
-		calculateTeams();	
-		calculateIndividualGrossAndNet();
-		
-		this.setPlayerMoneyForSelectedGameList(golfmain.getPlayerMoneyByGame(this.getSelectedGame()));
-		
+		try
+		{
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+			
+			//first assign selected game into current game
+			this.setBetAmount(this.getSelectedGame().getBetAmount());
+			this.setCourse(this.getSelectedGame().getCourse());
+			this.setEachBallWorth(this.getSelectedGame().getEachBallWorth());
+			this.setGameDate(this.getSelectedGame().getGameDate());
+			this.setGameID(this.getSelectedGame().getGameID());
+			this.setHowManyBalls(this.getSelectedGame().getHowManyBalls());
+			this.setIndividualGrossPrize(this.getSelectedGame().getIndividualGrossPrize());
+			this.setIndividualNetPrize(this.getSelectedGame().getIndividualNetPrize());
+			this.setPurseAmount(this.getSelectedGame().getPurseAmount());
+			this.setSkinsPot(this.getSelectedGame().getSkinsPot());
+			this.setTeamPot(this.getSelectedGame().getTeamPot());
+			this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
+			this.setTotalTeams(this.getSelectedGame().getTotalTeams());		
+			
+			this.setPlayerScores(golfmain.getRoundsForGame(this));		
+			
+			//clear out first for this - in case it has been run before
+			golfmain.deletePlayerMoneyFromDB(this.getGameID());
+			this.getTeamResultsList().clear();
+			
+			addEntryFees();
+			
+			calculateSkins();
+			calculateTeams();	
+			calculateIndividualGrossAndNet();
+			
+			this.setPlayerMoneyForSelectedGameList(golfmain.getPlayerMoneyByGame(this.getSelectedGame()));
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in runSelectedGame: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in runSelectedGame: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		return "";
 	}
 		
@@ -1172,15 +1231,11 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public Integer getTotalPlayers() {
 		return totalPlayers;
 	}
-	public void setTotalPlayers(Integer totalPlayers) 
+	public void setTotalPlayers(Integer totalPlayers) throws Exception 
 	{
-		this.totalPlayers = totalPlayers;
-				
-		
-		this.setTotalTeams(Utils.setRecommendedTeams(totalPlayers));
-	
-	}
-	
+		this.totalPlayers = totalPlayers;		
+		this.setTotalTeams(Utils.setRecommendedTeams(totalPlayers));	
+	}	
 	
 	public String exportPlayerName(UIColumn column) 
 	{
@@ -2319,16 +2374,25 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " entering Delete Game.  About to delete: " + this.getSelectedGame().getGameDate());
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		golfmain.deleteRoundsFromDB(this.getSelectedGame().getGameID());		
-		golfmain.deleteTeeTimesForGameFromDB(this.getSelectedGame().getGameID());
-		golfmain.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
-		golfmain.deleteGame(this.getSelectedGame().getGameID());
-		
-		log.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
-		this.setSelectedGame(golfmain.getFullGameList().get(0));
-		
+		try
+		{
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
+			
+			golfmain.deleteRoundsFromDB(this.getSelectedGame().getGameID());		
+			golfmain.deleteTeeTimesForGameFromDB(this.getSelectedGame().getGameID());
+			golfmain.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
+			golfmain.deleteGame(this.getSelectedGame().getGameID());
+			
+			log.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
+			this.setSelectedGame(golfmain.getFullGameList().get(0));
+			
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in deleteGame: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in deleteGame: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		return "";
 	}
 	
@@ -2405,24 +2469,33 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	public String composePreGameEmail()
 	{
-		StringBuffer sb = new StringBuffer();
-		sb.append("<H3>Weekly Game</H3>");
-		
-		StringBuffer sbGameDetails = getEmailGameDetails();
-		sb.append(sbGameDetails);
-		
-		StringBuffer sbPlayGroupDetails = getEmailPlayGroupDetails();
-		sb.append(sbPlayGroupDetails);
-		
-		//StringBuffer doYourOwnScores = doYourOwnScoresBlurb();
-		//sb.append(doYourOwnScores);
-		
-		StringBuffer sbMoneyTeamDetails = getEmailMoneyTeamDetails();
-		sb.append(sbMoneyTeamDetails);		
-		
-		this.setPreGameEmailMessage(sb.toString());
-		
-		establishEmailRecipients();
+		try
+		{
+			StringBuffer sb = new StringBuffer();
+			sb.append("<H3>Weekly Game</H3>");
+			
+			StringBuffer sbGameDetails = getEmailGameDetails();
+			sb.append(sbGameDetails);
+			
+			StringBuffer sbPlayGroupDetails = getEmailPlayGroupDetails();
+			sb.append(sbPlayGroupDetails);
+			
+			//StringBuffer doYourOwnScores = doYourOwnScoresBlurb();
+			//sb.append(doYourOwnScores);
+			
+			StringBuffer sbMoneyTeamDetails = getEmailMoneyTeamDetails();
+			sb.append(sbMoneyTeamDetails);		
+			
+			this.setPreGameEmailMessage(sb.toString());
+			
+			establishEmailRecipients();
+		}
+		catch (Exception e)
+		{
+			log.error("Exception when composing pregame email: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when composing pregame email: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		
 		return "";
 	}
@@ -2564,7 +2637,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	}
 
-	private StringBuffer getEmailPlayGroupDetails() 
+	private StringBuffer getEmailPlayGroupDetails() throws Exception
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
@@ -2816,14 +2889,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		SAMailUtility.sendEmail(subjectLine, testEmailMessage, emailRecipients, true); //last param means use jsf
 		return "";
 	}
-	
-	public void preProcessPDF(Object document) 
-	{
-      Document pdf = (Document) document;
-      pdf.setPageSize(PageSize.A4.rotate());
-      pdf.open();
-    }
-	
+		
 	@Override
     public boolean equals(final Object o) 
 	{
@@ -2859,7 +2925,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public Integer getTotalTeams() {
 		return totalTeams;
 	}
-	public void setTotalTeams(Integer totalTeams) 
+	public void setTotalTeams(Integer totalTeams) throws Exception
 	{
 		this.totalTeams = totalTeams;
 		this.getTeamNumberSelections().clear();

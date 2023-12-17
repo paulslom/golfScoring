@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +33,7 @@ import com.pas.beans.Player;
 public class PlayerDAO extends JdbcDaoSupport implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
-	private final JdbcTemplate jdbcTemplate;
+	private final transient JdbcTemplate jdbcTemplate;
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(PlayerDAO.class);
 	

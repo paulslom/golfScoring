@@ -32,8 +32,17 @@ public class GameRowMapper implements RowMapper<Game> , Serializable
 		game.setSkinsPot(rs.getBigDecimal("skinsPot"));
 		game.setTeamPot(rs.getBigDecimal("teamPot"));
 		game.setFieldSize(rs.getInt("fieldSize"));
-		game.setTotalPlayers(rs.getInt("totalPlayers"));
-		game.setTotalTeams(rs.getInt("totalTeams"));
+		
+		try 
+		{
+			game.setTotalPlayers(rs.getInt("totalPlayers"));
+			game.setTotalTeams(rs.getInt("totalTeams"));
+		} 
+		catch (Exception e) 
+		{			
+			throw new SQLException(e.getMessage());
+		}
+		
 		game.setGameNoteForEmail(rs.getString("gameNoteForEmail"));
 		game.setPlayTheBallMethod(rs.getString("playTheBallMethod"));
 		game.setGameClosedForSignups(rs.getBoolean("closedForSignups"));

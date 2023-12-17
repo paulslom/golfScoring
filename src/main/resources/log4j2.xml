@@ -3,7 +3,7 @@
 
   <Properties>
 
-      <Property name="PatternLayout">[%d{yyyy-MMM-dd HH:mm:ss,SSS}]%-5p(%C{3}:%L) - %m%n</Property>
+      <Property name="PatternLayout">[%d{yyyy-MMM-dd HH:mm:ss,SSS}]%-5p(%C{5}:%L) - %m%n</Property>
 
   </Properties>
 

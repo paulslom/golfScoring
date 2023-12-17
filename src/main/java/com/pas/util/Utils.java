@@ -1,6 +1,7 @@
 package com.pas.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -662,12 +663,12 @@ public class Utils
 		
 		BigDecimal bdSlope = new BigDecimal(courseTee.getSlopeRating());
 		BigDecimal slopeFactor = new BigDecimal(113);
-		BigDecimal slopeRatingDiv113 = bdSlope.divide(slopeFactor,6, BigDecimal.ROUND_HALF_UP); 	
+		BigDecimal slopeRatingDiv113 = bdSlope.divide(slopeFactor,6, RoundingMode.HALF_EVEN); 	
 		
 		BigDecimal courseHandicap = handicapIndex.multiply(slopeRatingDiv113).add(courseRatingMinusPar);
 		
 		//Lets finalize this by rounding to a whole number.
-		courseHandicap = courseHandicap.setScale(0, BigDecimal.ROUND_HALF_UP); 
+		courseHandicap = courseHandicap.setScale(0, RoundingMode.HALF_EVEN); 
 		
 		return courseHandicap;
 	}

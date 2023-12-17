@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -384,7 +384,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			}
 			else
 			{
-				String userRole = gu.getUserRoles()[0];
+				String userRole = gu.getUserRole();
 				tempPlayer.setRole(userRole);
 			}			
 			
@@ -1213,17 +1213,17 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		GolfMain.recommendedGameNote = recommendedGameNote;
 	}
 
-	public int addGame(Game game) 
+	public int addGame(Game game) throws Exception 
 	{
 		return gameDAO.addGame(game);
 	}
 
-	public void deleteGame(int gameID) 
+	public void deleteGame(int gameID) throws Exception 
 	{
 		gameDAO.deleteGame(gameID);		
 	}
 
-	public void updateGame(Game game) 
+	public void updateGame(Game game) throws Exception 
 	{
 		gameDAO.updateGame(game);		
 	}
@@ -1426,10 +1426,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		GolfUser gu = new GolfUser();
 		gu.setPassword(newPassword);
 		gu.setUserName(whoIsThis);
-		
-		String[] arr = new String[1];
-		arr[0] = userrole;
-		gu.setUserRoles(arr);
+		gu.setUserRole(userrole);
 		usersAndAuthoritiesDAO.updateUserAndAuthority(whoIsThis, gu);		
 	}
 
@@ -1438,11 +1435,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		GolfUser gu = new GolfUser();
 		gu.setPassword(password);
 		gu.setUserName(username);
-		
-		String[] arr = new String[1];
-		arr[0] = userrole;
-		gu.setUserRoles(arr);
-		
+		gu.setUserRole(userrole);
 		usersAndAuthoritiesDAO.addUserAndAuthority(gu); //default their password to their username		
 	}
 
