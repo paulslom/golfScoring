@@ -25,10 +25,10 @@ import com.pas.beans.GolfUser;
 import jakarta.annotation.PostConstruct;
 
 @Repository
-public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializable
+public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(UsersAndAuthoritiesDAO.class);
+	private static Logger log = LogManager.getLogger(GolfUsersDAO.class);
 	private final transient JdbcTemplate jdbcTemplate;
 	private final DataSource dataSource;
 	
@@ -49,7 +49,7 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 	}
 
 	@Autowired
-    public UsersAndAuthoritiesDAO(DataSource dataSource) 
+    public GolfUsersDAO(DataSource dataSource) 
 	{
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.dataSource = dataSource;
@@ -62,7 +62,7 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 		return adminUserList;		
 	}
 	
-	public void readAllUsersFromDB()
+	public void readAllUsersFromDB()  throws Exception
 	{				
 		String sql1 = "SELECT user_id, username, password, role FROM golfusers";
 		 
@@ -129,13 +129,9 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
     }	
 
 	
-	private void deleteUserAndAuthority(String username)
+	private void deleteUserAndAuthority(String username) throws Exception
 	{
-		String deleteStrAuthorities = "DELETE from authorities where username = ?";
-		jdbcTemplate.update(deleteStrAuthorities, username);	
-		log.info("LoggedDBOperation: function-update; table:authorities; rows:1");
-		
-		String deleteStrUsers = "DELETE from users where username = ?";	
+		String deleteStrUsers = "DELETE from golfusers where username = ?";	
 		jdbcTemplate.update(deleteStrUsers, username);	
 		log.info("LoggedDBOperation: function-update; table:users; rows:1");
 		
@@ -144,7 +140,7 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 		refreshListsAndMaps("delete", gu);	
 	}
 	
-	public void addUserAndAuthority(GolfUser gu)
+	public void addUserAndAuthority(GolfUser gu) throws Exception
 	{
 		int ENABLED = 1;
 		
@@ -157,7 +153,7 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 		refreshListsAndMaps("add", gu);	
 	}
 	
-	public void updateUserAndAuthority(String username, GolfUser gu)
+	public void updateUserAndAuthority(String username, GolfUser gu) throws Exception
 	{
 		deleteUserAndAuthority(username);
 		addUserAndAuthority(gu);		
@@ -182,11 +178,12 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 		
 	}
 
-	public void resetPassword(GolfUser gu) 
+	public void resetPassword(GolfUser gu) throws Exception
 	{
-		String updateStr = " UPDATE users SET password = ? WHERE username = ?";
-		String encodedPW=new BCryptPasswordEncoder().encode(gu.getUserName()); //resets to their username		
-		jdbcTemplate.update(updateStr, encodedPW, gu);
+		String updateStr = " UPDATE golfusers SET password = ? WHERE username = ?";
+		String encodedPW=new BCryptPasswordEncoder().encode(gu.getUserName()); //resets to their username
+		log.debug("encoded password for user " + gu.getUserName() + " is " + encodedPW);	
+		jdbcTemplate.update(updateStr, encodedPW, gu.getUserName());
 		log.info("LoggedDBOperation: function-update; table:users; rows:1");
 		
 		refreshListsAndMaps("update", gu);	
@@ -194,7 +191,7 @@ public class UsersAndAuthoritiesDAO extends JdbcDaoSupport implements Serializab
 		log.debug("successfully reset password for user " + gu);			
 	}
 	
-	public void updateRole(GolfUser gu) 
+	public void updateRole(GolfUser gu)  throws Exception
 	{
 		String updateStr = " UPDATE golfusers SET role = ? WHERE username = ?";
 		jdbcTemplate.update(updateStr, gu.getUserRole(), gu.getUserName());

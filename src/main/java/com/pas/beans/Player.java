@@ -294,64 +294,73 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info("user clicked Save Player from maintain player dialog");	
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		if (operation.equalsIgnoreCase("Add"))
+		try
 		{
-			log.info("user clicked Save Player from maintain player dialog, from an add");	
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 			
-			//first need to make sure the chosen userid does not already exist in the system.
-			Player existingPlayer = golfmain.getPlayerByUserName(this.getUsername());
-			
-			if (existingPlayer == null)
+			if (operation.equalsIgnoreCase("Add"))
 			{
-				int newPlayerID = golfmain.addPlayer(this);
-				golfmain.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
+				log.info("user clicked Save Player from maintain player dialog, from an add");	
 				
-				//need to save off the initial tee preferences here
-				addInitialTeePrefs(newPlayerID);
+				//first need to make sure the chosen userid does not already exist in the system.
+				Player existingPlayer = golfmain.getPlayerByUserName(this.getUsername());
 				
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player successfully added",null);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+				if (existingPlayer == null)
+				{
+					int newPlayerID = golfmain.addPlayer(this);
+					golfmain.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
+					
+					//need to save off the initial tee preferences here
+					addInitialTeePrefs(newPlayerID);
+					
+					FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player successfully added",null);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
+				else
+				{
+					//throw an error that this username already exists
+					FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"this username already exists on the Database.  Pick another",null);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+					FacesContext.getCurrentInstance().validationFailed();
+				}
+					
+				log.info("after add Player");
+			}
+			else if (operation.equalsIgnoreCase("Update"))
+			{
+				log.info("user clicked Save Player from maintain player dialog; from an update");			
+				golfmain.updatePlayer(this);
+				
+				if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
+				{
+					golfmain.addUserAndAuthority(this.getOldUsername(), this.getUsername(), "USER"); //default their password to their username
+				}
+				if (this.isResetPassword())
+				{
+					GolfUser gu = golfmain.getGolfUser(this.getUsername());
+					golfmain.resetPassword(gu); //default their password to their username
+				}
+				if (!this.getOldRole().equalsIgnoreCase(this.getRole()))
+				{
+					GolfUser gu = golfmain.getGolfUser(this.getUsername());
+					gu.setUserRole(this.getRole());
+					golfmain.updateRole(gu); 
+				}
+							
+				log.info("after update Player");
 			}
 			else
 			{
-				//throw an error that this username already exists
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"this username already exists on the Database.  Pick another",null);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				FacesContext.getCurrentInstance().validationFailed();
+				log.info("neither add nor update from maintain player dialog - doing nothing");
 			}
-				
-			log.info("after add Player");
 		}
-		else if (operation.equalsIgnoreCase("Update"))
+		catch (Exception e)
 		{
-			log.info("user clicked Save Player from maintain player dialog; from an update");			
-			golfmain.updatePlayer(this);
-			
-			if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
-			{
-				golfmain.addUserAndAuthority(this.getOldUsername(), this.getUsername(), "USER"); //default their password to their username
-			}
-			if (this.isResetPassword())
-			{
-				GolfUser gu = golfmain.getGolfUser(this.getUsername());
-				golfmain.resetPassword(gu); //default their password to their username
-			}
-			if (!this.getOldRole().equalsIgnoreCase(this.getRole()))
-			{
-				GolfUser gu = golfmain.getGolfUser(this.getUsername());
-				gu.setUserRole(this.getRole());
-				golfmain.updateRole(gu); 
-			}
-						
-			log.info("after update Player");
+			log.error("savePlayer failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when saving player: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+
 		}
-		else
-		{
-			log.info("neither add nor update from maintain player dialog - doing nothing");
-		}
-		
 		return "";
 			
 	}

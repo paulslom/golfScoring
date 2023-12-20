@@ -47,59 +47,66 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 		boolean valid = true;
 		String errorMsg = "";
 		
-		String whoIsThis = Utils.getLoggedInUserName();
-		//SecurityController sc = new SecurityController();
-		//String whoIsThis = sc.getCurrentUserName();
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		GolfUser gu = golfmain.getGolfUser(whoIsThis);		
-		String currentEncryptedPW = gu.getPassword();
-		
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
-		//1) current pw better match
-		
-		if (passwordEncoder.matches(this.getCurrentPassword(), currentEncryptedPW))
+		try
 		{
-			String newPWEncrypted = passwordEncoder.encode(this.getNewPassword());
+			String whoIsThis = Utils.getLoggedInUserName();
+			//SecurityController sc = new SecurityController();
+			//String whoIsThis = sc.getCurrentUserName();
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 			
-			if (newPWEncrypted.equals(currentEncryptedPW))
+			GolfUser gu = golfmain.getGolfUser(whoIsThis);		
+			String currentEncryptedPW = gu.getPassword();
+			
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			//1) current pw better match
+			
+			if (passwordEncoder.matches(this.getCurrentPassword(), currentEncryptedPW))
 			{
-				errorMsg = "Unable to change password.  This password is the same as your old one.  Please change to new one";
-				valid = false;
-			}
-			else
-			{
-				if (this.getNewPassword().equals(this.getConfirmNewPassword()))
+				String newPWEncrypted = passwordEncoder.encode(this.getNewPassword());
+				
+				if (newPWEncrypted.equals(currentEncryptedPW))
 				{
-					golfmain.updateUserAndAuthority(whoIsThis, this.getNewPassword(), "USER");
+					errorMsg = "Unable to change password.  This password is the same as your old one.  Please change to new one";
+					valid = false;
 				}
 				else
 				{
-					errorMsg = "Unable to change password.  New password and confirm password do not match";
-					valid = false;
+					if (this.getNewPassword().equals(this.getConfirmNewPassword()))
+					{
+						golfmain.updateUserAndAuthority(whoIsThis, this.getNewPassword(), "USER");
+					}
+					else
+					{
+						errorMsg = "Unable to change password.  New password and confirm password do not match";
+						valid = false;
+					}
 				}
+				
+			}
+			else
+			{
+				errorMsg = "Unable to change password.  Current pw does not match your entry.  Contact site admin if you can't remember it";
+				valid = false;
 			}
 			
+			
+			if (valid)
+			{
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password successfully changed",null);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			else
+			{
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg,null);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
 		}
-		else
+		catch (Exception e)
 		{
-			errorMsg = "Unable to change password.  Current pw does not match your entry.  Contact site admin if you can't remember it";
+			errorMsg = "Unable to change password. " + e.getMessage();
 			valid = false;
 		}
-		
-		
-		if (valid)
-		{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password successfully changed",null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		else
-		{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg,null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-	   
 		return "";
 	}
 	

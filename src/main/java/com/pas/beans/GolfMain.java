@@ -37,7 +37,7 @@ import com.pas.dao.PlayerMoneyDAO;
 import com.pas.dao.PlayerTeePreferenceDAO;
 import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
-import com.pas.dao.UsersAndAuthoritiesDAO;
+import com.pas.dao.GolfUsersDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -107,7 +107,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	private static String NEWLINE = "<br/>";	
 	
 	@Autowired private GameDAO gameDAO;
-	@Autowired private UsersAndAuthoritiesDAO usersAndAuthoritiesDAO;
+	@Autowired private GolfUsersDAO golfUsersDAO;
 	@Autowired private RoundDAO roundDAO;
 	@Autowired private TeeTimeDAO teeTimeDAO;
 	@Autowired private CourseDAO courseDAO;
@@ -185,23 +185,29 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			playGroupSelections.add(selItem3);
 		}
 		
-		//this gets populated at app startup, no need to do it again when someone logs in.
-		if (usersAndAuthoritiesDAO.getFullUserMap().isEmpty())
+		try 
 		{
-			groupDAO.readGroupsFromDB();
-			Group defaultGroup = this.getGroupsList().get(0);
-			this.setDefaultGroup(defaultGroup);
-			
-			loadCourseSelections();
-			loadCourseTees();
-			loadFullGameList();
-			loadTeeTimeList();
-			loadFullPlayerList();
-			loadFullPlayerTeePreferencesList();
-			loadPlayerMoneyList();
-			loadRoundList();
-		}	
+			//this gets populated at app startup, no need to do it again when someone logs in.
+			if (golfUsersDAO.getFullUserMap().isEmpty())
+			{
+				groupDAO.readGroupsFromDB();
+				Group defaultGroup = this.getGroupsList().get(0);
+				this.setDefaultGroup(defaultGroup);
 				
+				loadCourseSelections();
+				loadCourseTees();
+				loadFullGameList();
+				loadTeeTimeList();
+				loadFullPlayerList();
+				loadFullPlayerTeePreferencesList();
+				loadPlayerMoneyList();
+				loadRoundList();
+			}	
+		} 
+		catch (Exception e) 
+		{
+			log.error(e.getMessage(), e);
+		}		
 	}
 
 	private void loadRoundList() 
@@ -364,12 +370,12 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Player Money read in. List size = " + this.getPlayerMoneyList().size());			
 	}
 	
-	public void loadFullPlayerList() 
+	public void loadFullPlayerList() throws Exception 
 	{
 		playerDAO.readPlayersFromDB();			
-		usersAndAuthoritiesDAO.readAllUsersFromDB();
+		golfUsersDAO.readAllUsersFromDB();
 						
-		Map<String, GolfUser> golfUsersMap = usersAndAuthoritiesDAO.getFullUserMap();
+		Map<String, GolfUser> golfUsersMap = golfUsersDAO.getFullUserMap();
 		
 		for (int i = 0; i < this.getFullPlayerList().size(); i++) 
 		{
@@ -1413,40 +1419,40 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 
 	public List<String> getAdminUserList() 
 	{
-		return usersAndAuthoritiesDAO.getAdminUserList();
+		return golfUsersDAO.getAdminUserList();
 	}
 
 	public GolfUser getGolfUser(String whoIsThis) 
 	{
-		return usersAndAuthoritiesDAO.getGolfUser(whoIsThis);
+		return golfUsersDAO.getGolfUser(whoIsThis);
 	}
 
-	public void updateUserAndAuthority(String whoIsThis, String newPassword, String userrole) 
+	public void updateUserAndAuthority(String whoIsThis, String newPassword, String userrole) throws Exception 
 	{
 		GolfUser gu = new GolfUser();
 		gu.setPassword(newPassword);
 		gu.setUserName(whoIsThis);
 		gu.setUserRole(userrole);
-		usersAndAuthoritiesDAO.updateUserAndAuthority(whoIsThis, gu);		
+		golfUsersDAO.updateUserAndAuthority(whoIsThis, gu);		
 	}
 
-	public void addUserAndAuthority(String username, String password, String userrole) 
+	public void addUserAndAuthority(String username, String password, String userrole) throws Exception 
 	{
 		GolfUser gu = new GolfUser();
 		gu.setPassword(password);
 		gu.setUserName(username);
 		gu.setUserRole(userrole);
-		usersAndAuthoritiesDAO.addUserAndAuthority(gu); //default their password to their username		
+		golfUsersDAO.addUserAndAuthority(gu); //default their password to their username		
 	}
 
-	public void resetPassword(GolfUser gu) 
+	public void resetPassword(GolfUser gu) throws Exception 
 	{
-		usersAndAuthoritiesDAO.resetPassword(gu); //default their password to their username		
+		golfUsersDAO.resetPassword(gu); //default their password to their username		
 	}
 
-	public void updateRole(GolfUser gu) 
+	public void updateRole(GolfUser gu) throws Exception 
 	{
-		usersAndAuthoritiesDAO.updateRole(gu); 		
+		golfUsersDAO.updateRole(gu); 		
 	}
 		
 }
