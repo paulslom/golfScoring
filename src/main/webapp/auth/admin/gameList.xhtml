@@ -26,7 +26,7 @@
 			  </f:facet>
 			  
 			   <p:ajax event="rowSelect" listener="#{pc_Game.selectRowAjax}" 
-			       update="gameForm:maintainGameButtonID gameForm:pickListButtonID" ></p:ajax>
+			       update="gameForm:maintainGameButtonID" ></p:ajax>
 						
 			  <p:column style="width:3%" headerText="ID" sortBy="#{game.gameID}">												
 				  <h:outputText value="#{game.gameID}"/>														
@@ -109,24 +109,18 @@
 	      <p:messages id="facesMessages" showDetail="false">
 	      </p:messages>   
 				        
-            <p:commandButton id="maintainGameButtonID"
-                value="#{bundle.update}"
-                disabled="#{pc_Game.disableGameDialogButton}"
-                action="#{pc_Game.updateGame}"
-				update="maintainGamesDialogID"
-				oncomplete="PF('maintainGamesDialog').show();">
-			</p:commandButton>	
-			
-			<p:commandButton id="addGameButtonID"
-                value="#{bundle.add}"
-                action="#{pc_Game.addGameFromGameList}">
-			</p:commandButton>
-			
-			<p:commandButton id="pickListButtonID"
-                value="#{bundle.playerPicklist}"
-                disabled="#{pc_GolfMain.disableProceedToSelectPlayers}"
-                action="#{pc_Game.proceedToPlayerPicklist}">
-			</p:commandButton>
+          <p:commandButton id="maintainGameButtonID"
+               value="#{bundle.update}"
+               disabled="#{pc_Game.disableGameDialogButton}"
+               action="#{pc_Game.updateGame}"
+			   update="maintainGamesDialogID"
+			   oncomplete="PF('maintainGamesDialog').show();">
+		  </p:commandButton>	
+		
+		  <p:commandButton id="addGameButtonID"
+               value="#{bundle.add}"
+               action="#{pc_Game.addGameFromGameList}">
+		  </p:commandButton>
 					
 		</h:form> 	
 	
