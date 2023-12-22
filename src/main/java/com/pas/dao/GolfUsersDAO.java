@@ -182,6 +182,7 @@ public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 	{
 		String updateStr = " UPDATE golfusers SET password = ? WHERE username = ?";
 		String encodedPW=new BCryptPasswordEncoder().encode(gu.getUserName()); //resets to their username
+		gu.setPassword(encodedPW);
 		log.debug("encoded password for user " + gu.getUserName() + " is " + encodedPW);	
 		jdbcTemplate.update(updateStr, encodedPW, gu.getUserName());
 		log.info("LoggedDBOperation: function-update; table:users; rows:1");
