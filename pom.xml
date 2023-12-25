@@ -12,14 +12,62 @@
   <url>http://maven.apache.org</url>
   
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>    
+    <maven.compiler.source>1.17</maven.compiler.source>
+    <maven.compiler.target>1.17</maven.compiler.target>    
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
   
   <dependencies>  
    
+    <dependency>
+	    <groupId>software.amazon.awssdk</groupId>
+	    <artifactId>dynamodb</artifactId>
+	    <version>2.22.3</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>software.amazon.awssdk</groupId>
+	    <artifactId>dynamodb-enhanced</artifactId>
+	    <version>2.22.3</version>
+	</dependency>
+	
+    <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>DynamoDBLocal</artifactId>
+        <version>2.0.0</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>url-connection-client</artifactId>
+        <version>2.20.102</version>
+    </dependency>
+    
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-core</artifactId>
+	    <version>2.16.0</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-annotations</artifactId>
+	    <version>2.16.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.16.0</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>jakarta.validation</groupId>
+	    <artifactId>jakarta.validation-api</artifactId>
+	    <version>3.1.0-M1</version>
+	</dependency>
+
    	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-api</artifactId>
@@ -142,23 +190,50 @@
   </dependencies>
   
   <build>
-    <finalName>golfScoring</finalName>  
+	  
+    <finalName>golfScoring</finalName>
+      
     <plugins>
+		
        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.7.0</version>
           <configuration>
-             <source>1.8</source>
-             <target>1.8</target>
+             <source>1.17</source>
+             <target>1.17</target>
           </configuration>
        </plugin>
+       
        <plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-war-plugin</artifactId>
 			<version>3.2.3</version>
-		</plugin>
+	   </plugin>
+	   
+	   <!--Get Native SQLite4Java dependencies-->
+       <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.6.0</version>
+            <executions>
+                <execution>
+                    <id>copy</id>
+                    <phase>test-compile</phase>
+                    <goals>
+                        <goal>copy-dependencies</goal>
+                    </goals>
+                    <configuration>
+                        <includeScope>test</includeScope>
+                        <includeTypes>so,dll,dylib</includeTypes>
+                        <outputDirectory>${project.basedir}/native-libs</outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+       </plugin>
+		
     </plugins>
+    
    </build>
   
 </project>

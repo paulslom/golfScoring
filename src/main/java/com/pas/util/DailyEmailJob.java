@@ -116,8 +116,7 @@ public class DailyEmailJob implements Runnable
 	}
 
 	private ArrayList<String> establishEmailRecipients() 
-	{	
-		
+	{		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(Utils.getDatasourceProperties());		
 		String sql = "select * from player order by lastName, firstName";		 
 		List<Player> playerList = jdbcTemplate.query(sql, new PlayerRowMapper()); 

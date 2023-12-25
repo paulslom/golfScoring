@@ -1,0 +1,122 @@
+Description: "Stack used to manage application resources."
+Parameters:
+  environment:
+    Type: String
+    Description: The environment for this resource (e.g. dev, qa, prod)
+  productId:
+    Type: String
+    Description: The platform value e.g. cntctr.
+  ownerName:
+    Type: String
+    Description: The Owner Name tag value for this resource
+  costCenter:
+    Type: String
+    Description: The cost center tag value for this resource
+  ownerEmail:
+    Type: String
+    Description: The owner email tag value for this resource
+  team:
+    Type: String
+    Description: The team name tag value for this resource
+  lineOfBusiness:
+    Type: String
+    Description: The line of business tag value for this resource
+  mapMigrated:
+    Type: String
+    Description: The map migrated tag value for this resource
+    Default: d-server-02atofx8p02dp4
+  appName:
+    Type: String
+    Description: The service name.  
+  apmId:
+    Type: String
+    Description: The service now apm id.
+    Default: ""
+
+Resources:
+  GolfUsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "lfgapp-cc-call-summary-${environment}"
+      BillingMode: PROVISIONED
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: primaryIdentifier
+          AttributeType: S       
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: lfgapp-cc-call-summary-primary-identifier-gsi
+          KeySchema:
+            - AttributeName: primaryIdentifier
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5        
+      SSESpecification:
+        KMSMasterKeyId: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/dynamodbKey"
+        SSEEnabled: true
+        SSEType: KMS
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TimeToLiveSpecification:
+        AttributeName: expireOn
+        Enabled: true
+      
+
+  CallSummaryTableWriteCapacityScalableTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 10
+      MinCapacity: 5
+      ResourceId: !Sub "table/lfgapp-cc-call-summary-${environment}"
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/lfgapp-${productId}-dynamodb-autoscaling-role"
+      ScalableDimension: dynamodb:table:WriteCapacityUnits
+      ServiceNamespace: dynamodb
+    DependsOn: CallSummaryTable
+
+  CallSummaryTableWriteScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: WriteAutoScalingPolicy
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref CallSummaryTableWriteCapacityScalableTarget
+      TargetTrackingScalingPolicyConfiguration:
+        TargetValue: 50
+        ScaleInCooldown: 60
+        ScaleOutCooldown: 60
+        PredefinedMetricSpecification:
+          PredefinedMetricType: DynamoDBWriteCapacityUtilization
+    DependsOn: CallSummaryTableWriteCapacityScalableTarget
+
+  CallSummaryTableReadCapacityScalableTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 10
+      MinCapacity: 5
+      ResourceId: !Sub "table/lfgapp-cc-call-summary-${environment}"
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/lfgapp-${productId}-dynamodb-autoscaling-role"
+      ScalableDimension: dynamodb:table:ReadCapacityUnits
+      ServiceNamespace: dynamodb
+    DependsOn: CallSummaryTable
+
+  CallSummaryTableReadScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: ReadAutoScalingPolicy
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref CallSummaryTableReadCapacityScalableTarget
+      TargetTrackingScalingPolicyConfiguration:
+        TargetValue: 50
+        ScaleInCooldown: 60
+        ScaleOutCooldown: 60
+        PredefinedMetricSpecification:
+          PredefinedMetricType: DynamoDBReadCapacityUtilization
+    DependsOn: CallSummaryTableReadCapacityScalableTarget

@@ -1,0 +1,100 @@
+Description: "Stack used to manage cc-call-summary application security resources."
+Parameters:
+  environment:
+    Type: String
+    Description: The environment for this resource (e.g. dev, qa, prod)
+  productId:
+    Type: String
+    Description: The platform value e.g. cntctr.
+  taskRoleName:
+    Type: String
+    Description: The task role name for this resource
+  appName:
+    Type: String
+    Description: The app name for this resource
+  inlinePolicyName:
+    Type: String
+    Description: The inline policy name
+  ownerName:
+    Type: String
+    Description: The Owner Name tag value for this resource
+  costCenter:
+    Type: String
+    Description: The cost center tag value for this resource
+  ownerEmail:
+    Type: String
+    Description: The owner email tag value for this resource
+  team:
+    Type: String
+    Description: The team name tag value for this resource
+  lineOfBusiness:
+    Type: String
+    Description: The line of business tag value for this resource
+  mapMigrated:
+    Type: String
+    Description: The line of business tag value for this resource
+    Default: d-server-02atofx8p02dp4
+  azureArn:
+    Type: String
+    Description: The secret arn for apps
+  apmId:
+    Type: String
+    Description: The service now apm id.
+    Default: ""
+
+Resources:
+  ApplicationTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+      Description: !Sub ECS Task Role for ${appName} application.
+      ManagedPolicyArns:
+        - !Sub "arn:aws:iam::${AWS::AccountId}:policy/lfgapp-cntctr-kms-dynamodb-usage-policy"
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/lfgshr-app-permission-boundary
+      RoleName: !Ref taskRoleName
+      Policies:
+        - PolicyName: !Ref inlinePolicyName
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:BatchGetItem
+                  - dynamodb:BatchWriteItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                Resource:
+                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lfgapp-cc-call-summary-${environment}"
+                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lfgapp-cc-call-summary-${environment}/index/*"
+
+      Tags:
+        - Key: lfg:team
+          Value: !Ref team
+        - Key: lfg:cost-center
+          Value: !Ref costCenter
+        - Key: lfg:environment-name
+          Value: !Ref environment
+        - Key: lfg:line-of-business
+          Value: !Ref lineOfBusiness
+        - Key: lfg:name
+          Value: !Ref taskRoleName
+        - Key: lfg:application
+          Value: !Ref appName
+        - Key: lfg:apm-id
+          Value: !Ref apmId
+        - Key: lfg:owner-email
+          Value: !Ref ownerEmail
+        - Key: lfg:owner-name
+          Value: !Ref ownerName
+        - Key: map-migrated
+          Value: !Ref mapMigrated
