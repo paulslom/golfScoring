@@ -16,32 +16,26 @@ import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 import com.google.gson.Gson;
 import com.pas.beans.GolfUser;
-import com.pas.util.FileDataLoader;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
-import software.amazon.awssdk.core.waiters.WaiterResponse;
-import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
+import software.amazon.awssdk.core.internal.waiters.ResponseOrException;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.GetItemEnhancedRequest;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeDefinition;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.CreateTableRequest;
-import software.amazon.awssdk.services.dynamodb.model.CreateTableResponse;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.DescribeTableRequest;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.KeySchemaElement;
-import software.amazon.awssdk.services.dynamodb.model.KeyType;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
-import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
 import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
-import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
 public class CreateTableDynamoDBLocal
@@ -73,18 +67,20 @@ public class CreateTableDynamoDBLocal
             server = ServerRunner.createServerFromCommandLineArgs(localArgs);
             server.start();
             
-            //  Create a client and connect to DynamoDB Local
-            DynamoDbClient ddbClient = DynamoDbClient.builder()
-                    .endpointOverride(URI.create(uri))
-                    .httpClient(UrlConnectionHttpClient.builder().build())
+            DynamoDbClient ddbClient =  DynamoDbClient.builder()
+            		.endpointOverride(URI.create(uri))
                     .region(Region.of(AWS_REGION))
                     .credentialsProvider(ProfileCredentialsProvider.create("default"))
-                    //.credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(AWS_ACCESS_KEY, AWS_SECRET)))
                     .build();
-
+            
+            //  Create a client and connect to DynamoDB Local, using an instance of the standard client.
+            DynamoDbEnhancedClient ddbEnhancedClient = DynamoDbEnhancedClient.builder()
+                    .dynamoDbClient(ddbClient)                           
+                    .build();
+            
             // Create a table in DynamoDB Local with table name Music and partition key Artist
             // Understanding core components of DynamoDB: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
-            createTable(ddbClient, AWS_TABLE_NAME, AWS_KEY_NAME);
+            DynamoDbTable<GolfUser> golfUserTable = createTable(ddbEnhancedClient, ddbClient, AWS_TABLE_NAME, AWS_KEY_NAME);
 
             //  List all the tables in DynamoDB Local
 
@@ -93,16 +89,18 @@ public class CreateTableDynamoDBLocal
             ListTablesResponse listTablesResponse = ddbClient.listTables();
             System.out.println(listTablesResponse.tableNames());
 
-            loadTableData(ddbClient);
+            loadTableData(golfUserTable);
             
         } 
         catch (Exception e) 
         {
             throw new RuntimeException(e);
         }
+        
+        System.exit(1);
     }
     
-    private static void loadTableData(DynamoDbClient ddbClient) throws Exception
+    private static void loadTableData(DynamoDbTable<GolfUser> golfUserTable) throws Exception
     {   
         // Insert data into the table
         System.out.println();
@@ -122,27 +120,24 @@ public class CreateTableDynamoDBLocal
     		{
             	GolfUser gu = golfUserList.get(i);
             	
-            	HashMap<String, AttributeValue> itemValues = new HashMap<String, AttributeValue>();
-
-                // Add all content to the table
-                itemValues.put("userName", AttributeValue.builder().s(gu.getUserName()).build());
-                itemValues.put("password", AttributeValue.builder().s(gu.getPassword()).build());
-                itemValues.put("userRole", AttributeValue.builder().s(gu.getUserRole()).build());
-                itemValues.put("userId", AttributeValue.builder().s(String.valueOf(gu.getUserId())).build());
-
-                PutItemRequest request = PutItemRequest.builder()
-                        .tableName(AWS_TABLE_NAME)
-                        .item(itemValues)
-                        .build();
-
                 try 
                 {
-                    ddbClient.putItem(request);
+                    golfUserTable.putItem(gu);
                     
                     // Get data from the table
-                    System.out.println("Getting Item from the table for key: " + AWS_KEY_NAME);
+                    System.out.println("Getting Item from the table for key after putItem: " + AWS_KEY_NAME);
                     System.out.println("-------------------------------");
-                    getDynamoDBItem(ddbClient, AWS_TABLE_NAME, AWS_KEY_NAME, gu.getUserName());
+                                        
+                    Key key = Key.builder().partitionValue(gu.getUserName()).sortValue(gu.getUserRole()).build();
+                    
+                    GetItemEnhancedRequest getItemEnhancedRequest = GetItemEnhancedRequest.builder()
+                    		.key(key)
+                            .consistentRead(true)
+                            .build();
+                    
+                    GolfUser golfUserInserted = golfUserTable.getItem(getItemEnhancedRequest);
+                    System.out.println("Successfully retrieved Item from the table for key: " + golfUserInserted.getUserName() 
+                    		+ " the id for this is = " + golfUserInserted.getUserId());
                 } 
                 catch (ResourceNotFoundException e) 
                 {
@@ -204,50 +199,48 @@ public class CreateTableDynamoDBLocal
         return null;
     }
     
-    private static String createTable(DynamoDbClient ddb, String tableName, String key) 
+    private static DynamoDbTable<GolfUser> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient, String tableName, String key) 
     {
-        DynamoDbWaiter dbWaiter = ddb.waiter();
-        CreateTableRequest request = CreateTableRequest.builder()
-                .attributeDefinitions(AttributeDefinition.builder()
-                        .attributeName(key)
-                        .attributeType(ScalarAttributeType.S)
-                        .build())
-                .keySchema(KeySchemaElement.builder()
-                        .attributeName(key)
-                        .keyType(KeyType.HASH)
-                        .build())
-                .provisionedThroughput(ProvisionedThroughput.builder()
-                        .readCapacityUnits(Long.valueOf(5))
-                        .writeCapacityUnits(Long.valueOf(5))
-                        .build())
-                .tableName(tableName)
-                .build();
-
-        String newTable = "";
+        DynamoDbTable<GolfUser> golfUsersTable = ddbEnhancedClient.table(tableName, TableSchema.fromBean(GolfUser.class));
         
-        try 
+        // Create the DynamoDB table.  If it exists, it'll throw an exception
+        
+        try
         {
-            CreateTableResponse response = ddb.createTable(request);
-            DescribeTableRequest tableRequest = DescribeTableRequest.builder()
-                    .tableName(tableName)
-                    .build();
-
-            // Wait until the Amazon DynamoDB table is created
-            WaiterResponse<DescribeTableResponse> waiterResponse = dbWaiter.waitUntilTableExists(tableRequest);
-            waiterResponse.matched().response().ifPresent(System.out::println);
-
-            newTable = response.tableDescription().tableName();
-            return newTable;
-
-        } catch (DynamoDbException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
+	        golfUsersTable.createTable(builder -> builder
+	                .provisionedThroughput(b -> b
+	                        .readCapacityUnits(Long.valueOf(5))
+	                        .writeCapacityUnits(Long.valueOf(5))
+	                        .build())
+	        );
         }
-        return "";
+        catch (ResourceInUseException riue)
+        {
+        	System.out.println("Table already exists! " + riue.getMessage());
+        	throw riue;
+        }
+        // The 'dynamoDbClient' instance that's passed to the builder for the DynamoDbWaiter is the same instance
+        // that was passed to the builder of the DynamoDbEnhancedClient instance used to create the 'customerDynamoDbTable'.
+        // This means that the same Region that was configured on the standard 'dynamoDbClient' instance is used for all service clients.
+        
+        try (DynamoDbWaiter waiter = DynamoDbWaiter.builder().client(ddbClient).build()) // DynamoDbWaiter is Autocloseable
+        { 
+            ResponseOrException<DescribeTableResponse> response = waiter
+                    .waitUntilTableExists(builder -> builder.tableName(tableName).build())
+                    .matched();
+            
+            DescribeTableResponse tableDescription = response.response().orElseThrow(
+                    () -> new RuntimeException(tableName + " was not created."));
+            
+            // The actual error can be inspected in response.exception()
+            System.out.println(tableName + " table was created.");
+        }        
+        
+        return golfUsersTable;
     }
-
-    public static void getDynamoDBItem(DynamoDbClient ddb, String tableName, String key, String keyVal) {
-
+    
+    public static void getDynamoDBItem(DynamoDbClient ddb, String tableName, String key, String keyVal) 
+    {
         HashMap<String, AttributeValue> keyToGet = new HashMap<String, AttributeValue>();
 
         keyToGet.put(key, AttributeValue.builder()

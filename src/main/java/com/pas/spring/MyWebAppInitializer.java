@@ -11,7 +11,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import com.pas.beans.Game;
 import com.pas.util.FileDataLoader;
 import com.sun.faces.config.FacesInitializer;
 

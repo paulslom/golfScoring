@@ -1,5 +1,5 @@
 app:
-  load-data: false
+  load-data: true
   table:
     call-summary-table-name: lfgapp-cc-call-summary-${spring.environment}
 

@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.naming.InitialContext;
+
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpSession;
 
@@ -671,6 +673,35 @@ public class Utils
 		courseHandicap = courseHandicap.setScale(0, RoundingMode.HALF_EVEN); 
 		
 		return courseHandicap;
+	}
+	
+	public static boolean isLocalEnv()
+	{
+		boolean isLocal = false;
+		
+		String env = getJ2EESYS();
+		if ("LOCAL".equalsIgnoreCase(env))
+		{
+			isLocal = true;
+		}
+		return isLocal;
+	}
+	
+	private static String getJ2EESYS()
+	{
+		String currentEnv = null;
+		
+		try 
+		{
+			Object env = new InitialContext().lookup("java:comp/env/J2EE_SYS");
+			currentEnv = env.toString();
+		} 
+		catch (Exception e) 
+		{
+			log.error("Exception encountered retrieving J2EE_SYS: " + e.getMessage());
+		}
+		
+		return currentEnv;
 	}
 
 		
