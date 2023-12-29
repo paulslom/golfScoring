@@ -1,7 +1,5 @@
 package com.pas.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -13,7 +11,6 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
@@ -21,14 +18,10 @@ import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.google.gson.Gson;
 import com.pas.beans.GolfUser;
 
-import jakarta.validation.constraints.NotBlank;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
-import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
-import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch.Builder;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
@@ -39,14 +32,9 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 public class FileDataLoader 
 {
 	private static Logger logger = LogManager.getLogger(FileDataLoader.class);
-    private final boolean loadData;
+    private static final boolean loadData = false;
     private DynamoDbEnhancedClient dynamoDbEnhancedClient;
     
-    public FileDataLoader(@NotBlank @Value("${app.load-data}") final boolean loadData) 
-    {
-  		this.loadData = loadData;
-    }
-
     public boolean load() throws Exception 
     {
         if (!loadData) 
@@ -61,7 +49,7 @@ public class FileDataLoader
         	
         	Properties prop = new Properties();
 			
-	    	InputStream stream = new FileInputStream(new File("/dynamoDb.properties")); 
+	    	InputStream stream = FileDataLoader.class.getResourceAsStream("/dynamoDb.properties"); 
 	    	prop.load(stream);   		
 		 	
 		    String AWS_REGION = prop.getProperty("region");
@@ -93,29 +81,28 @@ public class FileDataLoader
         {
         	logger.info("We are operating in AWS env - connecting to DynamoDB on AWS");
         	dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder().build();
-        }
-        
+        }       
         
         DynamoDbTable<GolfUser> table = dynamoDbEnhancedClient.table("GolfUsers", TableSchema.fromBean(GolfUser.class));
         table.createTable();
         
         List<GolfUser> golfUserList = loadFile();
-        loadDynamoDb(golfUserList);
+        loadDynamoDb(golfUserList, table);
         
         return true;
     }
 
-    private void loadDynamoDb(List<GolfUser> datalist) 
+    private void loadDynamoDb(List<GolfUser> datalist, DynamoDbTable<GolfUser> table) 
     {
-        Builder<GolfUser> writeBatchBuilder = WriteBatch.builder(GolfUser.class);
-        datalist.forEach(data -> writeBatchBuilder.addPutItem(builder -> builder.item(data)));
-        BatchWriteItemEnhancedRequest batchWriteItemEnhancedRequest = BatchWriteItemEnhancedRequest.builder().writeBatches(writeBatchBuilder.build()).build();
-        dynamoDbEnhancedClient.batchWriteItem(batchWriteItemEnhancedRequest);
-        
+        for (int i = 0; i < datalist.size(); i++) 
+        {
+			GolfUser gu = datalist.get(i);
+			table.putItem(gu);
+		}
+           
         logger.info("Completed loading data to DB.");
     }
-
-
+    
     private List<GolfUser> loadFile() throws Exception 
     {
         List<GolfUser> golfUserList = (List<GolfUser>) readFromFileAndConvert();

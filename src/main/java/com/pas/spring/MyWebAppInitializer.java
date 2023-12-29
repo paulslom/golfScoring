@@ -5,6 +5,7 @@ import jakarta.servlet.ServletRegistration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -43,7 +44,7 @@ public class MyWebAppInitializer extends FacesInitializer implements WebApplicat
         {
             logger.info("ApplicationReady event trigger to insert");
             logger.info("Loading data files to table...");
-            FileDataLoader fileDataLoader = new FileDataLoader(false);
+            FileDataLoader fileDataLoader = new FileDataLoader();
             boolean success = fileDataLoader.load();
             if (success) 
             {
