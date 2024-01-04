@@ -308,7 +308,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				if (existingPlayer == null)
 				{
 					int newPlayerID = golfmain.addPlayer(this);
-					golfmain.addUserAndAuthority(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
+					golfmain.addUser(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
 					
 					//need to save off the initial tee preferences here
 					addInitialTeePrefs(newPlayerID);
@@ -333,7 +333,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				
 				if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
 				{
-					golfmain.addUserAndAuthority(this.getOldUsername(), this.getUsername(), "USER"); //default their password to their username
+					golfmain.addUser(this.getOldUsername(), this.getUsername(), "USER"); //default their password to their username
 				}
 				if (this.isResetPassword())
 				{

@@ -74,7 +74,7 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 				{
 					if (this.getNewPassword().equals(this.getConfirmNewPassword()))
 					{
-						golfmain.updateUserAndAuthority(whoIsThis, this.getNewPassword(), "USER");
+						golfmain.updateUser(whoIsThis, this.getNewPassword(), "USER");
 					}
 					else
 					{

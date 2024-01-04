@@ -18,7 +18,7 @@
   <Loggers>
 
     <!-- Log at info level for spring -->
-    <Logger name="org.springframework" level="trace" additivity="false">
+    <Logger name="org.springframework" level="warn" additivity="false">
       <AppenderRef ref="console-log" />
     </Logger> 
    

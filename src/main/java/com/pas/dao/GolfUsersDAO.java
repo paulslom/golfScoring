@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.GolfUser;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoUtil;
 
 import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
+import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 
 @Repository
 public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
@@ -35,17 +42,23 @@ public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 	private Map<String,GolfUser> fullUserMap = new HashMap<>();
 	private Map<String,GolfUser> adminUserMap = new HashMap<>();
 
+	private static DynamoClients dynamoClients;
+	private static DynamoDbTable<GolfUser> golfUsersTable;
+	private static final String AWS_TABLE_NAME = "golfUsers";
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
 	       setDataSource(dataSource);
+	       dynamoClients = DynamoUtil.getDynamoClients();
+	       golfUsersTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(GolfUser.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing DAO: {}" +  ex.getStackTrace());
+	      log.error("Got exception while initializing GolfUsersDAO. Ex = " + ex.getMessage(), ex);
 	   }
+	   
 	}
 
 	@Autowired
@@ -62,7 +75,56 @@ public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 		return adminUserList;		
 	}
 	
-	public void readAllUsersFromDB()  throws Exception
+	public void readAllUsersFromDB() throws Exception
+	{				
+		List<GolfUser> userList = new ArrayList<>();
+		
+		/*
+		System.out.println("Listing tables in DynamoDB Local...");
+        System.out.println("-------------------------------");
+        ListTablesResponse listTablesResponse = dynamoClients.getDdbClient().listTables();
+        System.out.println(listTablesResponse.tableNames());
+        */
+		
+	    Iterator<GolfUser> results = golfUsersTable.scan().items().iterator();
+            
+        while (results.hasNext()) 
+        {
+            GolfUser gu = results.next();
+            
+            if (this.getFullUserMap().containsKey(gu.getUserName()))
+			{
+				log.error("duplicate user: " + gu.getUserName());
+			}
+			else
+			{
+				this.getFullUserMap().put(gu.getUserName(), gu);
+								
+				if (gu.getUserRole().contains("ADMIN"))
+				{
+					this.getAdminUserMap().put(gu.getUserName(), gu);
+				}
+			}
+        }
+          	
+		log.info("LoggedDBOperation: function-inquiry; table:golfusers; rows:" + userList.size());
+				
+		//this loop only for debugging purposes
+		/*
+		for (Map.Entry<String, GolfUser> entry : this.getFullUserMap().entrySet()) 
+		{
+		    String key = entry.getKey();
+		    GolfUser golfUser = entry.getValue();
+
+		    log.info("Key = " + key + ", value = " + golfUser.getUserName());
+		}
+		*/
+		
+		log.info("exiting");
+		
+	}
+	
+	public void readAllUsersFromDBOldMySQLWay() throws Exception
 	{				
 		String sql1 = "SELECT user_id, username, password, role FROM golfusers";
 		 
@@ -127,9 +189,8 @@ public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 		GolfUser gu = this.getFullUserMap().get(username);			
     	return gu;
     }	
-
 	
-	private void deleteUserAndAuthority(String username) throws Exception
+	private void deleteUser(String username) throws Exception
 	{
 		String deleteStrUsers = "DELETE from golfusers where username = ?";	
 		jdbcTemplate.update(deleteStrUsers, username);	
@@ -140,7 +201,7 @@ public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 		refreshListsAndMaps("delete", gu);	
 	}
 	
-	public void addUserAndAuthority(GolfUser gu) throws Exception
+	public void addUser(GolfUser gu) throws Exception
 	{
 		int ENABLED = 1;
 		
@@ -153,10 +214,10 @@ public class GolfUsersDAO extends JdbcDaoSupport implements Serializable
 		refreshListsAndMaps("add", gu);	
 	}
 	
-	public void updateUserAndAuthority(String username, GolfUser gu) throws Exception
+	public void updateUser(String username, GolfUser gu) throws Exception
 	{
-		deleteUserAndAuthority(username);
-		addUserAndAuthority(gu);		
+		deleteUser(username);
+		addUser(gu);		
 		refreshListsAndMaps("update", gu);	
 	}
 

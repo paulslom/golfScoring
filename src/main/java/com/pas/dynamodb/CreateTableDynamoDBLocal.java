@@ -9,6 +9,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -39,19 +40,15 @@ import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
 public class CreateTableDynamoDBLocal
-{
-    private static DynamoDBProxyServer server;
-    
-    private static String AWS_REGION;
-    private static String AWS_DYNAMODB_LOCAL_PORT;
-     
-    private static String AWS_JSON_FILE_NAME;
-    private static String AWS_TABLE_NAME;
-    private static String AWS_KEY_NAME;
-    
-    
-    private static String TABLE_PROPERTIES = "golfUsersDynamoDB.properties";
-    
+{	 
+	private static String AWS_DYNAMODB_LOCAL_PORT;
+	private static String AWS_REGION;
+	private static String AWS_JSON_FILE_NAME;
+	private static String AWS_TABLE_NAME;
+	private static String AWS_KEY_NAME;
+   
+	private static String TABLE_PROPERTIES = "golfUsersDynamoDB.properties";
+
     public static void main(String[] args) 
     {
         try 
@@ -62,9 +59,9 @@ public class CreateTableDynamoDBLocal
             String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
             
             // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-inMemory", "-port", AWS_DYNAMODB_LOCAL_PORT};
+            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", "C:/Paul/DynamoDB"};
             System.out.println("Starting DynamoDB Local...");
-            server = ServerRunner.createServerFromCommandLineArgs(localArgs);
+            DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
             server.start();
             
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
@@ -91,6 +88,8 @@ public class CreateTableDynamoDBLocal
 
             loadTableData(golfUserTable);
             
+            scan(golfUserTable);
+            
         } 
         catch (Exception e) 
         {
@@ -100,6 +99,51 @@ public class CreateTableDynamoDBLocal
         System.exit(1);
     }
     
+    private static void scan(DynamoDbTable<GolfUser> golfUserTable) 
+    {
+        try 
+        {
+            Iterator<GolfUser> results = golfUserTable.scan().items().iterator();
+            
+            while (results.hasNext()) 
+            {
+                GolfUser rec = results.next();
+                System.out.println("ID = " + rec.getUserId() + " .. user name = " + rec.getUserName() + " .. role = " + rec.getUserRole());
+            }
+        } 
+        catch (DynamoDbException e) 
+        {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        System.out.println("Done with dynamo scan");
+    }
+    private static void getProperties()
+	{
+		try 
+	    {	
+			Properties prop = new Properties();
+			
+	    	InputStream stream = new FileInputStream(new File("C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\dynamoDb.properties")); 
+	    	prop.load(stream);   		
+		 	
+		    AWS_REGION = prop.getProperty("region");
+		    AWS_DYNAMODB_LOCAL_PORT = prop.getProperty("local_port");		   
+			
+	    	InputStream stream2 = new FileInputStream(new File("C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\" + TABLE_PROPERTIES)); 
+	    	prop.load(stream2);   		
+		 	
+	    	AWS_JSON_FILE_NAME = prop.getProperty("jsonFileName");
+	    	AWS_TABLE_NAME = prop.getProperty("tableName");
+	        AWS_KEY_NAME = prop.getProperty("keyName");	        
+		 }
+		 catch (Exception e) 
+	     { 
+		    System.out.println(e.toString());
+		 }     		
+	   	
+	}
+
     private static void loadTableData(DynamoDbTable<GolfUser> golfUserTable) throws Exception
     {   
         // Insert data into the table
@@ -155,31 +199,7 @@ public class CreateTableDynamoDBLocal
         
 	}
 
-	private static void getProperties()
-    {
-		try 
-	    {	
-			Properties prop = new Properties();
-			
-	    	InputStream stream = new FileInputStream(new File("C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\dynamoDb.properties")); 
-	    	prop.load(stream);   		
-		 	
-		    AWS_REGION = prop.getProperty("region");
-		    AWS_DYNAMODB_LOCAL_PORT = prop.getProperty("local_port");		   
-			
-	    	InputStream stream2 = new FileInputStream(new File("C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\" + TABLE_PROPERTIES)); 
-	    	prop.load(stream2);   		
-		 	
-	    	AWS_JSON_FILE_NAME = prop.getProperty("jsonFileName");
-	    	AWS_TABLE_NAME = prop.getProperty("tableName");
-	        AWS_KEY_NAME = prop.getProperty("keyName");	        
-		 }
-		 catch (Exception e) 
-	     { 
-		    System.out.println(e.toString());
-		 }     		
-       	
-    }
+	
     
     private static List<GolfUser> readFromFileAndConvert() 
     {
