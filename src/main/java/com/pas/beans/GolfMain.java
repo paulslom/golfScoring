@@ -1433,7 +1433,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		gu.setPassword(newPassword);
 		gu.setUserName(whoIsThis);
 		gu.setUserRole(userrole);
-		golfUsersDAO.updateUser(whoIsThis, gu);		
+		golfUsersDAO.updateUser(gu);		
 	}
 
 	public void addUser(String username, String password, String userrole) throws Exception 

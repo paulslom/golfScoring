@@ -1,0 +1,9802 @@
+[
+{
+	"idplayerMoney":1223,
+	"idgame":2,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1239,
+	"idgame":2,
+	"idplayer":1,
+	"amount":30.00,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":1243,
+	"idgame":2,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1255,
+	"idgame":2,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":1357,
+	"idgame":1,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1377,
+	"idgame":1,
+	"idplayer":1,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1391,
+	"idgame":1,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.9"
+},
+{
+	"idplayerMoney":1392,
+	"idgame":18,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1409,
+	"idgame":18,
+	"idplayer":1,
+	"amount":24.00,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":1413,
+	"idgame":18,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1432,
+	"idgame":19,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1452,
+	"idgame":19,
+	"idplayer":1,
+	"amount":28.00,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":1461,
+	"idgame":19,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1469,
+	"idgame":19,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1477,
+	"idgame":19,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":1480,
+	"idgame":20,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1544,
+	"idgame":3,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1568,
+	"idgame":3,
+	"idplayer":1,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1586,
+	"idgame":4,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1617,
+	"idgame":4,
+	"idplayer":1,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":1621,
+	"idgame":4,
+	"idplayer":1,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1636,
+	"idgame":8,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1662,
+	"idgame":10,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1723,
+	"idgame":11,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1742,
+	"idgame":11,
+	"idplayer":1,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 7"
+},
+{
+	"idplayerMoney":1762,
+	"idgame":12,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1825,
+	"idgame":13,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1848,
+	"idgame":13,
+	"idplayer":1,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1851,
+	"idgame":13,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1855,
+	"idgame":13,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1911,
+	"idgame":15,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1935,
+	"idgame":15,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1945,
+	"idgame":16,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1961,
+	"idgame":16,
+	"idplayer":1,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":1991,
+	"idgame":16,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":1994,
+	"idgame":17,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2018,
+	"idgame":17,
+	"idplayer":1,
+	"amount":13.33,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2037,
+	"idgame":9,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2057,
+	"idgame":9,
+	"idplayer":1,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2058,
+	"idgame":9,
+	"idplayer":1,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2062,
+	"idgame":9,
+	"idplayer":1,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2070,
+	"idgame":9,
+	"idplayer":1,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2074,
+	"idgame":9,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2077,
+	"idgame":21,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2111,
+	"idgame":21,
+	"idplayer":1,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2117,
+	"idgame":21,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2120,
+	"idgame":22,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2134,
+	"idgame":22,
+	"idplayer":1,
+	"amount":10.20,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":2135,
+	"idgame":22,
+	"idplayer":1,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":2146,
+	"idgame":22,
+	"idplayer":1,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2152,
+	"idgame":23,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2173,
+	"idgame":23,
+	"idplayer":1,
+	"amount":23.33,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":2178,
+	"idgame":23,
+	"idplayer":1,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2182,
+	"idgame":23,
+	"idplayer":1,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2186,
+	"idgame":23,
+	"idplayer":1,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2190,
+	"idgame":23,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":2192,
+	"idgame":24,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2207,
+	"idgame":24,
+	"idplayer":1,
+	"amount":14.57,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2215,
+	"idgame":24,
+	"idplayer":1,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2221,
+	"idgame":25,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2268,
+	"idgame":27,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2329,
+	"idgame":29,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2341,
+	"idgame":29,
+	"idplayer":1,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2416,
+	"idgame":31,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2424,
+	"idgame":31,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2433,
+	"idgame":31,
+	"idplayer":1,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2437,
+	"idgame":31,
+	"idplayer":1,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2438,
+	"idgame":31,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2441,
+	"idgame":33,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2449,
+	"idgame":33,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 4 on hole 3"
+},
+{
+	"idplayerMoney":2450,
+	"idgame":33,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 5"
+},
+{
+	"idplayerMoney":2451,
+	"idgame":33,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":2452,
+	"idgame":33,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2456,
+	"idgame":33,
+	"idplayer":1,
+	"amount":16.67,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2459,
+	"idgame":33,
+	"idplayer":1,
+	"amount":16.67,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2461,
+	"idgame":33,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 67"
+},
+{
+	"idplayerMoney":2466,
+	"idgame":34,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2471,
+	"idgame":34,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2473,
+	"idgame":34,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":2476,
+	"idgame":34,
+	"idplayer":1,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 12"
+},
+{
+	"idplayerMoney":2485,
+	"idgame":34,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":2499,
+	"idgame":35,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2509,
+	"idgame":35,
+	"idplayer":1,
+	"amount":23.33,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2516,
+	"idgame":35,
+	"idplayer":1,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2529,
+	"idgame":35,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 69"
+},
+{
+	"idplayerMoney":2540,
+	"idgame":37,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2545,
+	"idgame":37,
+	"idplayer":1,
+	"amount":12.75,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":2550,
+	"idgame":37,
+	"idplayer":1,
+	"amount":12.75,
+	"description": "Skin: 2 on hole 17"
+},
+{
+	"idplayerMoney":2558,
+	"idgame":37,
+	"idplayer":1,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2564,
+	"idgame":37,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 67"
+},
+{
+	"idplayerMoney":2709,
+	"idgame":41,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2718,
+	"idgame":41,
+	"idplayer":1,
+	"amount":8.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2723,
+	"idgame":41,
+	"idplayer":1,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2728,
+	"idgame":41,
+	"idplayer":1,
+	"amount":8.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2731,
+	"idgame":41,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 68"
+},
+{
+	"idplayerMoney":2741,
+	"idgame":46,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2748,
+	"idgame":46,
+	"idplayer":1,
+	"amount":36.67,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2757,
+	"idgame":46,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 68"
+},
+{
+	"idplayerMoney":2762,
+	"idgame":54,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2775,
+	"idgame":54,
+	"idplayer":1,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 5"
+},
+{
+	"idplayerMoney":2780,
+	"idgame":54,
+	"idplayer":1,
+	"amount":10.20,
+	"description": "Skin: 4 on hole 11"
+},
+{
+	"idplayerMoney":2782,
+	"idgame":54,
+	"idplayer":1,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2786,
+	"idgame":54,
+	"idplayer":1,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2793,
+	"idgame":54,
+	"idplayer":1,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2800,
+	"idgame":54,
+	"idplayer":1,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2807,
+	"idgame":54,
+	"idplayer":1,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":2811,
+	"idgame":54,
+	"idplayer":1,
+	"amount":5.00,
+	"description": "Low Individual Gross: 69"
+},
+{
+	"idplayerMoney":2818,
+	"idgame":99,
+	"idplayer":1,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2829,
+	"idgame":99,
+	"idplayer":1,
+	"amount":14.57,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":1224,
+	"idgame":2,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1247,
+	"idgame":2,
+	"idplayer":2,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1251,
+	"idgame":2,
+	"idplayer":2,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1358,
+	"idgame":1,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1433,
+	"idgame":19,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1454,
+	"idgame":19,
+	"idplayer":2,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1462,
+	"idgame":19,
+	"idplayer":2,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1470,
+	"idgame":19,
+	"idplayer":2,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1545,
+	"idgame":3,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1561,
+	"idgame":3,
+	"idplayer":2,
+	"amount":15.00,
+	"description": "Skin: 3 on hole 3"
+},
+{
+	"idplayerMoney":1576,
+	"idgame":3,
+	"idplayer":2,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1637,
+	"idgame":8,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1656,
+	"idgame":8,
+	"idplayer":2,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1661,
+	"idgame":8,
+	"idplayer":2,
+	"amount":5.00,
+	"description": "Low Individual Net: 63.7"
+},
+{
+	"idplayerMoney":1724,
+	"idgame":11,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1740,
+	"idgame":11,
+	"idplayer":2,
+	"amount":24.00,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":1763,
+	"idgame":12,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1826,
+	"idgame":13,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1849,
+	"idgame":13,
+	"idplayer":2,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 17"
+},
+{
+	"idplayerMoney":1912,
+	"idgame":15,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1939,
+	"idgame":15,
+	"idplayer":2,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2038,
+	"idgame":9,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2063,
+	"idgame":9,
+	"idplayer":2,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2071,
+	"idgame":9,
+	"idplayer":2,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2078,
+	"idgame":21,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2112,
+	"idgame":21,
+	"idplayer":2,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2153,
+	"idgame":23,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2179,
+	"idgame":23,
+	"idplayer":2,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2183,
+	"idgame":23,
+	"idplayer":2,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2187,
+	"idgame":23,
+	"idplayer":2,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2222,
+	"idgame":25,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2269,
+	"idgame":27,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2363,
+	"idgame":30,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2380,
+	"idgame":30,
+	"idplayer":2,
+	"amount":11.33,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2384,
+	"idgame":30,
+	"idplayer":2,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2388,
+	"idgame":30,
+	"idplayer":2,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2468,
+	"idgame":34,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2576,
+	"idgame":40,
+	"idplayer":2,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2603,
+	"idgame":40,
+	"idplayer":2,
+	"amount":12.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1393,
+	"idgame":18,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1414,
+	"idgame":18,
+	"idplayer":3,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1481,
+	"idgame":20,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1514,
+	"idgame":20,
+	"idplayer":3,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1518,
+	"idgame":20,
+	"idplayer":3,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1587,
+	"idgame":4,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1663,
+	"idgame":10,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1709,
+	"idgame":10,
+	"idplayer":3,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1764,
+	"idgame":12,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1788,
+	"idgame":12,
+	"idplayer":3,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1827,
+	"idgame":13,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1852,
+	"idgame":13,
+	"idplayer":3,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1856,
+	"idgame":13,
+	"idplayer":3,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1865,
+	"idgame":14,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1901,
+	"idgame":14,
+	"idplayer":3,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1905,
+	"idgame":14,
+	"idplayer":3,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1913,
+	"idgame":15,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1940,
+	"idgame":15,
+	"idplayer":3,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1995,
+	"idgame":17,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2039,
+	"idgame":9,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2060,
+	"idgame":9,
+	"idplayer":3,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":2079,
+	"idgame":21,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2096,
+	"idgame":21,
+	"idplayer":3,
+	"amount":41.67,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2097,
+	"idgame":21,
+	"idplayer":3,
+	"amount":41.67,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2099,
+	"idgame":21,
+	"idplayer":3,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2105,
+	"idgame":21,
+	"idplayer":3,
+	"amount":12.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2119,
+	"idgame":21,
+	"idplayer":3,
+	"amount":10.00,
+	"description": "Low Individual Net: 65.7"
+},
+{
+	"idplayerMoney":2154,
+	"idgame":23,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2223,
+	"idgame":25,
+	"idplayer":3,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1225,
+	"idgame":2,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1241,
+	"idgame":2,
+	"idplayer":4,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":1394,
+	"idgame":18,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1417,
+	"idgame":18,
+	"idplayer":4,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1431,
+	"idgame":18,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.5"
+},
+{
+	"idplayerMoney":1434,
+	"idgame":19,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1457,
+	"idgame":19,
+	"idplayer":4,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1465,
+	"idgame":19,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1482,
+	"idgame":20,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1502,
+	"idgame":20,
+	"idplayer":4,
+	"amount":23.33,
+	"description": "Skin: 2 on hole 12"
+},
+{
+	"idplayerMoney":1546,
+	"idgame":3,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1560,
+	"idgame":3,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":1564,
+	"idgame":3,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Skin: 3 on hole 11"
+},
+{
+	"idplayerMoney":1572,
+	"idgame":3,
+	"idplayer":4,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1580,
+	"idgame":3,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1588,
+	"idgame":4,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1619,
+	"idgame":4,
+	"idplayer":4,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":1638,
+	"idgame":8,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1664,
+	"idgame":10,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1705,
+	"idgame":10,
+	"idplayer":4,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1713,
+	"idgame":10,
+	"idplayer":4,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1725,
+	"idgame":11,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1744,
+	"idgame":11,
+	"idplayer":4,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1756,
+	"idgame":11,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1765,
+	"idgame":12,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1795,
+	"idgame":12,
+	"idplayer":4,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1802,
+	"idgame":12,
+	"idplayer":4,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1809,
+	"idgame":12,
+	"idplayer":4,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1816,
+	"idgame":12,
+	"idplayer":4,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1828,
+	"idgame":13,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1846,
+	"idgame":13,
+	"idplayer":4,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":1853,
+	"idgame":13,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1857,
+	"idgame":13,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1866,
+	"idgame":14,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1891,
+	"idgame":14,
+	"idplayer":4,
+	"amount":20.00,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":1892,
+	"idgame":14,
+	"idplayer":4,
+	"amount":20.00,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":1897,
+	"idgame":14,
+	"idplayer":4,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1910,
+	"idgame":14,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.9"
+},
+{
+	"idplayerMoney":1914,
+	"idgame":15,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1936,
+	"idgame":15,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1946,
+	"idgame":16,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1983,
+	"idgame":16,
+	"idplayer":4,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1987,
+	"idgame":16,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1996,
+	"idgame":17,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2023,
+	"idgame":17,
+	"idplayer":4,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2027,
+	"idgame":17,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2031,
+	"idgame":17,
+	"idplayer":4,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2040,
+	"idgame":9,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2080,
+	"idgame":21,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Entry Fee: 10.00"
+},
+{
+	"idplayerMoney":2121,
+	"idgame":22,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2133,
+	"idgame":22,
+	"idplayer":4,
+	"amount":10.20,
+	"description": "Skin: 4 on hole 4"
+},
+{
+	"idplayerMoney":2193,
+	"idgame":24,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2216,
+	"idgame":24,
+	"idplayer":4,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2224,
+	"idgame":25,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2243,
+	"idgame":25,
+	"idplayer":4,
+	"amount":28.00,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2245,
+	"idgame":25,
+	"idplayer":4,
+	"amount":28.00,
+	"description": "Skin: 2 on hole 17"
+},
+{
+	"idplayerMoney":2250,
+	"idgame":25,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2267,
+	"idgame":25,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Low Individual Net: 63.5"
+},
+{
+	"idplayerMoney":2270,
+	"idgame":27,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2307,
+	"idgame":28,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2315,
+	"idgame":28,
+	"idplayer":4,
+	"amount":6.25,
+	"description": "Skin: 3 on hole 5"
+},
+{
+	"idplayerMoney":2317,
+	"idgame":28,
+	"idplayer":4,
+	"amount":6.25,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":2319,
+	"idgame":28,
+	"idplayer":4,
+	"amount":6.25,
+	"description": "Skin: 4 on hole 15"
+},
+{
+	"idplayerMoney":2320,
+	"idgame":28,
+	"idplayer":4,
+	"amount":6.25,
+	"description": "Skin: 4 on hole 18"
+},
+{
+	"idplayerMoney":2321,
+	"idgame":28,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2324,
+	"idgame":28,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2328,
+	"idgame":28,
+	"idplayer":4,
+	"amount":5.00,
+	"description": "Low Individual Net: 63.9"
+},
+{
+	"idplayerMoney":2330,
+	"idgame":29,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2345,
+	"idgame":29,
+	"idplayer":4,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 11"
+},
+{
+	"idplayerMoney":2347,
+	"idgame":29,
+	"idplayer":4,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2348,
+	"idgame":29,
+	"idplayer":4,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":2349,
+	"idgame":29,
+	"idplayer":4,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2355,
+	"idgame":29,
+	"idplayer":4,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2362,
+	"idgame":29,
+	"idplayer":4,
+	"amount":5.00,
+	"description": "Low Individual Net: 63.8"
+},
+{
+	"idplayerMoney":2364,
+	"idgame":30,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2392,
+	"idgame":30,
+	"idplayer":4,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2404,
+	"idgame":31,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2442,
+	"idgame":33,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2467,
+	"idgame":34,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2479,
+	"idgame":34,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2483,
+	"idgame":34,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2487,
+	"idgame":35,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2532,
+	"idgame":37,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2560,
+	"idgame":37,
+	"idplayer":4,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2566,
+	"idgame":40,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2600,
+	"idgame":40,
+	"idplayer":4,
+	"amount":12.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2605,
+	"idgame":40,
+	"idplayer":4,
+	"amount":10.00,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":2733,
+	"idgame":46,
+	"idplayer":4,
+	"amount":-10.00,
+	"description": "Entry Fee: -10.00"
+},
+{
+	"idplayerMoney":2821,
+	"idgame":99,
+	"idplayer":4,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2825,
+	"idgame":99,
+	"idplayer":4,
+	"amount":14.57,
+	"description": "Skin: 4 on hole 4"
+},
+{
+	"idplayerMoney":2830,
+	"idgame":99,
+	"idplayer":4,
+	"amount":14.57,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2831,
+	"idgame":99,
+	"idplayer":4,
+	"amount":14.57,
+	"description": "Skin: 4 on hole 14"
+},
+{
+	"idplayerMoney":2834,
+	"idgame":99,
+	"idplayer":4,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2838,
+	"idgame":99,
+	"idplayer":4,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2840,
+	"idgame":99,
+	"idplayer":4,
+	"amount":5.00,
+	"description": "Low Individual Gross: 75"
+},
+{
+	"idplayerMoney":1226,
+	"idgame":2,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1359,
+	"idgame":1,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1395,
+	"idgame":18,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1412,
+	"idgame":18,
+	"idplayer":5,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":1415,
+	"idgame":18,
+	"idplayer":5,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1435,
+	"idgame":19,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1463,
+	"idgame":19,
+	"idplayer":5,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1471,
+	"idgame":19,
+	"idplayer":5,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1483,
+	"idgame":20,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1547,
+	"idgame":3,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1565,
+	"idgame":3,
+	"idplayer":5,
+	"amount":15.00,
+	"description": "Skin: 2 on hole 12"
+},
+{
+	"idplayerMoney":1589,
+	"idgame":4,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1616,
+	"idgame":4,
+	"idplayer":5,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":1639,
+	"idgame":8,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1657,
+	"idgame":8,
+	"idplayer":5,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1726,
+	"idgame":11,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1766,
+	"idgame":12,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1789,
+	"idgame":12,
+	"idplayer":5,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1829,
+	"idgame":13,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1842,
+	"idgame":13,
+	"idplayer":5,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":1867,
+	"idgame":14,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1947,
+	"idgame":16,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1965,
+	"idgame":16,
+	"idplayer":5,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":1968,
+	"idgame":16,
+	"idplayer":5,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 14"
+},
+{
+	"idplayerMoney":1971,
+	"idgame":16,
+	"idplayer":5,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1975,
+	"idgame":16,
+	"idplayer":5,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1993,
+	"idgame":16,
+	"idplayer":5,
+	"amount":10.00,
+	"description": "Low Individual Net: 65.6"
+},
+{
+	"idplayerMoney":1997,
+	"idgame":17,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2017,
+	"idgame":17,
+	"idplayer":5,
+	"amount":13.33,
+	"description": "Skin: 2 on hole 14"
+},
+{
+	"idplayerMoney":2024,
+	"idgame":17,
+	"idplayer":5,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2028,
+	"idgame":17,
+	"idplayer":5,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2032,
+	"idgame":17,
+	"idplayer":5,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2041,
+	"idgame":9,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2061,
+	"idgame":9,
+	"idplayer":5,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2081,
+	"idgame":21,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2100,
+	"idgame":21,
+	"idplayer":5,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2106,
+	"idgame":21,
+	"idplayer":5,
+	"amount":12.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2155,
+	"idgame":23,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2225,
+	"idgame":25,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2241,
+	"idgame":25,
+	"idplayer":5,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2271,
+	"idgame":27,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2331,
+	"idgame":29,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2365,
+	"idgame":30,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2377,
+	"idgame":30,
+	"idplayer":5,
+	"amount":11.33,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":2393,
+	"idgame":30,
+	"idplayer":5,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2405,
+	"idgame":31,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2425,
+	"idgame":31,
+	"idplayer":5,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2440,
+	"idgame":33,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2455,
+	"idgame":33,
+	"idplayer":5,
+	"amount":16.67,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2458,
+	"idgame":33,
+	"idplayer":5,
+	"amount":16.67,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2488,
+	"idgame":35,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2510,
+	"idgame":35,
+	"idplayer":5,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2513,
+	"idgame":35,
+	"idplayer":5,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2533,
+	"idgame":37,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2549,
+	"idgame":37,
+	"idplayer":5,
+	"amount":12.75,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2552,
+	"idgame":37,
+	"idplayer":5,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2567,
+	"idgame":40,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2585,
+	"idgame":40,
+	"idplayer":5,
+	"amount":12.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2590,
+	"idgame":40,
+	"idplayer":5,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2708,
+	"idgame":41,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2732,
+	"idgame":41,
+	"idplayer":5,
+	"amount":5.00,
+	"description": "Low Individual Net: 70.6"
+},
+{
+	"idplayerMoney":2734,
+	"idgame":46,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2753,
+	"idgame":46,
+	"idplayer":5,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2765,
+	"idgame":54,
+	"idplayer":5,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1360,
+	"idgame":1,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1386,
+	"idgame":1,
+	"idplayer":6,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1590,
+	"idgame":4,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1665,
+	"idgame":10,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1706,
+	"idgame":10,
+	"idplayer":6,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1714,
+	"idgame":10,
+	"idplayer":6,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1830,
+	"idgame":13,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2156,
+	"idgame":23,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2175,
+	"idgame":23,
+	"idplayer":6,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 11"
+},
+{
+	"idplayerMoney":2332,
+	"idgame":29,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2489,
+	"idgame":35,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2517,
+	"idgame":35,
+	"idplayer":6,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2770,
+	"idgame":54,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2813,
+	"idgame":99,
+	"idplayer":6,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2832,
+	"idgame":99,
+	"idplayer":6,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2836,
+	"idgame":99,
+	"idplayer":6,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1396,
+	"idgame":18,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1418,
+	"idgame":18,
+	"idplayer":7,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1429,
+	"idgame":18,
+	"idplayer":7,
+	"amount":5.00,
+	"description": "Low Individual Gross: 73"
+},
+{
+	"idplayerMoney":1484,
+	"idgame":20,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1500,
+	"idgame":20,
+	"idplayer":7,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":1501,
+	"idgame":20,
+	"idplayer":7,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":1506,
+	"idgame":20,
+	"idplayer":7,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1510,
+	"idgame":20,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1522,
+	"idgame":20,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 73"
+},
+{
+	"idplayerMoney":1548,
+	"idgame":3,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1562,
+	"idgame":3,
+	"idplayer":7,
+	"amount":15.00,
+	"description": "Skin: 2 on hole 4"
+},
+{
+	"idplayerMoney":1573,
+	"idgame":3,
+	"idplayer":7,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1581,
+	"idgame":3,
+	"idplayer":7,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1584,
+	"idgame":3,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":1591,
+	"idgame":4,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1614,
+	"idgame":4,
+	"idplayer":7,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":1634,
+	"idgame":4,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 74"
+},
+{
+	"idplayerMoney":1640,
+	"idgame":8,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1648,
+	"idgame":8,
+	"idplayer":7,
+	"amount":25.50,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":1650,
+	"idgame":8,
+	"idplayer":7,
+	"amount":25.50,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":1652,
+	"idgame":8,
+	"idplayer":7,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1660,
+	"idgame":8,
+	"idplayer":7,
+	"amount":5.00,
+	"description": "Low Individual Gross: 66"
+},
+{
+	"idplayerMoney":1666,
+	"idgame":10,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1693,
+	"idgame":10,
+	"idplayer":7,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1727,
+	"idgame":11,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1745,
+	"idgame":11,
+	"idplayer":7,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1757,
+	"idgame":11,
+	"idplayer":7,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1760,
+	"idgame":11,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 68"
+},
+{
+	"idplayerMoney":1831,
+	"idgame":13,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1845,
+	"idgame":13,
+	"idplayer":7,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":1859,
+	"idgame":13,
+	"idplayer":7,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1863,
+	"idgame":13,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":1868,
+	"idgame":14,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1909,
+	"idgame":14,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":1998,
+	"idgame":17,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2011,
+	"idgame":17,
+	"idplayer":7,
+	"amount":13.33,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2014,
+	"idgame":17,
+	"idplayer":7,
+	"amount":13.33,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2016,
+	"idgame":17,
+	"idplayer":7,
+	"amount":13.33,
+	"description": "Skin: 2 on hole 12"
+},
+{
+	"idplayerMoney":2019,
+	"idgame":17,
+	"idplayer":7,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2036,
+	"idgame":17,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.1"
+},
+{
+	"idplayerMoney":2122,
+	"idgame":22,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2150,
+	"idgame":22,
+	"idplayer":7,
+	"amount":5.00,
+	"description": "Low Individual Gross: 68"
+},
+{
+	"idplayerMoney":2226,
+	"idgame":25,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2244,
+	"idgame":25,
+	"idplayer":7,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2246,
+	"idgame":25,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2254,
+	"idgame":25,
+	"idplayer":7,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2258,
+	"idgame":25,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2272,
+	"idgame":27,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2289,
+	"idgame":27,
+	"idplayer":7,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2291,
+	"idgame":27,
+	"idplayer":7,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2292,
+	"idgame":27,
+	"idplayer":7,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2293,
+	"idgame":27,
+	"idplayer":7,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2297,
+	"idgame":27,
+	"idplayer":7,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2305,
+	"idgame":27,
+	"idplayer":7,
+	"amount":10.00,
+	"description": "Low Individual Gross: 64"
+},
+{
+	"idplayerMoney":2333,
+	"idgame":29,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2343,
+	"idgame":29,
+	"idplayer":7,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2350,
+	"idgame":29,
+	"idplayer":7,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2356,
+	"idgame":29,
+	"idplayer":7,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2361,
+	"idgame":29,
+	"idplayer":7,
+	"amount":5.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":2408,
+	"idgame":31,
+	"idplayer":7,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2427,
+	"idgame":31,
+	"idplayer":7,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1436,
+	"idgame":19,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1485,
+	"idgame":20,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1503,
+	"idgame":20,
+	"idplayer":8,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1515,
+	"idgame":20,
+	"idplayer":8,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1519,
+	"idgame":20,
+	"idplayer":8,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1592,
+	"idgame":4,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1767,
+	"idgame":12,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1869,
+	"idgame":14,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2042,
+	"idgame":9,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2227,
+	"idgame":25,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2251,
+	"idgame":25,
+	"idplayer":8,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2410,
+	"idgame":31,
+	"idplayer":8,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1397,
+	"idgame":18,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1411,
+	"idgame":18,
+	"idplayer":9,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":1667,
+	"idgame":10,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1686,
+	"idgame":10,
+	"idplayer":9,
+	"amount":22.86,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":1707,
+	"idgame":10,
+	"idplayer":9,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1715,
+	"idgame":10,
+	"idplayer":9,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1768,
+	"idgame":12,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1786,
+	"idgame":12,
+	"idplayer":9,
+	"amount":56.67,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":1787,
+	"idgame":12,
+	"idplayer":9,
+	"amount":56.67,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":1790,
+	"idgame":12,
+	"idplayer":9,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1824,
+	"idgame":12,
+	"idplayer":9,
+	"amount":10.00,
+	"description": "Low Individual Net: 64.8"
+},
+{
+	"idplayerMoney":1870,
+	"idgame":14,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1889,
+	"idgame":14,
+	"idplayer":9,
+	"amount":20.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":1948,
+	"idgame":16,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1964,
+	"idgame":16,
+	"idplayer":9,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 7"
+},
+{
+	"idplayerMoney":1967,
+	"idgame":16,
+	"idplayer":9,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 12"
+},
+{
+	"idplayerMoney":1969,
+	"idgame":16,
+	"idplayer":9,
+	"amount":12.00,
+	"description": "Skin: 2 on hole 17"
+},
+{
+	"idplayerMoney":1972,
+	"idgame":16,
+	"idplayer":9,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1976,
+	"idgame":16,
+	"idplayer":9,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1992,
+	"idgame":16,
+	"idplayer":9,
+	"amount":5.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":1999,
+	"idgame":17,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2025,
+	"idgame":17,
+	"idplayer":9,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2029,
+	"idgame":17,
+	"idplayer":9,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2033,
+	"idgame":17,
+	"idplayer":9,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2035,
+	"idgame":17,
+	"idplayer":9,
+	"amount":10.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":2043,
+	"idgame":9,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2157,
+	"idgame":23,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2228,
+	"idgame":25,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2262,
+	"idgame":25,
+	"idplayer":9,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2266,
+	"idgame":25,
+	"idplayer":9,
+	"amount":10.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":2273,
+	"idgame":27,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2366,
+	"idgame":30,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2382,
+	"idgame":30,
+	"idplayer":9,
+	"amount":11.33,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2385,
+	"idgame":30,
+	"idplayer":9,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2389,
+	"idgame":30,
+	"idplayer":9,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2400,
+	"idgame":30,
+	"idplayer":9,
+	"amount":5.00,
+	"description": "Low Individual Gross: 69"
+},
+{
+	"idplayerMoney":2503,
+	"idgame":35,
+	"idplayer":9,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2511,
+	"idgame":35,
+	"idplayer":9,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2530,
+	"idgame":35,
+	"idplayer":9,
+	"amount":5.00,
+	"description": "Low Individual Gross: 69"
+},
+{
+	"idplayerMoney":2714,
+	"idgame":41,
+	"idplayer":9,
+	"amount":-10.00,
+	"description": "Entry Fee: -10.00"
+},
+{
+	"idplayerMoney":2715,
+	"idgame":41,
+	"idplayer":9,
+	"amount":80.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":1227,
+	"idgame":2,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1361,
+	"idgame":1,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1378,
+	"idgame":1,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1382,
+	"idgame":1,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1398,
+	"idgame":18,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1437,
+	"idgame":19,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1455,
+	"idgame":19,
+	"idplayer":10,
+	"amount":28.00,
+	"description": "Skin: 2 on hole 17"
+},
+{
+	"idplayerMoney":1473,
+	"idgame":19,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1479,
+	"idgame":19,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Low Individual Net: 67.3"
+},
+{
+	"idplayerMoney":1486,
+	"idgame":20,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1507,
+	"idgame":20,
+	"idplayer":10,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1511,
+	"idgame":20,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1549,
+	"idgame":3,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1574,
+	"idgame":3,
+	"idplayer":10,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1582,
+	"idgame":3,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1593,
+	"idgame":4,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1630,
+	"idgame":4,
+	"idplayer":10,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1641,
+	"idgame":8,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1653,
+	"idgame":8,
+	"idplayer":10,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1668,
+	"idgame":10,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1717,
+	"idgame":10,
+	"idplayer":10,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1769,
+	"idgame":12,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1791,
+	"idgame":12,
+	"idplayer":10,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1832,
+	"idgame":13,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1847,
+	"idgame":13,
+	"idplayer":10,
+	"amount":14.44,
+	"description": "Skin: 2 on hole 14"
+},
+{
+	"idplayerMoney":1854,
+	"idgame":13,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1858,
+	"idgame":13,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1864,
+	"idgame":13,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.5"
+},
+{
+	"idplayerMoney":1871,
+	"idgame":14,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1902,
+	"idgame":14,
+	"idplayer":10,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1906,
+	"idgame":14,
+	"idplayer":10,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1915,
+	"idgame":15,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1931,
+	"idgame":15,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1949,
+	"idgame":16,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1973,
+	"idgame":16,
+	"idplayer":10,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1977,
+	"idgame":16,
+	"idplayer":10,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2000,
+	"idgame":17,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2010,
+	"idgame":17,
+	"idplayer":10,
+	"amount":13.33,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2044,
+	"idgame":9,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2082,
+	"idgame":21,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2113,
+	"idgame":21,
+	"idplayer":10,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2123,
+	"idgame":22,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2137,
+	"idgame":22,
+	"idplayer":10,
+	"amount":10.20,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2140,
+	"idgame":22,
+	"idplayer":10,
+	"amount":10.20,
+	"description": "Skin: 2 on hole 17"
+},
+{
+	"idplayerMoney":2142,
+	"idgame":22,
+	"idplayer":10,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2151,
+	"idgame":22,
+	"idplayer":10,
+	"amount":5.00,
+	"description": "Low Individual Net: 66.3"
+},
+{
+	"idplayerMoney":2158,
+	"idgame":23,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2194,
+	"idgame":24,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2211,
+	"idgame":24,
+	"idplayer":10,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2229,
+	"idgame":25,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2274,
+	"idgame":27,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2290,
+	"idgame":27,
+	"idplayer":10,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 12"
+},
+{
+	"idplayerMoney":2334,
+	"idgame":29,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2342,
+	"idgame":29,
+	"idplayer":10,
+	"amount":12.75,
+	"description": "Skin: 2 on hole 4"
+},
+{
+	"idplayerMoney":2367,
+	"idgame":30,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2381,
+	"idgame":30,
+	"idplayer":10,
+	"amount":11.33,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2396,
+	"idgame":30,
+	"idplayer":10,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2411,
+	"idgame":31,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2439,
+	"idgame":31,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Low Individual Net: 62.9"
+},
+{
+	"idplayerMoney":2443,
+	"idgame":33,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2469,
+	"idgame":34,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2474,
+	"idgame":34,
+	"idplayer":10,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2475,
+	"idgame":34,
+	"idplayer":10,
+	"amount":11.67,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2480,
+	"idgame":34,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2484,
+	"idgame":34,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2486,
+	"idgame":34,
+	"idplayer":10,
+	"amount":5.00,
+	"description": "Low Individual Net: 69.5"
+},
+{
+	"idplayerMoney":2491,
+	"idgame":35,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2514,
+	"idgame":35,
+	"idplayer":10,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2534,
+	"idgame":37,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2561,
+	"idgame":37,
+	"idplayer":10,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2568,
+	"idgame":40,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2595,
+	"idgame":40,
+	"idplayer":10,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2706,
+	"idgame":41,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2736,
+	"idgame":46,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2754,
+	"idgame":46,
+	"idplayer":10,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2759,
+	"idgame":54,
+	"idplayer":10,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2783,
+	"idgame":54,
+	"idplayer":10,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2790,
+	"idgame":54,
+	"idplayer":10,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2797,
+	"idgame":54,
+	"idplayer":10,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2804,
+	"idgame":54,
+	"idplayer":10,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1399,
+	"idgame":18,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1416,
+	"idgame":18,
+	"idplayer":11,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1438,
+	"idgame":19,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1474,
+	"idgame":19,
+	"idplayer":11,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1487,
+	"idgame":20,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1594,
+	"idgame":4,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1615,
+	"idgame":4,
+	"idplayer":11,
+	"amount":30.00,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":1620,
+	"idgame":4,
+	"idplayer":11,
+	"amount":30.00,
+	"description": "Skin: 2 on hole 14"
+},
+{
+	"idplayerMoney":1770,
+	"idgame":12,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1796,
+	"idgame":12,
+	"idplayer":11,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1803,
+	"idgame":12,
+	"idplayer":11,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1810,
+	"idgame":12,
+	"idplayer":11,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1817,
+	"idgame":12,
+	"idplayer":11,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1872,
+	"idgame":14,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1898,
+	"idgame":14,
+	"idplayer":11,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1950,
+	"idgame":16,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1963,
+	"idgame":16,
+	"idplayer":11,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":2045,
+	"idgame":9,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2066,
+	"idgame":9,
+	"idplayer":11,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2083,
+	"idgame":21,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2114,
+	"idgame":21,
+	"idplayer":11,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2159,
+	"idgame":23,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2275,
+	"idgame":27,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2301,
+	"idgame":27,
+	"idplayer":11,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2412,
+	"idgame":31,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2422,
+	"idgame":31,
+	"idplayer":11,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2431,
+	"idgame":31,
+	"idplayer":11,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2435,
+	"idgame":31,
+	"idplayer":11,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2492,
+	"idgame":35,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2522,
+	"idgame":35,
+	"idplayer":11,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2526,
+	"idgame":35,
+	"idplayer":11,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2711,
+	"idgame":41,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2719,
+	"idgame":41,
+	"idplayer":11,
+	"amount":8.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2724,
+	"idgame":41,
+	"idplayer":11,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2729,
+	"idgame":41,
+	"idplayer":11,
+	"amount":8.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2824,
+	"idgame":99,
+	"idplayer":11,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1362,
+	"idgame":1,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1439,
+	"idgame":19,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1488,
+	"idgame":20,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1595,
+	"idgame":4,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1669,
+	"idgame":10,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1692,
+	"idgame":10,
+	"idplayer":12,
+	"amount":22.86,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1708,
+	"idgame":10,
+	"idplayer":12,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1716,
+	"idgame":10,
+	"idplayer":12,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1873,
+	"idgame":14,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1951,
+	"idgame":16,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1962,
+	"idgame":16,
+	"idplayer":12,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":1966,
+	"idgame":16,
+	"idplayer":12,
+	"amount":12.00,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":1974,
+	"idgame":16,
+	"idplayer":12,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1978,
+	"idgame":16,
+	"idplayer":12,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2046,
+	"idgame":9,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2084,
+	"idgame":21,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2101,
+	"idgame":21,
+	"idplayer":12,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2107,
+	"idgame":21,
+	"idplayer":12,
+	"amount":12.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2160,
+	"idgame":23,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2230,
+	"idgame":25,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2252,
+	"idgame":25,
+	"idplayer":12,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2276,
+	"idgame":27,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2494,
+	"idgame":35,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2535,
+	"idgame":37,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2551,
+	"idgame":37,
+	"idplayer":12,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":2562,
+	"idgame":37,
+	"idplayer":12,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2570,
+	"idgame":40,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2581,
+	"idgame":40,
+	"idplayer":12,
+	"amount":25.00,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":2596,
+	"idgame":40,
+	"idplayer":12,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2814,
+	"idgame":99,
+	"idplayer":12,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1228,
+	"idgame":2,
+	"idplayer":13,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1440,
+	"idgame":19,
+	"idplayer":13,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2001,
+	"idgame":17,
+	"idplayer":13,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1441,
+	"idgame":19,
+	"idplayer":14,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1458,
+	"idgame":19,
+	"idplayer":14,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1466,
+	"idgame":19,
+	"idplayer":14,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1363,
+	"idgame":1,
+	"idplayer":15,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1379,
+	"idgame":1,
+	"idplayer":15,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1383,
+	"idgame":1,
+	"idplayer":15,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1489,
+	"idgame":20,
+	"idplayer":15,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1596,
+	"idgame":4,
+	"idplayer":15,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2231,
+	"idgame":25,
+	"idplayer":15,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1442,
+	"idgame":19,
+	"idplayer":16,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1459,
+	"idgame":19,
+	"idplayer":16,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1467,
+	"idgame":19,
+	"idplayer":16,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1771,
+	"idgame":12,
+	"idplayer":16,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1792,
+	"idgame":12,
+	"idplayer":16,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2085,
+	"idgame":21,
+	"idplayer":16,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2115,
+	"idgame":21,
+	"idplayer":16,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2277,
+	"idgame":27,
+	"idplayer":16,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1229,
+	"idgame":2,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1240,
+	"idgame":2,
+	"idplayer":17,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 4"
+},
+{
+	"idplayerMoney":1244,
+	"idgame":2,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1364,
+	"idgame":1,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1400,
+	"idgame":18,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1408,
+	"idgame":18,
+	"idplayer":17,
+	"amount":24.00,
+	"description": "Skin: 2 on hole 4"
+},
+{
+	"idplayerMoney":1430,
+	"idgame":18,
+	"idplayer":17,
+	"amount":5.00,
+	"description": "Low Individual Gross: 73"
+},
+{
+	"idplayerMoney":1443,
+	"idgame":19,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1453,
+	"idgame":19,
+	"idplayer":17,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":1460,
+	"idgame":19,
+	"idplayer":17,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1468,
+	"idgame":19,
+	"idplayer":17,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1478,
+	"idgame":19,
+	"idplayer":17,
+	"amount":5.00,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":1490,
+	"idgame":20,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1550,
+	"idgame":3,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1563,
+	"idgame":3,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":1567,
+	"idgame":3,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Skin: 3 on hole 17"
+},
+{
+	"idplayerMoney":1569,
+	"idgame":3,
+	"idplayer":17,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1585,
+	"idgame":3,
+	"idplayer":17,
+	"amount":10.00,
+	"description": "Low Individual Net: 67.3"
+},
+{
+	"idplayerMoney":1597,
+	"idgame":4,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1626,
+	"idgame":4,
+	"idplayer":17,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1635,
+	"idgame":4,
+	"idplayer":17,
+	"amount":10.00,
+	"description": "Low Individual Net: 72.1"
+},
+{
+	"idplayerMoney":1642,
+	"idgame":8,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1654,
+	"idgame":8,
+	"idplayer":17,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1670,
+	"idgame":10,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1687,
+	"idgame":10,
+	"idplayer":17,
+	"amount":22.86,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":1718,
+	"idgame":10,
+	"idplayer":17,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1728,
+	"idgame":11,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1772,
+	"idgame":12,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1797,
+	"idgame":12,
+	"idplayer":17,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1804,
+	"idgame":12,
+	"idplayer":17,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1811,
+	"idgame":12,
+	"idplayer":17,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1818,
+	"idgame":12,
+	"idplayer":17,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1823,
+	"idgame":12,
+	"idplayer":17,
+	"amount":10.01,
+	"description": "Low Individual Gross: 70"
+},
+{
+	"idplayerMoney":1833,
+	"idgame":13,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1844,
+	"idgame":13,
+	"idplayer":17,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":1860,
+	"idgame":13,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1874,
+	"idgame":14,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1916,
+	"idgame":15,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1932,
+	"idgame":15,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1952,
+	"idgame":16,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1984,
+	"idgame":16,
+	"idplayer":17,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1988,
+	"idgame":16,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2002,
+	"idgame":17,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2026,
+	"idgame":17,
+	"idplayer":17,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2030,
+	"idgame":17,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2034,
+	"idgame":17,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2047,
+	"idgame":9,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2086,
+	"idgame":21,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2102,
+	"idgame":21,
+	"idplayer":17,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2108,
+	"idgame":21,
+	"idplayer":17,
+	"amount":12.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2118,
+	"idgame":21,
+	"idplayer":17,
+	"amount":5.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2124,
+	"idgame":22,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2139,
+	"idgame":22,
+	"idplayer":17,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2143,
+	"idgame":22,
+	"idplayer":17,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2161,
+	"idgame":23,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2195,
+	"idgame":24,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2205,
+	"idgame":24,
+	"idplayer":17,
+	"amount":14.57,
+	"description": "Skin: 4 on hole 3"
+},
+{
+	"idplayerMoney":2209,
+	"idgame":24,
+	"idplayer":17,
+	"amount":14.57,
+	"description": "Skin: 4 on hole 15"
+},
+{
+	"idplayerMoney":2212,
+	"idgame":24,
+	"idplayer":17,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2219,
+	"idgame":24,
+	"idplayer":17,
+	"amount":5.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2232,
+	"idgame":25,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2278,
+	"idgame":27,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2302,
+	"idgame":27,
+	"idplayer":17,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2335,
+	"idgame":29,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2414,
+	"idgame":31,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2423,
+	"idgame":31,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2432,
+	"idgame":31,
+	"idplayer":17,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2436,
+	"idgame":31,
+	"idplayer":17,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2448,
+	"idgame":33,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2454,
+	"idgame":33,
+	"idplayer":17,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 17"
+},
+{
+	"idplayerMoney":2470,
+	"idgame":34,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2536,
+	"idgame":37,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2556,
+	"idgame":37,
+	"idplayer":17,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2571,
+	"idgame":40,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2601,
+	"idgame":40,
+	"idplayer":17,
+	"amount":12.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2712,
+	"idgame":41,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2720,
+	"idgame":41,
+	"idplayer":17,
+	"amount":8.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2725,
+	"idgame":41,
+	"idplayer":17,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2730,
+	"idgame":41,
+	"idplayer":17,
+	"amount":8.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2738,
+	"idgame":46,
+	"idplayer":17,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2750,
+	"idgame":46,
+	"idplayer":17,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2758,
+	"idgame":46,
+	"idplayer":17,
+	"amount":5.00,
+	"description": "Low Individual Net: 66.0"
+},
+{
+	"idplayerMoney":1365,
+	"idgame":1,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1380,
+	"idgame":1,
+	"idplayer":18,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1384,
+	"idgame":1,
+	"idplayer":18,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1401,
+	"idgame":18,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1419,
+	"idgame":18,
+	"idplayer":18,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1491,
+	"idgame":20,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1505,
+	"idgame":20,
+	"idplayer":18,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":1523,
+	"idgame":20,
+	"idplayer":18,
+	"amount":10.00,
+	"description": "Low Individual Net: 69.7"
+},
+{
+	"idplayerMoney":1598,
+	"idgame":4,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1631,
+	"idgame":4,
+	"idplayer":18,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1773,
+	"idgame":12,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2048,
+	"idgame":9,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2067,
+	"idgame":9,
+	"idplayer":18,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2279,
+	"idgame":27,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2415,
+	"idgame":31,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2429,
+	"idgame":31,
+	"idplayer":18,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2445,
+	"idgame":33,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2496,
+	"idgame":35,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2508,
+	"idgame":35,
+	"idplayer":18,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2523,
+	"idgame":35,
+	"idplayer":18,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2527,
+	"idgame":35,
+	"idplayer":18,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2537,
+	"idgame":37,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2553,
+	"idgame":37,
+	"idplayer":18,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2739,
+	"idgame":46,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2747,
+	"idgame":46,
+	"idplayer":18,
+	"amount":36.67,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2755,
+	"idgame":46,
+	"idplayer":18,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2766,
+	"idgame":54,
+	"idplayer":18,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2773,
+	"idgame":54,
+	"idplayer":18,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2776,
+	"idgame":54,
+	"idplayer":18,
+	"amount":10.20,
+	"description": "Skin: 4 on hole 6"
+},
+{
+	"idplayerMoney":1230,
+	"idgame":2,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1248,
+	"idgame":2,
+	"idplayer":19,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1252,
+	"idgame":2,
+	"idplayer":19,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1256,
+	"idgame":2,
+	"idplayer":19,
+	"amount":10.00,
+	"description": "Low Individual Net: 66.8"
+},
+{
+	"idplayerMoney":1402,
+	"idgame":18,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1421,
+	"idgame":18,
+	"idplayer":19,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1425,
+	"idgame":18,
+	"idplayer":19,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1444,
+	"idgame":19,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1492,
+	"idgame":20,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1671,
+	"idgame":10,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1719,
+	"idgame":10,
+	"idplayer":19,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1721,
+	"idgame":10,
+	"idplayer":19,
+	"amount":10.00,
+	"description": "Low Individual Gross: 71"
+},
+{
+	"idplayerMoney":1729,
+	"idgame":11,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1741,
+	"idgame":11,
+	"idplayer":19,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":1748,
+	"idgame":11,
+	"idplayer":19,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1752,
+	"idgame":11,
+	"idplayer":19,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1834,
+	"idgame":13,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2003,
+	"idgame":17,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2020,
+	"idgame":17,
+	"idplayer":19,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2049,
+	"idgame":9,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2125,
+	"idgame":22,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2136,
+	"idgame":22,
+	"idplayer":19,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 7"
+},
+{
+	"idplayerMoney":2144,
+	"idgame":22,
+	"idplayer":19,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2162,
+	"idgame":23,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2177,
+	"idgame":23,
+	"idplayer":19,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":2336,
+	"idgame":29,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2346,
+	"idgame":29,
+	"idplayer":19,
+	"amount":12.75,
+	"description": "Skin: 2 on hole 12"
+},
+{
+	"idplayerMoney":2368,
+	"idgame":30,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2379,
+	"idgame":30,
+	"idplayer":19,
+	"amount":11.33,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":2397,
+	"idgame":30,
+	"idplayer":19,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2446,
+	"idgame":33,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2453,
+	"idgame":33,
+	"idplayer":19,
+	"amount":11.67,
+	"description": "Skin: 3 on hole 11"
+},
+{
+	"idplayerMoney":2497,
+	"idgame":35,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2518,
+	"idgame":35,
+	"idplayer":19,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2538,
+	"idgame":37,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2544,
+	"idgame":37,
+	"idplayer":19,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2546,
+	"idgame":37,
+	"idplayer":19,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 6"
+},
+{
+	"idplayerMoney":2548,
+	"idgame":37,
+	"idplayer":19,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2554,
+	"idgame":37,
+	"idplayer":19,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2565,
+	"idgame":37,
+	"idplayer":19,
+	"amount":5.00,
+	"description": "Low Individual Net: 65.8"
+},
+{
+	"idplayerMoney":2710,
+	"idgame":41,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2740,
+	"idgame":46,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2756,
+	"idgame":46,
+	"idplayer":19,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2816,
+	"idgame":99,
+	"idplayer":19,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2826,
+	"idgame":99,
+	"idplayer":19,
+	"amount":14.57,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":2828,
+	"idgame":99,
+	"idplayer":19,
+	"amount":14.57,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2841,
+	"idgame":99,
+	"idplayer":19,
+	"amount":5.00,
+	"description": "Low Individual Net: 70.8"
+},
+{
+	"idplayerMoney":1366,
+	"idgame":1,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1375,
+	"idgame":1,
+	"idplayer":20,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":1551,
+	"idgame":3,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1577,
+	"idgame":3,
+	"idplayer":20,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1774,
+	"idgame":12,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1835,
+	"idgame":13,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1843,
+	"idgame":13,
+	"idplayer":20,
+	"amount":14.44,
+	"description": "Skin: 2 on hole 4"
+},
+{
+	"idplayerMoney":1875,
+	"idgame":14,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1903,
+	"idgame":14,
+	"idplayer":20,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1907,
+	"idgame":14,
+	"idplayer":20,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1917,
+	"idgame":15,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1941,
+	"idgame":15,
+	"idplayer":20,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2050,
+	"idgame":9,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2068,
+	"idgame":9,
+	"idplayer":20,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2075,
+	"idgame":9,
+	"idplayer":20,
+	"amount":5.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2572,
+	"idgame":40,
+	"idplayer":20,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2597,
+	"idgame":40,
+	"idplayer":20,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2606,
+	"idgame":40,
+	"idplayer":20,
+	"amount":10.00,
+	"description": "Low Individual Net: 66.9"
+},
+{
+	"idplayerMoney":1231,
+	"idgame":2,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1245,
+	"idgame":2,
+	"idplayer":21,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1367,
+	"idgame":1,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1403,
+	"idgame":18,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1420,
+	"idgame":18,
+	"idplayer":21,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1445,
+	"idgame":19,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1464,
+	"idgame":19,
+	"idplayer":21,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1472,
+	"idgame":19,
+	"idplayer":21,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1493,
+	"idgame":20,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1552,
+	"idgame":3,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1566,
+	"idgame":3,
+	"idplayer":21,
+	"amount":15.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":1570,
+	"idgame":3,
+	"idplayer":21,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1599,
+	"idgame":4,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1643,
+	"idgame":8,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1672,
+	"idgame":10,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1694,
+	"idgame":10,
+	"idplayer":21,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1730,
+	"idgame":11,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1746,
+	"idgame":11,
+	"idplayer":21,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1758,
+	"idgame":11,
+	"idplayer":21,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1761,
+	"idgame":11,
+	"idplayer":21,
+	"amount":10.00,
+	"description": "Low Individual Net: 69.4"
+},
+{
+	"idplayerMoney":1775,
+	"idgame":12,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1798,
+	"idgame":12,
+	"idplayer":21,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1805,
+	"idgame":12,
+	"idplayer":21,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1812,
+	"idgame":12,
+	"idplayer":21,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1819,
+	"idgame":12,
+	"idplayer":21,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1836,
+	"idgame":13,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1861,
+	"idgame":13,
+	"idplayer":21,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1876,
+	"idgame":14,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1890,
+	"idgame":14,
+	"idplayer":21,
+	"amount":20.00,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":1918,
+	"idgame":15,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1937,
+	"idgame":15,
+	"idplayer":21,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1944,
+	"idgame":15,
+	"idplayer":21,
+	"amount":10.00,
+	"description": "Low Individual Net: 67.8"
+},
+{
+	"idplayerMoney":1953,
+	"idgame":16,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2051,
+	"idgame":9,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2064,
+	"idgame":9,
+	"idplayer":21,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2072,
+	"idgame":9,
+	"idplayer":21,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2196,
+	"idgame":24,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2217,
+	"idgame":24,
+	"idplayer":21,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2233,
+	"idgame":25,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2247,
+	"idgame":25,
+	"idplayer":21,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2255,
+	"idgame":25,
+	"idplayer":21,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2259,
+	"idgame":25,
+	"idplayer":21,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2280,
+	"idgame":27,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2294,
+	"idgame":27,
+	"idplayer":21,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2298,
+	"idgame":27,
+	"idplayer":21,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2337,
+	"idgame":29,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2351,
+	"idgame":29,
+	"idplayer":21,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2357,
+	"idgame":29,
+	"idplayer":21,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2463,
+	"idgame":34,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2506,
+	"idgame":35,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2817,
+	"idgame":99,
+	"idplayer":21,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1446,
+	"idgame":19,
+	"idplayer":22,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1673,
+	"idgame":10,
+	"idplayer":22,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1710,
+	"idgame":10,
+	"idplayer":22,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2281,
+	"idgame":27,
+	"idplayer":22,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2303,
+	"idgame":27,
+	"idplayer":22,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2306,
+	"idgame":27,
+	"idplayer":22,
+	"amount":10.00,
+	"description": "Low Individual Net: 61.8"
+},
+{
+	"idplayerMoney":2505,
+	"idgame":35,
+	"idplayer":22,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2524,
+	"idgame":35,
+	"idplayer":22,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2528,
+	"idgame":35,
+	"idplayer":22,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2531,
+	"idgame":35,
+	"idplayer":22,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.0"
+},
+{
+	"idplayerMoney":1232,
+	"idgame":2,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1368,
+	"idgame":1,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1373,
+	"idgame":1,
+	"idplayer":23,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":1374,
+	"idgame":1,
+	"idplayer":23,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":1376,
+	"idgame":1,
+	"idplayer":23,
+	"amount":24.00,
+	"description": "Skin: 4 on hole 15"
+},
+{
+	"idplayerMoney":1387,
+	"idgame":1,
+	"idplayer":23,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1390,
+	"idgame":1,
+	"idplayer":23,
+	"amount":10.00,
+	"description": "Low Individual Gross: 73"
+},
+{
+	"idplayerMoney":1404,
+	"idgame":18,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1422,
+	"idgame":18,
+	"idplayer":23,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1426,
+	"idgame":18,
+	"idplayer":23,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1447,
+	"idgame":19,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1644,
+	"idgame":8,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1649,
+	"idgame":8,
+	"idplayer":23,
+	"amount":25.50,
+	"description": "Skin: 3 on hole 12"
+},
+{
+	"idplayerMoney":1651,
+	"idgame":8,
+	"idplayer":23,
+	"amount":25.50,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":1658,
+	"idgame":8,
+	"idplayer":23,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1731,
+	"idgame":11,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1739,
+	"idgame":11,
+	"idplayer":23,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":1743,
+	"idgame":11,
+	"idplayer":23,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":1749,
+	"idgame":11,
+	"idplayer":23,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1753,
+	"idgame":11,
+	"idplayer":23,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1837,
+	"idgame":13,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1877,
+	"idgame":14,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1894,
+	"idgame":14,
+	"idplayer":23,
+	"amount":20.00,
+	"description": "Skin: 3 on hole 12"
+},
+{
+	"idplayerMoney":1899,
+	"idgame":14,
+	"idplayer":23,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2087,
+	"idgame":21,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2308,
+	"idgame":28,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2314,
+	"idgame":28,
+	"idplayer":23,
+	"amount":6.25,
+	"description": "Skin: 4 on hole 3"
+},
+{
+	"idplayerMoney":2316,
+	"idgame":28,
+	"idplayer":23,
+	"amount":6.25,
+	"description": "Skin: 4 on hole 6"
+},
+{
+	"idplayerMoney":2322,
+	"idgame":28,
+	"idplayer":23,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2325,
+	"idgame":28,
+	"idplayer":23,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2327,
+	"idgame":28,
+	"idplayer":23,
+	"amount":5.00,
+	"description": "Low Individual Gross: 74"
+},
+{
+	"idplayerMoney":2769,
+	"idgame":54,
+	"idplayer":23,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1369,
+	"idgame":1,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1600,
+	"idgame":4,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1622,
+	"idgame":4,
+	"idplayer":24,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1674,
+	"idgame":10,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1697,
+	"idgame":10,
+	"idplayer":24,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1701,
+	"idgame":10,
+	"idplayer":24,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1878,
+	"idgame":14,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1896,
+	"idgame":14,
+	"idplayer":24,
+	"amount":20.00,
+	"description": "Skin: 3 on hole 16"
+},
+{
+	"idplayerMoney":1954,
+	"idgame":16,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2088,
+	"idgame":21,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2163,
+	"idgame":23,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2172,
+	"idgame":23,
+	"idplayer":24,
+	"amount":23.33,
+	"description": "Skin: 4 on hole 6"
+},
+{
+	"idplayerMoney":2760,
+	"idgame":54,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2777,
+	"idgame":54,
+	"idplayer":24,
+	"amount":10.20,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":2784,
+	"idgame":54,
+	"idplayer":24,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2791,
+	"idgame":54,
+	"idplayer":24,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2798,
+	"idgame":54,
+	"idplayer":24,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2805,
+	"idgame":54,
+	"idplayer":24,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":2822,
+	"idgame":99,
+	"idplayer":24,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1448,
+	"idgame":19,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1494,
+	"idgame":20,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1516,
+	"idgame":20,
+	"idplayer":25,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1520,
+	"idgame":20,
+	"idplayer":25,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1601,
+	"idgame":4,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1618,
+	"idgame":4,
+	"idplayer":25,
+	"amount":30.00,
+	"description": "Skin: 2 on hole 12"
+},
+{
+	"idplayerMoney":1627,
+	"idgame":4,
+	"idplayer":25,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1732,
+	"idgame":11,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1750,
+	"idgame":11,
+	"idplayer":25,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1754,
+	"idgame":11,
+	"idplayer":25,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2126,
+	"idgame":22,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2147,
+	"idgame":22,
+	"idplayer":25,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2500,
+	"idgame":35,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2507,
+	"idgame":35,
+	"idplayer":25,
+	"amount":23.33,
+	"description": "Skin: 2 on hole 5"
+},
+{
+	"idplayerMoney":2519,
+	"idgame":35,
+	"idplayer":25,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2574,
+	"idgame":40,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2584,
+	"idgame":40,
+	"idplayer":25,
+	"amount":25.00,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2602,
+	"idgame":40,
+	"idplayer":25,
+	"amount":12.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2743,
+	"idgame":46,
+	"idplayer":25,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2751,
+	"idgame":46,
+	"idplayer":25,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1233,
+	"idgame":2,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1249,
+	"idgame":2,
+	"idplayer":26,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1253,
+	"idgame":2,
+	"idplayer":26,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1370,
+	"idgame":1,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1388,
+	"idgame":1,
+	"idplayer":26,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1495,
+	"idgame":20,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1504,
+	"idgame":20,
+	"idplayer":26,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 17"
+},
+{
+	"idplayerMoney":1553,
+	"idgame":3,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1578,
+	"idgame":3,
+	"idplayer":26,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1675,
+	"idgame":10,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1691,
+	"idgame":10,
+	"idplayer":26,
+	"amount":22.86,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":1695,
+	"idgame":10,
+	"idplayer":26,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1733,
+	"idgame":11,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1747,
+	"idgame":11,
+	"idplayer":26,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1759,
+	"idgame":11,
+	"idplayer":26,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1879,
+	"idgame":14,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1919,
+	"idgame":15,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1929,
+	"idgame":15,
+	"idplayer":26,
+	"amount":30.00,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":1938,
+	"idgame":15,
+	"idplayer":26,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2052,
+	"idgame":9,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2059,
+	"idgame":9,
+	"idplayer":26,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 12"
+},
+{
+	"idplayerMoney":2065,
+	"idgame":9,
+	"idplayer":26,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2073,
+	"idgame":9,
+	"idplayer":26,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2076,
+	"idgame":9,
+	"idplayer":26,
+	"amount":10.00,
+	"description": "Low Individual Net: 68.7"
+},
+{
+	"idplayerMoney":2197,
+	"idgame":24,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2234,
+	"idgame":25,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2263,
+	"idgame":25,
+	"idplayer":26,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2338,
+	"idgame":29,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2352,
+	"idgame":29,
+	"idplayer":26,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2358,
+	"idgame":29,
+	"idplayer":26,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2417,
+	"idgame":31,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2541,
+	"idgame":37,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2547,
+	"idgame":37,
+	"idplayer":26,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2563,
+	"idgame":37,
+	"idplayer":26,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2573,
+	"idgame":40,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2587,
+	"idgame":40,
+	"idplayer":26,
+	"amount":12.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2592,
+	"idgame":40,
+	"idplayer":26,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2742,
+	"idgame":46,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2767,
+	"idgame":54,
+	"idplayer":26,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2788,
+	"idgame":54,
+	"idplayer":26,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2795,
+	"idgame":54,
+	"idplayer":26,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2802,
+	"idgame":54,
+	"idplayer":26,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2809,
+	"idgame":54,
+	"idplayer":26,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1234,
+	"idgame":2,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1405,
+	"idgame":18,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1449,
+	"idgame":19,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1456,
+	"idgame":19,
+	"idplayer":27,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":1475,
+	"idgame":19,
+	"idplayer":27,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1554,
+	"idgame":3,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1645,
+	"idgame":8,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1659,
+	"idgame":8,
+	"idplayer":27,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1676,
+	"idgame":10,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1698,
+	"idgame":10,
+	"idplayer":27,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1702,
+	"idgame":10,
+	"idplayer":27,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1734,
+	"idgame":11,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1776,
+	"idgame":12,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1785,
+	"idgame":12,
+	"idplayer":27,
+	"amount":56.67,
+	"description": "Skin: 4 on hole 4"
+},
+{
+	"idplayerMoney":1799,
+	"idgame":12,
+	"idplayer":27,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1806,
+	"idgame":12,
+	"idplayer":27,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1813,
+	"idgame":12,
+	"idplayer":27,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1820,
+	"idgame":12,
+	"idplayer":27,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1838,
+	"idgame":13,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1880,
+	"idgame":14,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1895,
+	"idgame":14,
+	"idplayer":27,
+	"amount":20.00,
+	"description": "Skin: 3 on hole 15"
+},
+{
+	"idplayerMoney":1920,
+	"idgame":15,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1955,
+	"idgame":16,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1970,
+	"idgame":16,
+	"idplayer":27,
+	"amount":12.00,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":1979,
+	"idgame":16,
+	"idplayer":27,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2004,
+	"idgame":17,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2053,
+	"idgame":9,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2198,
+	"idgame":24,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2235,
+	"idgame":25,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2253,
+	"idgame":25,
+	"idplayer":27,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2282,
+	"idgame":27,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2309,
+	"idgame":28,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2339,
+	"idgame":29,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2353,
+	"idgame":29,
+	"idplayer":27,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2359,
+	"idgame":29,
+	"idplayer":27,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2369,
+	"idgame":30,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2398,
+	"idgame":30,
+	"idplayer":27,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2418,
+	"idgame":31,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2464,
+	"idgame":34,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2472,
+	"idgame":34,
+	"idplayer":27,
+	"amount":11.67,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":2477,
+	"idgame":34,
+	"idplayer":27,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2481,
+	"idgame":34,
+	"idplayer":27,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2501,
+	"idgame":35,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2520,
+	"idgame":35,
+	"idplayer":27,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2575,
+	"idgame":40,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2598,
+	"idgame":40,
+	"idplayer":27,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2707,
+	"idgame":41,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2744,
+	"idgame":46,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2763,
+	"idgame":54,
+	"idplayer":27,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2774,
+	"idgame":54,
+	"idplayer":27,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 3"
+},
+{
+	"idplayerMoney":1371,
+	"idgame":1,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1389,
+	"idgame":1,
+	"idplayer":28,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1406,
+	"idgame":18,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1423,
+	"idgame":18,
+	"idplayer":28,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1427,
+	"idgame":18,
+	"idplayer":28,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1496,
+	"idgame":20,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1508,
+	"idgame":20,
+	"idplayer":28,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1512,
+	"idgame":20,
+	"idplayer":28,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1602,
+	"idgame":4,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1628,
+	"idgame":4,
+	"idplayer":28,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1677,
+	"idgame":10,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1699,
+	"idgame":10,
+	"idplayer":28,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1703,
+	"idgame":10,
+	"idplayer":28,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1722,
+	"idgame":10,
+	"idplayer":28,
+	"amount":10.00,
+	"description": "Low Individual Net: 63.5"
+},
+{
+	"idplayerMoney":1777,
+	"idgame":12,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1881,
+	"idgame":14,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1904,
+	"idgame":14,
+	"idplayer":28,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1908,
+	"idgame":14,
+	"idplayer":28,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1956,
+	"idgame":16,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1985,
+	"idgame":16,
+	"idplayer":28,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1989,
+	"idgame":16,
+	"idplayer":28,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2054,
+	"idgame":9,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2089,
+	"idgame":21,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2199,
+	"idgame":24,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2206,
+	"idgame":24,
+	"idplayer":28,
+	"amount":14.57,
+	"description": "Skin: 2 on hole 4"
+},
+{
+	"idplayerMoney":2310,
+	"idgame":28,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2313,
+	"idgame":28,
+	"idplayer":28,
+	"amount":6.25,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2542,
+	"idgame":37,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2555,
+	"idgame":37,
+	"idplayer":28,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2705,
+	"idgame":41,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2717,
+	"idgame":41,
+	"idplayer":28,
+	"amount":8.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2722,
+	"idgame":41,
+	"idplayer":28,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2727,
+	"idgame":41,
+	"idplayer":28,
+	"amount":8.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2764,
+	"idgame":54,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2781,
+	"idgame":54,
+	"idplayer":28,
+	"amount":10.20,
+	"description": "Skin: 2 on hole 12"
+},
+{
+	"idplayerMoney":2787,
+	"idgame":54,
+	"idplayer":28,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2794,
+	"idgame":54,
+	"idplayer":28,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2801,
+	"idgame":54,
+	"idplayer":28,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2808,
+	"idgame":54,
+	"idplayer":28,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":2819,
+	"idgame":99,
+	"idplayer":28,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1450,
+	"idgame":19,
+	"idplayer":29,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1235,
+	"idgame":2,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1246,
+	"idgame":2,
+	"idplayer":30,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1372,
+	"idgame":1,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1381,
+	"idgame":1,
+	"idplayer":30,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1385,
+	"idgame":1,
+	"idplayer":30,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1407,
+	"idgame":18,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1410,
+	"idgame":18,
+	"idplayer":30,
+	"amount":24.00,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":1424,
+	"idgame":18,
+	"idplayer":30,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1428,
+	"idgame":18,
+	"idplayer":30,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1451,
+	"idgame":19,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1476,
+	"idgame":19,
+	"idplayer":30,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1497,
+	"idgame":20,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1517,
+	"idgame":20,
+	"idplayer":30,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1521,
+	"idgame":20,
+	"idplayer":30,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1555,
+	"idgame":3,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1603,
+	"idgame":4,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1629,
+	"idgame":4,
+	"idplayer":30,
+	"amount":25.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1646,
+	"idgame":8,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1655,
+	"idgame":8,
+	"idplayer":30,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1678,
+	"idgame":10,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1735,
+	"idgame":11,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1778,
+	"idgame":12,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1800,
+	"idgame":12,
+	"idplayer":30,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1807,
+	"idgame":12,
+	"idplayer":30,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1814,
+	"idgame":12,
+	"idplayer":30,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1821,
+	"idgame":12,
+	"idplayer":30,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1839,
+	"idgame":13,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1882,
+	"idgame":14,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1893,
+	"idgame":14,
+	"idplayer":30,
+	"amount":20.00,
+	"description": "Skin: 3 on hole 7"
+},
+{
+	"idplayerMoney":1921,
+	"idgame":15,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2055,
+	"idgame":9,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2090,
+	"idgame":21,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2116,
+	"idgame":21,
+	"idplayer":30,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2127,
+	"idgame":22,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2138,
+	"idgame":22,
+	"idplayer":30,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2148,
+	"idgame":22,
+	"idplayer":30,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2164,
+	"idgame":23,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2200,
+	"idgame":24,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2208,
+	"idgame":24,
+	"idplayer":30,
+	"amount":14.57,
+	"description": "Skin: 2 on hole 14"
+},
+{
+	"idplayerMoney":2220,
+	"idgame":24,
+	"idplayer":30,
+	"amount":5.00,
+	"description": "Low Individual Net: 68.7"
+},
+{
+	"idplayerMoney":2236,
+	"idgame":25,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2248,
+	"idgame":25,
+	"idplayer":30,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2256,
+	"idgame":25,
+	"idplayer":30,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2260,
+	"idgame":25,
+	"idplayer":30,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2283,
+	"idgame":27,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2295,
+	"idgame":27,
+	"idplayer":30,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2299,
+	"idgame":27,
+	"idplayer":30,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2311,
+	"idgame":28,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2340,
+	"idgame":29,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2344,
+	"idgame":29,
+	"idplayer":30,
+	"amount":12.75,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2354,
+	"idgame":29,
+	"idplayer":30,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2360,
+	"idgame":29,
+	"idplayer":30,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2370,
+	"idgame":30,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2375,
+	"idgame":30,
+	"idplayer":30,
+	"amount":11.33,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2376,
+	"idgame":30,
+	"idplayer":30,
+	"amount":11.33,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2378,
+	"idgame":30,
+	"idplayer":30,
+	"amount":11.33,
+	"description": "Skin: 4 on hole 4"
+},
+{
+	"idplayerMoney":2386,
+	"idgame":30,
+	"idplayer":30,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2390,
+	"idgame":30,
+	"idplayer":30,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2401,
+	"idgame":30,
+	"idplayer":30,
+	"amount":5.00,
+	"description": "Low Individual Net: 67.1"
+},
+{
+	"idplayerMoney":2419,
+	"idgame":31,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2444,
+	"idgame":33,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2457,
+	"idgame":33,
+	"idplayer":30,
+	"amount":16.67,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2460,
+	"idgame":33,
+	"idplayer":30,
+	"amount":16.67,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2465,
+	"idgame":34,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2478,
+	"idgame":34,
+	"idplayer":30,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2482,
+	"idgame":34,
+	"idplayer":30,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2502,
+	"idgame":35,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2543,
+	"idgame":37,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2559,
+	"idgame":37,
+	"idplayer":30,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2577,
+	"idgame":40,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2599,
+	"idgame":40,
+	"idplayer":30,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2704,
+	"idgame":41,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2716,
+	"idgame":41,
+	"idplayer":30,
+	"amount":8.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2721,
+	"idgame":41,
+	"idplayer":30,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2726,
+	"idgame":41,
+	"idplayer":30,
+	"amount":8.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2745,
+	"idgame":46,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2752,
+	"idgame":46,
+	"idplayer":30,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2761,
+	"idgame":54,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2778,
+	"idgame":54,
+	"idplayer":30,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2785,
+	"idgame":54,
+	"idplayer":30,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2792,
+	"idgame":54,
+	"idplayer":30,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2799,
+	"idgame":54,
+	"idplayer":30,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2806,
+	"idgame":54,
+	"idplayer":30,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":2820,
+	"idgame":99,
+	"idplayer":30,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2827,
+	"idgame":99,
+	"idplayer":30,
+	"amount":14.57,
+	"description": "Skin: 3 on hole 7"
+},
+{
+	"idplayerMoney":1236,
+	"idgame":2,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1242,
+	"idgame":2,
+	"idplayer":31,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":1556,
+	"idgame":3,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1604,
+	"idgame":4,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1632,
+	"idgame":4,
+	"idplayer":31,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1679,
+	"idgame":10,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1689,
+	"idgame":10,
+	"idplayer":31,
+	"amount":22.86,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":1690,
+	"idgame":10,
+	"idplayer":31,
+	"amount":22.86,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":1700,
+	"idgame":10,
+	"idplayer":31,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1704,
+	"idgame":10,
+	"idplayer":31,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2005,
+	"idgame":17,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2128,
+	"idgame":22,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2165,
+	"idgame":23,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2174,
+	"idgame":23,
+	"idplayer":31,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2191,
+	"idgame":23,
+	"idplayer":31,
+	"amount":10.00,
+	"description": "Low Individual Net: 65.8"
+},
+{
+	"idplayerMoney":2201,
+	"idgame":24,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2210,
+	"idgame":24,
+	"idplayer":31,
+	"amount":14.57,
+	"description": "Skin: 3 on hole 17"
+},
+{
+	"idplayerMoney":2213,
+	"idgame":24,
+	"idplayer":31,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2371,
+	"idgame":30,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2383,
+	"idgame":30,
+	"idplayer":31,
+	"amount":11.33,
+	"description": "Skin: 4 on hole 14"
+},
+{
+	"idplayerMoney":2394,
+	"idgame":30,
+	"idplayer":31,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2406,
+	"idgame":31,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2490,
+	"idgame":35,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2521,
+	"idgame":35,
+	"idplayer":31,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2525,
+	"idgame":35,
+	"idplayer":31,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2580,
+	"idgame":40,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2582,
+	"idgame":40,
+	"idplayer":31,
+	"amount":25.00,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2583,
+	"idgame":40,
+	"idplayer":31,
+	"amount":25.00,
+	"description": "Skin: 2 on hole 11"
+},
+{
+	"idplayerMoney":2589,
+	"idgame":40,
+	"idplayer":31,
+	"amount":12.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2594,
+	"idgame":40,
+	"idplayer":31,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2735,
+	"idgame":46,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2746,
+	"idgame":46,
+	"idplayer":31,
+	"amount":36.67,
+	"description": "Skin: 3 on hole 4"
+},
+{
+	"idplayerMoney":2749,
+	"idgame":46,
+	"idplayer":31,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2772,
+	"idgame":54,
+	"idplayer":31,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2779,
+	"idgame":54,
+	"idplayer":31,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2789,
+	"idgame":54,
+	"idplayer":31,
+	"amount":6.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2796,
+	"idgame":54,
+	"idplayer":31,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2803,
+	"idgame":54,
+	"idplayer":31,
+	"amount":6.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2810,
+	"idgame":54,
+	"idplayer":31,
+	"amount":6.00,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1237,
+	"idgame":2,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1250,
+	"idgame":2,
+	"idplayer":32,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1254,
+	"idgame":2,
+	"idplayer":32,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1498,
+	"idgame":20,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1509,
+	"idgame":20,
+	"idplayer":32,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1513,
+	"idgame":20,
+	"idplayer":32,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1557,
+	"idgame":3,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1571,
+	"idgame":3,
+	"idplayer":32,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1605,
+	"idgame":4,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1623,
+	"idgame":4,
+	"idplayer":32,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1680,
+	"idgame":10,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1779,
+	"idgame":12,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1793,
+	"idgame":12,
+	"idplayer":32,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1922,
+	"idgame":15,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1930,
+	"idgame":15,
+	"idplayer":32,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":1942,
+	"idgame":15,
+	"idplayer":32,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2006,
+	"idgame":17,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2012,
+	"idgame":17,
+	"idplayer":32,
+	"amount":13.33,
+	"description": "Skin: 2 on hole 7"
+},
+{
+	"idplayerMoney":2013,
+	"idgame":17,
+	"idplayer":32,
+	"amount":13.33,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":2129,
+	"idgame":22,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2132,
+	"idgame":22,
+	"idplayer":32,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2145,
+	"idgame":22,
+	"idplayer":32,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2166,
+	"idgame":23,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2180,
+	"idgame":23,
+	"idplayer":32,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2184,
+	"idgame":23,
+	"idplayer":32,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2188,
+	"idgame":23,
+	"idplayer":32,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2202,
+	"idgame":24,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2218,
+	"idgame":24,
+	"idplayer":32,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2413,
+	"idgame":31,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2420,
+	"idgame":31,
+	"idplayer":32,
+	"amount":120.00,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2428,
+	"idgame":31,
+	"idplayer":32,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2493,
+	"idgame":35,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2512,
+	"idgame":35,
+	"idplayer":32,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":2569,
+	"idgame":40,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2586,
+	"idgame":40,
+	"idplayer":32,
+	"amount":12.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2591,
+	"idgame":40,
+	"idplayer":32,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2771,
+	"idgame":54,
+	"idplayer":32,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1238,
+	"idgame":2,
+	"idplayer":33,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1558,
+	"idgame":3,
+	"idplayer":33,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1575,
+	"idgame":3,
+	"idplayer":33,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1583,
+	"idgame":3,
+	"idplayer":33,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1780,
+	"idgame":12,
+	"idplayer":33,
+	"amount":10.00,
+	"description": "Entry Fee: 10.00"
+},
+{
+	"idplayerMoney":1606,
+	"idgame":4,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1681,
+	"idgame":10,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1711,
+	"idgame":10,
+	"idplayer":34,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1781,
+	"idgame":12,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1801,
+	"idgame":12,
+	"idplayer":34,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1808,
+	"idgame":12,
+	"idplayer":34,
+	"amount":9.29,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1815,
+	"idgame":12,
+	"idplayer":34,
+	"amount":9.29,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1822,
+	"idgame":12,
+	"idplayer":34,
+	"amount":9.29,
+	"description": "Ball 4"
+},
+{
+	"idplayerMoney":1883,
+	"idgame":14,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2056,
+	"idgame":9,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2069,
+	"idgame":9,
+	"idplayer":34,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2167,
+	"idgame":23,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2504,
+	"idgame":35,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2713,
+	"idgame":41,
+	"idplayer":34,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1499,
+	"idgame":20,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1559,
+	"idgame":3,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1579,
+	"idgame":3,
+	"idplayer":35,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1607,
+	"idgame":4,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1682,
+	"idgame":10,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1696,
+	"idgame":10,
+	"idplayer":35,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1840,
+	"idgame":13,
+	"idplayer":35,
+	"amount":10.00,
+	"description": "Entry Fee: 10.00"
+},
+{
+	"idplayerMoney":1850,
+	"idgame":13,
+	"idplayer":35,
+	"amount":14.44,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":2237,
+	"idgame":25,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2242,
+	"idgame":25,
+	"idplayer":35,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2249,
+	"idgame":25,
+	"idplayer":35,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2257,
+	"idgame":25,
+	"idplayer":35,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2261,
+	"idgame":25,
+	"idplayer":35,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2284,
+	"idgame":27,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2288,
+	"idgame":27,
+	"idplayer":35,
+	"amount":28.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2296,
+	"idgame":27,
+	"idplayer":35,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2300,
+	"idgame":27,
+	"idplayer":35,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2409,
+	"idgame":31,
+	"idplayer":35,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2421,
+	"idgame":31,
+	"idplayer":35,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2430,
+	"idgame":31,
+	"idplayer":35,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2434,
+	"idgame":31,
+	"idplayer":35,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1608,
+	"idgame":4,
+	"idplayer":36,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1624,
+	"idgame":4,
+	"idplayer":36,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2007,
+	"idgame":17,
+	"idplayer":36,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2021,
+	"idgame":17,
+	"idplayer":36,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1609,
+	"idgame":4,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1633,
+	"idgame":4,
+	"idplayer":37,
+	"amount":25.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1683,
+	"idgame":10,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1720,
+	"idgame":10,
+	"idplayer":37,
+	"amount":12.50,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1782,
+	"idgame":12,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1884,
+	"idgame":14,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1900,
+	"idgame":14,
+	"idplayer":37,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2091,
+	"idgame":21,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2238,
+	"idgame":25,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2264,
+	"idgame":25,
+	"idplayer":37,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2312,
+	"idgame":28,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2318,
+	"idgame":28,
+	"idplayer":37,
+	"amount":6.25,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":2323,
+	"idgame":28,
+	"idplayer":37,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2326,
+	"idgame":28,
+	"idplayer":37,
+	"amount":10.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2372,
+	"idgame":30,
+	"idplayer":37,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2395,
+	"idgame":30,
+	"idplayer":37,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1610,
+	"idgame":4,
+	"idplayer":38,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1783,
+	"idgame":12,
+	"idplayer":38,
+	"amount":10.00,
+	"description": "Entry Fee: 10.00"
+},
+{
+	"idplayerMoney":1611,
+	"idgame":4,
+	"idplayer":39,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1684,
+	"idgame":10,
+	"idplayer":39,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1612,
+	"idgame":4,
+	"idplayer":40,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1625,
+	"idgame":4,
+	"idplayer":40,
+	"amount":25.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1923,
+	"idgame":15,
+	"idplayer":40,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2008,
+	"idgame":17,
+	"idplayer":40,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2022,
+	"idgame":17,
+	"idplayer":40,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2168,
+	"idgame":23,
+	"idplayer":40,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2176,
+	"idgame":23,
+	"idplayer":40,
+	"amount":23.33,
+	"description": "Skin: 3 on hole 13"
+},
+{
+	"idplayerMoney":2181,
+	"idgame":23,
+	"idplayer":40,
+	"amount":20.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2185,
+	"idgame":23,
+	"idplayer":40,
+	"amount":20.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2189,
+	"idgame":23,
+	"idplayer":40,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2578,
+	"idgame":40,
+	"idplayer":40,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2588,
+	"idgame":40,
+	"idplayer":40,
+	"amount":12.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2593,
+	"idgame":40,
+	"idplayer":40,
+	"amount":6.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1613,
+	"idgame":4,
+	"idplayer":41,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1924,
+	"idgame":15,
+	"idplayer":41,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1927,
+	"idgame":15,
+	"idplayer":41,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 2"
+},
+{
+	"idplayerMoney":2169,
+	"idgame":23,
+	"idplayer":41,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1647,
+	"idgame":8,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1685,
+	"idgame":10,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1688,
+	"idgame":10,
+	"idplayer":42,
+	"amount":22.86,
+	"description": "Skin: 3 on hole 8"
+},
+{
+	"idplayerMoney":1712,
+	"idgame":10,
+	"idplayer":42,
+	"amount":8.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1784,
+	"idgame":12,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1794,
+	"idgame":12,
+	"idplayer":42,
+	"amount":4.64,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1841,
+	"idgame":13,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1862,
+	"idgame":13,
+	"idplayer":42,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1885,
+	"idgame":14,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1925,
+	"idgame":15,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1928,
+	"idgame":15,
+	"idplayer":42,
+	"amount":30.00,
+	"description": "Skin: 3 on hole 9"
+},
+{
+	"idplayerMoney":1933,
+	"idgame":15,
+	"idplayer":42,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1943,
+	"idgame":15,
+	"idplayer":42,
+	"amount":10.00,
+	"description": "Low Individual Gross: 72"
+},
+{
+	"idplayerMoney":2092,
+	"idgame":21,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2130,
+	"idgame":22,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2149,
+	"idgame":22,
+	"idplayer":42,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2170,
+	"idgame":23,
+	"idplayer":42,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1736,
+	"idgame":11,
+	"idplayer":43,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2009,
+	"idgame":17,
+	"idplayer":43,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2015,
+	"idgame":17,
+	"idplayer":43,
+	"amount":13.33,
+	"description": "Skin: 3 on hole 10"
+},
+{
+	"idplayerMoney":2171,
+	"idgame":23,
+	"idplayer":43,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2285,
+	"idgame":27,
+	"idplayer":43,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2304,
+	"idgame":27,
+	"idplayer":43,
+	"amount":20.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1737,
+	"idgame":11,
+	"idplayer":44,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1886,
+	"idgame":14,
+	"idplayer":44,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2131,
+	"idgame":22,
+	"idplayer":44,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2141,
+	"idgame":22,
+	"idplayer":44,
+	"amount":10.20,
+	"description": "Skin: 3 on hole 18"
+},
+{
+	"idplayerMoney":2239,
+	"idgame":25,
+	"idplayer":44,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2286,
+	"idgame":27,
+	"idplayer":44,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1738,
+	"idgame":11,
+	"idplayer":45,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1751,
+	"idgame":11,
+	"idplayer":45,
+	"amount":7.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1755,
+	"idgame":11,
+	"idplayer":45,
+	"amount":15.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1926,
+	"idgame":15,
+	"idplayer":45,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1934,
+	"idgame":15,
+	"idplayer":45,
+	"amount":15.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1887,
+	"idgame":14,
+	"idplayer":46,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1957,
+	"idgame":16,
+	"idplayer":46,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1980,
+	"idgame":16,
+	"idplayer":46,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2823,
+	"idgame":99,
+	"idplayer":46,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2835,
+	"idgame":99,
+	"idplayer":46,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2839,
+	"idgame":99,
+	"idplayer":46,
+	"amount":16.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1888,
+	"idgame":14,
+	"idplayer":47,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1958,
+	"idgame":16,
+	"idplayer":47,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1981,
+	"idgame":16,
+	"idplayer":47,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2093,
+	"idgame":21,
+	"idplayer":47,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2103,
+	"idgame":21,
+	"idplayer":47,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2109,
+	"idgame":21,
+	"idplayer":47,
+	"amount":12.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2203,
+	"idgame":24,
+	"idplayer":47,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2204,
+	"idgame":24,
+	"idplayer":47,
+	"amount":14.57,
+	"description": "Skin: 3 on hole 1"
+},
+{
+	"idplayerMoney":2214,
+	"idgame":24,
+	"idplayer":47,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":1959,
+	"idgame":16,
+	"idplayer":48,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1986,
+	"idgame":16,
+	"idplayer":48,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":1990,
+	"idgame":16,
+	"idplayer":48,
+	"amount":15.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":1960,
+	"idgame":16,
+	"idplayer":49,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":1982,
+	"idgame":16,
+	"idplayer":49,
+	"amount":5.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2094,
+	"idgame":21,
+	"idplayer":49,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2098,
+	"idgame":21,
+	"idplayer":49,
+	"amount":41.67,
+	"description": "Skin: 2 on hole 3"
+},
+{
+	"idplayerMoney":2095,
+	"idgame":21,
+	"idplayer":50,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2104,
+	"idgame":21,
+	"idplayer":50,
+	"amount":12.50,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2110,
+	"idgame":21,
+	"idplayer":50,
+	"amount":12.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2240,
+	"idgame":25,
+	"idplayer":50,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2265,
+	"idgame":25,
+	"idplayer":50,
+	"amount":10.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2287,
+	"idgame":27,
+	"idplayer":50,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2495,
+	"idgame":35,
+	"idplayer":50,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2373,
+	"idgame":30,
+	"idplayer":53,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2387,
+	"idgame":30,
+	"idplayer":53,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2391,
+	"idgame":30,
+	"idplayer":53,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2447,
+	"idgame":33,
+	"idplayer":53,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2462,
+	"idgame":33,
+	"idplayer":53,
+	"amount":5.00,
+	"description": "Low Individual Net: 65.0"
+},
+{
+	"idplayerMoney":2498,
+	"idgame":35,
+	"idplayer":53,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2515,
+	"idgame":35,
+	"idplayer":53,
+	"amount":10.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2539,
+	"idgame":37,
+	"idplayer":53,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2557,
+	"idgame":37,
+	"idplayer":53,
+	"amount":8.00,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2374,
+	"idgame":30,
+	"idplayer":82,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2399,
+	"idgame":30,
+	"idplayer":82,
+	"amount":5.33,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2407,
+	"idgame":31,
+	"idplayer":82,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2426,
+	"idgame":31,
+	"idplayer":82,
+	"amount":7.50,
+	"description": "Ball 2"
+},
+{
+	"idplayerMoney":2579,
+	"idgame":40,
+	"idplayer":85,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2604,
+	"idgame":40,
+	"idplayer":85,
+	"amount":12.00,
+	"description": "Ball 3"
+},
+{
+	"idplayerMoney":2737,
+	"idgame":46,
+	"idplayer":86,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2768,
+	"idgame":54,
+	"idplayer":90,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2812,
+	"idgame":54,
+	"idplayer":90,
+	"amount":5.00,
+	"description": "Low Individual Net: 71.5"
+},
+{
+	"idplayerMoney":2815,
+	"idgame":99,
+	"idplayer":90,
+	"amount":-20.00,
+	"description": "Entry Fee: -20"
+},
+{
+	"idplayerMoney":2833,
+	"idgame":99,
+	"idplayer":90,
+	"amount":16.00,
+	"description": "Ball 1"
+},
+{
+	"idplayerMoney":2837,
+	"idgame":99,
+	"idplayer":90,
+	"amount":16.00,
+	"description": "Ball 2"
+}
+]

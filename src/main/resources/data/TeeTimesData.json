@@ -1,0 +1,3770 @@
+[
+{
+	"idteetimes":3,
+	"idgame":4,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":4,
+	"idgame":4,
+	"playGroupNumber":2,
+	"teeTime": "9:53"
+},
+{
+	"idteetimes":5,
+	"idgame":4,
+	"playGroupNumber":3,
+	"teeTime": "10:11"
+},
+{
+	"idteetimes":6,
+	"idgame":4,
+	"playGroupNumber":4,
+	"teeTime": "10:29"
+},
+{
+	"idteetimes":7,
+	"idgame":4,
+	"playGroupNumber":5,
+	"teeTime": "11:05"
+},
+{
+	"idteetimes":8,
+	"idgame":4,
+	"playGroupNumber":6,
+	"teeTime": "11:41"
+},
+{
+	"idteetimes":9,
+	"idgame":4,
+	"playGroupNumber":7,
+	"teeTime": "11:59"
+},
+{
+	"idteetimes":12,
+	"idgame":8,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":13,
+	"idgame":8,
+	"playGroupNumber":2,
+	"teeTime": "9:48"
+},
+{
+	"idteetimes":14,
+	"idgame":8,
+	"playGroupNumber":3,
+	"teeTime": "10:06"
+},
+{
+	"idteetimes":15,
+	"idgame":9,
+	"playGroupNumber":1,
+	"teeTime": "9:12"
+},
+{
+	"idteetimes":16,
+	"idgame":9,
+	"playGroupNumber":2,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":17,
+	"idgame":9,
+	"playGroupNumber":3,
+	"teeTime": "9:48"
+},
+{
+	"idteetimes":18,
+	"idgame":9,
+	"playGroupNumber":4,
+	"teeTime": "10:06"
+},
+{
+	"idteetimes":19,
+	"idgame":9,
+	"playGroupNumber":5,
+	"teeTime": "10:24"
+},
+{
+	"idteetimes":20,
+	"idgame":10,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":21,
+	"idgame":10,
+	"playGroupNumber":2,
+	"teeTime": "9:48"
+},
+{
+	"idteetimes":22,
+	"idgame":10,
+	"playGroupNumber":3,
+	"teeTime": "10:06"
+},
+{
+	"idteetimes":23,
+	"idgame":10,
+	"playGroupNumber":4,
+	"teeTime": "10:24"
+},
+{
+	"idteetimes":24,
+	"idgame":10,
+	"playGroupNumber":5,
+	"teeTime": "10:42"
+},
+{
+	"idteetimes":25,
+	"idgame":10,
+	"playGroupNumber":6,
+	"teeTime": "12:12"
+},
+{
+	"idteetimes":26,
+	"idgame":11,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":27,
+	"idgame":11,
+	"playGroupNumber":2,
+	"teeTime": "9:48"
+},
+{
+	"idteetimes":28,
+	"idgame":11,
+	"playGroupNumber":3,
+	"teeTime": "10:06"
+},
+{
+	"idteetimes":29,
+	"idgame":11,
+	"playGroupNumber":4,
+	"teeTime": "10:24"
+},
+{
+	"idteetimes":30,
+	"idgame":12,
+	"playGroupNumber":1,
+	"teeTime": "9:24"
+},
+{
+	"idteetimes":31,
+	"idgame":12,
+	"playGroupNumber":2,
+	"teeTime": "9:42"
+},
+{
+	"idteetimes":32,
+	"idgame":12,
+	"playGroupNumber":3,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":33,
+	"idgame":12,
+	"playGroupNumber":4,
+	"teeTime": "10:18"
+},
+{
+	"idteetimes":34,
+	"idgame":12,
+	"playGroupNumber":5,
+	"teeTime": "10:36"
+},
+{
+	"idteetimes":35,
+	"idgame":12,
+	"playGroupNumber":6,
+	"teeTime": "10:54"
+},
+{
+	"idteetimes":36,
+	"idgame":13,
+	"playGroupNumber":1,
+	"teeTime": "9:20"
+},
+{
+	"idteetimes":37,
+	"idgame":13,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":38,
+	"idgame":13,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":39,
+	"idgame":13,
+	"playGroupNumber":4,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":40,
+	"idgame":13,
+	"playGroupNumber":5,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":41,
+	"idgame":14,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":42,
+	"idgame":14,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":43,
+	"idgame":14,
+	"playGroupNumber":3,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":44,
+	"idgame":14,
+	"playGroupNumber":4,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":45,
+	"idgame":14,
+	"playGroupNumber":5,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":46,
+	"idgame":14,
+	"playGroupNumber":6,
+	"teeTime": "10:45"
+},
+{
+	"idteetimes":48,
+	"idgame":15,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":49,
+	"idgame":15,
+	"playGroupNumber":2,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":50,
+	"idgame":15,
+	"playGroupNumber":3,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":52,
+	"idgame":15,
+	"playGroupNumber":4,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":54,
+	"idgame":16,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":55,
+	"idgame":16,
+	"playGroupNumber":2,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":56,
+	"idgame":16,
+	"playGroupNumber":3,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":57,
+	"idgame":16,
+	"playGroupNumber":4,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":58,
+	"idgame":17,
+	"playGroupNumber":4,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":59,
+	"idgame":17,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":60,
+	"idgame":17,
+	"playGroupNumber":2,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":61,
+	"idgame":17,
+	"playGroupNumber":3,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":62,
+	"idgame":1,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":63,
+	"idgame":1,
+	"playGroupNumber":2,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":64,
+	"idgame":1,
+	"playGroupNumber":3,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":65,
+	"idgame":1,
+	"playGroupNumber":4,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":66,
+	"idgame":18,
+	"playGroupNumber":1,
+	"teeTime": "9:47"
+},
+{
+	"idteetimes":67,
+	"idgame":18,
+	"playGroupNumber":2,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":68,
+	"idgame":18,
+	"playGroupNumber":3,
+	"teeTime": "10:23"
+},
+{
+	"idteetimes":69,
+	"idgame":18,
+	"playGroupNumber":4,
+	"teeTime": "10:41"
+},
+{
+	"idteetimes":70,
+	"idgame":19,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":71,
+	"idgame":19,
+	"playGroupNumber":2,
+	"teeTime": "10:18"
+},
+{
+	"idteetimes":72,
+	"idgame":19,
+	"playGroupNumber":3,
+	"teeTime": "10:36"
+},
+{
+	"idteetimes":73,
+	"idgame":19,
+	"playGroupNumber":4,
+	"teeTime": "10:54"
+},
+{
+	"idteetimes":74,
+	"idgame":19,
+	"playGroupNumber":5,
+	"teeTime": "11:12"
+},
+{
+	"idteetimes":75,
+	"idgame":20,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":76,
+	"idgame":20,
+	"playGroupNumber":2,
+	"teeTime": "9:53"
+},
+{
+	"idteetimes":77,
+	"idgame":20,
+	"playGroupNumber":3,
+	"teeTime": "10:11"
+},
+{
+	"idteetimes":78,
+	"idgame":20,
+	"playGroupNumber":4,
+	"teeTime": "10:29"
+},
+{
+	"idteetimes":79,
+	"idgame":20,
+	"playGroupNumber":5,
+	"teeTime": "10:47"
+},
+{
+	"idteetimes":80,
+	"idgame":21,
+	"playGroupNumber":5,
+	"teeTime": "10:45"
+},
+{
+	"idteetimes":81,
+	"idgame":21,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":82,
+	"idgame":21,
+	"playGroupNumber":2,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":83,
+	"idgame":21,
+	"playGroupNumber":3,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":84,
+	"idgame":21,
+	"playGroupNumber":4,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":86,
+	"idgame":22,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":87,
+	"idgame":22,
+	"playGroupNumber":2,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":88,
+	"idgame":22,
+	"playGroupNumber":3,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":89,
+	"idgame":23,
+	"playGroupNumber":1,
+	"teeTime": "9:20"
+},
+{
+	"idteetimes":90,
+	"idgame":23,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":91,
+	"idgame":23,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":92,
+	"idgame":23,
+	"playGroupNumber":4,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":93,
+	"idgame":23,
+	"playGroupNumber":5,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":94,
+	"idgame":24,
+	"playGroupNumber":1,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":95,
+	"idgame":24,
+	"playGroupNumber":2,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":96,
+	"idgame":24,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":97,
+	"idgame":25,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":98,
+	"idgame":25,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":99,
+	"idgame":25,
+	"playGroupNumber":3,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":100,
+	"idgame":25,
+	"playGroupNumber":4,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":101,
+	"idgame":25,
+	"playGroupNumber":5,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":102,
+	"idgame":26,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":103,
+	"idgame":26,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":104,
+	"idgame":27,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":105,
+	"idgame":27,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":106,
+	"idgame":27,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":107,
+	"idgame":27,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":108,
+	"idgame":27,
+	"playGroupNumber":5,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":109,
+	"idgame":28,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":110,
+	"idgame":28,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":111,
+	"idgame":29,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":112,
+	"idgame":29,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":113,
+	"idgame":29,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":114,
+	"idgame":30,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":115,
+	"idgame":30,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":116,
+	"idgame":30,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":119,
+	"idgame":31,
+	"playGroupNumber":1,
+	"teeTime": "10:48"
+},
+{
+	"idteetimes":120,
+	"idgame":31,
+	"playGroupNumber":2,
+	"teeTime": "10:56"
+},
+{
+	"idteetimes":121,
+	"idgame":31,
+	"playGroupNumber":3,
+	"teeTime": "11:04"
+},
+{
+	"idteetimes":122,
+	"idgame":31,
+	"playGroupNumber":4,
+	"teeTime": "11:12"
+},
+{
+	"idteetimes":127,
+	"idgame":33,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":128,
+	"idgame":33,
+	"playGroupNumber":2,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":129,
+	"idgame":33,
+	"playGroupNumber":3,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":131,
+	"idgame":34,
+	"playGroupNumber":1,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":132,
+	"idgame":34,
+	"playGroupNumber":2,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":136,
+	"idgame":35,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":137,
+	"idgame":35,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":138,
+	"idgame":35,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":139,
+	"idgame":35,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":140,
+	"idgame":35,
+	"playGroupNumber":5,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":143,
+	"idgame":36,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":147,
+	"idgame":37,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":148,
+	"idgame":37,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":149,
+	"idgame":37,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":150,
+	"idgame":37,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":153,
+	"idgame":38,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":158,
+	"idgame":39,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":159,
+	"idgame":39,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":160,
+	"idgame":39,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":164,
+	"idgame":40,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":165,
+	"idgame":40,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":166,
+	"idgame":40,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":167,
+	"idgame":40,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":169,
+	"idgame":41,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":170,
+	"idgame":41,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":171,
+	"idgame":41,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":174,
+	"idgame":42,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":178,
+	"idgame":43,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":179,
+	"idgame":43,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":183,
+	"idgame":44,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":187,
+	"idgame":45,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":188,
+	"idgame":45,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":192,
+	"idgame":46,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":193,
+	"idgame":46,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":194,
+	"idgame":46,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":195,
+	"idgame":46,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":198,
+	"idgame":47,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":199,
+	"idgame":47,
+	"playGroupNumber":4,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":201,
+	"idgame":48,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":202,
+	"idgame":48,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":213,
+	"idgame":49,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":214,
+	"idgame":49,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":217,
+	"idgame":50,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":221,
+	"idgame":51,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":222,
+	"idgame":51,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":223,
+	"idgame":51,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":225,
+	"idgame":52,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":226,
+	"idgame":52,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":227,
+	"idgame":52,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":229,
+	"idgame":53,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":232,
+	"idgame":54,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":233,
+	"idgame":54,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":234,
+	"idgame":54,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":235,
+	"idgame":54,
+	"playGroupNumber":4,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":236,
+	"idgame":55,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":237,
+	"idgame":55,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":240,
+	"idgame":56,
+	"playGroupNumber":1,
+	"teeTime": "8:45"
+},
+{
+	"idteetimes":241,
+	"idgame":56,
+	"playGroupNumber":2,
+	"teeTime": "8:55"
+},
+{
+	"idteetimes":242,
+	"idgame":57,
+	"playGroupNumber":1,
+	"teeTime": "9:20"
+},
+{
+	"idteetimes":243,
+	"idgame":57,
+	"playGroupNumber":2,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":244,
+	"idgame":57,
+	"playGroupNumber":3,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":246,
+	"idgame":58,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":249,
+	"idgame":59,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":252,
+	"idgame":60,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":253,
+	"idgame":60,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":256,
+	"idgame":61,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":259,
+	"idgame":62,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":260,
+	"idgame":62,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":263,
+	"idgame":63,
+	"playGroupNumber":1,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":266,
+	"idgame":64,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":269,
+	"idgame":65,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":272,
+	"idgame":66,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":275,
+	"idgame":67,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":276,
+	"idgame":67,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":278,
+	"idgame":68,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":279,
+	"idgame":68,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":281,
+	"idgame":69,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":289,
+	"idgame":72,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":290,
+	"idgame":72,
+	"playGroupNumber":2,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":291,
+	"idgame":73,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":292,
+	"idgame":73,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":294,
+	"idgame":74,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":298,
+	"idgame":76,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":299,
+	"idgame":76,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":301,
+	"idgame":77,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":304,
+	"idgame":78,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":307,
+	"idgame":79,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":310,
+	"idgame":80,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":311,
+	"idgame":80,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":312,
+	"idgame":81,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":313,
+	"idgame":81,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":314,
+	"idgame":81,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":317,
+	"idgame":83,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":318,
+	"idgame":83,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":319,
+	"idgame":84,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":322,
+	"idgame":85,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":324,
+	"idgame":86,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":326,
+	"idgame":87,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":327,
+	"idgame":87,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":328,
+	"idgame":87,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":329,
+	"idgame":88,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":332,
+	"idgame":89,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":333,
+	"idgame":89,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":334,
+	"idgame":90,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":336,
+	"idgame":91,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":339,
+	"idgame":92,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":341,
+	"idgame":93,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":344,
+	"idgame":94,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":346,
+	"idgame":95,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":349,
+	"idgame":96,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":353,
+	"idgame":98,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":355,
+	"idgame":99,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":356,
+	"idgame":99,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":357,
+	"idgame":99,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":358,
+	"idgame":100,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":359,
+	"idgame":100,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":360,
+	"idgame":100,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":361,
+	"idgame":101,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":362,
+	"idgame":101,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":364,
+	"idgame":102,
+	"playGroupNumber":1,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":365,
+	"idgame":102,
+	"playGroupNumber":2,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":367,
+	"idgame":102,
+	"playGroupNumber":3,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":368,
+	"idgame":103,
+	"playGroupNumber":1,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":369,
+	"idgame":103,
+	"playGroupNumber":2,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":370,
+	"idgame":103,
+	"playGroupNumber":3,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":371,
+	"idgame":104,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":372,
+	"idgame":104,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":375,
+	"idgame":105,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":376,
+	"idgame":105,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":377,
+	"idgame":105,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":378,
+	"idgame":105,
+	"playGroupNumber":4,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":379,
+	"idgame":106,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":380,
+	"idgame":106,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":381,
+	"idgame":106,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":382,
+	"idgame":107,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":383,
+	"idgame":107,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":384,
+	"idgame":107,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":386,
+	"idgame":108,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":387,
+	"idgame":108,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":388,
+	"idgame":108,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":389,
+	"idgame":109,
+	"playGroupNumber":1,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":390,
+	"idgame":109,
+	"playGroupNumber":2,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":391,
+	"idgame":109,
+	"playGroupNumber":3,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":392,
+	"idgame":109,
+	"playGroupNumber":4,
+	"teeTime": "10:40"
+},
+{
+	"idteetimes":393,
+	"idgame":110,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":394,
+	"idgame":110,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":395,
+	"idgame":110,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":396,
+	"idgame":111,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":397,
+	"idgame":111,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":398,
+	"idgame":111,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":399,
+	"idgame":112,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":400,
+	"idgame":112,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":401,
+	"idgame":112,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":403,
+	"idgame":113,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":404,
+	"idgame":113,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":406,
+	"idgame":114,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":407,
+	"idgame":114,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":408,
+	"idgame":114,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":409,
+	"idgame":114,
+	"playGroupNumber":4,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":410,
+	"idgame":115,
+	"playGroupNumber":1,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":413,
+	"idgame":116,
+	"playGroupNumber":1,
+	"teeTime": "8:25"
+},
+{
+	"idteetimes":414,
+	"idgame":116,
+	"playGroupNumber":2,
+	"teeTime": "8:35"
+},
+{
+	"idteetimes":415,
+	"idgame":116,
+	"playGroupNumber":3,
+	"teeTime": "8:45"
+},
+{
+	"idteetimes":416,
+	"idgame":117,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":417,
+	"idgame":117,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":418,
+	"idgame":117,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":419,
+	"idgame":118,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":420,
+	"idgame":118,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":421,
+	"idgame":118,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":422,
+	"idgame":118,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":423,
+	"idgame":119,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":424,
+	"idgame":119,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":425,
+	"idgame":119,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":426,
+	"idgame":120,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":427,
+	"idgame":120,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":428,
+	"idgame":120,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":429,
+	"idgame":117,
+	"playGroupNumber":4,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":430,
+	"idgame":121,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":431,
+	"idgame":121,
+	"playGroupNumber":2,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":433,
+	"idgame":122,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":436,
+	"idgame":123,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":437,
+	"idgame":123,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":438,
+	"idgame":123,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":439,
+	"idgame":124,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":442,
+	"idgame":125,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":443,
+	"idgame":125,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":445,
+	"idgame":126,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":446,
+	"idgame":126,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":447,
+	"idgame":126,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":451,
+	"idgame":121,
+	"playGroupNumber":4,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":452,
+	"idgame":127,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":456,
+	"idgame":128,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":457,
+	"idgame":128,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":458,
+	"idgame":128,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":459,
+	"idgame":128,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":460,
+	"idgame":129,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":461,
+	"idgame":129,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":463,
+	"idgame":130,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":464,
+	"idgame":130,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":465,
+	"idgame":130,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":466,
+	"idgame":131,
+	"playGroupNumber":1,
+	"teeTime": "9:20"
+},
+{
+	"idteetimes":467,
+	"idgame":131,
+	"playGroupNumber":2,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":468,
+	"idgame":131,
+	"playGroupNumber":3,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":469,
+	"idgame":132,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":475,
+	"idgame":134,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":476,
+	"idgame":134,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":477,
+	"idgame":134,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":478,
+	"idgame":135,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":479,
+	"idgame":135,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":480,
+	"idgame":135,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":482,
+	"idgame":136,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":485,
+	"idgame":137,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":489,
+	"idgame":138,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":490,
+	"idgame":138,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":491,
+	"idgame":138,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":495,
+	"idgame":140,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":496,
+	"idgame":140,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":497,
+	"idgame":140,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":498,
+	"idgame":141,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":499,
+	"idgame":141,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":500,
+	"idgame":141,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":501,
+	"idgame":142,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":502,
+	"idgame":142,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":503,
+	"idgame":142,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":504,
+	"idgame":143,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":505,
+	"idgame":143,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":506,
+	"idgame":143,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":507,
+	"idgame":144,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":508,
+	"idgame":144,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":509,
+	"idgame":144,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":510,
+	"idgame":145,
+	"playGroupNumber":1,
+	"teeTime": "9:05"
+},
+{
+	"idteetimes":511,
+	"idgame":145,
+	"playGroupNumber":2,
+	"teeTime": "9:15"
+},
+{
+	"idteetimes":512,
+	"idgame":145,
+	"playGroupNumber":3,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":513,
+	"idgame":146,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":514,
+	"idgame":146,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":515,
+	"idgame":146,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":516,
+	"idgame":147,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":517,
+	"idgame":147,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":518,
+	"idgame":147,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":519,
+	"idgame":148,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":520,
+	"idgame":148,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":525,
+	"idgame":150,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":528,
+	"idgame":151,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":531,
+	"idgame":152,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":532,
+	"idgame":152,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":534,
+	"idgame":153,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":537,
+	"idgame":152,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":538,
+	"idgame":154,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":541,
+	"idgame":155,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":542,
+	"idgame":155,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":543,
+	"idgame":155,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":544,
+	"idgame":156,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":547,
+	"idgame":157,
+	"playGroupNumber":1,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":550,
+	"idgame":158,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":551,
+	"idgame":158,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":553,
+	"idgame":159,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":554,
+	"idgame":159,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":556,
+	"idgame":160,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":557,
+	"idgame":160,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":559,
+	"idgame":161,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":562,
+	"idgame":162,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":563,
+	"idgame":162,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":565,
+	"idgame":163,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":566,
+	"idgame":163,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":568,
+	"idgame":164,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":571,
+	"idgame":165,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":572,
+	"idgame":165,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":577,
+	"idgame":166,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":580,
+	"idgame":167,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":581,
+	"idgame":167,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":582,
+	"idgame":167,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":583,
+	"idgame":168,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":586,
+	"idgame":169,
+	"playGroupNumber":1,
+	"teeTime": "10:05,"
+},
+{
+	"idteetimes":589,
+	"idgame":170,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":590,
+	"idgame":170,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":591,
+	"idgame":170,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":592,
+	"idgame":171,
+	"playGroupNumber":1,
+	"teeTime": "10:05,"
+},
+{
+	"idteetimes":593,
+	"idgame":171,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":594,
+	"idgame":171,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":595,
+	"idgame":172,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":596,
+	"idgame":172,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":597,
+	"idgame":172,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":598,
+	"idgame":173,
+	"playGroupNumber":1,
+	"teeTime": "10:05,"
+},
+{
+	"idteetimes":601,
+	"idgame":174,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":602,
+	"idgame":174,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":603,
+	"idgame":174,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":604,
+	"idgame":175,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":607,
+	"idgame":176,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":610,
+	"idgame":177,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":628,
+	"idgame":183,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":629,
+	"idgame":183,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":631,
+	"idgame":184,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":632,
+	"idgame":184,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":633,
+	"idgame":184,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":634,
+	"idgame":185,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":635,
+	"idgame":185,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":636,
+	"idgame":185,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":637,
+	"idgame":186,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":640,
+	"idgame":187,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":641,
+	"idgame":187,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":643,
+	"idgame":185,
+	"playGroupNumber":4,
+	"teeTime": "10:50"
+},
+{
+	"idteetimes":644,
+	"idgame":188,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":645,
+	"idgame":188,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":651,
+	"idgame":190,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":652,
+	"idgame":190,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":653,
+	"idgame":190,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":654,
+	"idgame":190,
+	"playGroupNumber":4,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":655,
+	"idgame":191,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":658,
+	"idgame":192,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":662,
+	"idgame":193,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":663,
+	"idgame":193,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":664,
+	"idgame":193,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":665,
+	"idgame":194,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":666,
+	"idgame":194,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":669,
+	"idgame":195,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":672,
+	"idgame":196,
+	"playGroupNumber":1,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":673,
+	"idgame":196,
+	"playGroupNumber":2,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":676,
+	"idgame":197,
+	"playGroupNumber":1,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":677,
+	"idgame":197,
+	"playGroupNumber":2,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":680,
+	"idgame":198,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":681,
+	"idgame":198,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":682,
+	"idgame":199,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":683,
+	"idgame":199,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":684,
+	"idgame":199,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":685,
+	"idgame":200,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":686,
+	"idgame":200,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":687,
+	"idgame":200,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":689,
+	"idgame":201,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":690,
+	"idgame":201,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":692,
+	"idgame":202,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":696,
+	"idgame":203,
+	"playGroupNumber":2,
+	"teeTime": "9:10"
+},
+{
+	"idteetimes":697,
+	"idgame":203,
+	"playGroupNumber":3,
+	"teeTime": "9:20"
+},
+{
+	"idteetimes":698,
+	"idgame":204,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":699,
+	"idgame":204,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":700,
+	"idgame":204,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":702,
+	"idgame":205,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":703,
+	"idgame":205,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":704,
+	"idgame":206,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":705,
+	"idgame":206,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":706,
+	"idgame":206,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":707,
+	"idgame":207,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":710,
+	"idgame":208,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":711,
+	"idgame":208,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":712,
+	"idgame":208,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":713,
+	"idgame":209,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":714,
+	"idgame":209,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":715,
+	"idgame":209,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":716,
+	"idgame":210,
+	"playGroupNumber":1,
+	"teeTime": "11:50"
+},
+{
+	"idteetimes":717,
+	"idgame":211,
+	"playGroupNumber":1,
+	"teeTime": "11:30"
+},
+{
+	"idteetimes":718,
+	"idgame":211,
+	"playGroupNumber":2,
+	"teeTime": "11:40"
+},
+{
+	"idteetimes":719,
+	"idgame":212,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":720,
+	"idgame":212,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":721,
+	"idgame":212,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":722,
+	"idgame":212,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":727,
+	"idgame":214,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":728,
+	"idgame":214,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":730,
+	"idgame":215,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":731,
+	"idgame":215,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":732,
+	"idgame":215,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":734,
+	"idgame":216,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":735,
+	"idgame":216,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":736,
+	"idgame":216,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":739,
+	"idgame":217,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":740,
+	"idgame":217,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":742,
+	"idgame":218,
+	"playGroupNumber":1,
+	"teeTime": "9:05"
+},
+{
+	"idteetimes":743,
+	"idgame":218,
+	"playGroupNumber":2,
+	"teeTime": "9:15"
+},
+{
+	"idteetimes":744,
+	"idgame":218,
+	"playGroupNumber":3,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":745,
+	"idgame":219,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":748,
+	"idgame":220,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":749,
+	"idgame":220,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":752,
+	"idgame":221,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":753,
+	"idgame":221,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":755,
+	"idgame":222,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":759,
+	"idgame":223,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":761,
+	"idgame":224,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":762,
+	"idgame":224,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":763,
+	"idgame":224,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":765,
+	"idgame":225,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":766,
+	"idgame":225,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":767,
+	"idgame":226,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":770,
+	"idgame":227,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":771,
+	"idgame":227,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":773,
+	"idgame":228,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":776,
+	"idgame":229,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":779,
+	"idgame":230,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":780,
+	"idgame":230,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":781,
+	"idgame":230,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":785,
+	"idgame":232,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":791,
+	"idgame":234,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":794,
+	"idgame":235,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":795,
+	"idgame":235,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":796,
+	"idgame":235,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":797,
+	"idgame":236,
+	"playGroupNumber":1,
+	"teeTime": "10:55"
+},
+{
+	"idteetimes":798,
+	"idgame":236,
+	"playGroupNumber":2,
+	"teeTime": "11:05"
+},
+{
+	"idteetimes":799,
+	"idgame":237,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":800,
+	"idgame":237,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":801,
+	"idgame":237,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":802,
+	"idgame":238,
+	"playGroupNumber":1,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":803,
+	"idgame":238,
+	"playGroupNumber":2,
+	"teeTime": "10:40"
+},
+{
+	"idteetimes":806,
+	"idgame":239,
+	"playGroupNumber":1,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":807,
+	"idgame":239,
+	"playGroupNumber":2,
+	"teeTime": "10:45"
+},
+{
+	"idteetimes":808,
+	"idgame":239,
+	"playGroupNumber":3,
+	"teeTime": "10:55"
+},
+{
+	"idteetimes":814,
+	"idgame":241,
+	"playGroupNumber":1,
+	"teeTime": "11:00"
+},
+{
+	"idteetimes":815,
+	"idgame":241,
+	"playGroupNumber":2,
+	"teeTime": "11:10"
+},
+{
+	"idteetimes":816,
+	"idgame":242,
+	"playGroupNumber":1,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":817,
+	"idgame":242,
+	"playGroupNumber":2,
+	"teeTime": "10:45"
+},
+{
+	"idteetimes":820,
+	"idgame":243,
+	"playGroupNumber":1,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":824,
+	"idgame":244,
+	"playGroupNumber":1,
+	"teeTime": "10:32"
+},
+{
+	"idteetimes":825,
+	"idgame":244,
+	"playGroupNumber":2,
+	"teeTime": "10:40"
+},
+{
+	"idteetimes":826,
+	"idgame":244,
+	"playGroupNumber":3,
+	"teeTime": "10:48"
+},
+{
+	"idteetimes":827,
+	"idgame":244,
+	"playGroupNumber":4,
+	"teeTime": "10:56"
+},
+{
+	"idteetimes":828,
+	"idgame":245,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":829,
+	"idgame":245,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":830,
+	"idgame":245,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":832,
+	"idgame":246,
+	"playGroupNumber":2,
+	"teeTime": "10:30"
+},
+{
+	"idteetimes":833,
+	"idgame":246,
+	"playGroupNumber":3,
+	"teeTime": "10:40"
+},
+{
+	"idteetimes":834,
+	"idgame":246,
+	"playGroupNumber":1,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":835,
+	"idgame":247,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":836,
+	"idgame":247,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":837,
+	"idgame":247,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":840,
+	"idgame":248,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":841,
+	"idgame":248,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":842,
+	"idgame":248,
+	"playGroupNumber":4,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":843,
+	"idgame":249,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":846,
+	"idgame":250,
+	"playGroupNumber":1,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":851,
+	"idgame":251,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":852,
+	"idgame":251,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":853,
+	"idgame":251,
+	"playGroupNumber":4,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":855,
+	"idgame":253,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":856,
+	"idgame":253,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":857,
+	"idgame":253,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":859,
+	"idgame":254,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":860,
+	"idgame":254,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":861,
+	"idgame":254,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":863,
+	"idgame":255,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":864,
+	"idgame":255,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":865,
+	"idgame":255,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":867,
+	"idgame":256,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":868,
+	"idgame":256,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":869,
+	"idgame":256,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":871,
+	"idgame":257,
+	"playGroupNumber":1,
+	"teeTime": "9:25"
+},
+{
+	"idteetimes":872,
+	"idgame":257,
+	"playGroupNumber":2,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":873,
+	"idgame":257,
+	"playGroupNumber":3,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":874,
+	"idgame":257,
+	"playGroupNumber":4,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":883,
+	"idgame":260,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":884,
+	"idgame":260,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":885,
+	"idgame":260,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":886,
+	"idgame":260,
+	"playGroupNumber":4,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":887,
+	"idgame":261,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":888,
+	"idgame":261,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":891,
+	"idgame":262,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":892,
+	"idgame":262,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":893,
+	"idgame":262,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":895,
+	"idgame":263,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":896,
+	"idgame":263,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":897,
+	"idgame":263,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":899,
+	"idgame":264,
+	"playGroupNumber":1,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":900,
+	"idgame":264,
+	"playGroupNumber":2,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":901,
+	"idgame":264,
+	"playGroupNumber":3,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":903,
+	"idgame":265,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":904,
+	"idgame":265,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":905,
+	"idgame":265,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":907,
+	"idgame":266,
+	"playGroupNumber":1,
+	"teeTime": "9:10"
+},
+{
+	"idteetimes":908,
+	"idgame":266,
+	"playGroupNumber":2,
+	"teeTime": "9:20"
+},
+{
+	"idteetimes":909,
+	"idgame":266,
+	"playGroupNumber":3,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":912,
+	"idgame":267,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":913,
+	"idgame":267,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":915,
+	"idgame":268,
+	"playGroupNumber":1,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":916,
+	"idgame":268,
+	"playGroupNumber":2,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":917,
+	"idgame":268,
+	"playGroupNumber":3,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":919,
+	"idgame":269,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":920,
+	"idgame":269,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":923,
+	"idgame":270,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":924,
+	"idgame":270,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":925,
+	"idgame":270,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":927,
+	"idgame":271,
+	"playGroupNumber":1,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":928,
+	"idgame":271,
+	"playGroupNumber":2,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":931,
+	"idgame":272,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":932,
+	"idgame":272,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":935,
+	"idgame":273,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":936,
+	"idgame":273,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":939,
+	"idgame":274,
+	"playGroupNumber":1,
+	"teeTime": "9:35"
+},
+{
+	"idteetimes":940,
+	"idgame":274,
+	"playGroupNumber":2,
+	"teeTime": "9:45"
+},
+{
+	"idteetimes":941,
+	"idgame":274,
+	"playGroupNumber":3,
+	"teeTime": "9:55"
+},
+{
+	"idteetimes":943,
+	"idgame":275,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":944,
+	"idgame":275,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":945,
+	"idgame":275,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":946,
+	"idgame":276,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":947,
+	"idgame":276,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":948,
+	"idgame":276,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":949,
+	"idgame":277,
+	"playGroupNumber":1,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":950,
+	"idgame":277,
+	"playGroupNumber":2,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":951,
+	"idgame":277,
+	"playGroupNumber":3,
+	"teeTime": "10:35"
+},
+{
+	"idteetimes":952,
+	"idgame":278,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":953,
+	"idgame":278,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":954,
+	"idgame":278,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":955,
+	"idgame":279,
+	"playGroupNumber":2,
+	"teeTime": "10:15"
+},
+{
+	"idteetimes":957,
+	"idgame":280,
+	"playGroupNumber":2,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":958,
+	"idgame":280,
+	"playGroupNumber":3,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":960,
+	"idgame":281,
+	"playGroupNumber":1,
+	"teeTime": "09:50"
+},
+{
+	"idteetimes":964,
+	"idgame":280,
+	"playGroupNumber":1,
+	"teeTime": "9:50"
+},
+{
+	"idteetimes":965,
+	"idgame":279,
+	"playGroupNumber":1,
+	"teeTime": "10:05"
+},
+{
+	"idteetimes":966,
+	"idgame":282,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":967,
+	"idgame":282,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":968,
+	"idgame":282,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":969,
+	"idgame":283,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":972,
+	"idgame":279,
+	"playGroupNumber":3,
+	"teeTime": "10:25"
+},
+{
+	"idteetimes":973,
+	"idgame":284,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":974,
+	"idgame":284,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":975,
+	"idgame":284,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":976,
+	"idgame":285,
+	"playGroupNumber":1,
+	"teeTime": "10:00"
+},
+{
+	"idteetimes":977,
+	"idgame":285,
+	"playGroupNumber":2,
+	"teeTime": "10:10"
+},
+{
+	"idteetimes":978,
+	"idgame":285,
+	"playGroupNumber":3,
+	"teeTime": "10:20"
+},
+{
+	"idteetimes":982,
+	"idgame":287,
+	"playGroupNumber":1,
+	"teeTime": "9:30"
+},
+{
+	"idteetimes":983,
+	"idgame":287,
+	"playGroupNumber":2,
+	"teeTime": "9:40"
+},
+{
+	"idteetimes":984,
+	"idgame":287,
+	"playGroupNumber":3,
+	"teeTime": "9:50"
+}
+]

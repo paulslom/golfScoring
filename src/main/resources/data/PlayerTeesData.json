@@ -1,0 +1,1778 @@
+[
+{
+	"idplayertees":85,
+	"idplayer":1,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":214,
+	"idplayer":1,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":21,
+	"idplayer":2,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":150,
+	"idplayer":2,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":1,
+	"idplayer":3,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":130,
+	"idplayer":3,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":77,
+	"idplayer":4,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":206,
+	"idplayer":4,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":97,
+	"idplayer":5,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":226,
+	"idplayer":5,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":24,
+	"idplayer":6,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":153,
+	"idplayer":6,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":14,
+	"idplayer":7,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":143,
+	"idplayer":7,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":49,
+	"idplayer":8,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":178,
+	"idplayer":8,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":32,
+	"idplayer":9,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":161,
+	"idplayer":9,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":99,
+	"idplayer":10,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":228,
+	"idplayer":10,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":33,
+	"idplayer":11,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":162,
+	"idplayer":11,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":41,
+	"idplayer":12,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":170,
+	"idplayer":12,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":72,
+	"idplayer":13,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":201,
+	"idplayer":13,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":101,
+	"idplayer":14,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":230,
+	"idplayer":14,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":11,
+	"idplayer":15,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":140,
+	"idplayer":15,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":3,
+	"idplayer":16,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":132,
+	"idplayer":16,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":35,
+	"idplayer":17,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":164,
+	"idplayer":17,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":27,
+	"idplayer":18,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":156,
+	"idplayer":18,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":70,
+	"idplayer":19,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":199,
+	"idplayer":19,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":55,
+	"idplayer":20,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":184,
+	"idplayer":20,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":78,
+	"idplayer":21,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":207,
+	"idplayer":21,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":83,
+	"idplayer":22,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":212,
+	"idplayer":22,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":38,
+	"idplayer":23,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":167,
+	"idplayer":23,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":109,
+	"idplayer":24,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":238,
+	"idplayer":24,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":110,
+	"idplayer":25,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":239,
+	"idplayer":25,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":59,
+	"idplayer":26,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":188,
+	"idplayer":26,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":20,
+	"idplayer":27,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":149,
+	"idplayer":27,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":42,
+	"idplayer":28,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":171,
+	"idplayer":28,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":79,
+	"idplayer":29,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":208,
+	"idplayer":29,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":63,
+	"idplayer":30,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":192,
+	"idplayer":30,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":65,
+	"idplayer":31,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":194,
+	"idplayer":31,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":106,
+	"idplayer":32,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":235,
+	"idplayer":32,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":39,
+	"idplayer":33,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":168,
+	"idplayer":33,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":26,
+	"idplayer":34,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":155,
+	"idplayer":34,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":12,
+	"idplayer":35,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":141,
+	"idplayer":35,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":22,
+	"idplayer":36,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":151,
+	"idplayer":36,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":6,
+	"idplayer":37,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":135,
+	"idplayer":37,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":4,
+	"idplayer":38,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":133,
+	"idplayer":38,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":93,
+	"idplayer":39,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":222,
+	"idplayer":39,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":64,
+	"idplayer":40,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":193,
+	"idplayer":40,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":57,
+	"idplayer":41,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":186,
+	"idplayer":41,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":86,
+	"idplayer":42,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":215,
+	"idplayer":42,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":81,
+	"idplayer":43,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":210,
+	"idplayer":43,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":9,
+	"idplayer":44,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":138,
+	"idplayer":44,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":51,
+	"idplayer":45,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":180,
+	"idplayer":45,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":31,
+	"idplayer":46,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":160,
+	"idplayer":46,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":89,
+	"idplayer":47,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":218,
+	"idplayer":47,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":8,
+	"idplayer":48,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":137,
+	"idplayer":48,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":92,
+	"idplayer":49,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":221,
+	"idplayer":49,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":10,
+	"idplayer":50,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":139,
+	"idplayer":50,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":105,
+	"idplayer":51,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":234,
+	"idplayer":51,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":18,
+	"idplayer":52,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":147,
+	"idplayer":52,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":16,
+	"idplayer":53,
+	"idgolfcourse":1,
+	"idgolfcoursetee":3
+},
+{
+	"idplayertees":145,
+	"idplayer":53,
+	"idgolfcourse":2,
+	"idgolfcoursetee":7
+},
+{
+	"idplayertees":17,
+	"idplayer":54,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":146,
+	"idplayer":54,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":15,
+	"idplayer":55,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":144,
+	"idplayer":55,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":5,
+	"idplayer":56,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":134,
+	"idplayer":56,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":19,
+	"idplayer":57,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":148,
+	"idplayer":57,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":23,
+	"idplayer":58,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":152,
+	"idplayer":58,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":29,
+	"idplayer":59,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":158,
+	"idplayer":59,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":36,
+	"idplayer":60,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":165,
+	"idplayer":60,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":37,
+	"idplayer":61,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":166,
+	"idplayer":61,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":40,
+	"idplayer":62,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":169,
+	"idplayer":62,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":43,
+	"idplayer":63,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":172,
+	"idplayer":63,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":44,
+	"idplayer":64,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":173,
+	"idplayer":64,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":47,
+	"idplayer":65,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":176,
+	"idplayer":65,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":48,
+	"idplayer":66,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":177,
+	"idplayer":66,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":52,
+	"idplayer":67,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":181,
+	"idplayer":67,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":62,
+	"idplayer":68,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":191,
+	"idplayer":68,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":58,
+	"idplayer":69,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":187,
+	"idplayer":69,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":54,
+	"idplayer":70,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":183,
+	"idplayer":70,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":61,
+	"idplayer":71,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":190,
+	"idplayer":71,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":68,
+	"idplayer":72,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":197,
+	"idplayer":72,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":76,
+	"idplayer":73,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":205,
+	"idplayer":73,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":75,
+	"idplayer":74,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":204,
+	"idplayer":74,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":82,
+	"idplayer":76,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":211,
+	"idplayer":76,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":90,
+	"idplayer":77,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":219,
+	"idplayer":77,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":95,
+	"idplayer":78,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":224,
+	"idplayer":78,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":100,
+	"idplayer":79,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":229,
+	"idplayer":79,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":104,
+	"idplayer":80,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":233,
+	"idplayer":80,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":108,
+	"idplayer":81,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":237,
+	"idplayer":81,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":91,
+	"idplayer":82,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":220,
+	"idplayer":82,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":25,
+	"idplayer":83,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":154,
+	"idplayer":83,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":69,
+	"idplayer":84,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":198,
+	"idplayer":84,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":60,
+	"idplayer":85,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":189,
+	"idplayer":85,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":50,
+	"idplayer":86,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":179,
+	"idplayer":86,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":74,
+	"idplayer":87,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":203,
+	"idplayer":87,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":98,
+	"idplayer":89,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":227,
+	"idplayer":89,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":94,
+	"idplayer":90,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":223,
+	"idplayer":90,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":80,
+	"idplayer":91,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":209,
+	"idplayer":91,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":53,
+	"idplayer":92,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":182,
+	"idplayer":92,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":7,
+	"idplayer":93,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":136,
+	"idplayer":93,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":46,
+	"idplayer":94,
+	"idgolfcourse":1,
+	"idgolfcoursetee":4
+},
+{
+	"idplayertees":175,
+	"idplayer":94,
+	"idgolfcourse":2,
+	"idgolfcoursetee":8
+},
+{
+	"idplayertees":107,
+	"idplayer":95,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":236,
+	"idplayer":95,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":103,
+	"idplayer":96,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":232,
+	"idplayer":96,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":45,
+	"idplayer":97,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":174,
+	"idplayer":97,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":34,
+	"idplayer":99,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":163,
+	"idplayer":99,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":67,
+	"idplayer":100,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":196,
+	"idplayer":100,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":88,
+	"idplayer":101,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":217,
+	"idplayer":101,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":28,
+	"idplayer":102,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":157,
+	"idplayer":102,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":2,
+	"idplayer":103,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":131,
+	"idplayer":103,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":96,
+	"idplayer":104,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":225,
+	"idplayer":104,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":71,
+	"idplayer":105,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":200,
+	"idplayer":105,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":56,
+	"idplayer":106,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":185,
+	"idplayer":106,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":30,
+	"idplayer":107,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":159,
+	"idplayer":107,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":13,
+	"idplayer":108,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":142,
+	"idplayer":108,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":73,
+	"idplayer":109,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":202,
+	"idplayer":109,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":102,
+	"idplayer":110,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":231,
+	"idplayer":110,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":84,
+	"idplayer":111,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":213,
+	"idplayer":111,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":87,
+	"idplayer":112,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":216,
+	"idplayer":112,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":66,
+	"idplayer":113,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":195,
+	"idplayer":113,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":257,
+	"idplayer":114,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":258,
+	"idplayer":114,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":261,
+	"idplayer":120,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":262,
+	"idplayer":120,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":263,
+	"idplayer":121,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":264,
+	"idplayer":121,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":265,
+	"idplayer":122,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":266,
+	"idplayer":122,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":267,
+	"idplayer":123,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":268,
+	"idplayer":123,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":269,
+	"idplayer":124,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":270,
+	"idplayer":124,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":271,
+	"idplayer":125,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":272,
+	"idplayer":125,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":273,
+	"idplayer":126,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":274,
+	"idplayer":126,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":275,
+	"idplayer":127,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":276,
+	"idplayer":127,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":277,
+	"idplayer":128,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":278,
+	"idplayer":128,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":279,
+	"idplayer":129,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":280,
+	"idplayer":130,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":281,
+	"idplayer":130,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":282,
+	"idplayer":131,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":283,
+	"idplayer":131,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":284,
+	"idplayer":131,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":285,
+	"idplayer":132,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":286,
+	"idplayer":132,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":287,
+	"idplayer":132,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":288,
+	"idplayer":133,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":289,
+	"idplayer":133,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":290,
+	"idplayer":133,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":291,
+	"idplayer":134,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":292,
+	"idplayer":134,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":293,
+	"idplayer":135,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":294,
+	"idplayer":135,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":295,
+	"idplayer":135,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":296,
+	"idplayer":136,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":297,
+	"idplayer":136,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":298,
+	"idplayer":136,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":299,
+	"idplayer":137,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":300,
+	"idplayer":137,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":301,
+	"idplayer":137,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":302,
+	"idplayer":138,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":303,
+	"idplayer":138,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":304,
+	"idplayer":138,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":305,
+	"idplayer":139,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":306,
+	"idplayer":139,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":307,
+	"idplayer":139,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":308,
+	"idplayer":140,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":309,
+	"idplayer":140,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":310,
+	"idplayer":141,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":311,
+	"idplayer":141,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":312,
+	"idplayer":141,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":313,
+	"idplayer":142,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":314,
+	"idplayer":142,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":315,
+	"idplayer":142,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":316,
+	"idplayer":143,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":317,
+	"idplayer":143,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":318,
+	"idplayer":143,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":319,
+	"idplayer":144,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":320,
+	"idplayer":144,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":321,
+	"idplayer":144,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":322,
+	"idplayer":145,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":323,
+	"idplayer":145,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+},
+{
+	"idplayertees":324,
+	"idplayer":146,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":325,
+	"idplayer":146,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":326,
+	"idplayer":146,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":327,
+	"idplayer":147,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":328,
+	"idplayer":147,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":329,
+	"idplayer":147,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":330,
+	"idplayer":148,
+	"idgolfcourse":1,
+	"idgolfcoursetee":2
+},
+{
+	"idplayertees":331,
+	"idplayer":148,
+	"idgolfcourse":2,
+	"idgolfcoursetee":6
+},
+{
+	"idplayertees":332,
+	"idplayer":148,
+	"idgolfcourse":3,
+	"idgolfcoursetee":10
+},
+{
+	"idplayertees":333,
+	"idplayer":149,
+	"idgolfcourse":1,
+	"idgolfcoursetee":1
+},
+{
+	"idplayertees":334,
+	"idplayer":149,
+	"idgolfcourse":2,
+	"idgolfcoursetee":5
+}
+]

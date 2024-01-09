@@ -1,0 +1,101 @@
+[
+{
+	"idGolfCourseTees":4,
+	"idgolfCourse":1,
+	"courseRating":73.8,
+	"courseSlope":133,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "7057"
+},
+{
+	"idGolfCourseTees":1,
+	"idgolfCourse":1,
+	"courseRating":68.9,
+	"courseSlope":119,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "5946"
+},
+{
+	"idGolfCourseTees":3,
+	"idgolfCourse":1,
+	"courseRating":68.0,
+	"courseSlope":115,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "5290"
+},
+{
+	"idGolfCourseTees":2,
+	"idgolfCourse":1,
+	"courseRating":70.9,
+	"courseSlope":128,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "6516"
+},
+{
+	"idGolfCourseTees":8,
+	"idgolfCourse":2,
+	"courseRating":75.8,
+	"courseSlope":142,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "7264"
+},
+{
+	"idGolfCourseTees":5,
+	"idgolfCourse":2,
+	"courseRating":69.7,
+	"courseSlope":130,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "5905"
+},
+{
+	"idGolfCourseTees":7,
+	"idgolfCourse":2,
+	"courseRating":65.3,
+	"courseSlope":125,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "5237"
+},
+{
+	"idGolfCourseTees":6,
+	"idgolfCourse":2,
+	"courseRating":72.4,
+	"courseSlope":136,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "6536"
+},
+{
+	"idGolfCourseTees":11,
+	"idgolfCourse":3,
+	"courseRating":73.0,
+	"courseSlope":137,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "6868"
+},
+{
+	"idGolfCourseTees":10,
+	"idgolfCourse":3,
+	"courseRating":70.5,
+	"courseSlope":130,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "6373"
+},
+{
+	"idGolfCourseTees":9,
+	"idgolfCourse":3,
+	"courseRating":68.2,
+	"courseSlope":119,
+	"coursePar":72,
+	"idgroup":1,
+	"totalYardage": "5778"
+}
+]
