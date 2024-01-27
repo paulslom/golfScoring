@@ -18,7 +18,8 @@ public class Course extends SpringBeanAutowiringSupport implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
 	
-	private Integer courseID;
+	private String courseID;
+	private int oldCourseID;
 	private String courseName;
 	private int front9Par;
 	private int back9Par;
@@ -26,12 +27,7 @@ public class Course extends SpringBeanAutowiringSupport implements Serializable
 	private List<Hole> holesList = new ArrayList<Hole>();
 	private Map<Integer,Hole> holesMap = new HashMap<Integer,Hole>();	
 	 
-	public int getCourseID() {
-		return courseID;
-	}
-	public void setCourseID(int courseID) {
-		this.courseID = courseID;
-	}
+	
 	public String getCourseName() {
 		return courseName;
 	}
@@ -84,8 +80,18 @@ public class Course extends SpringBeanAutowiringSupport implements Serializable
 	public void setCoursePar(int coursePar) {
 		this.coursePar = coursePar;
 	}
-	public void setCourseID(Integer courseID) {
+	
+	public String getCourseID() {
+		return courseID;
+	}
+	public void setCourseID(String courseID) {
 		this.courseID = courseID;
+	}
+	public int getOldCourseID() {
+		return oldCourseID;
+	}
+	public void setOldCourseID(int oldCourseID) {
+		this.oldCourseID = oldCourseID;
 	}
 	
 }

@@ -22,7 +22,8 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 
 	private static Logger log = LogManager.getLogger(Game.class);
 
-	private Integer groupID;
+	private String groupID;
+	private Integer oldGroupID;
 	private String groupName;
 	private Group selectedGroup;
 			
@@ -67,17 +68,24 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 	public void setSelectedGroup(Group selectedGroup) {
 		this.selectedGroup = selectedGroup;
 	}
-	public Integer getGroupID() {
-		return groupID;
-	}
-	public void setGroupID(Integer groupID) {
-		this.groupID = groupID;
-	}
+	
 	public String getGroupName() {
 		return groupName;
 	}
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+	public String getGroupID() {
+		return groupID;
+	}
+	public void setGroupID(String groupID) {
+		this.groupID = groupID;
+	}
+	public Integer getOldGroupID() {
+		return oldGroupID;
+	}
+	public void setOldGroupID(Integer oldGroupID) {
+		this.oldGroupID = oldGroupID;
 	}
 	
 }

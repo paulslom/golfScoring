@@ -11,6 +11,7 @@
 
     <Console name="console-log" target="SYSTEM_OUT">
       <PatternLayout pattern="${PatternLayout}"/>
+      <RegexFilter regex=".* WebApplicationContext .*" onMatch="DENY" onMismatch="ACCEPT"/>
     </Console>
  
   </Appenders>

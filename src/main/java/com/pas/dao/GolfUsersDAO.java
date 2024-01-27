@@ -60,16 +60,7 @@ public class GolfUsersDAO implements Serializable
 	
 	public void readAllUsersFromDB() throws Exception
 	{				
-		List<GolfUser> userList = new ArrayList<>();
-		
-		/*
-		System.out.println("Listing tables in DynamoDB Local...");
-        System.out.println("-------------------------------");
-        ListTablesResponse listTablesResponse = dynamoClients.getDdbClient().listTables();
-        System.out.println(listTablesResponse.tableNames());
-        */
-		
-	    Iterator<GolfUser> results = golfUsersTable.scan().items().iterator();
+		Iterator<GolfUser> results = golfUsersTable.scan().items().iterator();
             
         while (results.hasNext()) 
         {
@@ -90,7 +81,7 @@ public class GolfUsersDAO implements Serializable
 			}
         }
           	
-		log.info("LoggedDBOperation: function-inquiry; table:golfusers; rows:" + userList.size());
+		log.info("LoggedDBOperation: function-inquiry; table:golfusers; rows:" + this.getFullUserMap().size());
 				
 		//this loop only for debugging purposes
 		/*

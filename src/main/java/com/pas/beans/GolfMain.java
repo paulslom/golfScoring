@@ -215,9 +215,9 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		roundDAO.readAllRoundsFromDB();
 		log.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
 		
-		Map<Integer,Round> tempMap = new HashMap<Integer,Round>();
+		Map<String,Round> tempMap = new HashMap<>();
 		
-		Map<Integer, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		Map<String, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
 		
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
@@ -227,8 +227,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			if (ct != null)
 		    {
 				round.setCourseTeeColor(ct.getTeeColor());	    
-		    }
-		    
+		    }	    
 			
 			Game game = fullGameMap.get(round.getGameID());
 			assignCourseToGame(game);
@@ -311,12 +310,12 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Course Tees read in. List size = " + this.getCourseTees().size());		
     }
 	
-	public void loadFullGameList()
+	public void loadFullGameList() throws Exception 
 	{
 		gameDAO.readGamesFromDB();			
 		log.info("Full Game list read in. List size = " + this.getFullGameList().size());	
 		
-		Map<Integer,Game> tempMap = new HashMap<Integer,Game>();
+		Map<String,Game> tempMap = new HashMap<>();
 		
 		for (int i = 0; i < this.getFullGameList().size(); i++) 
 		{
@@ -349,7 +348,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	{
 		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
-		Map<Integer,PlayerMoney> tempMap = new HashMap<Integer,PlayerMoney>();
+		Map<String,PlayerMoney> tempMap = new HashMap<>();
 		
 		for (int i = 0; i < playerMoneyDAO.getPlayerMoneyList().size(); i++) 
 		{
@@ -399,11 +398,11 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Players read in. List size = " + this.getFullPlayerList().size());
 	}
 
-	public void loadFullPlayerTeePreferencesList() 
+	public void loadFullPlayerTeePreferencesList() throws Exception 
 	{
 		playerTeePreferencesDAO.readPlayerTeePreferencesFromDB(this.getDefaultGroup());
 		
-		Map<Integer,PlayerTeePreference> tempMap = new HashMap<Integer,PlayerTeePreference>();
+		Map<String,PlayerTeePreference> tempMap = new HashMap<>();
 		
 		for (int i = 0; i < playerTeePreferencesDAO.getPlayerTeePreferencesList().size(); i++) 
 		{
@@ -411,6 +410,12 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			CourseTee ct = getCourseTeesMap().get(ptp.getCourseTeeID());
 	       	Course cs = getCoursesMap().get(ptp.getCourseID());
 	   		Player player = getFullPlayersMapByPlayerID().get(ptp.getPlayerID());
+	   		
+	   		if (player == null)
+	   		{
+	   			log.info("player is null when loading player tee preferences.  ptp player id = " + ptp.getPlayerID() 
+	   			  + " and full name is " + ptp.getPlayerFullName()); 
+	   		}
 	   		ptp.setTeeColor(ct.getTeeColor());       
 	        ptp.setCourseName(cs.getCourseName());
 	        ptp.setPlayerUserName(player.getUsername());
@@ -1126,7 +1131,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return playerDAO.getFullPlayerList();
 	}
 
-	public Map<Integer, Player> getFullPlayersMapByPlayerID() 
+	public Map<String, Player> getFullPlayersMapByPlayerID() 
 	{
 		return playerDAO.getFullPlayersMapByPlayerID();
 	}
@@ -1136,17 +1141,17 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return playerDAO.getFullPlayersMapByUserName();
 	}
 	
-	public Map<Integer, Course> getCoursesMap() 
+	public Map<String, Course> getCoursesMap() 
 	{
 		return courseDAO.getCoursesMap();
 	}
 
-	public Map<Integer, TeeTime> getTeeTimesMap()
+	public Map<String, TeeTime> getTeeTimesMap()
 	{
 		return teeTimeDAO.getTeeTimesMap();
 	}
 	
-	public Map<Integer, CourseTee> getCourseTeesMap() 
+	public Map<String, CourseTee> getCourseTeesMap() 
 	{
 		return courseTeeDAO.getCourseTeesMap();
 	}
@@ -1166,7 +1171,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return roundDAO.getFullRoundsList();
 	}
 
-	public Map<Integer, PlayerTeePreference> getFullPlayerTeePreferencesMap() 
+	public Map<String, PlayerTeePreference> getFullPlayerTeePreferencesMap() 
 	{
 		return playerTeePreferencesDAO.getPlayerTeePreferencesMap();
 	}
@@ -1219,12 +1224,12 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		GolfMain.recommendedGameNote = recommendedGameNote;
 	}
 
-	public int addGame(Game game) throws Exception 
+	public String addGame(Game game) throws Exception 
 	{
 		return gameDAO.addGame(game);
 	}
 
-	public void deleteGame(int gameID) throws Exception 
+	public void deleteGame(String gameID) throws Exception 
 	{
 		gameDAO.deleteGame(gameID);		
 	}
@@ -1239,22 +1244,22 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return gameDAO.getFutureGames();
 	}
 
-	public List<Game> getAvailableGamesByPlayerID(int playerID) 
+	public List<Game> getAvailableGamesByPlayerID(String playerID) 
 	{
 		return gameDAO.getAvailableGames(playerID);
 	}
 
-	public Integer getTeePreference(int playerID, int courseID)
+	public String getTeePreference(String playerID, String courseID)
 	{
 		return gameDAO.getTeePreference(playerID, courseID);
 	}
 
-	public Game getGameByGameID(int gameID) 
+	public Game getGameByGameID(String gameID) 
 	{
 		return gameDAO.getGameByGameID(gameID);
 	}
 	
-	public Player getPlayerByPlayerID(int playerID)
+	public Player getPlayerByPlayerID(String playerID)
 	{
 		return playerDAO.getFullPlayersMapByPlayerID().get(playerID);
 	}
@@ -1263,18 +1268,13 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	{
 		return playerDAO.getFullPlayersMapByUserName().get(username);
 	}
-	
-	public void updatePlayerHandicap(int playerID, BigDecimal handicap)
-	{
-		playerDAO.updatePlayerHandicap(playerID, handicap);
-	}
-	
-	public int addPlayer(Player player) 
+		
+	public String addPlayer(Player player)  throws Exception  
 	{
 		return playerDAO.addPlayer(player);
 	}
 	
-	public void updatePlayer(Player player) 
+	public void updatePlayer(Player player)  throws Exception 
 	{
 		playerDAO.updatePlayer(player);
 	}
@@ -1284,7 +1284,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return roundDAO.getRoundsForGame(game);
 	}
 	
-	public int addRound(Round round) 
+	public String addRound(Round round) 
 	{
 		return roundDAO.addRound(round);
 	}
@@ -1294,17 +1294,17 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		roundDAO.updateRound(round);
 	}
 	
-	public void deleteRoundFromDB(int roundID) 
+	public void deleteRoundFromDB(String roundID) 
 	{
 		roundDAO.deleteRoundFromDB(roundID);
 	}
 
-	public void deleteRoundsFromDB(int gameID) 
+	public void deleteRoundsFromDB(String gameID) 
 	{
 		roundDAO.deleteRoundsFromDB(gameID);		
 	}
 
-	public Round getRoundByGameandPlayer(int gameID, int playerID) 
+	public Round getRoundByGameandPlayer(String gameID, String playerID) 
 	{
 		return roundDAO.getRoundByGameandPlayer(gameID, playerID);
 	}
@@ -1319,27 +1319,27 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return roundDAO.countRoundsForGameFromDB(gm);
 	}
 
-	public void updateRoundHandicap(Game selectedGame, int playerID, BigDecimal newRoundHandicap) 
+	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal newRoundHandicap) 
 	{
 		roundDAO.updateRoundHandicap(selectedGame, playerID, newRoundHandicap);		
 	}
 
-	public void updateRoundTeamNumber(Game selectedGame, int playerID, int teamNumber) 
+	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) 
 	{
 		roundDAO.updateRoundTeamNumber(selectedGame, playerID, teamNumber);		
 	}
 
-	public void addPlayerTeePreference(PlayerTeePreference ptp) 
+	public void addPlayerTeePreference(PlayerTeePreference ptp) throws Exception 
 	{
 		playerTeePreferencesDAO.addPlayerTeePreference(ptp);		
 	}
 
-	public void updatePlayerTeePreference(PlayerTeePreference ptp) 
+	public void updatePlayerTeePreference(PlayerTeePreference ptp) throws Exception 
 	{
 		playerTeePreferencesDAO.updatePlayerTeePreference(ptp);				
 	}
 
-	public PlayerTeePreference getPlayerTeePreference(int playerID, int courseID) 
+	public PlayerTeePreference getPlayerTeePreference(String playerID, String courseID) 
 	{
 		return playerTeePreferencesDAO.getPlayerTeePreference(playerID, courseID);
 	}
@@ -1354,34 +1354,34 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return teeTimeDAO.getTeeTimesByGame(selectedGame);
 	}
 
-	public void deleteTeeTimeFromDB(int teeTimeID) 
+	public void deleteTeeTimeFromDB(String string) 
 	{
-		teeTimeDAO.deleteTeeTimeFromDB(teeTimeID);		
+		teeTimeDAO.deleteTeeTimeFromDB(string);		
 	}
 
-	public void addTeeTime(TeeTime teeTime) 
+	public void addTeeTime(TeeTime teeTime) throws Exception 
 	{
 		teeTimeDAO.addTeeTime(teeTime);		
 	}
 
-	public void updateTeeTime(TeeTime teeTime) 
+	public void updateTeeTime(TeeTime teeTime) throws Exception 
 	{
 		teeTimeDAO.updateTeeTime(teeTime);		
 	}
 
-	public void addTeeTimes(int newGameID, String teeTimesString, Date gameDate, String courseName) 
+	public void addTeeTimes(String newGameID, String teeTimesString, Date gameDate, String courseName) throws Exception 
 	{
 		teeTimeDAO.addTeeTimes(newGameID, teeTimesString, gameDate, courseName);		
 	}
 
-	public void deleteTeeTimesForGameFromDB(int gameID) 
+	public void deleteTeeTimesForGameFromDB(String gameID) 
 	{
 		teeTimeDAO.deleteTeeTimesForGameFromDB(gameID);		
 	}
 
-	public void deletePlayerMoneyFromDB(int gameID)
+	public void deletePlayerMoneyFromDB(String pmID)
 	{
-		playerMoneyDAO.deletePlayerMoneyFromDB(gameID);		
+		playerMoneyDAO.deletePlayerMoneyFromDB(pmID);		
 	}
 
 	public List<PlayerMoney> getPlayerMoneyByGame(Game selectedGame) 

@@ -25,10 +25,6 @@ import com.pas.beans.Course;
 import com.pas.beans.Game;
 import com.pas.beans.Player;
 import com.pas.beans.TeeTime;
-import com.pas.dao.CourseRowMapper;
-import com.pas.dao.GameRowMapper;
-import com.pas.dao.PlayerRowMapper;
-import com.pas.dao.TeeTimeRowMapper;
 
 public class DailyEmailJob implements Runnable 
 {
@@ -100,7 +96,7 @@ public class DailyEmailJob implements Runnable
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());
 		String sql = "select tt.idTeeTimes, tt.idgame, tt.playgroupnumber, tt.teetime, gm.gameDate, cs.courseName from teetimes tt inner join game gm on tt.idgame = gm.idgame inner join golfcourse cs on gm.idgolfcourse = cs.idgolfcourse where tt.idgame = :idgame"; 
 		SqlParameterSource param = new MapSqlParameterSource("idgame", inputGame.getGameID());
-		List<TeeTime> teeTimeList = namedParameterJdbcTemplate.query(sql, param, new TeeTimeRowMapper()); 
+		List<TeeTime> teeTimeList = null; 
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -119,7 +115,7 @@ public class DailyEmailJob implements Runnable
 	{		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(Utils.getDatasourceProperties());		
 		String sql = "select * from player order by lastName, firstName";		 
-		List<Player> playerList = jdbcTemplate.query(sql, new PlayerRowMapper()); 
+		List<Player> playerList = null; 
 		log.info("LoggedDBOperation: function-inquiry; table:player; rows:" + playerList.size());
 		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerList);		
 		
@@ -139,7 +135,7 @@ public class DailyEmailJob implements Runnable
 		List<Game> tempList = new ArrayList<>();
 		
 		String sql = "select * from game order by gameDate";		 
-		List<Game> gameList = jdbcTemplate.query(sql, new GameRowMapper()); 
+		List<Game> gameList = null; 
 		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + gameList.size());
 		
 		Date today = new Date();
@@ -171,7 +167,7 @@ public class DailyEmailJob implements Runnable
 			
 			String coursesql = "select * from golfcourse where idgolfCourse = :courseID";			 
 			SqlParameterSource param = new MapSqlParameterSource("courseID", tempGame.getCourseID());			 
-			Course tempCourse = namedParameterJdbcTemplate.queryForObject(coursesql, param, new CourseRowMapper()); 
+			Course tempCourse = null; 
 			log.info("LoggedDBOperation: function-inquiry; table:course; rows:1");
 			tempGame.setCourse(tempCourse);
 			tempGame.setCourseName(tempGame.getCourse().getCourseName());		

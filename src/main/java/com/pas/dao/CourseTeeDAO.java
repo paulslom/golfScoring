@@ -3,80 +3,88 @@ package com.pas.dao;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.PostConstruct;
-import javax.sql.DataSource;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.CourseTee;
 import com.pas.beans.Group;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoCourseTee;
+import com.pas.dynamodb.DynamoUtil;
+
+import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
  
 @Repository
-public class CourseTeeDAO extends JdbcDaoSupport implements Serializable
+public class CourseTeeDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
 	private static Logger log = LogManager.getLogger(CourseTeeDAO.class);
-	
-	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	private final DataSource dataSource;
-	
-	private Map<Integer,CourseTee> CourseTeesMap = new HashMap<Integer,CourseTee>();
+		
+	private Map<String,CourseTee> courseTeesMap = new HashMap<>();
 	private List<CourseTee> courseTeesList = new ArrayList<CourseTee>();
 	
+	private static DynamoClients dynamoClients;
+	private static DynamoDbTable<DynamoCourseTee> courseTeesTable;
+	private static final String AWS_TABLE_NAME = "coursetees";
+
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);
+	       dynamoClients = DynamoUtil.getDynamoClients();
+	       courseTeesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoCourseTee.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing DAO: {}" +  ex.getStackTrace());
-	   }
+	      log.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
+	   }	   
 	}
-
-	@Autowired
-    public CourseTeeDAO(DataSource dataSource) 
-	{
-		 this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-	     this.dataSource = dataSource;
-    }
-
+	
 	public List<CourseTee> readCourseTeesFromDB(Group grp)
     {
-		String sql = "select gcTee.* from golfcoursetees gcTee inner join golfcourse gc on gc.idgolfcourse = gcTee.idgolfCourse where gc.idgroup = :groupID";
-		 
-		SqlParameterSource param = new MapSqlParameterSource("groupID", grp.getGroupID());
-		this.setCourseTeesList(namedParameterJdbcTemplate.query(sql, param, new CourseTeeRowMapper())); 
+		Iterator<DynamoCourseTee> results = courseTeesTable.scan().items().iterator();
+		  	
+		while (results.hasNext()) 
+        {
+			DynamoCourseTee dynamoCourseTee = results.next();
+          	
+			CourseTee courseTee = new CourseTee();
+			courseTee.setCourseTeeID(dynamoCourseTee.getCourseTeeID());
+			courseTee.setCourseID(dynamoCourseTee.getCourseID());
+			courseTee.setTeeColor(dynamoCourseTee.getTeeColor());
+			courseTee.setCourseRating(dynamoCourseTee.getCourseRating());
+			courseTee.setCoursePar(dynamoCourseTee.getCoursePar());
+			courseTee.setSlopeRating(dynamoCourseTee.getSlopeRating());
+			courseTee.setTotalYardage(dynamoCourseTee.getTotalYardage());			
+			
+            this.getCourseTeesList().add(courseTee);			
+        }
 		
 		log.info("LoggedDBOperation: function-inquiry; table:courseTee; rows:" + this.getCourseTeesList().size());
 		
-		CourseTeesMap = this.getCourseTeesList().stream().collect(Collectors.toMap(CourseTee::getCourseTeeID, CourseTee -> CourseTee));
+		courseTeesMap = this.getCourseTeesList().stream().collect(Collectors.toMap(CourseTee::getCourseTeeID, CourseTee -> CourseTee));
 			
 		return this.getCourseTeesList();
     }
 	
-	public Map<Integer, CourseTee> getCourseTeesMap() 
+	public Map<String, CourseTee> getCourseTeesMap() 
 	{
-		return CourseTeesMap;
+		return courseTeesMap;
 	}
 
-	public void setCourseTeesMap(Map<Integer, CourseTee> CourseTeesMap) 
+	public void setCourseTeesMap(Map<String, CourseTee> courseTeesMap) 
 	{
-		this.CourseTeesMap = CourseTeesMap;
+		this.courseTeesMap = courseTeesMap;
 	}
 
 	public List<CourseTee> getCourseTeesList() {

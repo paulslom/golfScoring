@@ -1,69 +1,64 @@
 package com.pas.dao;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import jakarta.annotation.PostConstruct;
-import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
 import com.pas.beans.TeeTime;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoTeeTime;
+import com.pas.dynamodb.DynamoUtil;
+
+import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 
 @Repository
-public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
+public class TeeTimeDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
 	private static Logger log = LogManager.getLogger(TeeTimeDAO.class);
-	
-	private final transient JdbcTemplate jdbcTemplate;
-	private final DataSource dataSource;
-	
-	private Map<Integer,TeeTime> teeTimesMap = new HashMap<Integer, TeeTime>(); //we need this for the TeeTimeConverter class
-	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
+		
+	private Map<String,TeeTime> teeTimesMap = new HashMap<>(); //we need this for the TeeTimeConverter class
+	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();	
+
+	private static DynamoClients dynamoClients;
+	private static DynamoDbTable<DynamoTeeTime> teeTimesTable;
+	private static final String AWS_TABLE_NAME = "teetimes";
 	
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);	      
+	       dynamoClients = DynamoUtil.getDynamoClients();
+	       teeTimesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoTeeTime.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing DAO: {}" +  ex.getStackTrace());
-	   }
+	      log.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
+	   }	   
 	}
-
-	@Autowired
-    public TeeTimeDAO(DataSource dataSource) 
-	{
-	    this.jdbcTemplate = new JdbcTemplate(dataSource);
-	    this.dataSource = dataSource;	    
-    }	
 	
 	public List<TeeTime> getTeeTimesByGame(Game game)
     {
@@ -94,52 +89,50 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 	
 	public void readTeeTimesFromDB()
     {
-		String sql = "select tt.idTeeTimes, tt.idgame, tt.playgroupnumber, tt.teetime, gm.gameDate, cs.courseName from teetimes tt inner join game gm on tt.idgame = gm.idgame inner join golfcourse cs on gm.idgolfcourse = cs.idgolfcourse";		 
-		this.setTeeTimeList(jdbcTemplate.query(sql, new TeeTimeRowMapper())); 
-    	
+		Iterator<DynamoTeeTime> results = teeTimesTable.scan().items().iterator();
+	  	
+		while (results.hasNext()) 
+        {
+			DynamoTeeTime dynamoTeeTime = results.next();
+          	
+			TeeTime teeTime = new TeeTime();
+
+			teeTime.setTeeTimeID(dynamoTeeTime.getTeeTimeID());
+			teeTime.setGameID(dynamoTeeTime.getGameID());	
+			teeTime.setTeeTimeString(dynamoTeeTime.getTeeTimeString());
+			teeTime.setPlayGroupNumber(dynamoTeeTime.getPlayGroupNumber());
+			
+            this.getTeeTimeList().add(teeTime);			
+        }		 
+		
 		log.info("LoggedDBOperation: function-inquiry; table:teetimes; rows:" + teeTimeList.size());
 		
 		this.setTeeTimesMap(this.getTeeTimeList().stream().collect(Collectors.toMap(TeeTime::getTeeTimeID, tt -> tt)));    	
     }
 	
-	public TeeTime getTeeTimeByTeeTimeID(Integer teeTimeID)
+	public TeeTime getTeeTimeByTeeTimeID(String teeTimeID)
     {
 		TeeTime teeTime = this.getTeeTimesMap().get(teeTimeID);
 		return teeTime;
     }	
 	
-	public void addTeeTime(TeeTime teeTime)
+	public void addTeeTime(TeeTime teeTime) throws Exception
 	{
-		String insertStr = "INSERT INTO teetimes (idgame, playGroupNumber, teeTime) values(?,?,?)";			
+		DynamoTeeTime dtt = dynamoUpsert(teeTime);
 		
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-			
-		jdbcTemplate.update(new PreparedStatementCreator() 
-		{
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
-			{
-				PreparedStatement psmt = connection.prepareStatement(insertStr, Statement.RETURN_GENERATED_KEYS);
-				psmt.setInt(1, teeTime.getGameID());
-				psmt.setInt(2, teeTime.getPlayGroupNumber());
-				psmt.setString(3, teeTime.getTeeTimeString());
-				return psmt;
-			}
-		}, keyHolder);
- 
-		log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");
+		log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");		
 		
-		teeTime.setTeeTimeID(keyHolder.getKey().intValue());
-		this.getTeeTimesMap().put(keyHolder.getKey().intValue(), teeTime);
+		this.getTeeTimesMap().put(dtt.getTeeTimeID(), teeTime);
 		
 		refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
 				
 		log.info("addTeeTime complete");	
 	}
 	
-	public void updateTeeTime(TeeTime teeTime)
+	public void updateTeeTime(TeeTime teeTime) throws Exception
 	{
-		String updateStr = "update teetimes set idgame = ?, playGroupNumber = ?, teeTime = ? where idteeTimes = ?";
-		jdbcTemplate.update(updateStr, new Object[] {teeTime.getGameID(), teeTime.getPlayGroupNumber(), teeTime.getTeeTimeString(), teeTime.getTeeTimeID()});	
+		dynamoUpsert(teeTime);
+		
 		log.info("LoggedDBOperation: function-update; table:teetimes; rows:1");
 		
 		refreshListsAndMaps("update", teeTime);
@@ -147,10 +140,8 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 		log.info("updateTeeTime complete");	
 	}
 	
-	public void addTeeTimes(Integer gameID, String teeTimesString, Date gameDate, String courseName)
+	public void addTeeTimes(String newGameID, String teeTimesString, Date gameDate, String courseName) throws Exception
 	{
-		String insertStr = "INSERT INTO teetimes (idgame, playGroupNumber, teeTime) values(?,?,?)";			
-
 		StringTokenizer st = new StringTokenizer(teeTimesString, " ");
 			
 		int tokenCount = 0;
@@ -159,34 +150,23 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 	 	{	 			
  			String teeTimeStr = st.nextToken();
  			tokenCount++;
- 			
- 			final Integer tkcInt = Integer.valueOf(tokenCount);
- 			
- 			KeyHolder keyHolder = new GeneratedKeyHolder();
- 			
- 			jdbcTemplate.update(new PreparedStatementCreator() 
- 			{
- 				public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
- 				{
- 					PreparedStatement psmt = connection.prepareStatement(insertStr, new String[] { "idteeTimes" });
- 					psmt.setInt(1, gameID);
- 					psmt.setInt(2, tkcInt);
- 					psmt.setString(3, teeTimeStr);
- 					return psmt;
- 				}
- 			}, keyHolder);
- 	 
- 			log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");
- 			
+ 				
  			TeeTime teeTime = new TeeTime();
- 			teeTime.setTeeTimeID(keyHolder.getKey().intValue());
- 			teeTime.setGameID(gameID);
+ 			teeTime.setTeeTimeID(new String());
+ 			teeTime.setGameID(newGameID);
  			teeTime.setPlayGroupNumber(tokenCount);
  			teeTime.setTeeTimeString(teeTimeStr);
  			teeTime.setGameDate(gameDate);
  			teeTime.setCourseName(courseName);
+ 			
+ 			DynamoTeeTime dtt = dynamoUpsert(teeTime);
+ 			
+ 			log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");
+ 			
+ 	 		teeTime.setTeeTimeID(dtt.getTeeTimeID());
+ 			
  			this.getTeeTimeList().add(teeTime);
- 			this.getTeeTimesMap().put(keyHolder.getKey().intValue(), teeTime);
+ 			this.getTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);
  			
  			refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
 	 	}
@@ -194,23 +174,49 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 	 	log.info("addTeeTimes complete");				
 	}	
 	
+	private DynamoTeeTime dynamoUpsert(TeeTime teeTime) throws Exception 
+	{
+		DynamoTeeTime dynamoTeeTime = new DynamoTeeTime();
+        
+		if (dynamoTeeTime.getTeeTimeID() == null)
+		{
+			dynamoTeeTime.setTeeTimeID(UUID.randomUUID().toString());
+		}
+		else
+		{
+			dynamoTeeTime.setTeeTimeID(teeTime.getTeeTimeID());
+		}
+		
+		dynamoTeeTime.setGameID(teeTime.getGameID());		
+		dynamoTeeTime.setPlayGroupNumber(teeTime.getPlayGroupNumber());
+		dynamoTeeTime.setTeeTimeString(teeTime.getTeeTimeString());
+		
+		PutItemEnhancedRequest<DynamoTeeTime> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoTeeTime.class).item(dynamoTeeTime).build();
+		PutItemEnhancedResponse<DynamoTeeTime> putItemEnhancedResponse = teeTimesTable.putItemWithResponse(putItemEnhancedRequest);
+		DynamoTeeTime returnedObject = putItemEnhancedResponse.attributes();
+		
+		if (!returnedObject.equals(dynamoTeeTime))
+		{
+			throw new Exception("something went wrong with dynamo tee timee upsert - returned item not the same as what we attempted to put");
+		}	
+		
+		return dynamoTeeTime;
+	}
+	
 	//deletes all tee times for a specific game
-	public void deleteTeeTimesForGameFromDB(int gameID) 
+	public void deleteTeeTimesForGameFromDB(String gameID) 
 	{
 		//first identify the games we're talking about, so that we can fix up the list and map after the DB interaction.
-		List<Integer> teeTimeIDs = new ArrayList<>();
+		List<String> teeTimeIDs = new ArrayList<>();
 		for (int i = 0; i < this.getTeeTimeList().size(); i++)
 		{
 			TeeTime teeTime = this.getTeeTimeList().get(i);
 			if (teeTime.getGameID() == gameID)
 			{
 				teeTimeIDs.add(teeTime.getTeeTimeID());
+				deleteTeeTimeFromDB(teeTime.getTeeTimeID());
 			}
 		}
-		
-		String deleteStr = "delete from teetimes where idgame = ?";
-		int updatedRows = jdbcTemplate.update(deleteStr,gameID);
-		log.info("LoggedDBOperation: function-update; table:teetimes; rows:" + updatedRows);
 		
 		for (int i = 0; i < teeTimeIDs.size(); i++) 
 		{
@@ -223,12 +229,13 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 	}
 		
 	//deletes a particular tee time
-	public void deleteTeeTimeFromDB(Integer teeTimeID)
+	public void deleteTeeTimeFromDB(String teeTimeID)
     {
-		String deleteStr = "delete from teetimes where idteeTimes = ?";
-		jdbcTemplate.update(deleteStr, teeTimeID);	
+		Key key = Key.builder().partitionValue(teeTimeID).build();
+		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
+		teeTimesTable.deleteItem(deleteItemEnhancedRequest);
 		
-		log.info("LoggedDBOperation: function-update; table:teetimes; rows:1");
+		log.info("LoggedDBOperation: function-delete; table:teetimes; rows:1");
 		
 		TeeTime teeTime = new TeeTime();
 		teeTime.setTeeTimeID(teeTimeID);
@@ -278,13 +285,11 @@ public class TeeTimeDAO extends JdbcDaoSupport implements Serializable
 		this.teeTimeList = teeTimeList;
 	}
 
-	public Map<Integer, TeeTime> getTeeTimesMap() {
+	public Map<String, TeeTime> getTeeTimesMap() {
 		return teeTimesMap;
 	}
 
-	public void setTeeTimesMap(Map<Integer, TeeTime> teeTimesMap) {
+	public void setTeeTimesMap(Map<String, TeeTime> teeTimesMap) {
 		this.teeTimesMap = teeTimesMap;
-	}
-
-	
+	}	
 }

@@ -18,7 +18,7 @@ import com.pas.beans.Group;
 @FacesConverter(forClass = Group.class)
 public class GroupConverter implements Converter<Object>
 {
-	Map<Integer,Group> groupsMap = new HashMap<Integer,Group>();	
+	Map<String,Group> groupsMap = new HashMap<>();	
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
@@ -60,8 +60,7 @@ public class GroupConverter implements Converter<Object>
 	        	groupsMap = fullGroupList.stream().collect(Collectors.toMap(Group::getGroupID, grp -> grp));	   
 	    	}
 			
-			int groupID = Integer.valueOf(submittedValue);
-			Group returnGroup = groupsMap.get(groupID);
+			Group returnGroup = groupsMap.get(submittedValue);
 	        return returnGroup;
 	    } 
 	    catch (NumberFormatException e) 

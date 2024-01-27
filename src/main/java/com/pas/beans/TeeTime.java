@@ -7,21 +7,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.pas.dynamodb.DateToStringConverter;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
+
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Named;
 
 @Named("pc_TeeTime")
 @SessionScoped
@@ -35,11 +38,15 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	
 	private static String NEWLINE = "<br/>";
 	
-	private int teeTimeID;
-	private int gameID;
+	private String teeTimeID;
+	private int oldTeeTimeID;
+	private String gameID;
+	private int oldGameID;
 	private int playGroupNumber;
 	private String teeTimeString;
+	
 	private Date gameDate;
+	
 	private String courseName;
 	
 	private TeeTime selectedTeeTime;
@@ -50,7 +57,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
 	
-	public TeeTime(int teeTimeID, int gameID, int playGroupNumber, String teeTimeString, Date gameDate, String courseName) 
+	public TeeTime(String teeTimeID, String gameID, int playGroupNumber, String teeTimeString, Date gameDate, String courseName) 
 	{	
 		this.setTeeTimeID(teeTimeID);
 		this.setGameID(gameID);
@@ -82,7 +89,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
-		Integer selectedOption = (Integer)selectonemenu.getValue();
+		String selectedOption = (String)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
@@ -267,18 +274,6 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
         return Objects.equals(teeTimeID, that);
     }
 	
-	public int getTeeTimeID() {
-		return teeTimeID;
-	}
-	public void setTeeTimeID(int teeTimeID) {
-		this.teeTimeID = teeTimeID;
-	}
-	public int getGameID() {
-		return gameID;
-	}
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
-	}
 	public int getPlayGroupNumber() {
 		return playGroupNumber;
 	}
@@ -331,12 +326,17 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	public void setTeeTimeList(List<TeeTime> teeTimeList) {
 		this.teeTimeList = teeTimeList;
 	}
-
-	public Date getGameDate() {
+	
+	@DynamoDBTypeConverted(converter = DateToStringConverter.class)
+	@DynamoDBAttribute(attributeName = "GameDate")
+	public Date getGameDate() 
+	{
 		return gameDate;
 	}
 
-	public void setGameDate(Date gameDate) {
+	@DynamoDBAttribute(attributeName = "GameDate")
+	public void setGameDate(Date gameDate) 
+	{
 		this.gameDate = gameDate;
 	}
 
@@ -346,6 +346,38 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public String getTeeTimeID() {
+		return teeTimeID;
+	}
+
+	public void setTeeTimeID(String teeTimeID) {
+		this.teeTimeID = teeTimeID;
+	}
+
+	public String getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
+	}
+
+	public int getOldTeeTimeID() {
+		return oldTeeTimeID;
+	}
+
+	public void setOldTeeTimeID(int oldTeeTimeID) {
+		this.oldTeeTimeID = oldTeeTimeID;
+	}
+
+	public int getOldGameID() {
+		return oldGameID;
+	}
+
+	public void setOldGameID(int oldGameID) {
+		this.oldGameID = oldGameID;
 	}
 	
 }

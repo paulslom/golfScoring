@@ -18,7 +18,7 @@ import com.pas.beans.GolfMain;
 @FacesConverter(forClass = Course.class)
 public class CourseConverter implements Converter<Object>
 {
-	Map<Integer,Course> coursesMap = new HashMap<Integer,Course>();
+	Map<String,Course> coursesMap = new HashMap<>();
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
@@ -54,8 +54,8 @@ public class CourseConverter implements Converter<Object>
 	        	List<Course> courseSelections = gm.getCourseSelections();
 	        	coursesMap = courseSelections.stream().collect(Collectors.toMap(Course::getCourseID, crs -> crs));	   
 	    	}
-			int courseID = Integer.valueOf(submittedValue);
-	        return coursesMap.get(courseID);
+			
+	        return coursesMap.get(submittedValue);
 	    } 
 	    catch (NumberFormatException e) 
 	    {

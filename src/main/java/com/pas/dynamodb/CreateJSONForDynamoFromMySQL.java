@@ -39,47 +39,46 @@ public class CreateJSONForDynamoFromMySQL
 	private static Logger log = LogManager.getLogger(CreateJSONForDynamoFromMySQL.class); //log4j for Logging
 	 
     private static String jsonOutputFileGolfUsers = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GolfUsersData.json"; 
-    private static String jsonOutputFileCourses = "C:/Paul/GitHub/golfScoring/src/main/resources/data/CoursesData.json"; 
-    private static String jsonOutputFilePlayers = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayersData.json"; 	
-    private static String jsonOutputFileGames = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GamesData.json"; 	
-    private static String jsonOutputFileRounds = "C:/Paul/GitHub/golfScoring/src/main/resources/data/RoundsData.json"; 	
     private static String jsonOutputFileGolfGroups = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GolfGroupsData.json"; 	
-    private static String jsonOutputFileTeeTimes = "C:/Paul/GitHub/golfScoring/src/main/resources/data/TeeTimesData.json"; 	
-    private static String jsonOutputFilePlayerMoney = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayerMoneyData.json"; 	
+    private static String jsonOutputFileCourses = "C:/Paul/GitHub/golfScoring/src/main/resources/data/CoursesData.json";     
     private static String jsonOutputFileGolfCourseTees = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GolfCourseTeesData.json"; 	
+    private static String jsonOutputFileGames = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GamesData.json"; 
+    private static String jsonOutputFileTeeTimes = "C:/Paul/GitHub/golfScoring/src/main/resources/data/TeeTimesData.json"; 	    
+    private static String jsonOutputFilePlayers = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayersData.json"; 	
     private static String jsonOutputFilePlayerTees = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayerTeesData.json"; 	
-
+    private static String jsonOutputFilePlayerMoney = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayerMoneyData.json"; 
+    private static String jsonOutputFileRounds = "C:/Paul/GitHub/golfScoring/src/main/resources/data/RoundsData.json"; 	
+  
     public static void main(String[] args) throws Exception
     { 
     	log.debug("**********  START of program ***********");   	
     	
     	//List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
-    	//List<Course> courseList = getCoursesFromMySQLDB();	//2
-    	//List<Player> playerList = getPlayersFromMySQLDB();	//3
-    	//List<Game> gameList = getGamesFromMySQLDB();	//4
-    	//List<Round> roundList = getRoundsFromMySQLDB();	//5
-    	//List<Group> groupList = getGroupsFromMySQLDB();	//6
-    	//List<TeeTime> teeTimesList = getTeeTimesFromMySQLDB();	//7
-    	//List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//8
-    	//List<CourseTee> courseTeeList = getCourseTeesFromMySQLDB();	//9
-    	List<PlayerTeePreference> playerTeePreferenceList = getPlayerTeePreferenceFromMySQLDB();	//10
-    	
+    	//List<Group> groupList = getGroupsFromMySQLDB();	//2
+    	//List<Course> courseList = getCoursesFromMySQLDB();	//3
+    	//List<CourseTee> courseTeeList = getCourseTeesFromMySQLDB();	//4 
+    	//List<Game> gameList = getGamesFromMySQLDB();	//5
+    	//List<TeeTime> teeTimesList = getTeeTimesFromMySQLDB();	//6
+    	//List<Player> playerList = getPlayersFromMySQLDB();	//7
+    	List<PlayerTeePreference> playerTeePreferenceList = getPlayerTeePreferenceFromMySQLDB();	//8
+    	//List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
+    	//List<Round> roundList = getRoundsFromMySQLDB();	//10
+     	
     	log.debug("********** starting write of JSON file ***********");   	
-	   	//writeGolfUsersJSONFile(golfUserList);  //1	
-	   	//writeCoursesJSONFile(courseList); //2
-    	//writePlayersJSONFile(playerList); //3
-    	//writeGamesJSONFile(gameList); //4
-    	//writeRoundsJSONFile(roundList); //5
-    	//writeGroupsJSONFile(groupList); //6
-    	//writeTeeTimesJSONFile(teeTimesList); //7
-    	//writePlayerMoneyJSONFile(playerMoneyList); //8
-    	//writeCourseTeeJSONFile(courseTeeList); //9
-    	writePlayerTeePreferenceJSONFile(playerTeePreferenceList); //10
+	   	//writeGolfUsersJSONFile(golfUserList);  //1
+    	//writeGroupsJSONFile(groupList); //2
+	   	//writeCoursesJSONFile(courseList); //3
+	    //writeCourseTeeJSONFile(courseTeeList); //4
+    	//writeGamesJSONFile(gameList); //5
+	    //writeTeeTimesJSONFile(teeTimesList); //6
+    	//writePlayersJSONFile(playerList); //7
+	    writePlayerTeePreferenceJSONFile(playerTeePreferenceList); //8
+    	//writePlayerMoneyJSONFile(playerMoneyList); //9    	
+    	//writeRoundsJSONFile(roundList); //10	 	
     	
 	   	log.debug("********** finished write of JSON file ***********");   	
 	   	
-		log.debug("**********  END of program ***********");
-		
+		log.debug("**********  END of program ***********");		
 	}
 
 	private static List<PlayerTeePreference> getPlayerTeePreferenceFromMySQLDB() 
@@ -97,10 +96,10 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					PlayerTeePreference playerTeePreference = new PlayerTeePreference();
 			        
-			        playerTeePreference.setPlayerTeePreferenceID(rs.getInt("idplayertees"));
-			        playerTeePreference.setPlayerID(rs.getInt("idplayer"));
-			        playerTeePreference.setCourseID(rs.getInt("idgolfcourse"));
-			        playerTeePreference.setCourseTeeID(rs.getInt("idgolfcoursetee"));        
+			        playerTeePreference.setOldPlayerTeePreferenceID(rs.getInt("idplayertees"));
+			        playerTeePreference.setOldPlayerID(rs.getInt("idplayer"));
+			        playerTeePreference.setOldCourseID(rs.getInt("idgolfcourse"));
+			        playerTeePreference.setOldCourseTeeID(rs.getInt("idgolfcoursetee"));        
 					
 					playerTeePreferenceList2.add(playerTeePreference);
 				}
@@ -127,8 +126,8 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					CourseTee courseTee = new CourseTee();
 			        
-			        courseTee.setCourseTeeID(rs.getInt("idGolfCourseTees"));
-			        courseTee.setCourseID(rs.getInt("idGolfCourse"));
+			        courseTee.setOldCourseTeeID(rs.getInt("idGolfCourseTees"));
+			        courseTee.setOldCourseID(rs.getInt("idGolfCourse"));
 					courseTee.setTeeColor(rs.getString("teeColor"));
 					courseTee.setCourseRating(rs.getBigDecimal("courseRating"));
 					courseTee.setSlopeRating(rs.getInt("courseSlope"));
@@ -160,9 +159,9 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					PlayerMoney playerMoney = new PlayerMoney();
 			    	
-			    	playerMoney.setPlayerMoneyID(rs.getInt("idplayerMoney"));
-					playerMoney.setGameID(rs.getInt("idgame"));
-					playerMoney.setPlayerID(rs.getInt("idplayer"));
+			    	playerMoney.setOldPlayerMoneyID(rs.getInt("idplayerMoney"));
+					playerMoney.setOldGameID(rs.getInt("idgame"));
+					playerMoney.setOldPlayerID(rs.getInt("idplayer"));
 					playerMoney.setDescription(rs.getString("description"));	
 					playerMoney.setAmount(rs.getBigDecimal("amount"));	
 					
@@ -191,8 +190,8 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					TeeTime teeTime = new TeeTime();
 		    		
-					teeTime.setTeeTimeID(rs.getInt("idteeTimes"));
-					teeTime.setGameID(rs.getInt("idgame"));
+					teeTime.setOldTeeTimeID(rs.getInt("idteeTimes"));
+					teeTime.setOldGameID(rs.getInt("idgame"));
 					teeTime.setPlayGroupNumber(rs.getInt("playGroupNumber"));
 					teeTime.setTeeTimeString(rs.getString("teeTime"));
 					
@@ -221,7 +220,7 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					Group group = new Group();
 			        
-			        group.setGroupID(rs.getInt("idgroup"));
+			        group.setOldGroupID(rs.getInt("idgroup"));
 					group.setGroupName(rs.getString("groupName"));
 					
 		            groupList2.add(group);
@@ -249,14 +248,14 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					Round round = new Round();
 			    	
-			    	round.setRoundID(rs.getInt("idround"));
-					round.setGameID(rs.getInt("idgame"));
-					round.setPlayerID(rs.getInt("idplayer"));
+			    	round.setOldRoundID(rs.getInt("idround"));
+					round.setOldGameID(rs.getInt("idgame"));
+					round.setOldPlayerID(rs.getInt("idplayer"));
 					round.setTeamNumber(rs.getInt("teamNumber"));
-					round.setTeeTimeID(rs.getInt("idTeeTimes"));
+					round.setOldTeeTimeID(rs.getInt("idTeeTimes"));
 					round.setRoundHandicap(rs.getBigDecimal("roundHandicap"));
 					round.setSignupDateTime(rs.getTimestamp("dSignUpdatetime"));
-					round.setCourseTeeID(rs.getInt("idCourseTee"));
+					round.setOldCourseTeeID(rs.getInt("idCourseTee"));
 					
 					for (int holeNumber = 1; holeNumber <= 18; holeNumber++) 
 					{
@@ -587,8 +586,8 @@ public class CreateJSONForDynamoFromMySQL
 				{
 					Game game = new Game();    	
 			     	
-			        game.setGameID(rs.getInt("idgame"));
-					game.setCourseID(rs.getInt("idgolfcourse"));		
+			        game.setOldGameID(rs.getInt("idgame"));
+					game.setOldCourseID(rs.getInt("idgolfcourse"));		
 					game.setGameDate(rs.getDate("gameDate"));
 					game.setBetAmount(rs.getBigDecimal("betAmount"));
 					game.setEachBallWorth(rs.getBigDecimal("teamBallValue"));
@@ -638,8 +637,8 @@ public class CreateJSONForDynamoFromMySQL
 				while (rs.next()) 
 				{
 			        Player player = new Player();
-			        player.setPlayerID(rs.getInt("idplayer"));
-					player.setFirstName(rs.getString("firstName"));
+			        player.setOldPlayerID(rs.getInt("idplayer"));
+			     	player.setFirstName(rs.getString("firstName"));
 					player.setLastName(rs.getString("lastName"));
 					player.setFullName(player.getFirstName() + " " + player.getLastName());
 					player.setHandicap(rs.getBigDecimal("currentHandicapIndex"));
@@ -707,7 +706,7 @@ public class CreateJSONForDynamoFromMySQL
 				while (rs.next()) 
 				{
 			        Course course = new Course();
-			        course.setCourseID(rs.getInt("idGolfCourse"));
+			        course.setOldCourseID(rs.getInt("idGolfCourse"));
 					course.setCourseName(rs.getString("courseName"));
 					course.setFront9Par(rs.getInt("front9Par"));
 					course.setBack9Par(rs.getInt("back9Par"));
@@ -959,7 +958,7 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("{");
 					
 				bw.newLine();				
-				bw.write("\t\"idGolfCourse\":" + course.getCourseID() + "," );
+				bw.write("\t\"courseID\":" + course.getOldCourseID() + "," );
 				bw.newLine();	
 				bw.write("\t\"idGroup\": 1," );
 				bw.newLine();	
@@ -970,44 +969,36 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("\t\"back9Par\":" + course.getBack9Par() + "," );
 				bw.newLine();	
 				bw.write("\t\"coursePar\":" + course.getCoursePar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole1Par\":" + course.getHolesList().get(0).getPar() + "," );
 				bw.newLine();
-				bw.write("\t\"hole2Par\":" + course.getHolesList().get(1).getPar() + "," );
-				bw.newLine();				
-				bw.write("\t\"hole3Par\":" + course.getHolesList().get(2).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole4Par\":" + course.getHolesList().get(3).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole5Par\":" + course.getHolesList().get(4).getPar() + "," );
+				bw.write("\t\"holesList\":");
 				bw.newLine();
-				bw.write("\t\"hole6Par\":" + course.getHolesList().get(5).getPar() + "," );
-				bw.newLine();				
-				bw.write("\t\"hole7Par\":" + course.getHolesList().get(6).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole8Par\":" + course.getHolesList().get(7).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole9Par\":" + course.getHolesList().get(8).getPar() + "," );
-				bw.newLine();
-				bw.write("\t\"hole10Par\":" + course.getHolesList().get(9).getPar() + "," );
-				bw.newLine();				
-				bw.write("\t\"hole11Par\":" + course.getHolesList().get(10).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole12Par\":" + course.getHolesList().get(11).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole13Par\":" + course.getHolesList().get(12).getPar() + "," );
-				bw.newLine();
-				bw.write("\t\"hole14Par\":" + course.getHolesList().get(13).getPar() + "," );
-				bw.newLine();				
-				bw.write("\t\"hole15Par\":" + course.getHolesList().get(14).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole16Par\":" + course.getHolesList().get(15).getPar() + "," );
-				bw.newLine();	
-				bw.write("\t\"hole17Par\":" + course.getHolesList().get(16).getPar() + "," );
-				bw.newLine();
-				bw.write("\t\"hole18Par\":" + course.getHolesList().get(17).getPar());
+				bw.write("\t[");
 				bw.newLine();
 				
+				for (int j = 0; j < course.getHolesList().size(); j++) 
+				{					
+					bw.write("\t\t{");
+					bw.newLine();
+					bw.write("\t\t\t\"holeNumber\":" + course.getHolesList().get(j).getHoleNumber() + "," );
+					bw.newLine();	
+					bw.write("\t\t\t\"par\":" + course.getHolesList().get(j).getPar() );
+					bw.newLine();
+					
+					if (j < 17)
+					{
+						bw.write("\t\t},");
+					}
+					else
+					{
+						bw.write("\t\t}");
+						bw.newLine();
+						bw.write("\t]");
+						
+					}
+					
+					bw.newLine();
+				}
+					
 				if (i == courseList.size() - 1)
 				{
 					bw.write("}");
@@ -1058,15 +1049,15 @@ public class CreateJSONForDynamoFromMySQL
 				TeeTime teeTime = teeTimesList.get(i);
 				
 				bw.write("{");
-					
+			
 				bw.newLine();				
-				bw.write("\t\"idteetimes\":" + teeTime.getTeeTimeID() + "," );
+				bw.write("\t\"oldTeeTimeID\":" + teeTime.getOldTeeTimeID() + "," );
 				bw.newLine();
-				bw.write("\t\"idgame\":" + teeTime.getGameID() + "," );
+				bw.write("\t\"oldGameID\":" + teeTime.getOldGameID() + "," );
 				bw.newLine();	
 				bw.write("\t\"playGroupNumber\":" + teeTime.getPlayGroupNumber() + "," );
 				bw.newLine();	
-				bw.write("\t\"teeTime\": \"" + teeTime.getTeeTimeString()  + "\"");
+				bw.write("\t\"teeTimeString\": \"" + teeTime.getTeeTimeString()  + "\"");
 				bw.newLine();
 								
 				if (i == teeTimesList.size() - 1)
@@ -1184,13 +1175,15 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("{");
 					
 				bw.newLine();				
-				bw.write("\t\"idGolfCourseTees\":" + courseTee.getCourseTeeID() + "," );
+				bw.write("\t\"oldCourseTeeID\":" + courseTee.getOldCourseTeeID() + "," );
 				bw.newLine();
-				bw.write("\t\"idgolfCourse\":" + courseTee.getCourseID() + "," );
+				bw.write("\t\"oldCourseID\":" + courseTee.getOldCourseID() + "," );
 				bw.newLine();	
 				bw.write("\t\"courseRating\":" + courseTee.getCourseRating() + "," );
 				bw.newLine();	
 				bw.write("\t\"courseSlope\":" + courseTee.getSlopeRating() + "," );
+				bw.newLine();	
+				bw.write("\t\"teeColor\": \"" + courseTee.getTeeColor() + "\"," );
 				bw.newLine();	
 				bw.write("\t\"coursePar\":" + courseTee.getCoursePar() + "," );
 				bw.newLine();	
@@ -1251,13 +1244,13 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("{");
 					
 				bw.newLine();				
-				bw.write("\t\"idplayertees\":" + playerTeePreference.getPlayerTeePreferenceID() + "," );
+				bw.write("\t\"oldPlayerTeePreferenceID\":" + playerTeePreference.getOldPlayerTeePreferenceID() + "," );
 				bw.newLine();	
-				bw.write("\t\"idplayer\":" + playerTeePreference.getPlayerID() + "," );
+				bw.write("\t\"oldPlayerID\":" + playerTeePreference.getOldPlayerID() + "," );
 				bw.newLine();	
-				bw.write("\t\"idgolfcourse\":" + playerTeePreference.getCourseID() + "," );
+				bw.write("\t\"oldCourseID\":" + playerTeePreference.getOldCourseID() + "," );
 				bw.newLine();	
-				bw.write("\t\"idgolfcoursetee\":" + playerTeePreference.getCourseTeeID());
+				bw.write("\t\"oldCourseTeeID\":" + playerTeePreference.getOldCourseTeeID());
 				bw.newLine();	
 								
 				if (i == playerTeePreferenceList.size() - 1)
@@ -1311,7 +1304,7 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("{");
 					
 				bw.newLine();				
-				bw.write("\t\"idgroup\":" + group.getGroupID() + "," );
+				bw.write("\t\"oldGroupID\":" + group.getOldGroupID() + "," );
 				bw.newLine();	
 				bw.write("\t\"groupName\": \"" + group.getGroupName()  + "\"");
 				bw.newLine();
@@ -1368,19 +1361,19 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("{");
 					
 				bw.newLine();				
-				bw.write("\t\"idplayer\":" + player.getPlayerID() + "," );
+				bw.write("\t\"oldPlayerID\":" + player.getOldPlayerID() + "," );
 				bw.newLine();	
 				bw.write("\t\"firstName\": \"" + player.getFirstName() + "\"," );
 				bw.newLine();
 				bw.write("\t\"lastName\": \"" + player.getLastName() + "\"," );
 				bw.newLine();				
-				bw.write("\t\"currentHandicapIndex\":" + player.getHandicap() + "," );
+				bw.write("\t\"handicap\":" + player.getHandicap() + "," );
 				bw.newLine();
 				bw.write("\t\"username\": \"" + player.getUsername() + "\"," );
 				bw.newLine();				
 				bw.write("\t\"emailAddress\": \"" + player.getEmailAddress() + "\"," );
 				bw.newLine();	
-				bw.write("\t\"bactive\":" + player.isActive());
+				bw.write("\t\"active\":" + player.isActive());
 				bw.newLine();	
 				
 				if (i == playerList.size() - 1)
@@ -1418,6 +1411,8 @@ public class CreateJSONForDynamoFromMySQL
     private static void writeGamesJSONFile(List<Game> gameList) 
 	{
     	BufferedWriter bw = null;
+    	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 		
 		try
 		{
@@ -1434,25 +1429,25 @@ public class CreateJSONForDynamoFromMySQL
 				bw.write("{");
 				
 				bw.newLine();				
-				bw.write("\t\"idgame\":" + game.getGameID() + "," );
+				bw.write("\t\"oldGameID\":" + game.getOldGameID() + "," );
 				bw.newLine();	
-				bw.write("\t\"idgolfcourse\":" + game.getCourseID() + "," );
-				bw.newLine();
+				bw.write("\t\"oldCourseID\":" + game.getOldCourseID() + "," );
+				bw.newLine();				
 				
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
-				sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-					
-				bw.write("\t\"gameDate\": \""  + sdf.format(game.getGameDate()) + "\"," );
+				sdf.setTimeZone(TimeZone.getTimeZone("EST"));
+				String gameDateText = sdf.format(game.getGameDate());
+						
+				bw.write("\t\"gameDate\": \""  + gameDateText + "\"," );
 				bw.newLine();
 				bw.write("\t\"betAmount\":" + game.getBetAmount() + "," );
 				bw.newLine();
-				bw.write("\t\"teamBallValue\":" + game.getEachBallWorth() + "," );
+				bw.write("\t\"eachBallWorth\":" + game.getEachBallWorth() + "," );
 				bw.newLine();
-				bw.write("\t\"teamBalls\":" + game.getHowManyBalls() + "," );
+				bw.write("\t\"howManyBalls\":" + game.getHowManyBalls() + "," );
 				bw.newLine();
-				bw.write("\t\"individualLowGrossPrize\":" + game.getIndividualGrossPrize() + "," );
+				bw.write("\t\"individualGrossPrize\":" + game.getIndividualGrossPrize() + "," );
 				bw.newLine();
-				bw.write("\t\"individualLowNetPrize\":" + game.getIndividualNetPrize() + "," );
+				bw.write("\t\"individualNetPrize\":" + game.getIndividualNetPrize() + "," );
 				bw.newLine();
 				bw.write("\t\"purseAmount\":" + game.getPurseAmount() + "," );
 				bw.newLine();

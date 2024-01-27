@@ -17,7 +17,7 @@ import com.pas.beans.TeeTime;
 @FacesConverter(forClass = TeeTime.class)
 public class TeeTimeConverter implements Converter<Object>
 {
-	Map<Integer,TeeTime> teeTimesMap = new HashMap<Integer, TeeTime>();
+	Map<String,TeeTime> teeTimesMap = new HashMap<>();
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
@@ -59,8 +59,7 @@ public class TeeTimeConverter implements Converter<Object>
 	        	teeTimesMap = fullTeeTimeList.stream().collect(Collectors.toMap(TeeTime::getTeeTimeID, tt -> tt));	   
 	    	}
 			
-			int teeTimeID = Integer.valueOf(submittedValue);
-			TeeTime returnTeeTime = teeTimesMap.get(teeTimeID);
+			TeeTime returnTeeTime = teeTimesMap.get(submittedValue);
 	        return returnTeeTime;
 	    } 
 	    catch (NumberFormatException e) 

@@ -58,7 +58,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(RoundDAO.class);
 	
-	private Map<Integer,Round> fullRoundsMap = new HashMap<Integer,Round>();	
+	private Map<String, Round> fullRoundsMap = new HashMap<>();	
 	private List<Round> fullRoundsList = new ArrayList<Round>();
 	
 	@PostConstruct
@@ -125,7 +125,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
     {
 		String sql = "select * from round where dSignUpdatetime > :dSignUpdatetime order by dSignUpdatetime desc";	
 		SqlParameterSource param = new MapSqlParameterSource("dSignUpdatetime", Utils.getOneMonthAgoDate());
-		this.setFullRoundsList(namedParameterJdbcTemplate.query(sql, param, new RoundRowMapper())); 
+		this.setFullRoundsList(null); 
 	
 		log.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());
 		
@@ -157,7 +157,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	   	return roundsByGameList;
     }
 	
-	public List<Round> readPlayGroupRoundsFromDB(Game selectedGame, Integer teeTimeID)
+	public List<Round> readPlayGroupRoundsFromDB(Game selectedGame, String teeTimeID)
     {
 		List<Round> roundsList = new ArrayList<>();
 		
@@ -165,7 +165,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == selectedGame.getGameID() && rd.getTeeTimeID() == teeTimeID)
+			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()) && rd.getTeeTimeID().equalsIgnoreCase(teeTimeID))
 			{
 				roundsList.add(rd);
 			}
@@ -197,7 +197,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	 	return round;
     }
 	
-	public Round getRoundByGameandPlayer(Integer gameID, Integer playerID)
+	public Round getRoundByGameandPlayer(String gameID, String playerID)
     {
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
@@ -213,7 +213,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		    	
     }
 	
-	public void deleteRoundFromDB(Integer roundID)
+	public void deleteRoundFromDB(String roundID)
     {
 		String deleteStr = "delete from round where idround = ?";
 		jdbcTemplate.update(deleteStr, roundID);	
@@ -227,7 +227,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		log.info(getTempUserName() + " delete round table complete");
     }
 	
-	public void deleteRoundsFromDB(Integer gameID)
+	public void deleteRoundsFromDB(String gameID)
     {
 		String deleteStr = "delete from round where idgame = ?";
 		int updatedRows = jdbcTemplate.update(deleteStr, gameID);	
@@ -248,7 +248,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		log.info(getTempUserName() + " delete rounds table complete");		
     }
 
-	public int addRound(Round round)
+	public String addRound(Round round)
 	{
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
@@ -264,8 +264,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		
 				PreparedStatement psmt = connection.prepareStatement(insertStr, Statement.RETURN_GENERATED_KEYS);
 					
-				psmt.setInt(1, round.getGameID());
-				psmt.setInt(2, round.getPlayerID());
+				psmt.setString(1, round.getGameID());
+				psmt.setString(2, round.getPlayerID());
 				
 				if (round.getHole1Score() == null)
 				{
@@ -460,15 +460,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				psmt.setBigDecimal(25, round.getNetScore());
 				psmt.setInt(26, round.getTeamNumber());
 				psmt.setBigDecimal(27, round.getRoundHandicap());
-				if (round.getTeeTimeID() < 1)
-				{
-					psmt.setNull(28, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(28, round.getTeeTimeID());
-				}
-			
+				
+				psmt.setString(28, round.getTeeTimeID());
 				
 				if (round.getSignupDateTime() == null)
 				{					
@@ -492,15 +485,13 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				}
 				else
 				{
-					psmt.setInt(30, round.getCourseTeeID());
+					psmt.setString(30, round.getCourseTeeID());
 				}
 				return psmt;
 			}
 		}, keyHolder);
 		
 		log.info("LoggedDBOperation: function-update; table:round; rows:1");
-		
-		round.setRoundID(keyHolder.getKey().intValue());
 		
 		refreshListsAndMaps("add", round);	
 		
@@ -524,8 +515,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		
 				PreparedStatement psmt = connection.prepareStatement(updateStr, new String[] {});
 				
-				psmt.setInt(1, round.getGameID());
-				psmt.setInt(2, round.getPlayerID());
+				psmt.setString(1, round.getGameID());
+				psmt.setString(2, round.getPlayerID());
 				
 				if (round.getHole1Score() == null)
 				{
@@ -721,25 +712,11 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 				psmt.setInt(26, round.getTeamNumber());
 				psmt.setBigDecimal(27, round.getRoundHandicap());	
 				
-				if (round.getTeeTimeID() < 1)
-				{
-					psmt.setNull(28, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(28, round.getTeeTimeID());
-				}
-				
-				if (round.getCourseTeeID() == null)
-				{
-					psmt.setNull(29, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(29, round.getCourseTeeID());
-				}
-				
-				psmt.setInt(30, round.getRoundID());
+				psmt.setString(28, round.getTeeTimeID());
+								
+				psmt.setString(29, round.getCourseTeeID());
+								
+				psmt.setString(30, round.getRoundID());
 				
 				return psmt;
 			}
@@ -753,7 +730,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		
 	}
 
-	public void updateRoundHandicap(Game selectedGame, int playerID, BigDecimal handicap) 
+	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal handicap) 
 	{
 		String updateStr = " UPDATE round SET roundHandicap = ? WHERE idgame = ? AND idplayer = ?";	
 		jdbcTemplate.update(updateStr, handicap, selectedGame.getGameID(), playerID);	
@@ -780,7 +757,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		log.debug(getTempUserName() + " update player handicap for playerID: " + playerID + " to: " + handicap + " on round table complete");		
 	}	
 	
-	public void updateRoundTeamNumber(Game selectedGame, int playerID, int teamNumber) 
+	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) 
 	{
 		String updateStr = " UPDATE round SET teamNumber = ? WHERE idgame = ? AND idplayer = ?";	
 		jdbcTemplate.update(updateStr, teamNumber, selectedGame.getGameID(), playerID);		
@@ -845,11 +822,11 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		return username;
 	}
 
-	public Map<Integer, Round> getFullRoundsMap() {
+	public Map<String, Round> getFullRoundsMap() {
 		return fullRoundsMap;
 	}
 
-	public void setFullRoundsMap(Map<Integer, Round> fullRoundsMap) {
+	public void setFullRoundsMap(Map<String, Round> fullRoundsMap) {
 		this.fullRoundsMap = fullRoundsMap;
 	}
 

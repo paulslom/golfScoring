@@ -18,7 +18,7 @@ import com.pas.beans.Player;
 @FacesConverter(forClass = Player.class, value = "playerConverter")
 public class PlayerConverter implements Converter<Object>
 {
-	Map<Integer,Player> playersMap = new HashMap<Integer, Player>();
+	Map<String,Player> playersMap = new HashMap<>();
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
@@ -60,8 +60,7 @@ public class PlayerConverter implements Converter<Object>
 	        	playersMap = fullPlayerList.stream().collect(Collectors.toMap(Player::getPlayerID, ply -> ply));	   
 	    	}
 			
-			int playerID = Integer.valueOf(submittedValue);
-			Player returnPlayer = playersMap.get(playerID);
+			Player returnPlayer = playersMap.get(submittedValue);
 	        return returnPlayer;
 	    } 
 	    catch (NumberFormatException e) 

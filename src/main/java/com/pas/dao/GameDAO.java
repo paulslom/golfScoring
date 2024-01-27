@@ -1,35 +1,23 @@
 package com.pas.dao;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.model.SelectItem;
-import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.CourseTee;
@@ -37,101 +25,66 @@ import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.beans.Round;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.model.SelectItem;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
+
 @Repository
-public class GameDAO extends JdbcDaoSupport implements Serializable 
+public class GameDAO implements Serializable 
 {	
 	private static final long serialVersionUID = 1L;
-	private final transient JdbcTemplate jdbcTemplate;
-	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	private final DataSource dataSource;
+	
 	private static Logger log = LogManager.getLogger(GameDAO.class);
 	
-	private List<Game> fullGameList = new ArrayList<Game>();
-		
+	private List<Game> fullGameList = new ArrayList<Game>();		
+
+	private static DynamoClients dynamoClients;
+	private static DynamoDbTable<DynamoGame> gamesTable;
+	private static final String AWS_TABLE_NAME = "games";
+
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);	      
+	       dynamoClients = DynamoUtil.getDynamoClients();
+	       gamesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoGame.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing DAO: {}" +  ex.getStackTrace());
-	   }
+	      log.error("Got exception while initializing GameDAO. Ex = " + ex.getMessage(), ex);
+	   }	   
 	}
-
-	@Autowired
-    public GameDAO(DataSource dataSource) 
-	{
-	    this.jdbcTemplate = new JdbcTemplate(dataSource);
-	    this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-	    this.dataSource = dataSource;	
-    }	
-	
-	public int addGame(Game game) throws Exception
-	{
-		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
-		jdbcTemplate.update(new PreparedStatementCreator() 
-		{
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
-			{
-				String insertStr = " INSERT INTO game (idgolfcourse, gameDate, betAmount, teamBallValue, teamBalls, individualLowGrossPrize, ";
-				insertStr = insertStr + "individualLowNetPrize, purseAmount, skinsPot, teamPot, fieldSize, totalPlayers, totalTeams, gameNoteForEmail, playTheBallMethod) ";
-				insertStr = insertStr + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			
-				PreparedStatement psmt = connection.prepareStatement(insertStr, new String[] { "idgame" });
-				psmt.setInt(1, game.getCourseID());
-				
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String gameDateTime = format.format(game.getGameDate());
-				psmt.setString(2, gameDateTime);
-				
-				psmt.setBigDecimal(3, game.getBetAmount());
-				psmt.setBigDecimal(4, game.getEachBallWorth());
-				psmt.setInt(5, game.getHowManyBalls());
-				psmt.setBigDecimal(6, game.getIndividualGrossPrize());
-				psmt.setBigDecimal(7, game.getIndividualNetPrize());
-				psmt.setBigDecimal(8, game.getPurseAmount());
-				psmt.setBigDecimal(9, game.getSkinsPot());
-				psmt.setBigDecimal(10, game.getTeamPot());
-				psmt.setInt(11, game.getFieldSize());
-				psmt.setInt(12, game.getTotalPlayers());
-				psmt.setInt(13, game.getTotalTeams());
-				psmt.setString(14, game.getGameNoteForEmail());
-				psmt.setString(15, game.getPlayTheBallMethod());
-				return psmt;
-			}
-		}, keyHolder);
- 
-		log.info("LoggedDBOperation: function-update; table:game; rows:1");
+	public String addGame(Game game) throws Exception
+	{
+		DynamoGame dynamoGame = dynamoUpsert(game);	
+		game.setGameID(dynamoGame.getGameID());
 		
-		game.setGameID(keyHolder.getKey().intValue());
+		log.info("LoggedDBOperation: function-add; table:game; rows:1");
+		
 		refreshGameList("add", game.getGameID(), game);
 		
-		return keyHolder.getKey().intValue();	
+		return game.getGameID();
 	}
 	
 	public void updateGame(Game game) throws Exception
 	{
-		String updateStr = " UPDATE game SET idgolfcourse = ?, gameDate = ?, betAmount = ?," ;
-			updateStr = updateStr + " teamBallValue = ?, teamBalls =  ?, individualLowGrossPrize = ?," ;
-			updateStr = updateStr + " individualLowNetPrize = ?, purseAmount = ?, skinsPot = ?," ;
-			updateStr = updateStr + " teamPot = ?, fieldSize = ?, totalPlayers = ?, totalTeams = ?, gameNoteForEmail = ?, ";
-			updateStr = updateStr + "playTheBallMethod = ?, closedForSignups = ? WHERE idgame = ?";	
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String gameDateTime = format.format(game.getGameDate());
-		
-		jdbcTemplate.update(updateStr, game.getCourseID(), gameDateTime, game.getBetAmount(), game.getEachBallWorth(), game.getHowManyBalls(), 
-				game.getIndividualGrossPrize(), game.getIndividualNetPrize(), game.getPurseAmount(), game.getSkinsPot(), game.getTeamPot(),
-			    game.getFieldSize(), game.getTotalPlayers(), game.getTotalTeams(), game.getGameNoteForEmail(),
-			    game.getPlayTheBallMethod(), game.isGameClosedForSignups(), game.getGameID());
-		
+		dynamoUpsert(game);		
+			
 		log.info("LoggedDBOperation: function-update; table:game; rows:1");
 		
 		refreshGameList("update", game.getGameID(), game);	
@@ -139,23 +92,101 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		log.debug(getTempUserName() + " update game table complete");		
 	}
 	
-	public void deleteGame(int gameID) throws Exception 
-	{		
-		String deleteStr = "delete from game where idgame = ?";
-		jdbcTemplate.update(deleteStr,gameID);	
+	public void deleteGame(String gameID) throws Exception 
+	{
+		Key key = Key.builder().partitionValue(gameID).build();
+		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
+		gamesTable.deleteItem(deleteItemEnhancedRequest);
 		
-		log.info("LoggedDBOperation: function-update; table:game; rows:1");
+		log.info("LoggedDBOperation: function-delete; table:game; rows:1");
 		
 		refreshGameList("delete", gameID, null);		
 		
 		log.info(getTempUserName() + " deleteGame complete");	
 	}
 	
-	public void readGamesFromDB() 
+	private DynamoGame dynamoUpsert(Game game) throws Exception 
+	{
+		DynamoGame dynamoGame = new DynamoGame();
+        
+		if (game.getGameID() == null)
+		{
+			dynamoGame.setGameID(UUID.randomUUID().toString());
+		}
+		else
+		{
+			dynamoGame.setGameID(game.getGameID());
+		}
+		
+		dynamoGame.setOldGameID(game.getOldGameID());		
+
+		sdf.setTimeZone(TimeZone.getTimeZone("EST"));
+		String gameDateText = sdf.format(game.getGameDate());
+		
+		dynamoGame.setGameDate(gameDateText);
+		dynamoGame.setCourseID(game.getCourseID());
+		dynamoGame.setFieldSize(game.getFieldSize());
+		dynamoGame.setTotalPlayers(game.getTotalPlayers());
+		dynamoGame.setTotalTeams(game.getTotalTeams());
+		dynamoGame.setSkinsPot(game.getSkinsPot());
+		dynamoGame.setTeamPot(game.getTeamPot());
+		dynamoGame.setBetAmount(game.getBetAmount());
+		dynamoGame.setHowManyBalls(game.getHowManyBalls());
+		dynamoGame.setPurseAmount(game.getPurseAmount());
+		dynamoGame.setEachBallWorth(game.getEachBallWorth());
+		dynamoGame.setIndividualGrossPrize(game.getIndividualGrossPrize());
+		dynamoGame.setIndividualNetPrize(game.getIndividualNetPrize());
+		dynamoGame.setPlayTheBallMethod(game.getPlayTheBallMethod());
+		dynamoGame.setGameClosedForSignups(game.isGameClosedForSignups());
+		dynamoGame.setGameNoteForEmail(game.getGameNoteForEmail());
+		
+		PutItemEnhancedRequest<DynamoGame> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoGame.class).item(dynamoGame).build();
+		PutItemEnhancedResponse<DynamoGame> putItemEnhancedResponse = gamesTable.putItemWithResponse(putItemEnhancedRequest);
+		DynamoGame returnedObject = putItemEnhancedResponse.attributes();
+		
+		if (!returnedObject.equals(dynamoGame))
+		{
+			throw new Exception("something went wrong with dynamo game upsert - returned item not the same as what we attempted to put");
+		}	
+		
+		return dynamoGame;
+	}
+
+	public void readGamesFromDB() throws Exception 
     {
-		String sql = "select * from game  where gameDate > :gameDate order by gameDate desc";	
-		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getOneMonthAgoDate());
-		this.setFullGameList(namedParameterJdbcTemplate.query(sql, param, new GameRowMapper())); 
+		Iterator<DynamoGame> results = gamesTable.scan().items().iterator();
+	  	
+		while (results.hasNext()) 
+        {
+			DynamoGame dynamoGame = results.next();
+          	
+			Game game = new Game();
+
+			game.setGameID(dynamoGame.getGameID());
+			game.setOldGameID(dynamoGame.getOldGameID());		
+			
+			String gameDate = dynamoGame.getGameDate();
+			Date dGameDate = sdf.parse(gameDate);
+			game.setGameDate(dGameDate);
+			
+			game.setCourseID(dynamoGame.getCourseID());
+			game.setFieldSize(dynamoGame.getFieldSize());
+			game.setTotalPlayers(dynamoGame.getTotalPlayers());
+			game.setTotalTeams(dynamoGame.getTotalTeams());
+			game.setSkinsPot(dynamoGame.getSkinsPot());
+			game.setTeamPot(dynamoGame.getTeamPot());
+			game.setBetAmount(dynamoGame.getBetAmount());
+			game.setHowManyBalls(dynamoGame.getHowManyBalls());
+			game.setPurseAmount(dynamoGame.getPurseAmount());
+			game.setEachBallWorth(dynamoGame.getEachBallWorth());
+			game.setIndividualGrossPrize(dynamoGame.getIndividualGrossPrize());
+			game.setIndividualNetPrize(dynamoGame.getIndividualNetPrize());
+			game.setPlayTheBallMethod(dynamoGame.getPlayTheBallMethod());
+			game.setGameClosedForSignups(dynamoGame.isGameClosedForSignups());
+			game.setGameNoteForEmail(dynamoGame.getGameNoteForEmail());	
+			
+            this.getFullGameList().add(game);			
+        }
 		
 		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
 		{
@@ -168,7 +199,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + this.getFullGameList().size());
 	}
 	
-	public List<Game> getAvailableGames(int playerID) 
+	public List<Game> getAvailableGames(String playerID) 
     {
 		List<Game> gameList = new ArrayList<>();
 		
@@ -226,7 +257,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
     	return gameList;
 	}
 	
-	public Integer getTeePreference(int playerID, int courseID) 
+	public String getTeePreference(String playerID, String courseID) 
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
@@ -303,9 +334,9 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
     	return gameList;
 	}
 	
-	public Game getGameByGameID(int gameID) 
+	public Game getGameByGameID(String gameID) 
     {
-		Map<Integer, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		Map<String, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
 		Game game = fullGameMap.get(gameID);
 		assignCourseToGame(game);
     	return game;		
@@ -335,12 +366,12 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		inGame.setCourse(golfmain.getCoursesMap().get(inGame.getCourseID()));
 		inGame.setCourseName(inGame.getCourse().getCourseName());
 				
-		Map<Integer, List<SelectItem>> teeSelectionsMap = courseTee.getTeeSelectionsMap();
+		Map<String, List<SelectItem>> teeSelectionsMap = courseTee.getTeeSelectionsMap();
 		List<SelectItem> courseTeeSelections = teeSelectionsMap.get(inGame.getCourseID());	
 		inGame.setTeeSelections(courseTeeSelections);
 	}
 	
-	private void refreshGameList(String function, int gameID, Game inputgame) throws Exception
+	private void refreshGameList(String function, String gameID, Game inputgame) throws Exception
 	{	
 		Game gm = new Game();
 		
@@ -380,7 +411,7 @@ public class GameDAO extends JdbcDaoSupport implements Serializable
 		}
 		else
 		{
-			Map<Integer, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+			Map<String, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
 			
 			if (function.equalsIgnoreCase("delete"))
 			{

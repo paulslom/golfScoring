@@ -16,6 +16,7 @@ import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
 
 public class DynamoUtil 
 {
@@ -27,6 +28,11 @@ public class DynamoUtil
 	
 	private static DynamoClients dynamoClients = null;	
 
+	public static final Long READ_CAPACITY = 10L;
+	public static final Long WRITE_CAPACITY = 5L;
+	public static final ProvisionedThroughput DEFAULT_PROVISIONED_THROUGHPUT =
+	            ProvisionedThroughput.builder().readCapacityUnits(READ_CAPACITY).writeCapacityUnits(WRITE_CAPACITY).build();
+	    
 	public static DynamoClients getDynamoClients() throws Exception
 	{
 		if (dynamoClients != null)

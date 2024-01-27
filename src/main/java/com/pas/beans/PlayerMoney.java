@@ -23,9 +23,12 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 
 	private static Logger log = LogManager.getLogger(PlayerMoney.class);	
 	
-	private int playerMoneyID;
-	private int gameID;
-	private int playerID;
+	private String playerMoneyID;
+	private int oldPlayerMoneyID;
+	private String gameID;
+	private int oldGameID;
+	private String playerID;
+	private int oldPlayerID;
 	private String description;
 	private BigDecimal amount;
 	
@@ -56,7 +59,7 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 		{
 			PlayerMoney pm1 = this.getFullPlayerMoneyList().get(0);
 			Player priorPlayer = pm1.getPlayer();
-			int priorPlayerID = priorPlayer.getPlayerID();
+			String priorPlayerID = priorPlayer.getPlayerID();
 			
 			BigDecimal playerTotal = new BigDecimal(0.0);
 			
@@ -64,7 +67,7 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 			{
 				PlayerMoney pm = this.getFullPlayerMoneyList().get(i);
 				
-				if (pm.getPlayerID() == priorPlayerID)
+				if (pm.getPlayerID().equalsIgnoreCase(priorPlayerID))
 				{
 					playerTotal = playerTotal.add(pm.getAmount());
 				}
@@ -121,24 +124,7 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 		}		
 	}
 	
-	public int getPlayerMoneyID() {
-		return playerMoneyID;
-	}
-	public void setPlayerMoneyID(int playerMoneyID) {
-		this.playerMoneyID = playerMoneyID;
-	}
-	public int getGameID() {
-		return gameID;
-	}
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
-	}
-	public int getPlayerID() {
-		return playerID;
-	}
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
-	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -196,6 +182,54 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+
+	public String getPlayerMoneyID() {
+		return playerMoneyID;
+	}
+
+	public void setPlayerMoneyID(String playerMoneyID) {
+		this.playerMoneyID = playerMoneyID;
+	}
+
+	public String getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
+	}
+
+	public String getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(String playerID) {
+		this.playerID = playerID;
+	}
+
+	public int getOldPlayerMoneyID() {
+		return oldPlayerMoneyID;
+	}
+
+	public void setOldPlayerMoneyID(int oldPlayerMoneyID) {
+		this.oldPlayerMoneyID = oldPlayerMoneyID;
+	}
+
+	public int getOldGameID() {
+		return oldGameID;
+	}
+
+	public void setOldGameID(int oldGameID) {
+		this.oldGameID = oldGameID;
+	}
+
+	public int getOldPlayerID() {
+		return oldPlayerID;
+	}
+
+	public void setOldPlayerID(int oldPlayerID) {
+		this.oldPlayerID = oldPlayerID;
 	}
 	
 }

@@ -1,1778 +1,1778 @@
 [
 {
-	"idplayertees":85,
-	"idplayer":1,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":85,
+	"oldPlayerID":1,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":214,
-	"idplayer":1,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":214,
+	"oldPlayerID":1,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":21,
-	"idplayer":2,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":21,
+	"oldPlayerID":2,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":150,
-	"idplayer":2,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":150,
+	"oldPlayerID":2,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":1,
-	"idplayer":3,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":1,
+	"oldPlayerID":3,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":130,
-	"idplayer":3,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":130,
+	"oldPlayerID":3,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":77,
-	"idplayer":4,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":77,
+	"oldPlayerID":4,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":206,
-	"idplayer":4,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":206,
+	"oldPlayerID":4,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":97,
-	"idplayer":5,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":97,
+	"oldPlayerID":5,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":226,
-	"idplayer":5,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":226,
+	"oldPlayerID":5,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":24,
-	"idplayer":6,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":24,
+	"oldPlayerID":6,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":153,
-	"idplayer":6,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":153,
+	"oldPlayerID":6,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":14,
-	"idplayer":7,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":14,
+	"oldPlayerID":7,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":143,
-	"idplayer":7,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":143,
+	"oldPlayerID":7,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":49,
-	"idplayer":8,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":49,
+	"oldPlayerID":8,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":178,
-	"idplayer":8,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":178,
+	"oldPlayerID":8,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":32,
-	"idplayer":9,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":32,
+	"oldPlayerID":9,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":161,
-	"idplayer":9,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":161,
+	"oldPlayerID":9,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":99,
-	"idplayer":10,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":99,
+	"oldPlayerID":10,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":228,
-	"idplayer":10,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":228,
+	"oldPlayerID":10,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":33,
-	"idplayer":11,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":33,
+	"oldPlayerID":11,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":162,
-	"idplayer":11,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":162,
+	"oldPlayerID":11,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":41,
-	"idplayer":12,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":41,
+	"oldPlayerID":12,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":170,
-	"idplayer":12,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":170,
+	"oldPlayerID":12,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":72,
-	"idplayer":13,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":72,
+	"oldPlayerID":13,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":201,
-	"idplayer":13,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":201,
+	"oldPlayerID":13,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":101,
-	"idplayer":14,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":101,
+	"oldPlayerID":14,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":230,
-	"idplayer":14,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":230,
+	"oldPlayerID":14,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":11,
-	"idplayer":15,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":11,
+	"oldPlayerID":15,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":140,
-	"idplayer":15,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":140,
+	"oldPlayerID":15,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":3,
-	"idplayer":16,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":3,
+	"oldPlayerID":16,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":132,
-	"idplayer":16,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":132,
+	"oldPlayerID":16,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":35,
-	"idplayer":17,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":35,
+	"oldPlayerID":17,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":164,
-	"idplayer":17,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":164,
+	"oldPlayerID":17,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":27,
-	"idplayer":18,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":27,
+	"oldPlayerID":18,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":156,
-	"idplayer":18,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":156,
+	"oldPlayerID":18,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":70,
-	"idplayer":19,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":70,
+	"oldPlayerID":19,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":199,
-	"idplayer":19,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":199,
+	"oldPlayerID":19,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":55,
-	"idplayer":20,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":55,
+	"oldPlayerID":20,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":184,
-	"idplayer":20,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":184,
+	"oldPlayerID":20,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":78,
-	"idplayer":21,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":78,
+	"oldPlayerID":21,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":207,
-	"idplayer":21,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":207,
+	"oldPlayerID":21,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":83,
-	"idplayer":22,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":83,
+	"oldPlayerID":22,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":212,
-	"idplayer":22,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":212,
+	"oldPlayerID":22,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":38,
-	"idplayer":23,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":38,
+	"oldPlayerID":23,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":167,
-	"idplayer":23,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":167,
+	"oldPlayerID":23,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":109,
-	"idplayer":24,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":109,
+	"oldPlayerID":24,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":238,
-	"idplayer":24,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":238,
+	"oldPlayerID":24,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":110,
-	"idplayer":25,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":110,
+	"oldPlayerID":25,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":239,
-	"idplayer":25,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":239,
+	"oldPlayerID":25,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":59,
-	"idplayer":26,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":59,
+	"oldPlayerID":26,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":188,
-	"idplayer":26,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":188,
+	"oldPlayerID":26,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":20,
-	"idplayer":27,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":20,
+	"oldPlayerID":27,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":149,
-	"idplayer":27,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":149,
+	"oldPlayerID":27,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":42,
-	"idplayer":28,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":42,
+	"oldPlayerID":28,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":171,
-	"idplayer":28,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":171,
+	"oldPlayerID":28,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":79,
-	"idplayer":29,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":79,
+	"oldPlayerID":29,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":208,
-	"idplayer":29,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":208,
+	"oldPlayerID":29,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":63,
-	"idplayer":30,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":63,
+	"oldPlayerID":30,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":192,
-	"idplayer":30,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":192,
+	"oldPlayerID":30,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":65,
-	"idplayer":31,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":65,
+	"oldPlayerID":31,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":194,
-	"idplayer":31,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":194,
+	"oldPlayerID":31,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":106,
-	"idplayer":32,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":106,
+	"oldPlayerID":32,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":235,
-	"idplayer":32,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":235,
+	"oldPlayerID":32,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":39,
-	"idplayer":33,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":39,
+	"oldPlayerID":33,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":168,
-	"idplayer":33,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":168,
+	"oldPlayerID":33,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":26,
-	"idplayer":34,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":26,
+	"oldPlayerID":34,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":155,
-	"idplayer":34,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":155,
+	"oldPlayerID":34,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":12,
-	"idplayer":35,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":12,
+	"oldPlayerID":35,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":141,
-	"idplayer":35,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":141,
+	"oldPlayerID":35,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":22,
-	"idplayer":36,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":22,
+	"oldPlayerID":36,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":151,
-	"idplayer":36,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":151,
+	"oldPlayerID":36,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":6,
-	"idplayer":37,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":6,
+	"oldPlayerID":37,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":135,
-	"idplayer":37,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":135,
+	"oldPlayerID":37,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":4,
-	"idplayer":38,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":4,
+	"oldPlayerID":38,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":133,
-	"idplayer":38,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":133,
+	"oldPlayerID":38,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":93,
-	"idplayer":39,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":93,
+	"oldPlayerID":39,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":222,
-	"idplayer":39,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":222,
+	"oldPlayerID":39,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":64,
-	"idplayer":40,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":64,
+	"oldPlayerID":40,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":193,
-	"idplayer":40,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":193,
+	"oldPlayerID":40,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":57,
-	"idplayer":41,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":57,
+	"oldPlayerID":41,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":186,
-	"idplayer":41,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":186,
+	"oldPlayerID":41,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":86,
-	"idplayer":42,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":86,
+	"oldPlayerID":42,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":215,
-	"idplayer":42,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":215,
+	"oldPlayerID":42,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":81,
-	"idplayer":43,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":81,
+	"oldPlayerID":43,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":210,
-	"idplayer":43,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":210,
+	"oldPlayerID":43,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":9,
-	"idplayer":44,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":9,
+	"oldPlayerID":44,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":138,
-	"idplayer":44,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":138,
+	"oldPlayerID":44,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":51,
-	"idplayer":45,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":51,
+	"oldPlayerID":45,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":180,
-	"idplayer":45,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":180,
+	"oldPlayerID":45,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":31,
-	"idplayer":46,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":31,
+	"oldPlayerID":46,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":160,
-	"idplayer":46,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":160,
+	"oldPlayerID":46,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":89,
-	"idplayer":47,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":89,
+	"oldPlayerID":47,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":218,
-	"idplayer":47,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":218,
+	"oldPlayerID":47,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":8,
-	"idplayer":48,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":8,
+	"oldPlayerID":48,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":137,
-	"idplayer":48,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":137,
+	"oldPlayerID":48,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":92,
-	"idplayer":49,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":92,
+	"oldPlayerID":49,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":221,
-	"idplayer":49,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":221,
+	"oldPlayerID":49,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":10,
-	"idplayer":50,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":10,
+	"oldPlayerID":50,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":139,
-	"idplayer":50,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":139,
+	"oldPlayerID":50,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":105,
-	"idplayer":51,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":105,
+	"oldPlayerID":51,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":234,
-	"idplayer":51,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":234,
+	"oldPlayerID":51,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":18,
-	"idplayer":52,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":18,
+	"oldPlayerID":52,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":147,
-	"idplayer":52,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":147,
+	"oldPlayerID":52,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":16,
-	"idplayer":53,
-	"idgolfcourse":1,
-	"idgolfcoursetee":3
+	"oldPlayerTeePreferenceID":16,
+	"oldPlayerID":53,
+	"oldCourseID":1,
+	"oldCourseTeeID":3
 },
 {
-	"idplayertees":145,
-	"idplayer":53,
-	"idgolfcourse":2,
-	"idgolfcoursetee":7
+	"oldPlayerTeePreferenceID":145,
+	"oldPlayerID":53,
+	"oldCourseID":2,
+	"oldCourseTeeID":7
 },
 {
-	"idplayertees":17,
-	"idplayer":54,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":17,
+	"oldPlayerID":54,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":146,
-	"idplayer":54,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":146,
+	"oldPlayerID":54,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":15,
-	"idplayer":55,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":15,
+	"oldPlayerID":55,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":144,
-	"idplayer":55,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":144,
+	"oldPlayerID":55,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":5,
-	"idplayer":56,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":5,
+	"oldPlayerID":56,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":134,
-	"idplayer":56,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":134,
+	"oldPlayerID":56,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":19,
-	"idplayer":57,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":19,
+	"oldPlayerID":57,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":148,
-	"idplayer":57,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":148,
+	"oldPlayerID":57,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":23,
-	"idplayer":58,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":23,
+	"oldPlayerID":58,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":152,
-	"idplayer":58,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":152,
+	"oldPlayerID":58,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":29,
-	"idplayer":59,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":29,
+	"oldPlayerID":59,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":158,
-	"idplayer":59,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":158,
+	"oldPlayerID":59,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":36,
-	"idplayer":60,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":36,
+	"oldPlayerID":60,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":165,
-	"idplayer":60,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":165,
+	"oldPlayerID":60,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":37,
-	"idplayer":61,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":37,
+	"oldPlayerID":61,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":166,
-	"idplayer":61,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":166,
+	"oldPlayerID":61,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":40,
-	"idplayer":62,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":40,
+	"oldPlayerID":62,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":169,
-	"idplayer":62,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":169,
+	"oldPlayerID":62,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":43,
-	"idplayer":63,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":43,
+	"oldPlayerID":63,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":172,
-	"idplayer":63,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":172,
+	"oldPlayerID":63,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":44,
-	"idplayer":64,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":44,
+	"oldPlayerID":64,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":173,
-	"idplayer":64,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":173,
+	"oldPlayerID":64,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":47,
-	"idplayer":65,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":47,
+	"oldPlayerID":65,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":176,
-	"idplayer":65,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":176,
+	"oldPlayerID":65,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":48,
-	"idplayer":66,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":48,
+	"oldPlayerID":66,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":177,
-	"idplayer":66,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":177,
+	"oldPlayerID":66,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":52,
-	"idplayer":67,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":52,
+	"oldPlayerID":67,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":181,
-	"idplayer":67,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":181,
+	"oldPlayerID":67,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":62,
-	"idplayer":68,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":62,
+	"oldPlayerID":68,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":191,
-	"idplayer":68,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":191,
+	"oldPlayerID":68,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":58,
-	"idplayer":69,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":58,
+	"oldPlayerID":69,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":187,
-	"idplayer":69,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":187,
+	"oldPlayerID":69,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":54,
-	"idplayer":70,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":54,
+	"oldPlayerID":70,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":183,
-	"idplayer":70,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":183,
+	"oldPlayerID":70,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":61,
-	"idplayer":71,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":61,
+	"oldPlayerID":71,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":190,
-	"idplayer":71,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":190,
+	"oldPlayerID":71,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":68,
-	"idplayer":72,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":68,
+	"oldPlayerID":72,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":197,
-	"idplayer":72,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":197,
+	"oldPlayerID":72,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":76,
-	"idplayer":73,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":76,
+	"oldPlayerID":73,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":205,
-	"idplayer":73,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":205,
+	"oldPlayerID":73,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":75,
-	"idplayer":74,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":75,
+	"oldPlayerID":74,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":204,
-	"idplayer":74,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":204,
+	"oldPlayerID":74,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":82,
-	"idplayer":76,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":82,
+	"oldPlayerID":76,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":211,
-	"idplayer":76,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":211,
+	"oldPlayerID":76,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":90,
-	"idplayer":77,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":90,
+	"oldPlayerID":77,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":219,
-	"idplayer":77,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":219,
+	"oldPlayerID":77,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":95,
-	"idplayer":78,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":95,
+	"oldPlayerID":78,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":224,
-	"idplayer":78,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":224,
+	"oldPlayerID":78,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":100,
-	"idplayer":79,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":100,
+	"oldPlayerID":79,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":229,
-	"idplayer":79,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":229,
+	"oldPlayerID":79,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":104,
-	"idplayer":80,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":104,
+	"oldPlayerID":80,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":233,
-	"idplayer":80,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":233,
+	"oldPlayerID":80,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":108,
-	"idplayer":81,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":108,
+	"oldPlayerID":81,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":237,
-	"idplayer":81,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":237,
+	"oldPlayerID":81,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":91,
-	"idplayer":82,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":91,
+	"oldPlayerID":82,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":220,
-	"idplayer":82,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":220,
+	"oldPlayerID":82,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":25,
-	"idplayer":83,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":25,
+	"oldPlayerID":83,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":154,
-	"idplayer":83,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":154,
+	"oldPlayerID":83,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":69,
-	"idplayer":84,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":69,
+	"oldPlayerID":84,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":198,
-	"idplayer":84,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":198,
+	"oldPlayerID":84,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":60,
-	"idplayer":85,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":60,
+	"oldPlayerID":85,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":189,
-	"idplayer":85,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":189,
+	"oldPlayerID":85,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":50,
-	"idplayer":86,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":50,
+	"oldPlayerID":86,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":179,
-	"idplayer":86,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":179,
+	"oldPlayerID":86,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":74,
-	"idplayer":87,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":74,
+	"oldPlayerID":87,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":203,
-	"idplayer":87,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":203,
+	"oldPlayerID":87,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":98,
-	"idplayer":89,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":98,
+	"oldPlayerID":89,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":227,
-	"idplayer":89,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":227,
+	"oldPlayerID":89,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":94,
-	"idplayer":90,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":94,
+	"oldPlayerID":90,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":223,
-	"idplayer":90,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":223,
+	"oldPlayerID":90,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":80,
-	"idplayer":91,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":80,
+	"oldPlayerID":91,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":209,
-	"idplayer":91,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":209,
+	"oldPlayerID":91,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":53,
-	"idplayer":92,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":53,
+	"oldPlayerID":92,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":182,
-	"idplayer":92,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":182,
+	"oldPlayerID":92,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":7,
-	"idplayer":93,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":7,
+	"oldPlayerID":93,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":136,
-	"idplayer":93,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":136,
+	"oldPlayerID":93,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":46,
-	"idplayer":94,
-	"idgolfcourse":1,
-	"idgolfcoursetee":4
+	"oldPlayerTeePreferenceID":46,
+	"oldPlayerID":94,
+	"oldCourseID":1,
+	"oldCourseTeeID":4
 },
 {
-	"idplayertees":175,
-	"idplayer":94,
-	"idgolfcourse":2,
-	"idgolfcoursetee":8
+	"oldPlayerTeePreferenceID":175,
+	"oldPlayerID":94,
+	"oldCourseID":2,
+	"oldCourseTeeID":8
 },
 {
-	"idplayertees":107,
-	"idplayer":95,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":107,
+	"oldPlayerID":95,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":236,
-	"idplayer":95,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":236,
+	"oldPlayerID":95,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":103,
-	"idplayer":96,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":103,
+	"oldPlayerID":96,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":232,
-	"idplayer":96,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":232,
+	"oldPlayerID":96,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":45,
-	"idplayer":97,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":45,
+	"oldPlayerID":97,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":174,
-	"idplayer":97,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":174,
+	"oldPlayerID":97,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":34,
-	"idplayer":99,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":34,
+	"oldPlayerID":99,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":163,
-	"idplayer":99,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":163,
+	"oldPlayerID":99,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":67,
-	"idplayer":100,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":67,
+	"oldPlayerID":100,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":196,
-	"idplayer":100,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":196,
+	"oldPlayerID":100,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":88,
-	"idplayer":101,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":88,
+	"oldPlayerID":101,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":217,
-	"idplayer":101,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":217,
+	"oldPlayerID":101,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":28,
-	"idplayer":102,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":28,
+	"oldPlayerID":102,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":157,
-	"idplayer":102,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":157,
+	"oldPlayerID":102,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":2,
-	"idplayer":103,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":2,
+	"oldPlayerID":103,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":131,
-	"idplayer":103,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":131,
+	"oldPlayerID":103,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":96,
-	"idplayer":104,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":96,
+	"oldPlayerID":104,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":225,
-	"idplayer":104,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":225,
+	"oldPlayerID":104,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":71,
-	"idplayer":105,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":71,
+	"oldPlayerID":105,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":200,
-	"idplayer":105,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":200,
+	"oldPlayerID":105,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":56,
-	"idplayer":106,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":56,
+	"oldPlayerID":106,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":185,
-	"idplayer":106,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":185,
+	"oldPlayerID":106,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":30,
-	"idplayer":107,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":30,
+	"oldPlayerID":107,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":159,
-	"idplayer":107,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":159,
+	"oldPlayerID":107,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":13,
-	"idplayer":108,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":13,
+	"oldPlayerID":108,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":142,
-	"idplayer":108,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":142,
+	"oldPlayerID":108,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":73,
-	"idplayer":109,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":73,
+	"oldPlayerID":109,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":202,
-	"idplayer":109,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":202,
+	"oldPlayerID":109,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":102,
-	"idplayer":110,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":102,
+	"oldPlayerID":110,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":231,
-	"idplayer":110,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":231,
+	"oldPlayerID":110,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":84,
-	"idplayer":111,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":84,
+	"oldPlayerID":111,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":213,
-	"idplayer":111,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":213,
+	"oldPlayerID":111,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":87,
-	"idplayer":112,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":87,
+	"oldPlayerID":112,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":216,
-	"idplayer":112,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":216,
+	"oldPlayerID":112,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":66,
-	"idplayer":113,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":66,
+	"oldPlayerID":113,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":195,
-	"idplayer":113,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":195,
+	"oldPlayerID":113,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":257,
-	"idplayer":114,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":257,
+	"oldPlayerID":114,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":258,
-	"idplayer":114,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":258,
+	"oldPlayerID":114,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":261,
-	"idplayer":120,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":261,
+	"oldPlayerID":120,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":262,
-	"idplayer":120,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":262,
+	"oldPlayerID":120,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":263,
-	"idplayer":121,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":263,
+	"oldPlayerID":121,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":264,
-	"idplayer":121,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":264,
+	"oldPlayerID":121,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":265,
-	"idplayer":122,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":265,
+	"oldPlayerID":122,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":266,
-	"idplayer":122,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":266,
+	"oldPlayerID":122,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":267,
-	"idplayer":123,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":267,
+	"oldPlayerID":123,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":268,
-	"idplayer":123,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":268,
+	"oldPlayerID":123,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":269,
-	"idplayer":124,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":269,
+	"oldPlayerID":124,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":270,
-	"idplayer":124,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":270,
+	"oldPlayerID":124,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":271,
-	"idplayer":125,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":271,
+	"oldPlayerID":125,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":272,
-	"idplayer":125,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":272,
+	"oldPlayerID":125,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":273,
-	"idplayer":126,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":273,
+	"oldPlayerID":126,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":274,
-	"idplayer":126,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":274,
+	"oldPlayerID":126,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":275,
-	"idplayer":127,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":275,
+	"oldPlayerID":127,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":276,
-	"idplayer":127,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":276,
+	"oldPlayerID":127,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":277,
-	"idplayer":128,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":277,
+	"oldPlayerID":128,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":278,
-	"idplayer":128,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":278,
+	"oldPlayerID":128,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":279,
-	"idplayer":129,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":279,
+	"oldPlayerID":129,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":280,
-	"idplayer":130,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":280,
+	"oldPlayerID":130,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":281,
-	"idplayer":130,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":281,
+	"oldPlayerID":130,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":282,
-	"idplayer":131,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":282,
+	"oldPlayerID":131,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":283,
-	"idplayer":131,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":283,
+	"oldPlayerID":131,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":284,
-	"idplayer":131,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":284,
+	"oldPlayerID":131,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":285,
-	"idplayer":132,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":285,
+	"oldPlayerID":132,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":286,
-	"idplayer":132,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":286,
+	"oldPlayerID":132,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":287,
-	"idplayer":132,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":287,
+	"oldPlayerID":132,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":288,
-	"idplayer":133,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":288,
+	"oldPlayerID":133,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":289,
-	"idplayer":133,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":289,
+	"oldPlayerID":133,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":290,
-	"idplayer":133,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":290,
+	"oldPlayerID":133,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":291,
-	"idplayer":134,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":291,
+	"oldPlayerID":134,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":292,
-	"idplayer":134,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":292,
+	"oldPlayerID":134,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":293,
-	"idplayer":135,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":293,
+	"oldPlayerID":135,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":294,
-	"idplayer":135,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":294,
+	"oldPlayerID":135,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":295,
-	"idplayer":135,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":295,
+	"oldPlayerID":135,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":296,
-	"idplayer":136,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":296,
+	"oldPlayerID":136,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":297,
-	"idplayer":136,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":297,
+	"oldPlayerID":136,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":298,
-	"idplayer":136,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":298,
+	"oldPlayerID":136,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":299,
-	"idplayer":137,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":299,
+	"oldPlayerID":137,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":300,
-	"idplayer":137,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":300,
+	"oldPlayerID":137,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":301,
-	"idplayer":137,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":301,
+	"oldPlayerID":137,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":302,
-	"idplayer":138,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":302,
+	"oldPlayerID":138,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":303,
-	"idplayer":138,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":303,
+	"oldPlayerID":138,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":304,
-	"idplayer":138,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":304,
+	"oldPlayerID":138,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":305,
-	"idplayer":139,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":305,
+	"oldPlayerID":139,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":306,
-	"idplayer":139,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":306,
+	"oldPlayerID":139,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":307,
-	"idplayer":139,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":307,
+	"oldPlayerID":139,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":308,
-	"idplayer":140,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":308,
+	"oldPlayerID":140,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":309,
-	"idplayer":140,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":309,
+	"oldPlayerID":140,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":310,
-	"idplayer":141,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":310,
+	"oldPlayerID":141,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":311,
-	"idplayer":141,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":311,
+	"oldPlayerID":141,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":312,
-	"idplayer":141,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":312,
+	"oldPlayerID":141,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":313,
-	"idplayer":142,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":313,
+	"oldPlayerID":142,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":314,
-	"idplayer":142,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":314,
+	"oldPlayerID":142,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":315,
-	"idplayer":142,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":315,
+	"oldPlayerID":142,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":316,
-	"idplayer":143,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":316,
+	"oldPlayerID":143,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":317,
-	"idplayer":143,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":317,
+	"oldPlayerID":143,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":318,
-	"idplayer":143,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":318,
+	"oldPlayerID":143,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":319,
-	"idplayer":144,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":319,
+	"oldPlayerID":144,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":320,
-	"idplayer":144,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":320,
+	"oldPlayerID":144,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":321,
-	"idplayer":144,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":321,
+	"oldPlayerID":144,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":322,
-	"idplayer":145,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":322,
+	"oldPlayerID":145,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":323,
-	"idplayer":145,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":323,
+	"oldPlayerID":145,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 },
 {
-	"idplayertees":324,
-	"idplayer":146,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":324,
+	"oldPlayerID":146,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":325,
-	"idplayer":146,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":325,
+	"oldPlayerID":146,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":326,
-	"idplayer":146,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":326,
+	"oldPlayerID":146,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":327,
-	"idplayer":147,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":327,
+	"oldPlayerID":147,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":328,
-	"idplayer":147,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":328,
+	"oldPlayerID":147,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":329,
-	"idplayer":147,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":329,
+	"oldPlayerID":147,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":330,
-	"idplayer":148,
-	"idgolfcourse":1,
-	"idgolfcoursetee":2
+	"oldPlayerTeePreferenceID":330,
+	"oldPlayerID":148,
+	"oldCourseID":1,
+	"oldCourseTeeID":2
 },
 {
-	"idplayertees":331,
-	"idplayer":148,
-	"idgolfcourse":2,
-	"idgolfcoursetee":6
+	"oldPlayerTeePreferenceID":331,
+	"oldPlayerID":148,
+	"oldCourseID":2,
+	"oldCourseTeeID":6
 },
 {
-	"idplayertees":332,
-	"idplayer":148,
-	"idgolfcourse":3,
-	"idgolfcoursetee":10
+	"oldPlayerTeePreferenceID":332,
+	"oldPlayerID":148,
+	"oldCourseID":3,
+	"oldCourseTeeID":10
 },
 {
-	"idplayertees":333,
-	"idplayer":149,
-	"idgolfcourse":1,
-	"idgolfcoursetee":1
+	"oldPlayerTeePreferenceID":333,
+	"oldPlayerID":149,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
 },
 {
-	"idplayertees":334,
-	"idplayer":149,
-	"idgolfcourse":2,
-	"idgolfcoursetee":5
+	"oldPlayerTeePreferenceID":334,
+	"oldPlayerID":149,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 }
 ]

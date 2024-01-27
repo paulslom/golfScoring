@@ -2,6 +2,9 @@ package com.pas.beans;
 
 import java.io.Serializable;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+
+@DynamoDbBean
 public class Score implements Serializable
 {
 	/**

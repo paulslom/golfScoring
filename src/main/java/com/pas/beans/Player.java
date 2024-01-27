@@ -39,7 +39,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	private static final long serialVersionUID = 4089402354585236177L;
 	private static Logger log = LogManager.getLogger(Game.class);
 	
-	private int playerID;
+	private String playerID;
+	private int oldPlayerID;
 	private String username;
 	private String oldUsername = "";
 	private String role;
@@ -150,7 +151,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		{
 			playersPickListTarget.clear();
 		}
-		Map<Integer, Player> selectedMap = new HashMap<Integer, Player>();
+		Map<String, Player> selectedMap = new HashMap<>();
 		
 		for (int i = 0; i < this.getSelectedPlayers().size(); i++) 
 		{
@@ -243,7 +244,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			for (int j = 0; j < golfmain.getFullPlayerList().size(); j++) 
 			{
 				Player fullPlayer = golfmain.getFullPlayerList().get(j);
-				if (fullPlayer.getPlayerID() == round.getPlayerID())
+				if (fullPlayer.getPlayerID().equalsIgnoreCase(round.getPlayerID()))
 				{
 					fullPlayer.setTeamNumber(round.getTeamNumber());
 					fullPlayer.setTeeTime(round.getTeeTime());
@@ -307,7 +308,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				
 				if (existingPlayer == null)
 				{
-					int newPlayerID = golfmain.addPlayer(this);
+					String newPlayerID = golfmain.addPlayer(this);
 					golfmain.addUser(this.getUsername(), this.getUsername(), "USER"); //default their password to their username
 					
 					//need to save off the initial tee preferences here
@@ -365,7 +366,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			
 	}
 	
-	private void addInitialTeePrefs(int newPlayerID) 
+	private void addInitialTeePrefs(String newPlayerID) throws Exception 
 	{
 		String teePreference = this.getTeePreference();
 		
@@ -417,7 +418,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		}
 	}
 	
-	private void saveRounds(Map<Integer, Date> roundSignupDateTimesMap, Map<Integer, Integer> roundTeeSelectionsMap)
+	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap)
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		Game game = BeanUtilJSF.getBean("pc_Game");
@@ -456,7 +457,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				
 				if (roundTeeSelectionsMap != null)
 				{
-					Integer courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
+					String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
 					
 					if (courseTeeID == null)
 					{
@@ -538,8 +539,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				
 				for (int j = 0; j < tempPlayerList.size(); j++) 
 				{
-					int playerID = tempPlayerList.get(j).getPlayerID();
-					int gameID = game.getSelectedGame().getGameID();
+					String playerID = tempPlayerList.get(j).getPlayerID();
+					String gameID = game.getSelectedGame().getGameID();
 					Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
 					rd.setTeeTimeID(teeTime.getTeeTimeID());
 					rd.setTeeTime(teeTime);
@@ -565,10 +566,10 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		//we want to preserve the signup dates/times here
-		Map<Integer,Date> roundSignupDateTimesMap = null;
+		Map<String,Date> roundSignupDateTimesMap = null;
 		
 		//we want to preserve the tee selections here
-		Map<Integer,Integer> roundTeeSelectionsMap = null;
+		Map<String, String> roundTeeSelectionsMap = null;
 		
 		if (game != null && game.getSelectedGame() != null)
 		{
@@ -591,9 +592,9 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		return "";
 	}
 	
-	private Map<Integer, Date> preserveSignupDateTimes(Game selectedGame) 
+	private Map<String, Date> preserveSignupDateTimes(Game selectedGame) 
 	{
-		Map<Integer,Date> roundSignupDateTimesMap = new HashMap<>();
+		Map<String,Date> roundSignupDateTimesMap = new HashMap<>();
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
@@ -609,9 +610,9 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		return roundSignupDateTimesMap;
 	}
 	
-	private Map<Integer, Integer> preserveTeeSelections(Game selectedGame) 
+	private Map<String, String> preserveTeeSelections(Game selectedGame) 
 	{
-		Map<Integer,Integer> roundTeeSelectionsMap = new HashMap<>();
+		Map<String, String> roundTeeSelectionsMap = new HashMap<>();
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
@@ -654,7 +655,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		setShowGameTeeTimeList7(false);
 		setShowGameTeeTimeList8(false);
 		
-		Map<Integer,Player> sourcePlayerMap = new HashMap<Integer,Player>();
+		Map<String,Player> sourcePlayerMap = new HashMap<>();
 		for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 		{
 			Round rd = this.getRoundsForGame().get(j);
@@ -749,7 +750,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		} 
 		
 		//Once we're done with this loop, anything in sourcePlayerMap is not assigned a tee time yet.  Put them in any list where there's not 4 players.
-		for (Entry<Integer, Player> entry : sourcePlayerMap.entrySet()) 
+		for (Entry<String, Player> entry : sourcePlayerMap.entrySet()) 
 		{
 			List<Player> sourcePlayerList = new ArrayList<Player>();
 			List<Player> targetPlayerList = new ArrayList<Player>();
@@ -874,10 +875,10 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		Game game = BeanUtilJSF.getBean("pc_Game");//we want to preserve the signup dates/times here
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
-		Map<Integer,Date> roundSignupDateTimesMap = null;
+		Map<String,Date> roundSignupDateTimesMap = null;
 		
 		//we want to preserve the tee selections here
-		Map<Integer,Integer> roundTeeSelectionsMap = null;
+		Map<String, String> roundTeeSelectionsMap = null;
 				
 		
 		if (game != null && game.getSelectedGame() != null)
@@ -1525,13 +1526,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public int getPlayerID() {
-		return playerID;
-	}
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
-	}
-	
+		
 	public String toString()
 	{
 		return "Player name: " + fullName + " handicap: " + handicap;
@@ -1993,6 +1988,22 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	public void setActive(boolean active) 
 	{
 		this.active = active;
+	}
+
+	public String getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(String playerID) {
+		this.playerID = playerID;
+	}
+
+	public int getOldPlayerID() {
+		return oldPlayerID;
+	}
+
+	public void setOldPlayerID(int oldPlayerID) {
+		this.oldPlayerID = oldPlayerID;
 	}
 
 

@@ -20,13 +20,17 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 	private static final long serialVersionUID = 3523975134478530653L;
 	private static Logger log = LogManager.getLogger(PlayerTeePreference.class);
 	
-	private Integer playerTeePreferenceID;
-	private Integer playerID;
+	private String playerTeePreferenceID;
+	private int oldPlayerTeePreferenceID;
+	private String playerID;
+	private int oldPlayerID;
 	private String playerUserName;
 	private String playerFullName;
-	private Integer courseID;
+	private String courseID;
+	private int oldCourseID;
 	private String courseName;
-	private Integer courseTeeID;
+	private String courseTeeID;
+	private int oldCourseTeeID;
 	private String teeColor;
 	
 	private boolean disableDialogButton = true;
@@ -58,7 +62,7 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 		return "";
 	}
 	
-	public String updatePrefs()
+	public String updatePrefs() throws Exception
 	{
 		log.info("entering updatePrefs");
 		
@@ -98,37 +102,7 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
         return Objects.equals(playerTeePreferenceID, that);
     }
 
-	public Integer getPlayerTeePreferenceID() {
-		return playerTeePreferenceID;
-	}
-
-	public void setPlayerTeePreferenceID(Integer playerTeePreferenceID) {
-		this.playerTeePreferenceID = playerTeePreferenceID;
-	}
-
-	public Integer getPlayerID() {
-		return playerID;
-	}
-
-	public void setPlayerID(Integer playerID) {
-		this.playerID = playerID;
-	}
-
-	public Integer getCourseID() {
-		return courseID;
-	}
-
-	public void setCourseID(Integer courseID) {
-		this.courseID = courseID;
-	}
-
-	public Integer getCourseTeeID() {
-		return courseTeeID;
-	}
-
-	public void setCourseTeeID(Integer courseTeeID) {
-		this.courseTeeID = courseTeeID;
-	}
+	
 
 	public String getTeeColor() {
 		return teeColor;
@@ -176,6 +150,70 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 
 	public void setDisableDialogButton(boolean disableDialogButton) {
 		this.disableDialogButton = disableDialogButton;
+	}
+
+	public String getPlayerTeePreferenceID() {
+		return playerTeePreferenceID;
+	}
+
+	public void setPlayerTeePreferenceID(String playerTeePreferenceID) {
+		this.playerTeePreferenceID = playerTeePreferenceID;
+	}
+
+	public String getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(String playerID) {
+		this.playerID = playerID;
+	}
+
+	public String getCourseID() {
+		return courseID;
+	}
+
+	public void setCourseID(String courseID) {
+		this.courseID = courseID;
+	}
+
+	public String getCourseTeeID() {
+		return courseTeeID;
+	}
+
+	public void setCourseTeeID(String courseTeeID) {
+		this.courseTeeID = courseTeeID;
+	}
+
+	public int getOldPlayerTeePreferenceID() {
+		return oldPlayerTeePreferenceID;
+	}
+
+	public void setOldPlayerTeePreferenceID(int oldPlayerTeePreferenceID) {
+		this.oldPlayerTeePreferenceID = oldPlayerTeePreferenceID;
+	}
+
+	public int getOldPlayerID() {
+		return oldPlayerID;
+	}
+
+	public void setOldPlayerID(int oldPlayerID) {
+		this.oldPlayerID = oldPlayerID;
+	}
+
+	public int getOldCourseID() {
+		return oldCourseID;
+	}
+
+	public void setOldCourseID(int oldCourseID) {
+		this.oldCourseID = oldCourseID;
+	}
+
+	public int getOldCourseTeeID() {
+		return oldCourseTeeID;
+	}
+
+	public void setOldCourseTeeID(int oldCourseTeeID) {
+		this.oldCourseTeeID = oldCourseTeeID;
 	}
 	
 	

@@ -22,15 +22,17 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
 {
 	private static final long serialVersionUID = 3523975134478530653L;
 		
-	private Integer courseTeeID;
-	private Integer courseID;
+	private String courseTeeID;
+	private int oldCourseTeeID;
+	private String courseID;
+	private int oldCourseID;
 	private String teeColor;
 	private BigDecimal courseRating;
 	private int coursePar;
 	private int slopeRating;
 	private int totalYardage;
 	
-	private Map<Integer, List<SelectItem>> teeSelectionsMap = new HashMap<>();
+	private Map<String, List<SelectItem>> teeSelectionsMap = new HashMap<>();
 	
 	@Override
     public boolean equals(final Object o) 
@@ -49,25 +51,7 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
     }
 
 
-	public Integer getCourseTeeID() {
-		return courseTeeID;
-	}
-
-
-	public void setCourseTeeID(Integer courseTeeID) {
-		this.courseTeeID = courseTeeID;
-	}
-
-
-	public Integer getCourseID() {
-		return courseID;
-	}
-
-
-	public void setCourseID(Integer courseID) {
-		this.courseID = courseID;
-	}
-
+	
 
 	public String getTeeColor() {
 		return teeColor;
@@ -119,11 +103,11 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
 	}
 
 
-	public Map<Integer, List<SelectItem>> getTeeSelectionsMap()
+	public Map<String, List<SelectItem>> getTeeSelectionsMap()
 	{		
 		if (teeSelectionsMap == null || teeSelectionsMap.size() == 0)
 		{
-			Integer lastCourseID = 0;
+			String lastCourseID = "0";
 			List<SelectItem> ctList = new ArrayList<>();
 		
 			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
@@ -132,7 +116,7 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
 				for (int i = 0; i < golfmain.getCourseTees().size(); i++) 
 				{					
 					CourseTee ct = golfmain.getCourseTees().get(i);
-					if (ct.getCourseID() != lastCourseID && lastCourseID != 0)
+					if (!ct.getCourseID().equalsIgnoreCase(lastCourseID) && !lastCourseID.equalsIgnoreCase("0"))
 					{	
 						List<SelectItem> tempList = new ArrayList<>();
 						tempList.addAll(ctList);
@@ -154,7 +138,7 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
 		}
 		
 		//let's log the teeSelections map here
-		for (Map.Entry<Integer, List<SelectItem>> entry : teeSelectionsMap.entrySet())
+		for (Map.Entry<String, List<SelectItem>> entry : teeSelectionsMap.entrySet())
 		{
 			//log.info("Course ID = " + entry.getKey());
 			List<SelectItem> loggedList = entry.getValue();
@@ -170,19 +154,72 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
 	}
 
 
-	public void setTeeSelectionsMap(Map<Integer, List<SelectItem>> teeSelectionsMap) 
+	public void setTeeSelectionsMap(Map<String, List<SelectItem>> teeSelectionsMap) 
 	{
 		this.teeSelectionsMap = teeSelectionsMap;
 	}
 
 
-	public List<SelectItem> getTeeSelections(Integer courseID)
+	public List<SelectItem> getTeeSelections(String courseID)
 	{
 		if (getTeeSelectionsMap() != null)
 		{
 			return getTeeSelectionsMap().get(courseID);
 		}
 		return null;
+	}
+	
+	public String getCourseTeeID() {
+		return courseTeeID;
+	}
+
+
+
+
+	public void setCourseTeeID(String courseTeeID) {
+		this.courseTeeID = courseTeeID;
+	}
+
+
+
+
+	public String getCourseID() {
+		return courseID;
+	}
+
+
+
+
+	public void setCourseID(String courseID) {
+		this.courseID = courseID;
+	}
+
+
+
+
+	public int getOldCourseTeeID() {
+		return oldCourseTeeID;
+	}
+
+
+
+
+	public void setOldCourseTeeID(int oldCourseTeeID) {
+		this.oldCourseTeeID = oldCourseTeeID;
+	}
+
+
+
+
+	public int getOldCourseID() {
+		return oldCourseID;
+	}
+
+
+
+
+	public void setOldCourseID(int oldCourseID) {
+		this.oldCourseID = oldCourseID;
 	}
 	
 	

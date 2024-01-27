@@ -18,7 +18,7 @@ import com.pas.beans.GolfMain;
 @FacesConverter(forClass = Game.class)
 public class GameConverter implements Converter<Object>
 {
-	Map<Integer,Game> gamesMap = new HashMap<Integer,Game>();	
+	Map<String,Game> gamesMap = new HashMap<String,Game>();	
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
@@ -60,8 +60,7 @@ public class GameConverter implements Converter<Object>
 	        	gamesMap = fullGameList.stream().collect(Collectors.toMap(Game::getGameID, gm -> gm));	   
 	    	}
 			
-			int gameID = Integer.valueOf(submittedValue);
-	        return gamesMap.get(gameID);
+			return gamesMap.get(submittedValue);
 	    } 
 	    catch (NumberFormatException e) 
 	    {

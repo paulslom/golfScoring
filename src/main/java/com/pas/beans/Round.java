@@ -33,16 +33,21 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	private static final long serialVersionUID = 1L;
 	private static Logger log = LogManager.getLogger(Round.class);
 
-	private int roundID;
-	private int gameID;
-	private int playerID;
+	private String roundID;
+	private int oldRoundID;
+	private String gameID;
+	private int oldGameID;
+	private String playerID;
+	private int oldPlayerID;
 	private int teamNumber;	
 	private String teamNumberDisplay;
-	private int teeTimeID;
+	private String teeTimeID;
+	private int oldTeeTimeID;
 	private String playerName;
 	private BigDecimal roundHandicap;
 	private BigDecimal playerHandicapIndex;
-	private Integer courseTeeID;
+	private String courseTeeID;
+	private int oldCourseTeeID;
 	private String courseTeeColor;
 	private BigDecimal roundHandicapDifferential;
 	private Date signupDateTime;
@@ -341,7 +346,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				{
 					Round rd = this.getRoundsForGame().get(j);
 					Player tempPlayer = rd.getPlayer();
-					if (aPlayer.getPlayerID() == tempPlayer.getPlayerID())
+					if (aPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						rd.setTeamNumber(i+1);
 						break;
@@ -381,7 +386,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 					{
 						Round rd = this.getRoundsForGame().get(j);
 						Player tempPlayer = rd.getPlayer();
-						if (dPlayer.getPlayerID() == tempPlayer.getPlayerID())
+						if (dPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
 							break;
@@ -550,7 +555,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 			{
 				Round rd = this.getRoundsForGame().get(i);
 				Player player = rd.getPlayer();
-				golfmain.updatePlayerHandicap(player.getPlayerID(), rd.getPlayer().getHandicap());
+				golfmain.updatePlayer(player);
 				
 				CourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());			
 				BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
@@ -1270,30 +1275,6 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		this.game = game;
 	}
 
-	public int getGameID() {
-		return gameID;
-	}
-
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
-	}
-
-	public int getPlayerID() {
-		return playerID;
-	}
-
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
-	}
-
-	public int getRoundID() {
-		return roundID;
-	}
-
-	public void setRoundID(int roundID) {
-		this.roundID = roundID;
-	}
-
 	public BigDecimal getNetScore() {
 		return netScore;
 	}
@@ -1521,14 +1502,6 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public void setRoundHandicap(BigDecimal roundHandicap) {
 		this.roundHandicap = roundHandicap;
-	}
-
-	public int getTeeTimeID() {
-		return teeTimeID;
-	}
-
-	public void setTeeTimeID(int teeTimeID) {
-		this.teeTimeID = teeTimeID;
 	}
 
 	public TeeTime getTeeTime() {
@@ -1762,14 +1735,6 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		this.signupDateTime = signupDateTime;
 	}
 
-	public Integer getCourseTeeID() {
-		return courseTeeID;
-	}
-
-	public void setCourseTeeID(Integer courseTeeID) {
-		this.courseTeeID = courseTeeID;
-	}
-
 	public BigDecimal getPlayerHandicapIndex() {
 		return playerHandicapIndex;
 	}
@@ -1808,5 +1773,85 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public void setTeamNumberList(List<SelectItem> teamNumberList) {
 		this.teamNumberList = teamNumberList;
+	}
+
+	public String getRoundID() {
+		return roundID;
+	}
+
+	public void setRoundID(String roundID) {
+		this.roundID = roundID;
+	}
+
+	public String getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
+	}
+
+	public String getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(String playerID) {
+		this.playerID = playerID;
+	}
+
+	public void setTeeTimeID(String teeTimeID) {
+		this.teeTimeID = teeTimeID;
+	}
+
+	public void setCourseTeeID(String courseTeeID) {
+		this.courseTeeID = courseTeeID;
+	}
+
+	public String getTeeTimeID() {
+		return teeTimeID;
+	}
+
+	public String getCourseTeeID() {
+		return courseTeeID;
+	}
+
+	public int getOldRoundID() {
+		return oldRoundID;
+	}
+
+	public void setOldRoundID(int oldRoundID) {
+		this.oldRoundID = oldRoundID;
+	}
+
+	public int getOldGameID() {
+		return oldGameID;
+	}
+
+	public void setOldGameID(int oldGameID) {
+		this.oldGameID = oldGameID;
+	}
+
+	public int getOldPlayerID() {
+		return oldPlayerID;
+	}
+
+	public void setOldPlayerID(int oldPlayerID) {
+		this.oldPlayerID = oldPlayerID;
+	}
+
+	public int getOldTeeTimeID() {
+		return oldTeeTimeID;
+	}
+
+	public void setOldTeeTimeID(int oldTeeTimeID) {
+		this.oldTeeTimeID = oldTeeTimeID;
+	}
+
+	public int getOldCourseTeeID() {
+		return oldCourseTeeID;
+	}
+
+	public void setOldCourseTeeID(int oldCourseTeeID) {
+		this.oldCourseTeeID = oldCourseTeeID;
 	}
 }

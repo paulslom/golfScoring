@@ -58,8 +58,10 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	private boolean showPregameEmail = false;
 	private boolean showPostgameEmail = false;
 	
-	private int gameID;
-	private int courseID;
+	private String gameID;
+	private int oldGameID;
+	private String courseID;
+	private int oldCourseID;
 	private String courseName;
 	private BigDecimal betAmount = new BigDecimal(20.00);
 	private Integer totalPlayers;
@@ -68,7 +70,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	private Integer spotsAvailable;
 	private Integer totalTeams;
 	private Integer howManyBalls;
-	private Integer courseTeeID;
+	private String courseTeeID;
 	private String courseTeeColor;
 	private BigDecimal eachBallWorth;
 	private BigDecimal individualGrossPrize = new BigDecimal(0.00);
@@ -136,7 +138,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		try
 		{
 			this.setCourse(null);		
-			this.setCourseID(0);
+			this.setCourseID("0");
 			this.setGameDate(null);
 			this.setBetAmount(new BigDecimal(20.0));
 			this.setEachBallWorth(new BigDecimal(0.0));
@@ -204,7 +206,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				Course course = golfmain.getCoursesMap().get(this.getCourseID());
 				this.setCourse(course);
 				this.setCourseName(course.getCourseName());
-				int newGameID = golfmain.addGame(this);
+				String newGameID = golfmain.addGame(this);
 				golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
 				log.info(getTempUserName() + " after add Game");
 			}
@@ -502,7 +504,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		newRound.setRoundHandicap(tempPlayer.getHandicap()); //set this to their usga ghin handicap index when they sign up.  We'll tweak this later when entering them on the set game handicaps page
 		
-		if (game1.getCourseTeeID() == null || game1.getCourseTeeID() == 0)
+		if (game1.getCourseTeeID() == null || game1.getCourseTeeID().length() == 0)
 		{
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No tee selected - please select tees to play from",null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -741,7 +743,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		//First thing we have to do is see if the same player has either won both or split one and won the other.  Can't allow it...
 		
-		Map<Integer,Player> winnersMap = new HashMap<Integer, Player>(); 
+		Map<String,Player> winnersMap = new HashMap<>(); 
 		
 		int lowestGrossScore = grossScores.get(0);
 		BigDecimal lowestNetScore = netScores.get(0);
@@ -1202,20 +1204,6 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public String saveNewPlayers()
 	{
 		log.info(getTempUserName() + " clicked save new players");
-		
-		return "";
-	}
-	
-	public String showAddPlayersDialog()
-	{
-		log.info(getTempUserName() + " clicked add players dialog button");
-		
-		for (int i = 1; i <= this.getTotalPlayers(); i++) 
-		{
-			Player player = new Player();
-			player.setPlayerID(i);
-			this.getPlayersList().add(player);
-		}
 		
 		return "";
 	}
@@ -3074,13 +3062,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		this.group = group;
 	}
 
-	public int getGameID() {
-		return gameID;
-	}
-
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
-	}
+	
 
 	public Game getSelectedGame() {
 		return selectedGame;
@@ -3098,14 +3080,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		this.disableGameDialogButton = disableGameDialogButton;
 	}
 	
-	public int getCourseID() {
-		return courseID;
-	}
-
-	public void setCourseID(int courseID) {
-		this.courseID = courseID;
-	}
-
+	
 	public BigDecimal getIndividualGrossPrize() {
 		return individualGrossPrize;
 	}
@@ -3336,22 +3311,14 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		this.teeSelections = teeSelections;
 	}
 
-	public Integer getCourseTeeID() {
-		return courseTeeID;
-	}
-
-	public void setCourseTeeID(Integer courseTeeID) {
-		this.courseTeeID = courseTeeID;
-	}
-
 	public String getCourseTeeColor() 
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
-		if (courseTeeID != null && courseTeeID != 0 && (courseTeeColor == null || courseTeeColor.trim().length() == 0))
+		if (courseTeeID != null && !courseTeeID.equalsIgnoreCase("0") && (courseTeeColor == null || courseTeeColor.trim().length() == 0))
 		{
 			String tempColor = "";
-			Map<Integer,CourseTee> ctMap = golfmain.getCourseTeesMap();
+			Map<String,CourseTee> ctMap = golfmain.getCourseTeesMap();
 			CourseTee ct = ctMap.get(courseTeeID);
 			tempColor = ct.getTeeColor();
 			setCourseTeeColor(tempColor);
@@ -3373,6 +3340,46 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	public void setGameDateDisplay(String gameDateDisplay) 
 	{
 		this.gameDateDisplay = gameDateDisplay;
+	}
+
+	public String getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
+	}
+
+	public String getCourseID() {
+		return courseID;
+	}
+
+	public void setCourseID(String courseID) {
+		this.courseID = courseID;
+	}
+
+	public void setCourseTeeID(String courseTeeID) {
+		this.courseTeeID = courseTeeID;
+	}
+
+	public String getCourseTeeID() {
+		return courseTeeID;
+	}
+
+	public int getOldGameID() {
+		return oldGameID;
+	}
+
+	public void setOldGameID(int oldGameID) {
+		this.oldGameID = oldGameID;
+	}
+
+	public int getOldCourseID() {
+		return oldCourseID;
+	}
+
+	public void setOldCourseID(int oldCourseID) {
+		this.oldCourseID = oldCourseID;
 	}
 	
 }

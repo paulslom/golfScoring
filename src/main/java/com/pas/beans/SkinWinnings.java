@@ -5,12 +5,9 @@ import java.math.BigDecimal;
 
 public class SkinWinnings implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int playerID;
+	private String playerID;
 	private String playerName;
 	private String winDescription; //should say something like <score> on hole <hole number>
 	private BigDecimal amountWon;
@@ -33,10 +30,10 @@ public class SkinWinnings implements Serializable
 	public void setAmountWon(BigDecimal amountWon) {
 		this.amountWon = amountWon;
 	}
-	public int getPlayerID() {
+	public String getPlayerID() {
 		return playerID;
 	}
-	public void setPlayerID(int playerID) {
+	public void setPlayerID(String playerID) {
 		this.playerID = playerID;
 	}
 	

@@ -8,12 +8,8 @@ import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
@@ -29,37 +25,31 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.GetItemEnhancedRequest;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
 import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
-public class CreateTableDynamoDBLocal
+public class CreateTableDynamoDBLocal_GolfUsers
 {	 
-	private static String AWS_DYNAMODB_LOCAL_PORT;
-	private static String AWS_REGION;
-	private static String AWS_JSON_FILE_NAME;
-	private static String AWS_TABLE_NAME;
-	private static String AWS_KEY_NAME;
-   
-	private static String TABLE_PROPERTIES = "golfUsersDynamoDB.properties";
-
+	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
+	private static String AWS_REGION = "us-east-1";
+	private static String AWS_JSON_FILE_NAME = "GolfUsersData.json";
+	private static String AWS_TABLE_NAME = "golfUsers";
+	private static String AWS_KEY_NAME = "userName";
+	private static String AWS_DYNAMODB_LOCAL_DB_LOCATION = "C:/Paul/DynamoDB";
+	
     public static void main(String[] args) 
     {
         try 
         {
-        	getProperties();
-        	
             System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
             String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
             
             // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", "C:/Paul/DynamoDB"};
+            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", AWS_DYNAMODB_LOCAL_DB_LOCATION};
             System.out.println("Starting DynamoDB Local...");
             DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
             server.start();
@@ -75,8 +65,7 @@ public class CreateTableDynamoDBLocal
                     .dynamoDbClient(ddbClient)                           
                     .build();
             
-            // Create a table in DynamoDB Local with table name Music and partition key Artist
-            // Understanding core components of DynamoDB: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+            // Create a table in DynamoDB Local
             DynamoDbTable<GolfUser> golfUserTable = createTable(ddbEnhancedClient, ddbClient, AWS_TABLE_NAME, AWS_KEY_NAME);
 
             //  List all the tables in DynamoDB Local
@@ -118,32 +107,7 @@ public class CreateTableDynamoDBLocal
         }
         System.out.println("Done with dynamo scan");
     }
-    private static void getProperties()
-	{
-		try 
-	    {	
-			Properties prop = new Properties();
-			
-	    	InputStream stream = new FileInputStream(new File("C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\dynamoDb.properties")); 
-	    	prop.load(stream);   		
-		 	
-		    AWS_REGION = prop.getProperty("region");
-		    AWS_DYNAMODB_LOCAL_PORT = prop.getProperty("local_port");		   
-			
-	    	InputStream stream2 = new FileInputStream(new File("C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\" + TABLE_PROPERTIES)); 
-	    	prop.load(stream2);   		
-		 	
-	    	AWS_JSON_FILE_NAME = prop.getProperty("jsonFileName");
-	    	AWS_TABLE_NAME = prop.getProperty("tableName");
-	        AWS_KEY_NAME = prop.getProperty("keyName");	        
-		 }
-		 catch (Exception e) 
-	     { 
-		    System.out.println(e.toString());
-		 }     		
-	   	
-	}
-
+   
     private static void loadTableData(DynamoDbTable<GolfUser> golfUserTable) throws Exception
     {   
         // Insert data into the table
@@ -172,7 +136,7 @@ public class CreateTableDynamoDBLocal
                     System.out.println("Getting Item from the table for key after putItem: " + AWS_KEY_NAME);
                     System.out.println("-------------------------------");
                                         
-                    Key key = Key.builder().partitionValue(gu.getUserName()).sortValue(gu.getUserRole()).build();
+                    Key key = Key.builder().partitionValue(gu.getUserName()).sortValue(gu.getUserId()).build();
                     
                     GetItemEnhancedRequest getItemEnhancedRequest = GetItemEnhancedRequest.builder()
                     		.key(key)
@@ -198,8 +162,6 @@ public class CreateTableDynamoDBLocal
         }
         
 	}
-
-	
     
     private static List<GolfUser> readFromFileAndConvert() 
     {
@@ -258,68 +220,5 @@ public class CreateTableDynamoDBLocal
         
         return golfUsersTable;
     }
-    
-    public static void getDynamoDBItem(DynamoDbClient ddb, String tableName, String key, String keyVal) 
-    {
-        HashMap<String, AttributeValue> keyToGet = new HashMap<String, AttributeValue>();
-
-        keyToGet.put(key, AttributeValue.builder()
-                .s(keyVal).build());
-
-        GetItemRequest request = GetItemRequest.builder()
-                .key(keyToGet)
-                .tableName(tableName)
-                .consistentRead(true)
-                .build();
-
-        try 
-        {
-            Map<String, AttributeValue> returnedItem = ddb.getItem(request).item();
-
-            if (returnedItem.size() != 0) 
-            {
-                Set<String> keys = returnedItem.keySet();
-                for (String key1 : keys) 
-                {
-                    System.out.format("%s: %s\n", key1, returnedItem.get(key1).s());
-                }
-            } 
-            else 
-            {
-                System.out.format("No item found with the key: %s!\n", keyToGet.get(key).s());
-            }
-        } 
-        catch (DynamoDbException e) 
-        {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-    }
-
-    public static void deleteDynamoDBItem(DynamoDbClient ddb, String tableName, String key, String keyVal) 
-    {
-        HashMap<String, AttributeValue> keyToGet =
-                new HashMap<String, AttributeValue>();
-
-        keyToGet.put(key, AttributeValue.builder()
-                .s(keyVal)
-                .build());
-
-        DeleteItemRequest deleteReq = DeleteItemRequest.builder()
-                .tableName(tableName)
-                .key(keyToGet)
-                .build();
-
-        try 
-        {
-            ddb.deleteItem(deleteReq);
-        } 
-        catch (DynamoDbException e) 
-        {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-    }
-
-    
+   
 }

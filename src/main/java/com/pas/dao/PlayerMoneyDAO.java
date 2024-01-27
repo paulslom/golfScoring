@@ -38,7 +38,7 @@ public class PlayerMoneyDAO extends JdbcDaoSupport implements Serializable
 	private final DataSource dataSource;
 	
 	private List<PlayerMoney> playerMoneyList = new ArrayList<>();
-	private Map<Integer,PlayerMoney> playerMoneyMap = new HashMap<Integer,PlayerMoney>();
+	private Map<String,PlayerMoney> playerMoneyMap = new HashMap<>();
 	
 	@PostConstruct
 	private void initialize() 
@@ -97,7 +97,7 @@ public class PlayerMoneyDAO extends JdbcDaoSupport implements Serializable
     {
 		String sql = "select pm.*, game.gameDate from playermoney pm inner join game on pm.idgame = game.idgame where game.gameDate > :gameDate order by game.gameDate";
 		SqlParameterSource param = new MapSqlParameterSource("gameDate", Utils.getOneMonthAgoDate());
-		this.setPlayerMoneyList(namedParameterJdbcTemplate.query(sql, param, new PlayerMoneyRowMapper()));  
+		this.setPlayerMoneyList(null);  
 		
 		this.setPlayerMoneyMap(this.getPlayerMoneyList().stream().collect(Collectors.toMap(PlayerMoney::getPlayerMoneyID, gm -> gm)));		
 		log.info("LoggedDBOperation: function-inquiry; table:playermoney; rows:" + playerMoneyList.size());		
@@ -131,17 +131,17 @@ public class PlayerMoneyDAO extends JdbcDaoSupport implements Serializable
 	}
 	
 	//deletes all player money rows from the db for this game
-	public void deletePlayerMoneyFromDB(Integer gameID)
+	public void deletePlayerMoneyFromDB(String pmID)
     {
 		String deleteStr = "delete from playermoney where idgame = ?";
-		jdbcTemplate.update(deleteStr, gameID);	
+		jdbcTemplate.update(deleteStr, pmID);	
 		log.info("LoggedDBOperation: function-delete; table:playermoney; rows:1");
 		
 		for (int i = 0; i < playerMoneyList.size(); i++)
 		{
 			PlayerMoney playerMoney = playerMoneyList.get(i);
 			
-			if (playerMoney.getGameID() == gameID)
+			if (playerMoney.getGameID() == pmID)
 			{
 				this.getPlayerMoneyMap().remove(playerMoney.getPlayerMoneyID());
 			}
@@ -164,11 +164,11 @@ public class PlayerMoneyDAO extends JdbcDaoSupport implements Serializable
 		this.playerMoneyList = playerMoneyList;
 	}
 
-	public Map<Integer, PlayerMoney> getPlayerMoneyMap() {
+	public Map<String, PlayerMoney> getPlayerMoneyMap() {
 		return playerMoneyMap;
 	}
 
-	public void setPlayerMoneyMap(Map<Integer, PlayerMoney> playerMoneyMap) {
+	public void setPlayerMoneyMap(Map<String, PlayerMoney> playerMoneyMap) {
 		this.playerMoneyMap = playerMoneyMap;
 	}	
 

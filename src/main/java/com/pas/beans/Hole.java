@@ -2,23 +2,18 @@ package com.pas.beans;
 
 import java.io.Serializable;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+
+@DynamoDbBean
 public class Hole implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int courseID;
+	private String courseID;
 	private int holeNumber;
 	private int par;
 	
-	public int getCourseID() {
-		return courseID;
-	}
-	public void setCourseID(int courseID) {
-		this.courseID = courseID;
-	}
+	
 	public int getHoleNumber() {
 		return holeNumber;
 	}
@@ -30,6 +25,12 @@ public class Hole implements Serializable
 	}
 	public void setPar(int par) {
 		this.par = par;
+	}
+	public String getCourseID() {
+		return courseID;
+	}
+	public void setCourseID(String courseID) {
+		this.courseID = courseID;
 	}
 	
 	

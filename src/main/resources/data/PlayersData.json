@@ -1,1271 +1,1271 @@
 [
 {
-	"idplayer":3,
+	"oldPlayerID":3,
 	"firstName": "Andy",
 	"lastName": "Bower",
-	"currentHandicapIndex":4.0,
+	"handicap":4.0,
 	"username": "abower",
 	"emailAddress": "Andybowercpa@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":103,
+	"oldPlayerID":103,
 	"firstName": "Ashley",
 	"lastName": "Fuquay",
-	"currentHandicapIndex":0.5,
+	"handicap":0.5,
 	"username": "afuquay",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":16,
+	"oldPlayerID":16,
 	"firstName": "Al",
 	"lastName": "Minor",
-	"currentHandicapIndex":13.9,
+	"handicap":13.9,
 	"username": "aminor",
 	"emailAddress": "drva51@aol.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":141,
+	"oldPlayerID":141,
 	"firstName": "Andrew",
 	"lastName": "Moss",
-	"currentHandicapIndex":6.0,
+	"handicap":6.0,
 	"username": "amoss",
 	"emailAddress": "golfmossandrew@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":129,
+	"oldPlayerID":129,
 	"firstName": "Allen",
 	"lastName": "Phipps",
-	"currentHandicapIndex":10.7,
+	"handicap":10.7,
 	"username": "aphipps",
 	"emailAddress": "allenphipps1@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":38,
+	"oldPlayerID":38,
 	"firstName": "Aaron",
 	"lastName": "Randall",
-	"currentHandicapIndex":14.0,
+	"handicap":14.0,
 	"username": "arandall",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":134,
+	"oldPlayerID":134,
 	"firstName": "Bob",
 	"lastName": "Bean",
-	"currentHandicapIndex":15.0,
+	"handicap":15.0,
 	"username": "bbean",
 	"emailAddress": "UNKNOWN",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":56,
+	"oldPlayerID":56,
 	"firstName": "Brad",
 	"lastName": "Buxton",
-	"currentHandicapIndex":2.0,
+	"handicap":2.0,
 	"username": "bbuxton",
 	"emailAddress": "chiropracticb@bellsouth.net",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":37,
+	"oldPlayerID":37,
 	"firstName": "Bruce",
 	"lastName": "Crockett",
-	"currentHandicapIndex":11.7,
+	"handicap":11.7,
 	"username": "bcrockett",
 	"emailAddress": "blc@aiasolutions.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":127,
+	"oldPlayerID":127,
 	"firstName": "Bob",
 	"lastName": "Forman",
-	"currentHandicapIndex":14.7,
+	"handicap":14.7,
 	"username": "bforman",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":93,
+	"oldPlayerID":93,
 	"firstName": "Ben",
 	"lastName": "Graham",
-	"currentHandicapIndex":1.7,
+	"handicap":1.7,
 	"username": "bgraham",
 	"emailAddress": "benlg83@hotmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":48,
+	"oldPlayerID":48,
 	"firstName": "Brian",
 	"lastName": "Greenway",
-	"currentHandicapIndex":9.0,
+	"handicap":9.0,
 	"username": "bgreenway",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":44,
+	"oldPlayerID":44,
 	"firstName": "Bobby",
 	"lastName": "Jarrett",
-	"currentHandicapIndex":6.8,
+	"handicap":6.8,
 	"username": "bjarrett",
 	"emailAddress": "jarrett.bobby@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":50,
+	"oldPlayerID":50,
 	"firstName": "Bi",
 	"lastName": "Lambeth",
-	"currentHandicapIndex":7.0,
+	"handicap":7.0,
 	"username": "blambeth",
 	"emailAddress": "blambeth@green-resource.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":15,
+	"oldPlayerID":15,
 	"firstName": "Barry",
 	"lastName": "Miles",
-	"currentHandicapIndex":12.9,
+	"handicap":12.9,
 	"username": "bmiles",
 	"emailAddress": "bdmiles@triad.rr.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":35,
+	"oldPlayerID":35,
 	"firstName": "Bobby",
 	"lastName": "Elder",
-	"currentHandicapIndex":5.6,
+	"handicap":5.6,
 	"username": "boelder",
 	"emailAddress": "BElder@onealmfg.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":108,
+	"oldPlayerID":108,
 	"firstName": "Ben",
 	"lastName": "Pinkleton",
-	"currentHandicapIndex":2.0,
+	"handicap":2.0,
 	"username": "bpinkleton",
 	"emailAddress": "benjaminpinkleton@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":7,
+	"oldPlayerID":7,
 	"firstName": "Brock",
 	"lastName": "Elder",
-	"currentHandicapIndex":-4.4,
+	"handicap":-4.4,
 	"username": "brelder",
 	"emailAddress": "brock.elder12@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":55,
+	"oldPlayerID":55,
 	"firstName": "Bobby",
 	"lastName": "Rives",
-	"currentHandicapIndex":8.8,
+	"handicap":8.8,
 	"username": "brives",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":53,
+	"oldPlayerID":53,
 	"firstName": "Bob",
 	"lastName": "Rogg",
-	"currentHandicapIndex":16.7,
+	"handicap":16.7,
 	"username": "brogg",
 	"emailAddress": "broggpar72@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":54,
+	"oldPlayerID":54,
 	"firstName": "Bob",
 	"lastName": "Rummell",
-	"currentHandicapIndex":11.0,
+	"handicap":11.0,
 	"username": "brummell",
 	"emailAddress": "rrummell1@triad.rr.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":52,
+	"oldPlayerID":52,
 	"firstName": "Bill",
 	"lastName": "Schuch",
-	"currentHandicapIndex":8.9,
+	"handicap":8.9,
 	"username": "bschuch",
 	"emailAddress": "Wgschuch@aol.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":57,
+	"oldPlayerID":57,
 	"firstName": "Brian",
 	"lastName": "Sowers",
-	"currentHandicapIndex":7.7,
+	"handicap":7.7,
 	"username": "bsowers",
 	"emailAddress": "Golfman.sowers@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":140,
+	"oldPlayerID":140,
 	"firstName": "Bob",
 	"lastName": "Steele",
-	"currentHandicapIndex":14.3,
+	"handicap":14.3,
 	"username": "bsteele",
 	"emailAddress": "UNKNOWN",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":27,
+	"oldPlayerID":27,
 	"firstName": "Bob",
 	"lastName": "Vespa",
-	"currentHandicapIndex":4.0,
+	"handicap":4.0,
 	"username": "bvespa",
 	"emailAddress": "BobVespa1211@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":2,
+	"oldPlayerID":2,
 	"firstName": "Bob",
 	"lastName": "Williams",
-	"currentHandicapIndex":5.0,
+	"handicap":5.0,
 	"username": "bwilliams",
 	"emailAddress": "bob8222003@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":36,
+	"oldPlayerID":36,
 	"firstName": "Chris",
 	"lastName": "Borocz",
-	"currentHandicapIndex":4.5,
+	"handicap":4.5,
 	"username": "cborocz",
 	"emailAddress": "chris.borocz@sepapergroup.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":58,
+	"oldPlayerID":58,
 	"firstName": "Claiborne",
 	"lastName": "Brown",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "cbrown",
 	"emailAddress": "claiborne51@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":131,
+	"oldPlayerID":131,
 	"firstName": "Claiborne",
 	"lastName": "Brown",
-	"currentHandicapIndex":6.0,
+	"handicap":6.0,
 	"username": "cbrown2",
 	"emailAddress": "claiborne51@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":6,
+	"oldPlayerID":6,
 	"firstName": "Chris",
 	"lastName": "Cooper",
-	"currentHandicapIndex":11.2,
+	"handicap":11.2,
 	"username": "ccooper",
 	"emailAddress": "cdcooper1@icloud.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":128,
+	"oldPlayerID":128,
 	"firstName": "Craig",
 	"lastName": "French",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "cfrench",
 	"emailAddress": "cfrench@technogel-usa.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":143,
+	"oldPlayerID":143,
 	"firstName": "CJ",
 	"lastName": "McMasters",
-	"currentHandicapIndex":3.5,
+	"handicap":3.5,
 	"username": "cjmcmasters",
 	"emailAddress": "Mcmastersfamilyflooring@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":83,
+	"oldPlayerID":83,
 	"firstName": "Chris",
 	"lastName": "LeClerc",
-	"currentHandicapIndex":2.0,
+	"handicap":2.0,
 	"username": "cleclerc",
 	"emailAddress": "cleclerc@bryanpark.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":34,
+	"oldPlayerID":34,
 	"firstName": "Cory",
 	"lastName": "Orms",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "corms",
 	"emailAddress": "ccorms@aol.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":18,
+	"oldPlayerID":18,
 	"firstName": "Chad",
 	"lastName": "Randall",
-	"currentHandicapIndex":1.0,
+	"handicap":1.0,
 	"username": "crandall",
 	"emailAddress": "chadnrandall@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":142,
+	"oldPlayerID":142,
 	"firstName": "Cameron",
 	"lastName": "Smith",
-	"currentHandicapIndex":12.0,
+	"handicap":12.0,
 	"username": "csmith",
 	"emailAddress": "Cameron.e.Smith@pwc.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":102,
+	"oldPlayerID":102,
 	"firstName": "Christopher",
 	"lastName": "Streuli",
-	"currentHandicapIndex":16.0,
+	"handicap":16.0,
 	"username": "cstreuli",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":59,
+	"oldPlayerID":59,
 	"firstName": "Dan",
 	"lastName": "Bibeau",
-	"currentHandicapIndex":3.4,
+	"handicap":3.4,
 	"username": "dbibeau",
 	"emailAddress": "bibeaudl@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":107,
+	"oldPlayerID":107,
 	"firstName": "Dwayne",
 	"lastName": "Bingman",
-	"currentHandicapIndex":12.0,
+	"handicap":12.0,
 	"username": "dbingman",
 	"emailAddress": "dbingman@triadsheetmetal.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":125,
+	"oldPlayerID":125,
 	"firstName": "Danny",
 	"lastName": "Blasko",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "dblasko",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":46,
+	"oldPlayerID":46,
 	"firstName": "Don",
 	"lastName": "Dempsey",
-	"currentHandicapIndex":9.0,
+	"handicap":9.0,
 	"username": "ddempsey",
 	"emailAddress": "Don@yellowdog-design.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":9,
+	"oldPlayerID":9,
 	"firstName": "Dirk",
 	"lastName": "Fennie",
-	"currentHandicapIndex":-0.1,
+	"handicap":-0.1,
 	"username": "dfennie",
 	"emailAddress": "dfennie@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":11,
+	"oldPlayerID":11,
 	"firstName": "Derek",
 	"lastName": "Gamble",
-	"currentHandicapIndex":8.2,
+	"handicap":8.2,
 	"username": "dgamble",
 	"emailAddress": "derekgamble10s@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":99,
+	"oldPlayerID":99,
 	"firstName": "Doug",
 	"lastName": "Lowe",
-	"currentHandicapIndex":6.4,
+	"handicap":6.4,
 	"username": "dlowe",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":17,
+	"oldPlayerID":17,
 	"firstName": "Donald",
 	"lastName": "Moore",
-	"currentHandicapIndex":3.2,
+	"handicap":3.2,
 	"username": "dmoore",
 	"emailAddress": "donald@gsohoppers.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":60,
+	"oldPlayerID":60,
 	"firstName": "Dennis",
 	"lastName": "Rubin",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "drubin",
 	"emailAddress": "dennismrubin@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":61,
+	"oldPlayerID":61,
 	"firstName": "Drayton",
 	"lastName": "Stott",
-	"currentHandicapIndex":3.6,
+	"handicap":3.6,
 	"username": "dstott",
 	"emailAddress": "draytonstott@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":23,
+	"oldPlayerID":23,
 	"firstName": "Dale",
 	"lastName": "Stout",
-	"currentHandicapIndex":3.7,
+	"handicap":3.7,
 	"username": "dstout",
 	"emailAddress": "dalestout66@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":33,
+	"oldPlayerID":33,
 	"firstName": "Danny",
 	"lastName": "Tester",
-	"currentHandicapIndex":6.0,
+	"handicap":6.0,
 	"username": "dtester",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":124,
+	"oldPlayerID":124,
 	"firstName": "David",
 	"lastName": "Thacker",
-	"currentHandicapIndex":0.0,
+	"handicap":0.0,
 	"username": "dthacker",
 	"emailAddress": "dthacker001@triad.rr.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":62,
+	"oldPlayerID":62,
 	"firstName": "Drew",
 	"lastName": "Wilhite",
-	"currentHandicapIndex":2.3,
+	"handicap":2.3,
 	"username": "dwilhite",
 	"emailAddress": "drewerystuff@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":12,
+	"oldPlayerID":12,
 	"firstName": "Ed",
 	"lastName": "Johnson",
-	"currentHandicapIndex":12.0,
+	"handicap":12.0,
 	"username": "ejohnson",
 	"emailAddress": "EdJohnson528@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":28,
+	"oldPlayerID":28,
 	"firstName": "Earl",
 	"lastName": "Waddell",
-	"currentHandicapIndex":8.5,
+	"handicap":8.5,
 	"username": "ewaddell",
 	"emailAddress": "e.waddell410@icloud.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":63,
+	"oldPlayerID":63,
 	"firstName": "Frank",
 	"lastName": "Ryan",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "fryan",
 	"emailAddress": "fryan6101@aol.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":64,
+	"oldPlayerID":64,
 	"firstName": "Gary",
 	"lastName": "Fennie",
-	"currentHandicapIndex":4.0,
+	"handicap":4.0,
 	"username": "gfennie",
 	"emailAddress": "garyfennie@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":97,
+	"oldPlayerID":97,
 	"firstName": "Grant",
 	"lastName": "Hoffman",
-	"currentHandicapIndex":4.0,
+	"handicap":4.0,
 	"username": "ghoffman",
 	"emailAddress": "pastorgranth@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":94,
+	"oldPlayerID":94,
 	"firstName": "Grey",
 	"lastName": "Hyatt",
-	"currentHandicapIndex":0.0,
+	"handicap":0.0,
 	"username": "ghyatt",
 	"emailAddress": "grey.hyatt@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":65,
+	"oldPlayerID":65,
 	"firstName": "Gary",
 	"lastName": "Smith",
-	"currentHandicapIndex":14.2,
+	"handicap":14.2,
 	"username": "gsmith",
 	"emailAddress": "gds1940@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":66,
+	"oldPlayerID":66,
 	"firstName": "Harrison",
 	"lastName": "Evatt",
-	"currentHandicapIndex":11.3,
+	"handicap":11.3,
 	"username": "hevatt",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":130,
+	"oldPlayerID":130,
 	"firstName": "Jon",
 	"lastName": "Arnold",
-	"currentHandicapIndex":11.0,
+	"handicap":11.0,
 	"username": "jarnold",
 	"emailAddress": "jbaj1979@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":120,
+	"oldPlayerID":120,
 	"firstName": "Jack",
 	"lastName": "Draper",
-	"currentHandicapIndex":2.6,
+	"handicap":2.6,
 	"username": "jdraper",
 	"emailAddress": "jdtigers07@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":8,
+	"oldPlayerID":8,
 	"firstName": "Jim",
 	"lastName": "Elias",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "jelias",
 	"emailAddress": "jelias@sloanled.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":86,
+	"oldPlayerID":86,
 	"firstName": "Jeremy",
 	"lastName": "Hall",
-	"currentHandicapIndex":9.0,
+	"handicap":9.0,
 	"username": "jhall",
 	"emailAddress": "jhall@hallpropane.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":45,
+	"oldPlayerID":45,
 	"firstName": "John",
 	"lastName": "Kozlowski",
-	"currentHandicapIndex":7.0,
+	"handicap":7.0,
 	"username": "jkozlowski",
 	"emailAddress": "jpkozlowski@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":67,
+	"oldPlayerID":67,
 	"firstName": "Jack",
 	"lastName": "MacDowall",
-	"currentHandicapIndex":9.9,
+	"handicap":9.9,
 	"username": "jmacdowall",
 	"emailAddress": "jmacdowall@triad.rr.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":92,
+	"oldPlayerID":92,
 	"firstName": "Jack",
 	"lastName": "Oldis",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "joldis",
 	"emailAddress": "unknown",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":137,
+	"oldPlayerID":137,
 	"firstName": "Jason",
 	"lastName": "Pegram",
-	"currentHandicapIndex":15.0,
+	"handicap":15.0,
 	"username": "jpegram",
 	"emailAddress": "jbpegram21@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":70,
+	"oldPlayerID":70,
 	"firstName": "Jim",
 	"lastName": "Perry",
-	"currentHandicapIndex":17.3,
+	"handicap":17.3,
 	"username": "jperry",
 	"emailAddress": "jperry004@triad.rr.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":20,
+	"oldPlayerID":20,
 	"firstName": "John",
 	"lastName": "Rountree",
-	"currentHandicapIndex":2.5,
+	"handicap":2.5,
 	"username": "jrountree",
 	"emailAddress": "jrtree95@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":144,
+	"oldPlayerID":144,
 	"firstName": "Jeff",
 	"lastName": "Sanches",
-	"currentHandicapIndex":7.5,
+	"handicap":7.5,
 	"username": "jsanches",
 	"emailAddress": "Jeffsanches1@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":106,
+	"oldPlayerID":106,
 	"firstName": "Jamie",
 	"lastName": "Sloan",
-	"currentHandicapIndex":15.0,
+	"handicap":15.0,
 	"username": "jsloan",
 	"emailAddress": "jsloan3@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":41,
+	"oldPlayerID":41,
 	"firstName": "Jack",
 	"lastName": "Slomkowski",
-	"currentHandicapIndex":1.8,
+	"handicap":1.8,
 	"username": "jslomkowski",
 	"emailAddress": "jackslomkowski@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":69,
+	"oldPlayerID":69,
 	"firstName": "Jay",
 	"lastName": "Stone",
-	"currentHandicapIndex":4.0,
+	"handicap":4.0,
 	"username": "jstone",
 	"emailAddress": "Zjaystone@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":26,
+	"oldPlayerID":26,
 	"firstName": "John",
 	"lastName": "Stratton",
-	"currentHandicapIndex":3.7,
+	"handicap":3.7,
 	"username": "jstratton",
 	"emailAddress": "johnstratton3@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":85,
+	"oldPlayerID":85,
 	"firstName": "Jeremy",
 	"lastName": "Thomas",
-	"currentHandicapIndex":5.4,
+	"handicap":5.4,
 	"username": "jthomas",
 	"emailAddress": "jeremythomas74@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":71,
+	"oldPlayerID":71,
 	"firstName": "Jim",
 	"lastName": "Trovato",
-	"currentHandicapIndex":9.1,
+	"handicap":9.1,
 	"username": "jtrovato",
 	"emailAddress": "jtrovato@mindspring.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":68,
+	"oldPlayerID":68,
 	"firstName": "Jack",
 	"lastName": "Whitley",
-	"currentHandicapIndex":4.7,
+	"handicap":4.7,
 	"username": "jwhitley",
 	"emailAddress": "jack.whitley@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":30,
+	"oldPlayerID":30,
 	"firstName": "John",
 	"lastName": "Wolfe",
-	"currentHandicapIndex":5.4,
+	"handicap":5.4,
 	"username": "jwolfe",
 	"emailAddress": "John.Wolfe@cornerstone-bb.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":40,
+	"oldPlayerID":40,
 	"firstName": "Jason",
 	"lastName": "Wood",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "jwood",
 	"emailAddress": "jwood00717@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":31,
+	"oldPlayerID":31,
 	"firstName": "Kris",
 	"lastName": "Copeland",
-	"currentHandicapIndex":0.9,
+	"handicap":0.9,
 	"username": "kcopeland",
 	"emailAddress": "krcdrc42@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":145,
+	"oldPlayerID":145,
 	"firstName": "Kelly",
 	"lastName": "Robertson ",
-	"currentHandicapIndex":11.0,
+	"handicap":11.0,
 	"username": "kcrobertson ",
 	"emailAddress": "kentonrobertson@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":113,
+	"oldPlayerID":113,
 	"firstName": "Kelly",
 	"lastName": "Robertson",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "kellyrobertson",
 	"emailAddress": "kenton@kentonrobertson.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":100,
+	"oldPlayerID":100,
 	"firstName": "Ken",
 	"lastName": "Jenkins",
-	"currentHandicapIndex":4.5,
+	"handicap":4.5,
 	"username": "kjenkins",
 	"emailAddress": "kjenkins@boxboardproducts.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":72,
+	"oldPlayerID":72,
 	"firstName": "Kevin",
 	"lastName": "Kinley",
-	"currentHandicapIndex":8.7,
+	"handicap":8.7,
 	"username": "kkinley",
 	"emailAddress": "kkinley2250@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":84,
+	"oldPlayerID":84,
 	"firstName": "Kyle",
 	"lastName": "Kolls",
-	"currentHandicapIndex":5.0,
+	"handicap":5.0,
 	"username": "kkolls",
 	"emailAddress": "kkolls@bryanpark.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":19,
+	"oldPlayerID":19,
 	"firstName": "Kenton",
 	"lastName": "Robertson",
-	"currentHandicapIndex":2.1,
+	"handicap":2.1,
 	"username": "krobertson",
 	"emailAddress": "kenton@kentonrobertson.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":146,
+	"oldPlayerID":146,
 	"firstName": "Kevin",
 	"lastName": "Shifflett",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "kshifflett",
 	"emailAddress": "kevin.g.shifflett@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":105,
+	"oldPlayerID":105,
 	"firstName": "Lee",
 	"lastName": "Holliday",
-	"currentHandicapIndex":3.0,
+	"handicap":3.0,
 	"username": "lholliday",
 	"emailAddress": "tholliday002@triad.rr.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":13,
+	"oldPlayerID":13,
 	"firstName": "Lawson",
 	"lastName": "Jones",
-	"currentHandicapIndex":5.0,
+	"handicap":5.0,
 	"username": "ljones",
 	"emailAddress": "Lj2977@yahoo.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":109,
+	"oldPlayerID":109,
 	"firstName": "Lee",
 	"lastName": "Ross",
-	"currentHandicapIndex":4.7,
+	"handicap":4.7,
 	"username": "lross",
 	"emailAddress": "Lee.ross@longandfoster.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":87,
+	"oldPlayerID":87,
 	"firstName": "Linley",
 	"lastName": "Tate",
-	"currentHandicapIndex":-3.1,
+	"handicap":-3.1,
 	"username": "ltate",
 	"emailAddress": "unknown",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":74,
+	"oldPlayerID":74,
 	"firstName": "Mike",
 	"lastName": "Baxter",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "mbaxter",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":73,
+	"oldPlayerID":73,
 	"firstName": "Michael",
 	"lastName": "Choros",
-	"currentHandicapIndex":9.5,
+	"handicap":9.5,
 	"username": "mchoros",
 	"emailAddress": "Michaeljchoros@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":4,
+	"oldPlayerID":4,
 	"firstName": "Michael",
 	"lastName": "Christley",
-	"currentHandicapIndex":5.3,
+	"handicap":5.3,
 	"username": "mchristley",
 	"emailAddress": "mchristley1@hotmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":126,
+	"oldPlayerID":126,
 	"firstName": "Mike",
 	"lastName": "Maruschak",
-	"currentHandicapIndex":13.0,
+	"handicap":13.0,
 	"username": "mmaruschak",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":122,
+	"oldPlayerID":122,
 	"firstName": "Mike",
 	"lastName": "Powell",
-	"currentHandicapIndex":1.4,
+	"handicap":1.4,
 	"username": "mpowell",
 	"emailAddress": "mike@mariosbigpizza.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":148,
+	"oldPlayerID":148,
 	"firstName": "Marc",
 	"lastName": "Sanders",
-	"currentHandicapIndex":3.0,
+	"handicap":3.0,
 	"username": "msanders",
 	"emailAddress": "mesanders30@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":21,
+	"oldPlayerID":21,
 	"firstName": "Michael",
 	"lastName": "Showfety",
-	"currentHandicapIndex":15.0,
+	"handicap":15.0,
 	"username": "mshowfety",
 	"emailAddress": "michaelshowfety@rtelco.net",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":132,
+	"oldPlayerID":132,
 	"firstName": "Michael",
 	"lastName": "Sither",
-	"currentHandicapIndex":3.0,
+	"handicap":3.0,
 	"username": "msither",
 	"emailAddress": "michael.sither@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":29,
+	"oldPlayerID":29,
 	"firstName": "Mike",
 	"lastName": "Weidl",
-	"currentHandicapIndex":6.0,
+	"handicap":6.0,
 	"username": "mweidl",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":91,
+	"oldPlayerID":91,
 	"firstName": "Michael",
 	"lastName": "Westbrook",
-	"currentHandicapIndex":7.0,
+	"handicap":7.0,
 	"username": "mwestbrook",
 	"emailAddress": "michael.westbrook@ymail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":43,
+	"oldPlayerID":43,
 	"firstName": "Neil",
 	"lastName": "Mackenzie",
-	"currentHandicapIndex":2.0,
+	"handicap":2.0,
 	"username": "nmackenzie",
 	"emailAddress": "neilmackenzie3@me.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":76,
+	"oldPlayerID":76,
 	"firstName": "Nate",
 	"lastName": "Meder",
-	"currentHandicapIndex":8.5,
+	"handicap":8.5,
 	"username": "nmeder",
 	"emailAddress": "medernb@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":22,
+	"oldPlayerID":22,
 	"firstName": "Norman",
 	"lastName": "Smith",
-	"currentHandicapIndex":9.9,
+	"handicap":9.9,
 	"username": "nsmith",
 	"emailAddress": "NSmith7@bellsouth.net",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":111,
+	"oldPlayerID":111,
 	"firstName": "Nathan",
 	"lastName": "Sparrow",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "nsparrow",
 	"emailAddress": "nwsparrow@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":1,
+	"oldPlayerID":1,
 	"firstName": "Paul",
 	"lastName": "Slomkowski",
-	"currentHandicapIndex":-1.9,
+	"handicap":-1.9,
 	"username": "paulslom",
 	"emailAddress": "paulslomkowski@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":138,
+	"oldPlayerID":138,
 	"firstName": "Patrick",
 	"lastName": "Dempsey",
-	"currentHandicapIndex":2.5,
+	"handicap":2.5,
 	"username": "pdempsey",
 	"emailAddress": "patrickd@yellowdog-design.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":42,
+	"oldPlayerID":42,
 	"firstName": "Pete",
 	"lastName": "Kwiatkowski",
-	"currentHandicapIndex":3.2,
+	"handicap":3.2,
 	"username": "pkwiatkowski",
 	"emailAddress": "kwiatkowski.peter@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":133,
+	"oldPlayerID":133,
 	"firstName": "Phillip",
 	"lastName": "Moore",
-	"currentHandicapIndex":7.7,
+	"handicap":7.7,
 	"username": "pmoore",
 	"emailAddress": "phillipmoore85@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":112,
+	"oldPlayerID":112,
 	"firstName": "Patrick",
 	"lastName": "Scott",
-	"currentHandicapIndex":9.0,
+	"handicap":9.0,
 	"username": "pscott",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":101,
+	"oldPlayerID":101,
 	"firstName": "Paul",
 	"lastName": "Sutherland",
-	"currentHandicapIndex":4.9,
+	"handicap":4.9,
 	"username": "psutherland",
 	"emailAddress": "UNKNOWN",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":135,
+	"oldPlayerID":135,
 	"firstName": "Rob",
 	"lastName": "Aydelette",
-	"currentHandicapIndex":5.0,
+	"handicap":5.0,
 	"username": "raydelette",
 	"emailAddress": "Raydelette@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":47,
+	"oldPlayerID":47,
 	"firstName": "Randy",
 	"lastName": "Ball",
-	"currentHandicapIndex":7.4,
+	"handicap":7.4,
 	"username": "rball",
 	"emailAddress": "randyball@comcast.net",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":77,
+	"oldPlayerID":77,
 	"firstName": "Rick",
 	"lastName": "Beebe",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "rbeebe",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":82,
+	"oldPlayerID":82,
 	"firstName": "Ray",
 	"lastName": "Copeland",
-	"currentHandicapIndex":9.5,
+	"handicap":9.5,
 	"username": "rcopeland",
 	"emailAddress": "eraycopeland1@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":49,
+	"oldPlayerID":49,
 	"firstName": "Rob",
 	"lastName": "Holliday",
-	"currentHandicapIndex":4.9,
+	"handicap":4.9,
 	"username": "rholliday",
 	"emailAddress": "robinholliday@att.net",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":39,
+	"oldPlayerID":39,
 	"firstName": "Ryan",
 	"lastName": "Livers",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "rlivers",
 	"emailAddress": "rylivers@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":90,
+	"oldPlayerID":90,
 	"firstName": "Robert",
 	"lastName": "McHugh",
-	"currentHandicapIndex":5.0,
+	"handicap":5.0,
 	"username": "rmchugh",
 	"emailAddress": "Rmchugh12559@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":78,
+	"oldPlayerID":78,
 	"firstName": "Ron",
 	"lastName": "Schmid",
-	"currentHandicapIndex":1.8,
+	"handicap":1.8,
 	"username": "rschmid",
 	"emailAddress": "rschmidpga@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":104,
+	"oldPlayerID":104,
 	"firstName": "Rich",
 	"lastName": "Tompkins",
-	"currentHandicapIndex":10.0,
+	"handicap":10.0,
 	"username": "rtompkins",
 	"emailAddress": "UNKNOWN",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":5,
+	"oldPlayerID":5,
 	"firstName": "Steve",
 	"lastName": "Coggin",
-	"currentHandicapIndex":6.6,
+	"handicap":6.6,
 	"username": "scoggin",
 	"emailAddress": "coggin2003@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":89,
+	"oldPlayerID":89,
 	"firstName": "Scott",
 	"lastName": "Douglass",
-	"currentHandicapIndex":7.3,
+	"handicap":7.3,
 	"username": "sdouglass",
 	"emailAddress": "sdouglass4@hotmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":10,
+	"oldPlayerID":10,
 	"firstName": "Steve",
 	"lastName": "Foskett",
-	"currentHandicapIndex":10.1,
+	"handicap":10.1,
 	"username": "sfoskett",
 	"emailAddress": "foskett1@aol.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":79,
+	"oldPlayerID":79,
 	"firstName": "Seth",
 	"lastName": "Hall",
-	"currentHandicapIndex":3.0,
+	"handicap":3.0,
 	"username": "shall",
 	"emailAddress": "sdhall212@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":14,
+	"oldPlayerID":14,
 	"firstName": "Stuart",
 	"lastName": "Jones",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "sjones",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":110,
+	"oldPlayerID":110,
 	"firstName": "Steve",
 	"lastName": "Michael",
-	"currentHandicapIndex":5.9,
+	"handicap":5.9,
 	"username": "smichael",
 	"emailAddress": "Stevemichaelco@gmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":96,
+	"oldPlayerID":96,
 	"firstName": "Steven",
 	"lastName": "Snow",
-	"currentHandicapIndex":8.0,
+	"handicap":8.0,
 	"username": "ssnow",
 	"emailAddress": "sssnowman@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":80,
+	"oldPlayerID":80,
 	"firstName": "Tom",
 	"lastName": "Anton",
-	"currentHandicapIndex":12.0,
+	"handicap":12.0,
 	"username": "tanton",
 	"emailAddress": "tanton336@hotmail.com",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":136,
+	"oldPlayerID":136,
 	"firstName": "Tanner",
 	"lastName": "Bibey",
-	"currentHandicapIndex":-6.0,
+	"handicap":-6.0,
 	"username": "tbibey",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":51,
+	"oldPlayerID":51,
 	"firstName": "Troy",
 	"lastName": "Blamer",
-	"currentHandicapIndex":-2.2,
+	"handicap":-2.2,
 	"username": "tblamer",
 	"emailAddress": "unknown",
-	"bactive":false
+	"active":false
 },
 {
-	"idplayer":123,
+	"oldPlayerID":123,
 	"firstName": "Tony",
 	"lastName": "Fuqua",
-	"currentHandicapIndex":11.7,
+	"handicap":11.7,
 	"username": "tfuqua",
 	"emailAddress": "holtfuqua@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":32,
+	"oldPlayerID":32,
 	"firstName": "Travis",
 	"lastName": "Haskins",
-	"currentHandicapIndex":5.2,
+	"handicap":5.2,
 	"username": "thaskins",
 	"emailAddress": "tdogg_3218@yahoo.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":147,
+	"oldPlayerID":147,
 	"firstName": "Trey",
 	"lastName": "Hudson",
-	"currentHandicapIndex":5.9,
+	"handicap":5.9,
 	"username": "thudson",
 	"emailAddress": "hudsonT2003@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":139,
+	"oldPlayerID":139,
 	"firstName": "Tyler",
 	"lastName": "Olson",
-	"currentHandicapIndex":3.2,
+	"handicap":3.2,
 	"username": "tolson",
 	"emailAddress": "tyler.olson@live.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":121,
+	"oldPlayerID":121,
 	"firstName": "Tony",
 	"lastName": "Spano",
-	"currentHandicapIndex":3.0,
+	"handicap":3.0,
 	"username": "tonyspano",
 	"emailAddress": "sntspano@msn.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":95,
+	"oldPlayerID":95,
 	"firstName": "Tom",
 	"lastName": "Palombo",
-	"currentHandicapIndex":11.4,
+	"handicap":11.4,
 	"username": "tpalombo",
 	"emailAddress": "tpalombo@guilford.edu",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":149,
+	"oldPlayerID":149,
 	"firstName": "Test",
 	"lastName": "Player",
-	"currentHandicapIndex":11.0,
+	"handicap":11.0,
 	"username": "tplayer",
 	"emailAddress": "tplayer@test.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":81,
+	"oldPlayerID":81,
 	"firstName": "Tom",
 	"lastName": "Skivington",
-	"currentHandicapIndex":4.9,
+	"handicap":4.9,
 	"username": "tskivington",
 	"emailAddress": "tskivington@aloi.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":24,
+	"oldPlayerID":24,
 	"firstName": "Trip",
 	"lastName": "Smith",
-	"currentHandicapIndex":8.6,
+	"handicap":8.6,
 	"username": "tsmith",
 	"emailAddress": "Trip.Smith81@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":114,
+	"oldPlayerID":114,
 	"firstName": "Tyson",
 	"lastName": "Stewart",
-	"currentHandicapIndex":8.2,
+	"handicap":8.2,
 	"username": "tstewart",
 	"emailAddress": "Tyson.w.stewart@gmail.com",
-	"bactive":true
+	"active":true
 },
 {
-	"idplayer":25,
+	"oldPlayerID":25,
 	"firstName": "Tripp",
 	"lastName": "Streuli",
-	"currentHandicapIndex":8.5,
+	"handicap":8.5,
 	"username": "tstreuli",
 	"emailAddress": "Tripp.Streuli@abcsupply.com",
-	"bactive":true
+	"active":true
 }
 ]

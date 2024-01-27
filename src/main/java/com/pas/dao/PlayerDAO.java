@@ -1,127 +1,103 @@
 package com.pas.dao;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import jakarta.annotation.PostConstruct;
-import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Player;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoPlayer;
+import com.pas.dynamodb.DynamoUtil;
+
+import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 
 @Repository
-public class PlayerDAO extends JdbcDaoSupport implements Serializable 
+public class PlayerDAO implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
-	private final transient JdbcTemplate jdbcTemplate;
-	private final DataSource dataSource;
 	private static Logger log = LogManager.getLogger(PlayerDAO.class);
 	
-	private Map<Integer,Player> fullPlayersMapByPlayerID = new HashMap<Integer, Player>(); 
+	private Map<String,Player> fullPlayersMapByPlayerID = new HashMap<>(); 
 	private Map<String,Player> fullPlayersMapByUserName = new HashMap<String, Player>(); 
 	private List<Player> fullPlayerList = new ArrayList<Player>();	
+	
+	private static DynamoClients dynamoClients;
+	private static DynamoDbTable<DynamoPlayer> playersTable;
+	private static final String AWS_TABLE_NAME = "players";
 	
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);	      
+	       dynamoClients = DynamoUtil.getDynamoClients();
+	       playersTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing DAO: {}" +  ex.getStackTrace());
-	   }
+	      log.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
+	   }	   
 	}
-
-	@Autowired
-    public PlayerDAO(DataSource dataSource) 
-	{
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	    this.dataSource = dataSource;	    
-    }	
 	
-	public int addPlayer(Player player)
+	public String addPlayer(Player player) throws Exception
 	{
-		String insertStr = " INSERT INTO player (firstName, lastName, currentHandicapIndex, emailAddress, username) values(?,?,?,?,?)";	
+		DynamoPlayer dynamoPlayer = dynamoUpsert(player);		
+		 
+		player.setPlayerID(dynamoPlayer.getPlayerID());
 		
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-			
-		jdbcTemplate.update(new PreparedStatementCreator() 
-		{
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
-			{
-				PreparedStatement psmt = connection.prepareStatement(insertStr, new String[] { "idplayer" });
-				psmt.setString(1, player.getFirstName());
-				psmt.setString(2, player.getLastName());
-				psmt.setBigDecimal(3, player.getHandicap());
-				psmt.setString(4, player.getEmailAddress());
-				psmt.setString(5, player.getUsername());
-				return psmt;
-			}
-		}, keyHolder);
- 
 		log.info("LoggedDBOperation: function-add; table:player; rows:1");
-		
-		player.setPlayerID(keyHolder.getKey().intValue());
 		
 		refreshListsAndMaps("add", player);	
 				
 		log.info("addPlayer complete");		
 		
-		return player.getPlayerID(); //this is the key that was just added
+		return dynamoPlayer.getPlayerID(); //this is the key that was just added
 	}
 	
-	public void updatePlayerHandicap(int playerID, BigDecimal handicap) 
+	private DynamoPlayer dynamoUpsert(Player player) throws Exception 
 	{
-		String updateStr = " UPDATE player SET ";				
-		updateStr = updateStr + " currentHandicapIndex = ?";			
-		updateStr = updateStr + " WHERE idplayer = ?";
-	
-		jdbcTemplate.update(updateStr, handicap, playerID);
-		log.info("LoggedDBOperation: function-update; table:player; rows:1");
+		DynamoPlayer dynamoPlayer = new DynamoPlayer();
+        
+		dynamoPlayer.setPlayerID(UUID.randomUUID().toString());
+		dynamoPlayer.setActive(player.isActive());
+		dynamoPlayer.setEmailAddress(player.getEmailAddress());
+		dynamoPlayer.setFirstName(player.getFirstName());
+		dynamoPlayer.setLastName(player.getLastName());
+		dynamoPlayer.setHandicap(player.getHandicap());
+		dynamoPlayer.setUsername(player.getUsername());
 		
-		Player player = this.getFullPlayersMapByPlayerID().get(playerID);
-		player.setHandicap(handicap);
+		PutItemEnhancedRequest<DynamoPlayer> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoPlayer.class).item(dynamoPlayer).build();
+		PutItemEnhancedResponse<DynamoPlayer> putItemEnhancedResponse = playersTable.putItemWithResponse(putItemEnhancedRequest);
+		DynamoPlayer returnedObject = putItemEnhancedResponse.attributes();
 		
+		if (!returnedObject.equals(dynamoPlayer))
+		{
+			throw new Exception("something went wrong with dynamo player upsert - returned item not the same as what we attempted to put");
+		}	
 		
-				
-		log.debug("update player handicap for playerID: " + playerID + " to: " + handicap + " on player table complete");		
+		return dynamoPlayer;
 	}
-	
-	public void updatePlayer(Player player)
+
+	public void updatePlayer(Player player)  throws Exception
 	{
-		String updateStr = " UPDATE player SET ";				
-		updateStr = updateStr + " firstName = ?," ;
-		updateStr = updateStr + " lastName = ?," ;
-		updateStr = updateStr + " currentHandicapIndex = ?," ;
-		updateStr = updateStr + " username = ?," ;
-		updateStr = updateStr + " emailAddress = ?,";	
-		updateStr = updateStr + " bactive = ?";			
-		updateStr = updateStr + " WHERE idplayer = ?";
-	
-		jdbcTemplate.update(updateStr, player.getFirstName(), player.getLastName(), player.getHandicap(), player.getUsername(), player.getEmailAddress(), player.isActive(), player.getPlayerID());
-		
+		dynamoUpsert(player);		
+			
 		log.info("LoggedDBOperation: function-update; table:player; rows:1");
 		
 		refreshListsAndMaps("update", player);	
@@ -131,8 +107,23 @@ public class PlayerDAO extends JdbcDaoSupport implements Serializable
 	
 	public void readPlayersFromDB() 
     {
-		String sql = "select * from player order by lastName, firstName";		 
-		this.setFullPlayerList(jdbcTemplate.query(sql, new PlayerRowMapper())); 
+		Iterator<DynamoPlayer> results = playersTable.scan().items().iterator();
+		
+		while (results.hasNext()) 
+        {
+			DynamoPlayer dynamoPlayer = results.next();
+            
+			Player player = new Player();
+			player.setPlayerID(dynamoPlayer.getPlayerID());
+			player.setActive(dynamoPlayer.isActive());
+			player.setEmailAddress(dynamoPlayer.getEmailAddress());
+			player.setFirstName(dynamoPlayer.getFirstName());
+			player.setLastName(dynamoPlayer.getLastName());
+			player.setHandicap(dynamoPlayer.getHandicap());
+			player.setUsername(dynamoPlayer.getUsername());
+			
+            this.getFullPlayerList().add(player);			
+        }
 		
 		log.info("LoggedDBOperation: function-inquiry; table:player; rows:" + this.getFullPlayerList().size());
 		
@@ -192,15 +183,7 @@ public class PlayerDAO extends JdbcDaoSupport implements Serializable
 		this.fullPlayerList = fullPlayerList;
 	}
 
-	public Map<Integer, Player> getFullPlayersMapByPlayerID() 
-	{
-		return fullPlayersMapByPlayerID;
-	}
-
-	public void setFullPlayersMapByPlayerID(Map<Integer, Player> fullPlayersMapByPlayerID) 
-	{
-		this.fullPlayersMapByPlayerID = fullPlayersMapByPlayerID;
-	}
+	
 
 	public Map<String, Player> getFullPlayersMapByUserName() 
 	{
@@ -210,6 +193,14 @@ public class PlayerDAO extends JdbcDaoSupport implements Serializable
 	public void setFullPlayersMapByUserName(Map<String, Player> fullPlayersMapByUserName) 
 	{
 		this.fullPlayersMapByUserName = fullPlayersMapByUserName;
+	}
+
+	public Map<String, Player> getFullPlayersMapByPlayerID() {
+		return fullPlayersMapByPlayerID;
+	}
+
+	public void setFullPlayersMapByPlayerID(Map<String, Player> fullPlayersMapByPlayerID) {
+		this.fullPlayersMapByPlayerID = fullPlayersMapByPlayerID;
 	}
 	
 
