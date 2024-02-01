@@ -2,16 +2,8 @@ package com.pas.dao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,114 +11,137 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import jakarta.annotation.PostConstruct;
-import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
 import com.pas.beans.Round;
+import com.pas.dynamodb.DateToStringConverter;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoRound;
+import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.Utils;
 
+import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
+
 @Repository
-public class RoundDAO  extends JdbcDaoSupport  implements Serializable
+public class RoundDAO implements Serializable
 {
 	static DateTimeFormatter etFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    static ZoneId etZoneId = ZoneId.of("America/New_York");
+    static ZoneId etZoneId = ZoneId.of(Utils.MY_TIME_ZONE);
   
 	private static final long serialVersionUID = 1L;
-	private final transient JdbcTemplate jdbcTemplate;
-	private final transient NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	private final DataSource dataSource;
+	
 	private static Logger log = LogManager.getLogger(RoundDAO.class);
 	
 	private Map<String, Round> fullRoundsMap = new HashMap<>();	
 	private List<Round> fullRoundsList = new ArrayList<Round>();
+	
+	private static DynamoClients dynamoClients;
+	private static DynamoDbTable<DynamoRound> roundsTable;
+	private static final String AWS_TABLE_NAME = "rounds";
 	
 	@PostConstruct
 	private void initialize() 
 	{
 	   try 
 	   {
-	       setDataSource(dataSource);
+	       dynamoClients = DynamoUtil.getDynamoClients();
+	       roundsTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing DAO: {}" +  ex.getStackTrace());
-	   }
+	      log.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
+	   }	   
 	}
-
-	@Autowired
-    public RoundDAO(DataSource dataSource) 
-	{
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-	    this.jdbcTemplate = new JdbcTemplate(dataSource);
-	    this.dataSource = dataSource;	    
-    }	
-	
 	
 	public List<String> getGameParticipantsFromDB(Game selectedGame)
-    {		
-		String sql = "SELECT concat(p.firstName, ' ', p.lastName) as playerName, r.dSignUpdatetime from round r inner join player p "
-				+ "where r.idplayer = p.idplayer and r.idgame = :idgame order by r.dSignupDateTime";		 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", selectedGame.getGameID());
+    {	
+		List<Round> roundList = getRoundsForGame(selectedGame);
+		List<String> participantsList = new ArrayList<>();
 		
 		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
-		TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
+		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
 		signupSDF.setTimeZone(etTimeZone);
 		
-		return namedParameterJdbcTemplate.query(sql, param, new ResultSetExtractor<List<String>>() 
-		{	   
-			@Override
-		    public List<String> extractData(ResultSet rs) throws SQLException, DataAccessException 
-		    {
-				List<String> participantsList = new ArrayList<>();
-				
-				while (rs.next()) 
-				{
-					if (rs.getTimestamp("dSignUpdatetime") == null)
-					{
-						
-					}
-					else
-					{
-						String signupDateTime = signupSDF.format(rs.getTimestamp("dSignUpdatetime"));
-						participantsList.add(rs.getString("playerName") + " (signed up: " + signupDateTime + ")");
-					}
-				}
-				
-				log.info("LoggedDBOperation: function-inquiry; table:game Participants; rows:" + participantsList.size());
-				
-				return participantsList;
-		    }
-		});	
+		for (int i = 0; i < roundList.size(); i++) 
+		{
+			Round rd = roundList.get(i);
+			String signupDateTime = signupSDF.format(rd.getSignupDateTime());
+			participantsList.add(rd.getPlayerName() + " (signed up: " + signupDateTime + ")");
+		}
 		
+		return participantsList;
     }
 	
 	public void readAllRoundsFromDB()
     {
-		String sql = "select * from round where dSignUpdatetime > :dSignUpdatetime order by dSignUpdatetime desc";	
-		SqlParameterSource param = new MapSqlParameterSource("dSignUpdatetime", Utils.getOneMonthAgoDate());
-		this.setFullRoundsList(null); 
-	
+		Iterator<DynamoRound> results = roundsTable.scan().items().iterator();
+	  	
+		while (results.hasNext()) 
+        {
+			DynamoRound dynamoRound = results.next();
+          	
+			Round round = new Round();
+
+			round.setRoundID(dynamoRound.getRoundID());
+			round.setGameID(dynamoRound.getGameID());
+			round.setPlayerID(dynamoRound.getPlayerID());
+			round.setTeamNumber(dynamoRound.getTeamNumber());
+			round.setTeeTimeID(dynamoRound.getTeeTimeID());
+			round.setPlayerName(dynamoRound.getPlayerName());
+			round.setRoundHandicap(dynamoRound.getRoundHandicap());
+			round.setPlayerHandicapIndex(dynamoRound.getPlayerHandicapIndex());
+			round.setCourseTeeID(dynamoRound.getCourseTeeID());
+			round.setCourseTeeColor(dynamoRound.getCourseTeeColor());
+			round.setRoundHandicapDifferential(dynamoRound.getRoundHandicapDifferential());
+			
+			String signupdatetime = dynamoRound.getSignupDateTime();
+			DateToStringConverter dtsc = new DateToStringConverter();
+			Date sdate = dtsc.unconvert(signupdatetime);
+			round.setSignupDateTime(sdate);
+			
+			round.setHole1Score(dynamoRound.getHole1Score());
+			round.setHole2Score(dynamoRound.getHole2Score());
+			round.setHole3Score(dynamoRound.getHole3Score());
+			round.setHole4Score(dynamoRound.getHole4Score());
+			round.setHole5Score(dynamoRound.getHole5Score());
+			round.setHole6Score(dynamoRound.getHole6Score());
+			round.setHole7Score(dynamoRound.getHole7Score());
+			round.setHole8Score(dynamoRound.getHole8Score());
+			round.setHole9Score(dynamoRound.getHole9Score());
+			round.setFront9Total(dynamoRound.getFront9Total());
+			round.setHole10Score(dynamoRound.getHole10Score());
+			round.setHole11Score(dynamoRound.getHole11Score());
+			round.setHole12Score(dynamoRound.getHole12Score());
+			round.setHole13Score(dynamoRound.getHole13Score());
+			round.setHole14Score(dynamoRound.getHole14Score());
+			round.setHole15Score(dynamoRound.getHole15Score());
+			round.setHole16Score(dynamoRound.getHole16Score());
+			round.setHole17Score(dynamoRound.getHole17Score());
+			round.setHole18Score(dynamoRound.getHole18Score());
+			round.setBack9Total(dynamoRound.getBack9Total());
+			round.setTotalScore(dynamoRound.getTotalScore());
+			round.setTotalToPar(dynamoRound.getTotalToPar());
+			round.setNetScore(dynamoRound.getNetScore());
+			
+            this.getFullRoundsList().add(round);			
+        }	
+		
 		log.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());
 		
 		this.setFullRoundsMap(this.getFullRoundsList().stream().collect(Collectors.toMap(Round::getRoundID, rd -> rd)));		
@@ -191,7 +206,7 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
     	return count;
     }
 	
-	public Round getRoundByRoundID(Integer roundID)
+	public Round getRoundByRoundID(String roundID)
     {
 		Round round = this.getFullRoundsMap().get(roundID);
 	 	return round;
@@ -215,9 +230,11 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	
 	public void deleteRoundFromDB(String roundID)
     {
-		String deleteStr = "delete from round where idround = ?";
-		jdbcTemplate.update(deleteStr, roundID);	
-		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		Key key = Key.builder().partitionValue(roundID).build();
+		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
+		roundsTable.deleteItem(deleteItemEnhancedRequest);
+	
+		log.info("LoggedDBOperation: function-delete; table:round; rows:1");
 		
 		Round rd = new Round();
 		rd.setRoundID(roundID);
@@ -229,16 +246,13 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 	
 	public void deleteRoundsFromDB(String gameID)
     {
-		String deleteStr = "delete from round where idgame = ?";
-		int updatedRows = jdbcTemplate.update(deleteStr, gameID);	
-		log.info("LoggedDBOperation: function-update; table:round; rows:" + updatedRows);
-		
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
 			if (rd.getGameID() == gameID)
 			{
+				deleteRoundFromDB(rd.getRoundID());
 				this.getFullRoundsMap().remove(rd.getRoundID());
 			}
 		}
@@ -248,248 +262,78 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		log.info(getTempUserName() + " delete rounds table complete");		
     }
 
-	public String addRound(Round round)
+	private DynamoRound dynamoUpsert(Round round) throws Exception 
 	{
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		
-		jdbcTemplate.update(new PreparedStatementCreator() 
+		DynamoRound dynamoRound = new DynamoRound();
+        
+		if (dynamoRound.getRoundID() == null)
 		{
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
-			{
-				String insertStr = "INSERT INTO round (idgame, idplayer, hole1Score, hole2Score, hole3Score, hole4Score, hole5Score, hole6Score, ";
-				insertStr = insertStr + "hole7Score, hole8Score, hole9Score, hole10Score, hole11Score, hole12Score, ";
-				insertStr = insertStr + "hole13Score, hole14Score, hole15Score, hole16Score, hole17Score, hole18Score, ";
-				insertStr = insertStr + "front9Score, back9Score, totalScore, totalToPar, netScore, teamNumber, roundHandicap, idTeeTimes, dSignUpdatetime, idCourseTee)";
-				insertStr = insertStr + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
+			dynamoRound.setRoundID(UUID.randomUUID().toString());
+		}
+		else
+		{
+			dynamoRound.setRoundID(round.getRoundID());
+		}
 		
-				PreparedStatement psmt = connection.prepareStatement(insertStr, Statement.RETURN_GENERATED_KEYS);
-					
-				psmt.setString(1, round.getGameID());
-				psmt.setString(2, round.getPlayerID());
-				
-				if (round.getHole1Score() == null)
-				{
-					psmt.setNull(3, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(3, round.getHole1Score());
-				}
-				
-				if (round.getHole2Score() == null)
-				{
-					psmt.setNull(4, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(4, round.getHole2Score());
-				}
-				
-				if (round.getHole3Score() == null)
-				{
-					psmt.setNull(5, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(5, round.getHole3Score());
-				}
-				
-				if (round.getHole4Score() == null)
-				{
-					psmt.setNull(6, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(6, round.getHole4Score());
-				}
-				
-				if (round.getHole5Score() == null)
-				{
-					psmt.setNull(7, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(7, round.getHole5Score());
-				}
-				
-				if (round.getHole6Score() == null)
-				{
-					psmt.setNull(8, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(8, round.getHole6Score());
-				}
-				
-				if (round.getHole7Score() == null)
-				{
-					psmt.setNull(9, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(9, round.getHole7Score());
-				}
-				
-				if (round.getHole8Score() == null)
-				{
-					psmt.setNull(10, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(10, round.getHole8Score());
-				}
-				
-				if (round.getHole9Score() == null)
-				{
-					psmt.setNull(11, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(11, round.getHole9Score());
-				}
-				
-				if (round.getHole10Score() == null)
-				{
-					psmt.setNull(12, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(12, round.getHole10Score());
-				}
-				
-				if (round.getHole11Score() == null)
-				{
-					psmt.setNull(13, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(13, round.getHole11Score());
-				}
-				
-				if (round.getHole12Score() == null)
-				{
-					psmt.setNull(14, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(14, round.getHole12Score());
-				}
-				
-				if (round.getHole13Score() == null)
-				{
-					psmt.setNull(15, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(15, round.getHole13Score());
-				}
-				
-				if (round.getHole14Score() == null)
-				{
-					psmt.setNull(16, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(16, round.getHole14Score());
-				}
-				
-				if (round.getHole15Score() == null)
-				{
-					psmt.setNull(17, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(17, round.getHole15Score());
-				}
-				
-				if (round.getHole16Score() == null)
-				{
-					psmt.setNull(18, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(18, round.getHole16Score());
-				}
-				
-				if (round.getHole17Score() == null)
-				{
-					psmt.setNull(19, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(19, round.getHole17Score());
-				}
-				
-				if (round.getHole18Score() == null)
-				{
-					psmt.setNull(20, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(20, round.getHole18Score());
-				}
-				
-				if (round.getFront9Total() == null)
-				{
-					psmt.setNull(21, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(21, round.getFront9Total());
-				}
-				
-				if (round.getBack9Total() == null)
-				{
-					psmt.setNull(22, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(22, round.getBack9Total());
-				}
-				
-				if (round.getTotalScore() == null)
-				{
-					psmt.setNull(23, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(23, round.getTotalScore());
-				}
-					
-				psmt.setString(24, round.getTotalToPar());			
-				psmt.setBigDecimal(25, round.getNetScore());
-				psmt.setInt(26, round.getTeamNumber());
-				psmt.setBigDecimal(27, round.getRoundHandicap());
-				
-				psmt.setString(28, round.getTeeTimeID());
-				
-				if (round.getSignupDateTime() == null)
-				{					
-					LocalDateTime currentDateTime = LocalDateTime.now();
-					Date rightNow = new Date();
-					round.setSignupDateTime(rightNow);
-			        ZonedDateTime currentETTime = currentDateTime.atZone(etZoneId); //ET Time
-			    	String signupDateTime = etFormat.format(currentETTime);			    	
-					psmt.setString(29, signupDateTime);
-				}
-				else
-				{
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");					
-					String signupDateTime = format.format(round.getSignupDateTime());
-					psmt.setString(29, signupDateTime);
-				}
-				
-				if (round.getCourseTeeID() == null)
-				{
-					psmt.setNull(30, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setString(30, round.getCourseTeeID());
-				}
-				return psmt;
-			}
-		}, keyHolder);
+		dynamoRound.setRoundID(round.getRoundID());
+		dynamoRound.setGameID(round.getGameID());
+		dynamoRound.setPlayerID(round.getPlayerID());
+		dynamoRound.setTeamNumber(round.getTeamNumber());
+		dynamoRound.setTeeTimeID(round.getTeeTimeID());
+		dynamoRound.setPlayerName(round.getPlayerName());
+		dynamoRound.setRoundHandicap(round.getRoundHandicap());
+		dynamoRound.setPlayerHandicapIndex(round.getPlayerHandicapIndex());
+		dynamoRound.setCourseTeeID(round.getCourseTeeID());
+		dynamoRound.setCourseTeeColor(round.getCourseTeeColor());
+		dynamoRound.setRoundHandicapDifferential(round.getRoundHandicapDifferential());
+		
+		Date ddate = round.getSignupDateTime();
+		DateToStringConverter dtsc = new DateToStringConverter();
+		String sdate = dtsc.convert(ddate);
+		dynamoRound.setSignupDateTime(sdate);
+		
+		dynamoRound.setHole1Score(round.getHole1Score());
+		dynamoRound.setHole2Score(round.getHole2Score());
+		dynamoRound.setHole3Score(round.getHole3Score());
+		dynamoRound.setHole4Score(round.getHole4Score());
+		dynamoRound.setHole5Score(round.getHole5Score());
+		dynamoRound.setHole6Score(round.getHole6Score());
+		dynamoRound.setHole7Score(round.getHole7Score());
+		dynamoRound.setHole8Score(round.getHole8Score());
+		dynamoRound.setHole9Score(round.getHole9Score());
+		dynamoRound.setFront9Total(round.getFront9Total());
+		dynamoRound.setHole10Score(round.getHole10Score());
+		dynamoRound.setHole11Score(round.getHole11Score());
+		dynamoRound.setHole12Score(round.getHole12Score());
+		dynamoRound.setHole13Score(round.getHole13Score());
+		dynamoRound.setHole14Score(round.getHole14Score());
+		dynamoRound.setHole15Score(round.getHole15Score());
+		dynamoRound.setHole16Score(round.getHole16Score());
+		dynamoRound.setHole17Score(round.getHole17Score());
+		dynamoRound.setHole18Score(round.getHole18Score());
+		dynamoRound.setBack9Total(round.getBack9Total());
+		dynamoRound.setTotalScore(round.getTotalScore());
+		dynamoRound.setTotalToPar(round.getTotalToPar());
+		dynamoRound.setNetScore(round.getNetScore());
+		
+		
+		PutItemEnhancedRequest<DynamoRound> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoRound.class).item(dynamoRound).build();
+		PutItemEnhancedResponse<DynamoRound> putItemEnhancedResponse = roundsTable.putItemWithResponse(putItemEnhancedRequest);
+		DynamoRound returnedObject = putItemEnhancedResponse.attributes();
+		
+		if (!returnedObject.equals(dynamoRound))
+		{
+			throw new Exception("something went wrong with dynamo round upsert - returned item not the same as what we attempted to put");
+		}	
+		
+		return dynamoRound;
+	}
+	
+	public String addRound(Round round) throws Exception
+	{
+		DynamoRound dr = dynamoUpsert(round);
+		
+		round.setRoundID(dr.getRoundID());
 		
 		log.info("LoggedDBOperation: function-update; table:round; rows:1");
 		
@@ -500,227 +344,9 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		return round.getRoundID();
 	}
 	
-	public void updateRound(Round round)
+	public void updateRound(Round round) throws Exception
 	{
-		jdbcTemplate.update(new PreparedStatementCreator() 
-		{
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException 
-			{
-				String updateStr = " UPDATE round SET idgame = ?, idplayer = ?, hole1Score = ?, hole2Score = ?, hole3Score = ?, hole4Score = ?," ;
-				updateStr = updateStr + " hole5Score = ?, hole6Score = ?, hole7Score = ?, hole8Score = ?, hole9Score = ?, hole10Score = ?," ;
-				updateStr = updateStr + " hole11Score = ?, hole12Score = ?, hole13Score = ?, hole14Score = ?," ;
-				updateStr = updateStr + " hole15Score = ?, hole16Score = ?, hole17Score = ?, hole18Score = ?," ;
-				updateStr = updateStr + " front9Score = ?, back9Score = ?, totalScore = ?, totalToPar = ?, netScore = ?, teamNumber = ?, roundHandicap = ?, idTeeTimes = ?, idCourseTee = ?";
-				updateStr = updateStr + " WHERE idround = ?";				
-		
-				PreparedStatement psmt = connection.prepareStatement(updateStr, new String[] {});
-				
-				psmt.setString(1, round.getGameID());
-				psmt.setString(2, round.getPlayerID());
-				
-				if (round.getHole1Score() == null)
-				{
-					psmt.setNull(3, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(3, round.getHole1Score());
-				}
-				
-				if (round.getHole2Score() == null)
-				{
-					psmt.setNull(4, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(4, round.getHole2Score());
-				}
-				
-				if (round.getHole3Score() == null)
-				{
-					psmt.setNull(5, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(5, round.getHole3Score());
-				}
-				
-				if (round.getHole4Score() == null)
-				{
-					psmt.setNull(6, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(6, round.getHole4Score());
-				}
-				
-				if (round.getHole5Score() == null)
-				{
-					psmt.setNull(7, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(7, round.getHole5Score());
-				}
-				
-				if (round.getHole6Score() == null)
-				{
-					psmt.setNull(8, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(8, round.getHole6Score());
-				}
-				
-				if (round.getHole7Score() == null)
-				{
-					psmt.setNull(9, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(9, round.getHole7Score());
-				}
-				
-				if (round.getHole8Score() == null)
-				{
-					psmt.setNull(10, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(10, round.getHole8Score());
-				}
-				
-				if (round.getHole9Score() == null)
-				{
-					psmt.setNull(11, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(11, round.getHole9Score());
-				}
-				
-				if (round.getHole10Score() == null)
-				{
-					psmt.setNull(12, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(12, round.getHole10Score());
-				}
-				
-				if (round.getHole11Score() == null)
-				{
-					psmt.setNull(13, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(13, round.getHole11Score());
-				}
-				
-				if (round.getHole12Score() == null)
-				{
-					psmt.setNull(14, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(14, round.getHole12Score());
-				}
-				
-				if (round.getHole13Score() == null)
-				{
-					psmt.setNull(15, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(15, round.getHole13Score());
-				}
-				
-				if (round.getHole14Score() == null)
-				{
-					psmt.setNull(16, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(16, round.getHole14Score());
-				}
-				
-				if (round.getHole15Score() == null)
-				{
-					psmt.setNull(17, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(17, round.getHole15Score());
-				}
-				
-				if (round.getHole16Score() == null)
-				{
-					psmt.setNull(18, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(18, round.getHole16Score());
-				}
-				
-				if (round.getHole17Score() == null)
-				{
-					psmt.setNull(19, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(19, round.getHole17Score());
-				}
-				
-				if (round.getHole18Score() == null)
-				{
-					psmt.setNull(20, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(20, round.getHole18Score());
-				}
-				
-				if (round.getFront9Total() == null)
-				{
-					psmt.setNull(21, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(21, round.getFront9Total());
-				}
-				
-				if (round.getBack9Total() == null)
-				{
-					psmt.setNull(22, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(22, round.getBack9Total());
-				}
-				
-				if (round.getTotalScore() == null)
-				{
-					psmt.setNull(23, Types.INTEGER);
-				}
-				else
-				{
-					psmt.setInt(23, round.getTotalScore());
-				}
-					
-				psmt.setString(24, round.getTotalToPar());			
-				psmt.setBigDecimal(25, round.getNetScore());			
-				psmt.setInt(26, round.getTeamNumber());
-				psmt.setBigDecimal(27, round.getRoundHandicap());	
-				
-				psmt.setString(28, round.getTeeTimeID());
-								
-				psmt.setString(29, round.getCourseTeeID());
-								
-				psmt.setString(30, round.getRoundID());
-				
-				return psmt;
-			}
-		});
+		dynamoUpsert(round);
 		
 		log.info("LoggedDBOperation: function-update; table:round; rows:1");
 		
@@ -730,11 +356,9 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		
 	}
 
-	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal handicap) 
+	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal handicap) throws Exception 
 	{
-		String updateStr = " UPDATE round SET roundHandicap = ? WHERE idgame = ? AND idplayer = ?";	
-		jdbcTemplate.update(updateStr, handicap, selectedGame.getGameID(), playerID);	
-		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		
 		
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
@@ -743,6 +367,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 			if (rd.getGameID() == selectedGame.getGameID() && rd.getPlayerID() == playerID)
 			{
 				rd.setRoundHandicap(handicap);
+				dynamoUpsert(rd);
+				log.info("LoggedDBOperation: function-update; table:round; rows:1");
 				this.getFullRoundsMap().remove(rd.getRoundID());
 				this.getFullRoundsMap().put(rd.getRoundID(), rd);
 				this.getFullRoundsList().clear();
@@ -757,13 +383,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 		log.debug(getTempUserName() + " update player handicap for playerID: " + playerID + " to: " + handicap + " on round table complete");		
 	}	
 	
-	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) 
+	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) throws Exception 
 	{
-		String updateStr = " UPDATE round SET teamNumber = ? WHERE idgame = ? AND idplayer = ?";	
-		jdbcTemplate.update(updateStr, teamNumber, selectedGame.getGameID(), playerID);		
-		log.info("LoggedDBOperation: function-update; table:round; rows:1");
-		
-
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
 			Round rd = this.getFullRoundsList().get(i);
@@ -771,6 +392,8 @@ public class RoundDAO  extends JdbcDaoSupport  implements Serializable
 			if (rd.getGameID() == selectedGame.getGameID() && rd.getPlayerID() == playerID)
 			{
 				rd.setTeamNumber(teamNumber);
+				dynamoUpsert(rd);
+				log.info("LoggedDBOperation: function-update; table:round; rows:1");
 				this.getFullRoundsMap().remove(rd.getRoundID());
 				this.getFullRoundsMap().put(rd.getRoundID(), rd);
 				this.getFullRoundsList().clear();

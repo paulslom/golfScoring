@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
-import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.google.gson.Gson;
 import com.pas.beans.GolfUser;
 
@@ -20,40 +18,27 @@ import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.internal.waiters.ResponseOrException;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
-import software.amazon.awssdk.enhanced.dynamodb.model.GetItemEnhancedRequest;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
-import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
 import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
 public class CreateTableDynamoDBLocal_GolfUsers
 {	 
-	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
-	private static String AWS_REGION = "us-east-1";
 	private static String AWS_JSON_FILE_NAME = "GolfUsersData.json";
 	private static String AWS_TABLE_NAME = "golfUsers";
-	private static String AWS_KEY_NAME = "userName";
-	private static String AWS_DYNAMODB_LOCAL_DB_LOCATION = "C:/Paul/DynamoDB";
 	
     public static void main(String[] args) 
     {
         try 
         {
-            System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
-            String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
-            
-            // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", AWS_DYNAMODB_LOCAL_DB_LOCATION};
-            System.out.println("Starting DynamoDB Local...");
-            DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
-            server.start();
-            
+        	String AWS_REGION = args[0];
+        	String uri = args[1];
+        	
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
                     .region(Region.of(AWS_REGION))
@@ -65,15 +50,11 @@ public class CreateTableDynamoDBLocal_GolfUsers
                     .dynamoDbClient(ddbClient)                           
                     .build();
             
+            //Delete the table in DynamoDB Local if it exists
+            deleteTable(ddbEnhancedClient);
+            
             // Create a table in DynamoDB Local
-            DynamoDbTable<GolfUser> golfUserTable = createTable(ddbEnhancedClient, ddbClient, AWS_TABLE_NAME, AWS_KEY_NAME);
-
-            //  List all the tables in DynamoDB Local
-
-            System.out.println("Listing tables in DynamoDB Local...");
-            System.out.println("-------------------------------");
-            ListTablesResponse listTablesResponse = ddbClient.listTables();
-            System.out.println(listTablesResponse.tableNames());
+            DynamoDbTable<GolfUser> golfUserTable = createTable(ddbEnhancedClient, ddbClient, AWS_TABLE_NAME);           
 
             loadTableData(golfUserTable);
             
@@ -85,9 +66,23 @@ public class CreateTableDynamoDBLocal_GolfUsers
             throw new RuntimeException(e);
         }
         
-        System.exit(1);
+        //System.exit(1);
     }
     
+    private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
+    {
+    	DynamoDbTable<GolfUser> golfUsersTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(GolfUser.class));
+        
+        try
+        {
+        	golfUsersTable.deleteTable();
+        }
+        catch (Exception e)
+        {
+        	System.out.println("Table did not already exist, so no delete table executed! " + e.getMessage());
+        }
+		
+	}
     private static void scan(DynamoDbTable<GolfUser> golfUserTable) 
     {
         try 
@@ -130,22 +125,7 @@ public class CreateTableDynamoDBLocal_GolfUsers
             	
                 try 
                 {
-                    golfUserTable.putItem(gu);
-                    
-                    // Get data from the table
-                    System.out.println("Getting Item from the table for key after putItem: " + AWS_KEY_NAME);
-                    System.out.println("-------------------------------");
-                                        
-                    Key key = Key.builder().partitionValue(gu.getUserName()).sortValue(gu.getUserId()).build();
-                    
-                    GetItemEnhancedRequest getItemEnhancedRequest = GetItemEnhancedRequest.builder()
-                    		.key(key)
-                            .consistentRead(true)
-                            .build();
-                    
-                    GolfUser golfUserInserted = golfUserTable.getItem(getItemEnhancedRequest);
-                    System.out.println("Successfully retrieved Item from the table for key: " + golfUserInserted.getUserName() 
-                    		+ " the id for this is = " + golfUserInserted.getUserId());
+                    golfUserTable.putItem(gu);                 
                 } 
                 catch (ResourceNotFoundException e) 
                 {
@@ -181,7 +161,7 @@ public class CreateTableDynamoDBLocal_GolfUsers
         return null;
     }
     
-    private static DynamoDbTable<GolfUser> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient, String tableName, String key) 
+    private static DynamoDbTable<GolfUser> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient, String tableName) 
     {
         DynamoDbTable<GolfUser> golfUsersTable = ddbEnhancedClient.table(tableName, TableSchema.fromBean(GolfUser.class));
         
@@ -211,7 +191,7 @@ public class CreateTableDynamoDBLocal_GolfUsers
                     .waitUntilTableExists(builder -> builder.tableName(tableName).build())
                     .matched();
             
-            DescribeTableResponse tableDescription = response.response().orElseThrow(
+            response.response().orElseThrow(
                     () -> new RuntimeException(tableName + " was not created."));
             
             // The actual error can be inspected in response.exception()

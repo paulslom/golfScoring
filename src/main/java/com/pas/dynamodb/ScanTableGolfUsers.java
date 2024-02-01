@@ -3,8 +3,6 @@ package com.pas.dynamodb;
 import java.net.URI;
 import java.util.Iterator;
 
-import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
-import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.pas.beans.GolfUser;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -17,23 +15,14 @@ import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
 public class ScanTableGolfUsers
 {	 
-	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
-	private static String AWS_REGION = "us-east-1";
 	private static String AWS_TABLE_NAME = "golfUsers";
-	private static String AWS_DYNAMODB_LOCAL_DB_LOCATION = "C:/Paul/DynamoDB";
 	
     public static void main(String[] args) 
     {
         try 
         {
-            System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
-            String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
-            
-            // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", AWS_DYNAMODB_LOCAL_DB_LOCATION};
-            System.out.println("Starting DynamoDB Local...");
-            DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
-            server.start();
+        	String AWS_REGION = args[0];
+        	String uri = args[1];        
             
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
@@ -58,7 +47,7 @@ public class ScanTableGolfUsers
             throw new RuntimeException(e);
         }
         
-        System.exit(1);
+        //System.exit(1);
     }
     
 	private static void scan(DynamoDbTable<GolfUser> table) 

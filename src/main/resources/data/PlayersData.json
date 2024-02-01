@@ -696,7 +696,7 @@
 	"oldPlayerID":30,
 	"firstName": "John",
 	"lastName": "Wolfe",
-	"handicap":5.4,
+	"handicap":7.4,
 	"username": "jwolfe",
 	"emailAddress": "John.Wolfe@cornerstone-bb.com",
 	"active":true
@@ -714,7 +714,7 @@
 	"oldPlayerID":31,
 	"firstName": "Kris",
 	"lastName": "Copeland",
-	"handicap":0.9,
+	"handicap":0.0,
 	"username": "kcopeland",
 	"emailAddress": "krcdrc42@gmail.com",
 	"active":true
@@ -768,7 +768,7 @@
 	"oldPlayerID":19,
 	"firstName": "Kenton",
 	"lastName": "Robertson",
-	"handicap":2.1,
+	"handicap":2.7,
 	"username": "krobertson",
 	"emailAddress": "kenton@kentonrobertson.com",
 	"active":true
@@ -1083,7 +1083,7 @@
 	"oldPlayerID":5,
 	"firstName": "Steve",
 	"lastName": "Coggin",
-	"handicap":6.6,
+	"handicap":4.0,
 	"username": "scoggin",
 	"emailAddress": "coggin2003@yahoo.com",
 	"active":true
@@ -1224,15 +1224,6 @@
 	"active":true
 },
 {
-	"oldPlayerID":149,
-	"firstName": "Test",
-	"lastName": "Player",
-	"handicap":11.0,
-	"username": "tplayer",
-	"emailAddress": "tplayer@test.com",
-	"active":true
-},
-{
 	"oldPlayerID":81,
 	"firstName": "Tom",
 	"lastName": "Skivington",
@@ -1263,7 +1254,7 @@
 	"oldPlayerID":25,
 	"firstName": "Tripp",
 	"lastName": "Streuli",
-	"handicap":8.5,
+	"handicap":9.5,
 	"username": "tstreuli",
 	"emailAddress": "Tripp.Streuli@abcsupply.com",
 	"active":true

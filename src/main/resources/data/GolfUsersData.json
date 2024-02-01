@@ -774,6 +774,12 @@
 	"userRole": "USER"
 },
 {
+	"userId": "142",
+	"userName": "tfirst",
+	"password": "$2a$10$VjMTlIyRsYMRtSZeWG0vN.en9JJXlcvzby.6fb/uTlNMecuCZ865S",
+	"userRole": "USER"
+},
+{
 	"userId": "130",
 	"userName": "tfuqua",
 	"password": "$2a$10$2LrmCBNfRtNGD9wfX14Fw.3x8R4cRHoBcLnNX33xCSX8vmZpoXH8a",

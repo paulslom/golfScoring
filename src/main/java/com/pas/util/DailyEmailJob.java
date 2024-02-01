@@ -1,7 +1,5 @@
 package com.pas.util;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -14,17 +12,18 @@ import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.pas.beans.Course;
 import com.pas.beans.Game;
-import com.pas.beans.Player;
+import com.pas.beans.Group;
+import com.pas.beans.Round;
 import com.pas.beans.TeeTime;
+import com.pas.dao.CourseDAO;
+import com.pas.dao.GameDAO;
+import com.pas.dao.GroupDAO;
+import com.pas.dao.PlayerDAO;
+import com.pas.dao.RoundDAO;
+import com.pas.dao.TeeTimeDAO;
 
 public class DailyEmailJob implements Runnable 
 {
@@ -34,7 +33,7 @@ public class DailyEmailJob implements Runnable
 	private static long SIX_DAYS = 518400000; //in milliseconds
 	
 	private static String NEWLINE = "<br/>";	
-	
+		
 	@Override
 	public void run() 
 	{
@@ -93,10 +92,9 @@ public class DailyEmailJob implements Runnable
 
 	private String getTeeTimes(Game inputGame) 
 	{
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());
-		String sql = "select tt.idTeeTimes, tt.idgame, tt.playgroupnumber, tt.teetime, gm.gameDate, cs.courseName from teetimes tt inner join game gm on tt.idgame = gm.idgame inner join golfcourse cs on gm.idgolfcourse = cs.idgolfcourse where tt.idgame = :idgame"; 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", inputGame.getGameID());
-		List<TeeTime> teeTimeList = null; 
+		TeeTimeDAO teeTimeDAO = new TeeTimeDAO();
+		teeTimeDAO.readTeeTimesFromDB();
+		List<TeeTime> teeTimeList = teeTimeDAO.getTeeTimesByGame(inputGame);
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -112,12 +110,10 @@ public class DailyEmailJob implements Runnable
 	}
 
 	private ArrayList<String> establishEmailRecipients() 
-	{		
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(Utils.getDatasourceProperties());		
-		String sql = "select * from player order by lastName, firstName";		 
-		List<Player> playerList = null; 
-		log.info("LoggedDBOperation: function-inquiry; table:player; rows:" + playerList.size());
-		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerList);		
+	{
+		PlayerDAO playerDAO = new PlayerDAO();
+		playerDAO.readPlayersFromDB();
+		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerDAO.getFullPlayerList());		
 		
 		/*
 		ArrayList<String> emailRecips = new ArrayList<>();
@@ -127,19 +123,16 @@ public class DailyEmailJob implements Runnable
 		return emailRecips;
 	}
 	
-	private List<Game> getFutureGames()
+	private List<Game> getFutureGames() throws Exception
 	{
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(Utils.getDatasourceProperties());
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());
+		GameDAO gameDAO = new GameDAO();
+		gameDAO.readGamesFromDB();
+		List<Game> gameList = gameDAO.getFullGameList();
 		
 		List<Game> tempList = new ArrayList<>();
-		
-		String sql = "select * from game order by gameDate";		 
-		List<Game> gameList = null; 
-		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + gameList.size());
-		
+				
 		Date today = new Date();
-		LocalDate localDateToday = today.toInstant().atZone(ZoneId.of("America/New_York")).toLocalDate();
+		LocalDate localDateToday = today.toInstant().atZone(ZoneId.of(Utils.MY_TIME_ZONE)).toLocalDate();
 
 		for (int i = 0; i < gameList.size(); i++) 
 		{
@@ -161,13 +154,16 @@ public class DailyEmailJob implements Runnable
 			
 		}
 		
+		GroupDAO groupDAO = new GroupDAO();
+		groupDAO.readGroupsFromDB();
+		Group defaultGroup = groupDAO.getGroupsList().get(0);
+		CourseDAO courseDAO = new CourseDAO();
+		courseDAO.readCoursesFromDB(defaultGroup);
+		
 	    for (int i = 0; i < tempList.size(); i++) 
 		{
-			Game tempGame = tempList.get(i);
-			
-			String coursesql = "select * from golfcourse where idgolfCourse = :courseID";			 
-			SqlParameterSource param = new MapSqlParameterSource("courseID", tempGame.getCourseID());			 
-			Course tempCourse = null; 
+			Game tempGame = tempList.get(i);			
+			Course tempCourse = courseDAO.getCoursesMap().get(tempGame.getCourseID());
 			log.info("LoggedDBOperation: function-inquiry; table:course; rows:1");
 			tempGame.setCourse(tempCourse);
 			tempGame.setCourseName(tempGame.getCourse().getCourseName());		
@@ -175,49 +171,32 @@ public class DailyEmailJob implements Runnable
         
 		return tempList;
 	}
+	
 	private String getGameParticipants(Game inputGame) 
 	{
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
-		
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Utils.getDatasourceProperties());
-		String sql = "SELECT concat(p.firstName, ' ', p.lastName) as playerName, r.dSignUpdatetime from round r inner join player p "
-				+ "where r.idplayer = p.idplayer and r.idgame = :idgame order by r.dSignupDateTime";		 
-		SqlParameterSource param = new MapSqlParameterSource("idgame", inputGame.getGameID());
+				
+		RoundDAO roundDAO = new RoundDAO();
+		roundDAO.readAllRoundsFromDB();
+		List<Round> roundList = roundDAO.getRoundsForGame(inputGame);
 		
 		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
-		TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
+		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
 		signupSDF.setTimeZone(etTimeZone);
 		
-		List<String> roundPlayers = namedParameterJdbcTemplate.query(sql, param, new ResultSetExtractor<List<String>>() 
-		{	   
-			@Override
-		    public List<String> extractData(ResultSet rs) throws SQLException, DataAccessException 
-		    {
-				List<String> participantsList = new ArrayList<>();
-				
-				while (rs.next()) 
-				{
-					if (rs.getTimestamp("dSignUpdatetime") == null)
-					{
-						
-					}
-					else
-					{
-						String signupDateTime = signupSDF.format(rs.getTimestamp("dSignUpdatetime"));
-						participantsList.add(rs.getString("playerName") + " (signed up: " + signupDateTime + ")");
-					}
-				}
-				
-				log.info("LoggedDBOperation: function-inquiry; table:game Participants; rows:" + participantsList.size());
-				
-				return participantsList;
-		    }
-		});	
+		List<String> roundPlayers = new ArrayList<>();
 		
-		
+		for (int i = 0; i < roundList.size(); i++) 
+		{
+			Round rd = roundList.get(i);
+			String signupDateTime = signupSDF.format(rd.getSignupDateTime());
+			String playerName = rd.getPlayerName();
+			roundPlayers.add(playerName + " (signed up: " + signupDateTime + ")");
+		}
+				
 		for (int i = 0; i < roundPlayers.size(); i++) 
 		{
 			String playerName = roundPlayers.get(i);

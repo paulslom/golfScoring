@@ -1,11 +1,7 @@
 package com.pas.spring;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletRegistration;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -14,6 +10,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.pas.util.FileDataLoader;
 import com.sun.faces.config.FacesInitializer;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 
 public class MyWebAppInitializer extends FacesInitializer implements WebApplicationInitializer 
 {

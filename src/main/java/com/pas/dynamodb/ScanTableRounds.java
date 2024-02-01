@@ -19,17 +19,17 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
-public class ScanTablePlayers
+public class ScanTableRounds
 {	 
-	private static String AWS_TABLE_NAME = "players";
+	private static String AWS_TABLE_NAME = "rounds";
 	
     public static void main(String[] args) 
     {
         try 
         {
         	String AWS_REGION = args[0];
-        	String uri = args[1];        
-            
+        	String uri = args[1];
+        
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
                     .region(Region.of(AWS_REGION))
@@ -41,7 +41,7 @@ public class ScanTablePlayers
                     .dynamoDbClient(ddbClient)                           
                     .build();
             
-            DynamoDbTable<DynamoPlayer> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
+            DynamoDbTable<DynamoRound> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
 
             showIndexes(AWS_REGION, uri);
             
@@ -87,21 +87,35 @@ public class ScanTablePlayers
 		
 	}
     
-	private static void scan(DynamoDbTable<DynamoPlayer> table) 
+	private static void scan(DynamoDbTable<DynamoRound> table) 
     {
-		System.out.println("These are the contents of the PLAYERS table in dynamoDB");
-		
+		System.out.println("These are the contents of the teetimes table in dynamoDB");
+			
         try 
         {
-            Iterator<DynamoPlayer> results = table.scan().items().iterator();
-            
+            Iterator<DynamoRound> results = table.scan().items().iterator();
+          	
             while (results.hasNext()) 
             {
-                DynamoPlayer rec = results.next();
-                System.out.println("playerID = " + rec.getPlayerID() + " .. oldPlayerID = " + rec.getOldPlayerID()
-                		+  " .. username = " + rec.getUsername() +  " .. firstName = " + rec.getFirstName()
-                		+  " .. lastName = " + rec.getLastName() +  " .. handicap = " + rec.getHandicap()
-                		+  " .. emailAddress = " + rec.getEmailAddress() +  " .. active = " + rec.isActive());
+                DynamoRound rec = results.next();
+                System.out.println("roundID = " + rec.getRoundID() + " .. gameID = " + rec.getGameID()
+                		+ "  teeTimeID = " + rec.getTeeTimeID() + " .. playerID = " + rec.getPlayerID()
+                		+ "  courseTeeID = " + rec.getCourseTeeID() + " .. teamNumber = " + rec.getTeamNumber()
+                		+ "  front9Total = " + rec.getFront9Total() + " .. back9Total = " + rec.getBack9Total()
+                		+ "  totalScore = " + rec.getTotalScore() + " .. totalToPar = " + rec.getTotalToPar()
+                		+ "  netScore = " + rec.getNetScore() + " .. signupDateTime = " + rec.getSignupDateTime()
+                		+ "  playerName = " + rec.getPlayerName() + " .. roundHandicap = " + rec.getRoundHandicap()
+                		+ "  playerHandicapIndex = " + rec.getPlayerHandicapIndex() + " .. courseTeeColor = " + rec.getCourseTeeColor()
+                		+ "  roundHandicapDifferential = " + rec.getRoundHandicapDifferential()
+                		+ "  hole1Score = " + rec.getHole1Score() + " .. hole2Score = " + rec.getHole2Score()
+                		+ "  hole3Score = " + rec.getHole3Score() + " .. hole4Score = " + rec.getHole4Score()
+                		+ "  hole5Score = " + rec.getHole5Score() + " .. hole6Score = " + rec.getHole6Score()
+                		+ "  hole7Score = " + rec.getHole7Score() + " .. hole8Score = " + rec.getHole8Score()
+                		+ "  hole9Score = " + rec.getHole9Score() + " .. hole10Score = " + rec.getHole10Score()
+                		+ "  hole11Score = " + rec.getHole11Score() + " .. hole12Score = " + rec.getHole12Score()
+                		+ "  hole13Score = " + rec.getHole13Score() + " .. hole14Score = " + rec.getHole14Score()
+                		+ "  hole15Score = " + rec.getHole15Score() + " .. hole16Score = " + rec.getHole16Score()
+                		+ "  hole17Score = " + rec.getHole17Score() + " .. hole18Score = " + rec.getHole18Score());
             }
         } 
         catch (DynamoDbException e) 

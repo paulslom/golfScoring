@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
-import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.google.gson.Gson;
 import com.pas.beans.Course;
 import com.pas.beans.Hole;
@@ -35,24 +33,15 @@ import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
 public class CreateTableDynamoDBLocal_Courses
 {	 
-	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
-	private static String AWS_REGION = "us-east-1";
 	private static String AWS_JSON_FILE_NAME = "CoursesData.json";
 	private static String AWS_TABLE_NAME = "courses";
-	private static String AWS_DYNAMODB_LOCAL_DB_LOCATION = "C:/Paul/DynamoDB";
 	
     public static void main(String[] args) 
     {
         try 
         {
-            System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
-            String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
-            
-            // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", AWS_DYNAMODB_LOCAL_DB_LOCATION};
-            System.out.println("Starting DynamoDB Local...");
-            DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
-            server.start();
+        	String AWS_REGION = args[0];
+        	String uri = args[1];
             
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
@@ -82,7 +71,7 @@ public class CreateTableDynamoDBLocal_Courses
             throw new RuntimeException(e);
         }
         
-        System.exit(1);
+        //System.exit(1);
     }
     
     private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
@@ -319,7 +308,7 @@ public class CreateTableDynamoDBLocal_Courses
                     .waitUntilTableExists(builder -> builder.tableName(AWS_TABLE_NAME).build())
                     .matched();
             
-            DescribeTableResponse tableDescription = response.response().orElseThrow(
+            response.response().orElseThrow(
                     () -> new RuntimeException(AWS_TABLE_NAME + " was not created."));
             
             // The actual error can be inspected in response.exception()

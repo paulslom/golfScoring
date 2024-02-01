@@ -7,13 +7,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
-import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.google.gson.Gson;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -40,12 +39,9 @@ import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
 public class CreateTableDynamoDBLocal_Games
 {	 
-	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
-	private static String AWS_REGION = "us-east-1";
 	private static String AWS_JSON_FILE_NAME = "GamesData.json";
 	private static String AWS_TABLE_NAME = "games";
-	private static String AWS_DYNAMODB_LOCAL_DB_LOCATION = "C:/Paul/DynamoDB";
-	
+		
 	private static DynamoDbTable<DynamoCourse> coursesTable;
 	private static final String AWS_TABLE_NAME_COURSES = "courses";
 	
@@ -53,14 +49,8 @@ public class CreateTableDynamoDBLocal_Games
     {
         try 
         {
-            System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
-            String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
-            
-            // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", AWS_DYNAMODB_LOCAL_DB_LOCATION};
-            System.out.println("Starting DynamoDB Local...");
-            DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
-            server.start();
+        	String AWS_REGION = args[0];
+        	String uri = args[1];
             
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
@@ -92,7 +82,7 @@ public class CreateTableDynamoDBLocal_Games
             throw new RuntimeException(e);
         }
         
-        System.exit(1);
+        //System.exit(1);
     }
     
     private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
@@ -222,17 +212,25 @@ public class CreateTableDynamoDBLocal_Games
         
         try
         {
+        	ArrayList<EnhancedGlobalSecondaryIndex> gsindices = new ArrayList<>();
+        	
+        	EnhancedGlobalSecondaryIndex gsi1 = EnhancedGlobalSecondaryIndex.builder()
+        			.indexName("gsi_GameDate")
+        			.projection(p -> p.projectionType(ProjectionType.ALL))
+        			.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+        			.build();
+        	gsindices.add(gsi1);
+        	
+        	EnhancedGlobalSecondaryIndex gsi2 = EnhancedGlobalSecondaryIndex.builder()
+                    .indexName("gsi_OldGameID")
+                    .projection(p -> p.projectionType(ProjectionType.ALL))
+                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                    .build();
+        	gsindices.add(gsi2);       	
+        	  	
         	gamesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(
-                        EnhancedGlobalSecondaryIndex.builder()
-                                                    .indexName("gsi_OldCourseTeeID")
-                                                    .projection(p -> p.projectionType(ProjectionType.ALL))
-                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                                                    .indexName("gsi_OldGameID")
-                                                    .projection(p -> p.projectionType(ProjectionType.ALL))
-                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                                                    .build()));
-	        
+                    .globalSecondaryIndices(gsindices).build());
+        	
         }
         catch (ResourceInUseException riue)
         {
@@ -249,7 +247,7 @@ public class CreateTableDynamoDBLocal_Games
                     .waitUntilTableExists(builder -> builder.tableName(AWS_TABLE_NAME).build())
                     .matched();
             
-            DescribeTableResponse tableDescription = response.response().orElseThrow(
+            response.response().orElseThrow(
                     () -> new RuntimeException(AWS_TABLE_NAME + " was not created."));
             
             // The actual error can be inspected in response.exception()

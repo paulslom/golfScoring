@@ -360,15 +360,28 @@ public class GameDAO implements Serializable
 	
 	private void assignCourseToGame(Game inGame)
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		CourseTee courseTee = BeanUtilJSF.getBean("pc_CourseTee");	
-		
-		inGame.setCourse(golfmain.getCoursesMap().get(inGame.getCourseID()));
-		inGame.setCourseName(inGame.getCourse().getCourseName());
-				
-		Map<String, List<SelectItem>> teeSelectionsMap = courseTee.getTeeSelectionsMap();
-		List<SelectItem> courseTeeSelections = teeSelectionsMap.get(inGame.getCourseID());	
-		inGame.setTeeSelections(courseTeeSelections);
+		try
+		{
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			CourseTee courseTee = BeanUtilJSF.getBean("pc_CourseTee");	
+			
+			if (golfmain != null)
+			{
+				inGame.setCourse(golfmain.getCoursesMap().get(inGame.getCourseID()));
+				inGame.setCourseName(inGame.getCourse().getCourseName());
+			}
+			
+			if (courseTee != null)
+			{
+				Map<String, List<SelectItem>> teeSelectionsMap = courseTee.getTeeSelectionsMap();
+				List<SelectItem> courseTeeSelections = teeSelectionsMap.get(inGame.getCourseID());	
+				inGame.setTeeSelections(courseTeeSelections);
+			}
+		}
+		catch (Exception e)
+		{
+			log.trace("unable to assign course to game.  Exception: " + e.getMessage());
+		}
 	}
 	
 	private void refreshGameList(String function, String gameID, Game inputgame) throws Exception

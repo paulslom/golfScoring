@@ -420,139 +420,156 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap)
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		Round roundBean = BeanUtilJSF.getBean("pc_Round");
-		
-		if (game != null && game.getSelectedGame() != null)
+		try
 		{
-			roundBean.getSyncGameRoundList().clear();
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			Game game = BeanUtilJSF.getBean("pc_Game");
+			Round roundBean = BeanUtilJSF.getBean("pc_Round");
 			
-			for (int i = 0; i < this.getSelectedPlayers().size(); i++) 
+			if (game != null && game.getSelectedGame() != null)
 			{
-				Player tempPlayer = this.getSelectedPlayers().get(i);
+				roundBean.getSyncGameRoundList().clear();
 				
-				Round newRound = new Round();
-				newRound.setGameID(game.getSelectedGame().getGameID());
-				newRound.setPlayerID(tempPlayer.getPlayerID());
-				newRound.setPlayer(tempPlayer);
-				newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
-				newRound.setTeamNumber(tempPlayer.getTeamNumber());
-				if (tempPlayer.getTeeTime() != null)
+				for (int i = 0; i < this.getSelectedPlayers().size(); i++) 
 				{
-					newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
-					newRound.setTeeTime(tempPlayer.getTeeTime());
-				}
-				newRound.setRoundHandicap(tempPlayer.getHandicap());
-				
-				if (roundSignupDateTimesMap != null)
-				{
-					Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
+					Player tempPlayer = this.getSelectedPlayers().get(i);
 					
-					if (tempDate != null)
+					Round newRound = new Round();
+					newRound.setGameID(game.getSelectedGame().getGameID());
+					newRound.setPlayerID(tempPlayer.getPlayerID());
+					newRound.setPlayer(tempPlayer);
+					newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
+					newRound.setTeamNumber(tempPlayer.getTeamNumber());
+					if (tempPlayer.getTeeTime() != null)
 					{
-						newRound.setSignupDateTime(tempDate);
+						newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
+						newRound.setTeeTime(tempPlayer.getTeeTime());
 					}
-				}
-				
-				if (roundTeeSelectionsMap != null)
-				{
-					String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
+					newRound.setRoundHandicap(tempPlayer.getHandicap());
 					
-					if (courseTeeID == null)
+					if (roundSignupDateTimesMap != null)
 					{
-						newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), game.getSelectedGame().getCourseID()));
+						Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
+						
+						if (tempDate != null)
+						{
+							newRound.setSignupDateTime(tempDate);
+						}
 					}
-					else
+					
+					if (roundTeeSelectionsMap != null)
 					{
-						newRound.setCourseTeeID(courseTeeID);
-					}
-				}		
-				
-				golfmain.addRound(newRound);					
-				
-				roundBean.getSyncGameRoundList().add(newRound);				
-			} 
+						String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
+						
+						if (courseTeeID == null)
+						{
+							newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), game.getSelectedGame().getCourseID()));
+						}
+						else
+						{
+							newRound.setCourseTeeID(courseTeeID);
+						}
+					}		
+					
+					golfmain.addRound(newRound);					
+					
+					roundBean.getSyncGameRoundList().add(newRound);				
+				} 
+			}
 		}
+		catch (Exception e)
+		{
+			log.error("Exception in saveRounds: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveRounds: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}	
 	}
 	
 	public String saveAndStayTeeTimesPickList()
 	{
 		log.info("saving player round records with tee times");
 		
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		if (game != null && game.getSelectedGame() != null)
-		{
-			for (int i = 0; i < this.getTeeTimeList().size(); i++) 
+		try
+		{			
+			Game game = BeanUtilJSF.getBean("pc_Game");
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			
+			if (game != null && game.getSelectedGame() != null)
 			{
-				TeeTime teeTime = this.getTeeTimeList().get(i);
-				
-				List<Player> tempPlayerList = new ArrayList<Player>();
-				
-				switch (i) 
+				for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 				{
-					case 0:
-						
-						tempPlayerList = this.getGameTeeTimeList1().getTarget();
-						break;
-						
-					case 1:
-						
-						tempPlayerList = this.getGameTeeTimeList2().getTarget();
-						break;	
-						
-					case 2:
-						
-						tempPlayerList = this.getGameTeeTimeList3().getTarget();
-						break;	
-						
-					case 3:
-						
-						tempPlayerList = this.getGameTeeTimeList4().getTarget();
-						break;	
-						
-					case 4:
-		
-						tempPlayerList = this.getGameTeeTimeList5().getTarget();
-						break;
-						
-					case 5:
-						
-						tempPlayerList = this.getGameTeeTimeList6().getTarget();
-						break;	
-						
-					case 6:
-						
-						tempPlayerList = this.getGameTeeTimeList7().getTarget();
-						break;	
-						
-					case 7:
-						
-						tempPlayerList = this.getGameTeeTimeList8().getTarget();
-						break;	
-		
-					default:
-						break;
+					TeeTime teeTime = this.getTeeTimeList().get(i);
+					
+					List<Player> tempPlayerList = new ArrayList<Player>();
+					
+					switch (i) 
+					{
+						case 0:
+							
+							tempPlayerList = this.getGameTeeTimeList1().getTarget();
+							break;
+							
+						case 1:
+							
+							tempPlayerList = this.getGameTeeTimeList2().getTarget();
+							break;	
+							
+						case 2:
+							
+							tempPlayerList = this.getGameTeeTimeList3().getTarget();
+							break;	
+							
+						case 3:
+							
+							tempPlayerList = this.getGameTeeTimeList4().getTarget();
+							break;	
+							
+						case 4:
+			
+							tempPlayerList = this.getGameTeeTimeList5().getTarget();
+							break;
+							
+						case 5:
+							
+							tempPlayerList = this.getGameTeeTimeList6().getTarget();
+							break;	
+							
+						case 6:
+							
+							tempPlayerList = this.getGameTeeTimeList7().getTarget();
+							break;	
+							
+						case 7:
+							
+							tempPlayerList = this.getGameTeeTimeList8().getTarget();
+							break;	
+			
+						default:
+							break;
+					}
+					
+					for (int j = 0; j < tempPlayerList.size(); j++) 
+					{
+						String playerID = tempPlayerList.get(j).getPlayerID();
+						String gameID = game.getSelectedGame().getGameID();
+						Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
+						rd.setTeeTimeID(teeTime.getTeeTimeID());
+						rd.setTeeTime(teeTime);
+						golfmain.updateRound(rd);
+					}
+					
 				}
-				
-				for (int j = 0; j < tempPlayerList.size(); j++) 
-				{
-					String playerID = tempPlayerList.get(j).getPlayerID();
-					String gameID = game.getSelectedGame().getGameID();
-					Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
-					rd.setTeeTimeID(teeTime.getTeeTimeID());
-					rd.setTeeTime(teeTime);
-					golfmain.updateRound(rd);
-				}
-				
 			}
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tee Times Saved", "Tee Times Saved and staying on this page"));
 		}
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-	    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tee Times Saved", "Tee Times Saved and staying on this page"));
-	    
+		catch (Exception e)
+		{
+			log.error("Exception in saveAndStayTeeTimesPickList: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveAndStayTeeTimesPickList: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}	
 		return "";
 	}
 	

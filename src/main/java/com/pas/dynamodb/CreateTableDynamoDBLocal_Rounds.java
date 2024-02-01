@@ -36,16 +36,19 @@ import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
 import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
-public class CreateTableDynamoDBLocal_PlayerTeePreferences
+public class CreateTableDynamoDBLocal_Rounds
 {	 
-	private static String AWS_JSON_FILE_NAME = "PlayerTeesData.json";
-	private static String AWS_TABLE_NAME = "playerteepreferences";
-		
+	private static String AWS_JSON_FILE_NAME = "RoundsData.json";
+	private static String AWS_TABLE_NAME = "rounds";
+	
 	private static DynamoDbTable<DynamoPlayer> playersTable;
 	private static final String AWS_TABLE_NAME_PLAYERS = "players";
 	
-	private static DynamoDbTable<DynamoCourse> coursesTable;
-	private static final String AWS_TABLE_NAME_COURSES = "courses";
+	private static DynamoDbTable<DynamoGame> gamesTable;
+	private static final String AWS_TABLE_NAME_GAMES = "games";
+	
+	private static DynamoDbTable<DynamoTeeTime> teeTimesTable;
+	private static final String AWS_TABLE_NAME_TEETIMES = "teetimes";
 	
 	private static DynamoDbTable<DynamoCourseTee> courseTeesTable;
 	private static final String AWS_TABLE_NAME_COURSETEES = "coursetees";
@@ -72,11 +75,12 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
             deleteTable(ddbEnhancedClient);
             
             // Create a table in DynamoDB Local
-            DynamoDbTable<DynamoPlayerTeePreference> teetimeTable = createTable(ddbEnhancedClient, ddbClient);
+            DynamoDbTable<DynamoRound> teetimeTable = createTable(ddbEnhancedClient, ddbClient);
 
             //need the these tables to look up ids
             playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME_PLAYERS, TableSchema.fromBean(DynamoPlayer.class));
-            coursesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_COURSES, TableSchema.fromBean(DynamoCourse.class));
+            gamesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_GAMES, TableSchema.fromBean(DynamoGame.class));
+            teeTimesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_TEETIMES, TableSchema.fromBean(DynamoTeeTime.class));
             courseTeesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_COURSETEES, TableSchema.fromBean(DynamoCourseTee.class));
             
             loadTableData(teetimeTable);
@@ -95,7 +99,7 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
     
     private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
     {
-    	DynamoDbTable<DynamoPlayerTeePreference> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerTeePreference.class));
+    	DynamoDbTable<DynamoRound> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
         
         try
         {
@@ -108,16 +112,16 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
 		
 	}
 
-	private static void scan(DynamoDbTable<DynamoPlayerTeePreference> teetimeTable) 
+	private static void scan(DynamoDbTable<DynamoRound> roundsTable) 
     {
         try 
         {
-            Iterator<DynamoPlayerTeePreference> results = teetimeTable.scan().items().iterator();
+            Iterator<DynamoRound> results = roundsTable.scan().items().iterator();
             
             while (results.hasNext()) 
             {
-                DynamoPlayerTeePreference rec = results.next();
-                System.out.println("ID = " + rec.getPlayerTeePreferenceID() + " .. playerID = " + rec.getPlayerID());
+                DynamoRound rec = results.next();
+                System.out.println("ID = " + rec.getRoundID() + " .. playerID = " + rec.getPlayerID());
             }
         } 
         catch (DynamoDbException e) 
@@ -128,33 +132,36 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         System.out.println("Done with dynamo scan");
     }
    
-    private static void loadTableData(DynamoDbTable<DynamoPlayerTeePreference> playerTeePreferenceTable) throws Exception
+    private static void loadTableData(DynamoDbTable<DynamoRound> roundsTable) throws Exception
     {   
         // Insert data into the table
         System.out.println();
         System.out.println("Inserting data into the table:" + AWS_TABLE_NAME);
         System.out.println();        
         
-        List<DynamoPlayerTeePreference> playerTeePreferenceList = readFromFileAndConvert();
+        List<DynamoRound> roundsList = readFromFileAndConvert();
         
         DynamoDbIndex<DynamoPlayer> playersGSI = playersTable.index("gsi_OldPlayerID");
-        DynamoDbIndex<DynamoCourse> coursesGSI = coursesTable.index("gsi_OldCourseID");
+        DynamoDbIndex<DynamoGame> gamesGSI = gamesTable.index("gsi_OldGameID");
+        DynamoDbIndex<DynamoTeeTime> teeTimesGSI = teeTimesTable.index("gsi_oldTeeTimeID");
         DynamoDbIndex<DynamoCourseTee> courseTeesGSI = courseTeesTable.index("gsi_OldCourseTeeID");
         
-        if (playerTeePreferenceList == null)
+        if (roundsList == null)
         {
         	System.err.println("list from json file is Empty - can't do anything more so exiting");
             System.exit(1);
         }
         else
         {
-        	for (int i = 0; i < playerTeePreferenceList.size(); i++) 
+        	for (int i = 0; i < roundsList.size(); i++) 
     		{
-            	DynamoPlayerTeePreference dtt = playerTeePreferenceList.get(i);
+            	DynamoRound dr = roundsList.get(i);
               	
-            	dtt.setPlayerTeePreferenceID(UUID.randomUUID().toString());
+            	dr.setRoundID(UUID.randomUUID().toString());
             	
-            	Key key = Key.builder().partitionValue(dtt.getOldPlayerID()).build();
+            	//PlayerID
+            	
+            	Key key = Key.builder().partitionValue(dr.getOldPlayerID()).build();
             	QueryConditional qc = QueryConditional.keyEqualTo(key);
             	
             	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
@@ -169,56 +176,85 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
             	if (dtList != null && dtList.size() > 0)
             	{
             		DynamoPlayer dt = dtList.get(0);
-            		dtt.setPlayerID(dt.getPlayerID());
-            		dtt.setPlayerUserName(dt.getUsername());
-            		dtt.setPlayerFullName(dt.getFirstName() + " " + dt.getLastName());
+            		dr.setPlayerID(dt.getPlayerID());
+            		dr.setPlayerName(dt.getFirstName() + " " + dt.getLastName());
+            		dr.setPlayerHandicapIndex(dt.getHandicap());
             	} 
             	else
             	{
-            		System.err.println("Player ID will be null on this one! OldPlayerID = " + dtt.getOldPlayerID());
+            		System.err.println("Player ID will be null on this one! OldPlayerID = " + dr.getOldPlayerID());
             	}
              	
-             	key = Key.builder().partitionValue(dtt.getOldCourseID()).build();
+            	//GameID
+            	
+             	key = Key.builder().partitionValue(dr.getOldGameID()).build();
             	qc = QueryConditional.keyEqualTo(key);
             	
             	qer = QueryEnhancedRequest.builder()
                         .queryConditional(qc)
                         .build();
-            	SdkIterable<Page<DynamoCourse>> coursesByCourseID = coursesGSI.query(qer);
+            	SdkIterable<Page<DynamoGame>> gamesByCourseID = gamesGSI.query(qer);
             	     
-            	PageIterable<DynamoCourse> pagesCourse = PageIterable.create(coursesByCourseID);
+            	PageIterable<DynamoGame> pagesGame = PageIterable.create(gamesByCourseID);
             	
-            	List<DynamoCourse> courseList = pagesCourse.items().stream().toList();
+            	List<DynamoGame> gamesList = pagesGame.items().stream().toList();
             	
-            	if (courseList != null && courseList.size() > 0)
+            	if (gamesList != null && gamesList.size() > 0)
             	{
-            		DynamoCourse dc = courseList.get(0);
-            		dtt.setCourseID(dc.getCourseID());
-            		dtt.setCourseName(dc.getCourseName());
+            		DynamoGame dc = gamesList.get(0);
+            		dr.setGameID(dc.getGameID());
+            	}
+            	else
+            	{
+            		System.err.println("Game ID will be null on this one! OldGameID = " + dr.getOldGameID());
             	}
             	
-            	key = Key.builder().partitionValue(dtt.getOldCourseTeeID()).build();
+            	//CourseTeeID
+            	key = Key.builder().partitionValue(dr.getOldCourseTeeID()).build();
             	qc = QueryConditional.keyEqualTo(key);
             	
             	qer = QueryEnhancedRequest.builder()
                         .queryConditional(qc)
                         .build();
-            	SdkIterable<Page<DynamoCourseTee>> courseTeesByCourseTeeID = courseTeesGSI.query(qer);
+            	SdkIterable<Page<DynamoCourseTee>> ctid = courseTeesGSI.query(qer);
             	     
-            	PageIterable<DynamoCourseTee> pagesCourseTee = PageIterable.create(courseTeesByCourseTeeID);
+            	PageIterable<DynamoCourseTee> pagesct = PageIterable.create(ctid);
             	
-            	List<DynamoCourseTee> courseTeesList = pagesCourseTee.items().stream().toList();
+            	List<DynamoCourseTee> courseTeesList = pagesct.items().stream().toList();
             	
             	if (courseTeesList != null && courseTeesList.size() > 0)
             	{
-            		DynamoCourseTee dct = courseTeesList.get(0);
-            		dtt.setCourseTeeID(dct.getCourseTeeID());
-            		dtt.setTeeColor(dct.getTeeColor());
+            		DynamoCourseTee dc = courseTeesList.get(0);
+            		dr.setCourseTeeID(dc.getCourseTeeID());
+            		dr.setCourseTeeColor(dc.getTeeColor());
+            	}
+            	
+            	//TeeTimeID
+            	key = Key.builder().partitionValue(dr.getOldTeeTimeID()).build();
+            	qc = QueryConditional.keyEqualTo(key);
+            	
+            	qer = QueryEnhancedRequest.builder()
+                        .queryConditional(qc)
+                        .build();
+            	SdkIterable<Page<DynamoTeeTime>> dtID = teeTimesGSI.query(qer);
+            	     
+            	PageIterable<DynamoTeeTime> pagesTeeTime = PageIterable.create(dtID);
+            	
+            	List<DynamoTeeTime> teeTimesList = pagesTeeTime.items().stream().toList();
+            	
+            	if (teeTimesList != null && teeTimesList.size() > 0)
+            	{
+            		DynamoTeeTime dt = teeTimesList.get(0);
+            		dr.setTeeTimeID(dt.getTeeTimeID());
+            	}
+            	else
+            	{
+            		System.err.println("TeeTime ID will be null on this one! OldTeeTimeID = " + dr.getOldTeeTimeID());
             	}
             	
                 try 
                 {
-                	playerTeePreferenceTable.putItem(dtt);
+                	roundsTable.putItem(dr);
                 } 
                 catch (ResourceNotFoundException e) 
                 {
@@ -236,15 +272,15 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         
 	}
     
-    private static List<DynamoPlayerTeePreference> readFromFileAndConvert() 
+    private static List<DynamoRound> readFromFileAndConvert() 
     {
     	String jsonFile = "C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\data\\" + AWS_JSON_FILE_NAME;
     	
         try (InputStream inputStream = new FileInputStream(new File(jsonFile));
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) 
         {
-        	DynamoPlayerTeePreference[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoPlayerTeePreference[].class);
-        	List<DynamoPlayerTeePreference> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
+        	DynamoRound[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoRound[].class);
+        	List<DynamoRound> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
         	return tempList;
         } 
         catch (final Exception exception) 
@@ -254,9 +290,9 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         return null;
     }
     
-    private static DynamoDbTable<DynamoPlayerTeePreference> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
+    private static DynamoDbTable<DynamoRound> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
     {
-        DynamoDbTable<DynamoPlayerTeePreference> teetimesTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerTeePreference.class));
+        DynamoDbTable<DynamoRound> teetimesTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
         
         // Create the DynamoDB table.  If it exists, it'll throw an exception
         
@@ -265,7 +301,7 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         	teetimesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                     .globalSecondaryIndices(
                         EnhancedGlobalSecondaryIndex.builder()
-                                                    .indexName("gsi_OldPlayerID")
+                                                    .indexName("gsi_GameID")
                                                     .projection(p -> p.projectionType(ProjectionType.ALL))
                                                     .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                                                     .build()));

@@ -74,7 +74,15 @@ public class PlayerDAO implements Serializable
 	{
 		DynamoPlayer dynamoPlayer = new DynamoPlayer();
         
-		dynamoPlayer.setPlayerID(UUID.randomUUID().toString());
+		if (player.getPlayerID() == null)
+		{
+			dynamoPlayer.setPlayerID(UUID.randomUUID().toString());
+		}
+		else
+		{
+			dynamoPlayer.setPlayerID(player.getPlayerID());
+		}
+				
 		dynamoPlayer.setActive(player.isActive());
 		dynamoPlayer.setEmailAddress(player.getEmailAddress());
 		dynamoPlayer.setFirstName(player.getFirstName());

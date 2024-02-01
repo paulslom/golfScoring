@@ -6,7 +6,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @Named("pc_GolfUser")
 @RequestScoped
@@ -62,7 +61,6 @@ public class GolfUser implements Serializable
 		this.userId = userId;
 	}
 	
-	@DynamoDbSortKey
 	public String getUserRole() 
 	{
 		return userRole;

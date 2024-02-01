@@ -1284,17 +1284,17 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return roundDAO.getRoundsForGame(game);
 	}
 	
-	public String addRound(Round round) 
+	public String addRound(Round round) throws Exception 
 	{
 		return roundDAO.addRound(round);
 	}
 	
-	public void updateRound(Round round) 
+	public void updateRound(Round round) throws Exception 
 	{
 		roundDAO.updateRound(round);
 	}
 	
-	public void deleteRoundFromDB(String roundID) 
+	public void deleteRoundFromDB(String roundID)  throws Exception 
 	{
 		roundDAO.deleteRoundFromDB(roundID);
 	}
@@ -1319,12 +1319,12 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return roundDAO.countRoundsForGameFromDB(gm);
 	}
 
-	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal newRoundHandicap) 
+	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal newRoundHandicap) throws Exception 
 	{
 		roundDAO.updateRoundHandicap(selectedGame, playerID, newRoundHandicap);		
 	}
 
-	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) 
+	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) throws Exception 
 	{
 		roundDAO.updateRoundTeamNumber(selectedGame, playerID, teamNumber);		
 	}
@@ -1389,7 +1389,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		return playerMoneyDAO.getPlayerMoneyByGame(selectedGame);
 	}
 
-	public void addPlayerMoney(PlayerMoney pm) 
+	public void addPlayerMoney(PlayerMoney pm) throws Exception 
 	{
 		playerMoneyDAO.addPlayerMoney(pm);		
 	}

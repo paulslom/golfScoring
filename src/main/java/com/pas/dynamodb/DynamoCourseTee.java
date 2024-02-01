@@ -40,6 +40,7 @@ public class DynamoCourseTee
 		this.oldCourseTeeID = oldCourseTeeID;
 	}
 
+	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_courseID")
 	public String getCourseID() {
 		return courseID;
 	}

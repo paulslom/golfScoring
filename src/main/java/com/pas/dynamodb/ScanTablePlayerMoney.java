@@ -19,9 +19,9 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
-public class ScanTablePlayers
+public class ScanTablePlayerMoney
 {	 
-	private static String AWS_TABLE_NAME = "players";
+	private static String AWS_TABLE_NAME = "playermoney";
 	
     public static void main(String[] args) 
     {
@@ -41,10 +41,11 @@ public class ScanTablePlayers
                     .dynamoDbClient(ddbClient)                           
                     .build();
             
-            DynamoDbTable<DynamoPlayer> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
+            DynamoDbTable<DynamoPlayerMoney> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
 
             showIndexes(AWS_REGION, uri);
-            
+           
+            //  List all the tables in DynamoDB Local          
             scan(table);
             
         } 
@@ -57,7 +58,7 @@ public class ScanTablePlayers
         //System.exit(1);
     }
     
-    private static void showIndexes(String AWS_REGION, String uri) 
+	private static void showIndexes(String AWS_REGION, String uri) 
 	{
 	    //Have to use dynamo V1 to use describe table to see indexes
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder
@@ -83,25 +84,27 @@ public class ScanTablePlayers
                 KeySchemaElement kse = kseIter.next();
                 System.out.printf("\t%s: %s\n", kse.getAttributeName(), kse.getKeyType());
             }
-        }        
+        }
+        
 		
 	}
-    
-	private static void scan(DynamoDbTable<DynamoPlayer> table) 
+
+	private static void scan(DynamoDbTable<DynamoPlayerMoney> table) 
     {
-		System.out.println("These are the contents of the PLAYERS table in dynamoDB");
-		
+		System.out.println("These are the contents of the teetimes table in dynamoDB");
+				
         try 
         {
-            Iterator<DynamoPlayer> results = table.scan().items().iterator();
-            
+            Iterator<DynamoPlayerMoney> results = table.scan().items().iterator();
+          	
             while (results.hasNext()) 
             {
-                DynamoPlayer rec = results.next();
-                System.out.println("playerID = " + rec.getPlayerID() + " .. oldPlayerID = " + rec.getOldPlayerID()
-                		+  " .. username = " + rec.getUsername() +  " .. firstName = " + rec.getFirstName()
-                		+  " .. lastName = " + rec.getLastName() +  " .. handicap = " + rec.getHandicap()
-                		+  " .. emailAddress = " + rec.getEmailAddress() +  " .. active = " + rec.isActive());
+                DynamoPlayerMoney rec = results.next();
+                System.out.println("playerMoneyID = " + rec.getPlayerMoneyID()
+                		+ "  playerID = " + rec.getPlayerID()
+                		+ "  gameID = " + rec.getGameID()
+                		+ "  description = " + rec.getDescription()
+                		+ "  amount = " + rec.getAmount());
             }
         } 
         catch (DynamoDbException e) 

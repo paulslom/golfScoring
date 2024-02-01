@@ -6,22 +6,22 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
 @DynamoDbBean
 public class DynamoPlayerMoney 
 {
+	private String playerMoneyID;
+	private int oldPlayerMoneyID;
+	private String gameID;
+	private int oldGameID;
 	private String playerID;
 	private int oldPlayerID;
-	private String username;
-	private String firstName;
-	private String lastName;
-	private BigDecimal handicap;
-	private String emailAddress;
-	private boolean active;
+	private String description;
+	private BigDecimal amount;
 
 	@DynamoDBAttribute(attributeName = "PlayerID")
-	@DynamoDbSortKey //sort key (so we can do auto-incrementing)
+	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_PlayerID")
 	public String getPlayerID() {
 		return playerID;
 	}
@@ -30,66 +30,60 @@ public class DynamoPlayerMoney
 		this.playerID = playerID;
 	}
 
-	@DynamoDBAttribute(attributeName = "Username")
-	@DynamoDbPartitionKey //primary key
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	@DynamoDBAttribute(attributeName = "FirstName")
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	@DynamoDBAttribute(attributeName = "LastName")
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	@DynamoDBAttribute(attributeName = "Handicap")
-	public BigDecimal getHandicap() {
-		return handicap;
-	}
-
-	public void setHandicap(BigDecimal handicap) {
-		this.handicap = handicap;
-	}
-
-	@DynamoDBAttribute(attributeName = "emailAddress")
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	@DynamoDBAttribute(attributeName = "Active")
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	public int getOldPlayerID() {
 		return oldPlayerID;
 	}
 
 	public void setOldPlayerID(int oldPlayerID) {
 		this.oldPlayerID = oldPlayerID;
+	}
+
+	@DynamoDbPartitionKey //primary key
+	public String getPlayerMoneyID() {
+		return playerMoneyID;
+	}
+
+	public void setPlayerMoneyID(String playerMoneyID) {
+		this.playerMoneyID = playerMoneyID;
+	}
+
+	public int getOldPlayerMoneyID() {
+		return oldPlayerMoneyID;
+	}
+
+	public void setOldPlayerMoneyID(int oldPlayerMoneyID) {
+		this.oldPlayerMoneyID = oldPlayerMoneyID;
+	}
+
+	public String getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
+	}
+
+	public int getOldGameID() {
+		return oldGameID;
+	}
+
+	public void setOldGameID(int oldGameID) {
+		this.oldGameID = oldGameID;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 }

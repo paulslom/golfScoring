@@ -67,6 +67,7 @@ public class DynamoTeeTime
 	}
 
 	@DynamoDBAttribute(attributeName = "OldTeeTimeID")
+	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_oldTeeTimeID")
 	public int getOldTeeTimeID() {
 		return oldTeeTimeID;
 	}

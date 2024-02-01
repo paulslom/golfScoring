@@ -8,8 +8,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
-import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndexDescription;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 
@@ -23,23 +21,14 @@ import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
 public class ScanTableTeeTimes
 {	 
-	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
-	private static String AWS_REGION = "us-east-1";
 	private static String AWS_TABLE_NAME = "teetimes";
-	private static String AWS_DYNAMODB_LOCAL_DB_LOCATION = "C:/Paul/DynamoDB";
 	
     public static void main(String[] args) 
     {
         try 
         {
-            System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
-            String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
-            
-            // Create an in-memory and in-process instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", AWS_DYNAMODB_LOCAL_DB_LOCATION};
-            System.out.println("Starting DynamoDB Local...");
-            DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(localArgs);
-            server.start();
+        	String AWS_REGION = args[0];
+        	String uri = args[1];        
             
             DynamoDbClient ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
@@ -54,7 +43,7 @@ public class ScanTableTeeTimes
             
             DynamoDbTable<DynamoTeeTime> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoTeeTime.class));
 
-            showIndexes();
+            showIndexes(AWS_REGION, uri);
             
             scan(table);
             
@@ -65,14 +54,12 @@ public class ScanTableTeeTimes
             throw new RuntimeException(e);
         }
         
-        System.exit(1);
+        //System.exit(1);
     }
     
-    private static void showIndexes() 
+    private static void showIndexes(String AWS_REGION, String uri) 
 	{
-		String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
-		
-		 //Have to use dynamo V1 to use describe table to see indexes
+	    //Have to use dynamo V1 to use describe table to see indexes
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder
         			.standard()
         			.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(uri, AWS_REGION))

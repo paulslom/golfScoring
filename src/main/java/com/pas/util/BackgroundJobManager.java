@@ -41,7 +41,7 @@ public class BackgroundJobManager implements ServletContextListener
     	//int minute = 28;
     	//int second = 0;
     	
-    	ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/New_York"));
+    	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));
     	ZonedDateTime nextRun = now.withHour(hour).withMinute(minute).withSecond(second);
     	
     	if(now.compareTo(nextRun) > 0)

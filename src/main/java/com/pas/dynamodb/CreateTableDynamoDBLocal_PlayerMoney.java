@@ -7,21 +7,26 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
-import com.pas.beans.Player;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.internal.waiters.ResponseOrException;
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.EnhancedGlobalSecondaryIndex;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
@@ -31,10 +36,16 @@ import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
 import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
-public class CreateTableDynamoDBLocal_Players
+public class CreateTableDynamoDBLocal_PlayerMoney
 {	 
-	private static String AWS_JSON_FILE_NAME = "PlayersData.json";
-	private static String AWS_TABLE_NAME = "players";
+	private static String AWS_JSON_FILE_NAME = "PlayerMoneyData.json";
+	private static String AWS_TABLE_NAME = "playermoney";
+	
+	private static DynamoDbTable<DynamoPlayer> playersTable;
+	private static final String AWS_TABLE_NAME_PLAYERS = "players";
+	
+	private static DynamoDbTable<DynamoGame> gamesTable;
+	private static final String AWS_TABLE_NAME_GAMES = "games";
 	
     public static void main(String[] args) 
     {
@@ -58,11 +69,16 @@ public class CreateTableDynamoDBLocal_Players
             deleteTable(ddbEnhancedClient);
             
             // Create a table in DynamoDB Local
-            DynamoDbTable<DynamoPlayer> playerTable = createTable(ddbEnhancedClient, ddbClient);
+            DynamoDbTable<DynamoPlayerMoney> teetimeTable = createTable(ddbEnhancedClient, ddbClient);
 
-            loadTableData(playerTable);
+            //need the these tables to look up ids
+            playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME_PLAYERS, TableSchema.fromBean(DynamoPlayer.class));
+            gamesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_GAMES, TableSchema.fromBean(DynamoGame.class));
             
-            scan(playerTable);            
+            loadTableData(teetimeTable);
+            
+            scan(teetimeTable);
+            
         } 
         catch (Exception e) 
         {
@@ -75,11 +91,11 @@ public class CreateTableDynamoDBLocal_Players
     
     private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
     {
-    	DynamoDbTable<DynamoPlayer> playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
+    	DynamoDbTable<DynamoPlayerMoney> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
         
         try
         {
-        	playersTable.deleteTable();
+        	table.deleteTable();
         }
         catch (Exception e)
         {
@@ -88,16 +104,16 @@ public class CreateTableDynamoDBLocal_Players
 		
 	}
 
-	private static void scan(DynamoDbTable<DynamoPlayer> playerTable) 
+	private static void scan(DynamoDbTable<DynamoPlayerMoney> teetimeTable) 
     {
         try 
         {
-            Iterator<DynamoPlayer> results = playerTable.scan().items().iterator();
+            Iterator<DynamoPlayerMoney> results = teetimeTable.scan().items().iterator();
             
             while (results.hasNext()) 
             {
-                DynamoPlayer rec = results.next();
-                System.out.println("ID = " + rec.getPlayerID() + " .. last name = " + rec.getLastName());
+                DynamoPlayerMoney rec = results.next();
+                System.out.println("ID = " + rec.getPlayerMoneyID() + " .. playerID = " + rec.getPlayerID());
             }
         } 
         catch (DynamoDbException e) 
@@ -108,40 +124,74 @@ public class CreateTableDynamoDBLocal_Players
         System.out.println("Done with dynamo scan");
     }
    
-    private static void loadTableData(DynamoDbTable<DynamoPlayer> playerTable) throws Exception
+    private static void loadTableData(DynamoDbTable<DynamoPlayerMoney> playerMoneyTable) throws Exception
     {   
         // Insert data into the table
         System.out.println();
         System.out.println("Inserting data into the table:" + AWS_TABLE_NAME);
         System.out.println();        
         
-        List<Player> playerList = readFromFileAndConvert();
+        List<DynamoPlayerMoney> playerMoneyList = readFromFileAndConvert();
         
-        if (playerList == null)
+        DynamoDbIndex<DynamoPlayer> playersGSI = playersTable.index("gsi_OldPlayerID");
+        DynamoDbIndex<DynamoGame> gamesGSI = gamesTable.index("gsi_OldGameID");
+        
+        if (playerMoneyList == null)
         {
         	System.err.println("list from json file is Empty - can't do anything more so exiting");
             System.exit(1);
         }
         else
         {
-        	for (int i = 0; i < playerList.size(); i++) 
+        	for (int i = 0; i < playerMoneyList.size(); i++) 
     		{
-            	Player obj = playerList.get(i);
+            	DynamoPlayerMoney dtt = playerMoneyList.get(i);
+              	
+            	dtt.setPlayerMoneyID(UUID.randomUUID().toString());
             	
-            	DynamoPlayer dynamoObj = new DynamoPlayer();
+            	Key key = Key.builder().partitionValue(dtt.getOldPlayerID()).build();
+            	QueryConditional qc = QueryConditional.keyEqualTo(key);
             	
-            	dynamoObj.setPlayerID(UUID.randomUUID().toString());
-            	dynamoObj.setOldPlayerID(obj.getOldPlayerID());
-            	dynamoObj.setUsername(obj.getUsername());
-            	dynamoObj.setFirstName(obj.getFirstName());
-            	dynamoObj.setLastName(obj.getLastName());
-            	dynamoObj.setHandicap(obj.getHandicap());
-            	dynamoObj.setEmailAddress(obj.getEmailAddress());
-            	dynamoObj.setActive(obj.isActive());
+            	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+                        .queryConditional(qc)
+                        .build();
+            	SdkIterable<Page<DynamoPlayer>> playersByOldPlayerID = playersGSI.query(qer);
+            	     
+            	PageIterable<DynamoPlayer> pages = PageIterable.create(playersByOldPlayerID);
+            	
+            	List<DynamoPlayer> dtList = pages.items().stream().toList();
+            	
+            	if (dtList != null && dtList.size() > 0)
+            	{
+            		DynamoPlayer dt = dtList.get(0);
+            		dtt.setPlayerID(dt.getPlayerID());
+            	} 
+            	else
+            	{
+            		System.err.println("Player ID will be null on this one! OldPlayerID = " + dtt.getOldPlayerID());
+            	}
+             	
+             	key = Key.builder().partitionValue(dtt.getOldGameID()).build();
+            	qc = QueryConditional.keyEqualTo(key);
+            	
+            	qer = QueryEnhancedRequest.builder()
+                        .queryConditional(qc)
+                        .build();
+            	SdkIterable<Page<DynamoGame>> gamesByCourseID = gamesGSI.query(qer);
+            	     
+            	PageIterable<DynamoGame> pagesGame = PageIterable.create(gamesByCourseID);
+            	
+            	List<DynamoGame> gamesList = pagesGame.items().stream().toList();
+            	
+            	if (gamesList != null && gamesList.size() > 0)
+            	{
+            		DynamoGame dc = gamesList.get(0);
+            		dtt.setGameID(dc.getGameID());
+            	}
             	
                 try 
                 {
-                    playerTable.putItem(dynamoObj);
+                	playerMoneyTable.putItem(dtt);
                 } 
                 catch (ResourceNotFoundException e) 
                 {
@@ -159,16 +209,16 @@ public class CreateTableDynamoDBLocal_Players
         
 	}
     
-    private static List<Player> readFromFileAndConvert() 
+    private static List<DynamoPlayerMoney> readFromFileAndConvert() 
     {
     	String jsonFile = "C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\data\\" + AWS_JSON_FILE_NAME;
     	
         try (InputStream inputStream = new FileInputStream(new File(jsonFile));
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) 
         {
-        	Player[] playerArray = new Gson().fromJson(reader, Player[].class);
-        	List<Player> playerList = Arrays.asList(playerArray);
-        	return playerList;
+        	DynamoPlayerMoney[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoPlayerMoney[].class);
+        	List<DynamoPlayerMoney> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
+        	return tempList;
         } 
         catch (final Exception exception) 
         {
@@ -177,32 +227,22 @@ public class CreateTableDynamoDBLocal_Players
         return null;
     }
     
-    private static DynamoDbTable<DynamoPlayer> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
+    private static DynamoDbTable<DynamoPlayerMoney> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
     {
-        DynamoDbTable<DynamoPlayer> playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
+        DynamoDbTable<DynamoPlayerMoney> teetimesTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
         
         // Create the DynamoDB table.  If it exists, it'll throw an exception
         
         try
         {
-        	ArrayList<EnhancedGlobalSecondaryIndex> gsindices = new ArrayList<>();
-        	
-        	EnhancedGlobalSecondaryIndex gameIDGSI = EnhancedGlobalSecondaryIndex.builder()
-        			.indexName("gsi_Username")
-        			.projection(p -> p.projectionType(ProjectionType.ALL))
-        			.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-        			.build();
-        	gsindices.add(gameIDGSI);
-        	
-        	EnhancedGlobalSecondaryIndex oldTeeTimeIDGSI = EnhancedGlobalSecondaryIndex.builder()
-                    .indexName("gsi_OldPlayerID")
-                    .projection(p -> p.projectionType(ProjectionType.ALL))
-                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .build();
-        	gsindices.add(oldTeeTimeIDGSI);
-             	
-        	playersTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(gsindices).build());	    
+        	teetimesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                    .globalSecondaryIndices(
+                        EnhancedGlobalSecondaryIndex.builder()
+                                                    .indexName("gsi_PlayerID")
+                                                    .projection(p -> p.projectionType(ProjectionType.ALL))
+                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                                                    .build()));
+	        
         }
         catch (ResourceInUseException riue)
         {
@@ -226,7 +266,7 @@ public class CreateTableDynamoDBLocal_Players
             System.out.println(AWS_TABLE_NAME + " table was created.");
         }        
         
-        return playersTable;
+        return teetimesTable;
     }
    
 }

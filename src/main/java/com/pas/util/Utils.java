@@ -46,6 +46,8 @@ public class Utils
 	public static int TOTAL_STYLE_HOLENUM = 21;
 	public static int NET_STYLE_HOLENUM = 22;
 	
+	public static String MY_TIME_ZONE = "America/New_York";
+	
 	public static String getLastYearsLastDayDate() 
 	{
 	    Calendar prevYear = Calendar.getInstance();

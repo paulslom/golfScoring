@@ -273,7 +273,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		this.getPlayersSignedUpList().clear();
 		
 		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
-		TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
+		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
 		signupSDF.setTimeZone(etTimeZone);
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
@@ -483,52 +483,60 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " clicked signup button");
 		
-		Round newRound = new Round();
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
-		
-		newRound.setGameID(game1.getGameID());
-		newRound.setPlayerID(tempPlayer.getPlayerID());
-		newRound.setPlayer(tempPlayer);
-		newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
-		newRound.setTeamNumber(0); //set to skins only for now until admin sets teams up.
-		if (tempPlayer.getTeeTime() != null)
+		try
 		{
-			newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
-			newRound.setTeeTime(tempPlayer.getTeeTime());
-			//comment 1
+			Round newRound = new Round();
+			
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			
+			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
+			
+			newRound.setGameID(game1.getGameID());
+			newRound.setPlayerID(tempPlayer.getPlayerID());
+			newRound.setPlayer(tempPlayer);
+			newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
+			newRound.setTeamNumber(0); //set to skins only for now until admin sets teams up.
+			if (tempPlayer.getTeeTime() != null)
+			{
+				newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
+				newRound.setTeeTime(tempPlayer.getTeeTime());
+				//comment 1
+			}
+			newRound.setCourseTeeID(game1.getCourseTeeID());
+			
+			newRound.setRoundHandicap(tempPlayer.getHandicap()); //set this to their usga ghin handicap index when they sign up.  We'll tweak this later when entering them on the set game handicaps page
+			
+			if (game1.getCourseTeeID() == null || game1.getCourseTeeID().length() == 0)
+			{
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No tee selected - please select tees to play from",null);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			else
+			{
+				golfmain.addRound(newRound);
+				
+				this.getAvailableGameList().clear();
+				this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
+				
+				resetSignedUpMessage(game1);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String displayedGameDate = sdf.format(game1.getGameDate());		
+			
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate,null);
+				
+				log.info("Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate);
+				
+		        FacesContext.getCurrentInstance().addMessage(null, msg);
+	
+			}
 		}
-		newRound.setCourseTeeID(game1.getCourseTeeID());
-		
-		newRound.setRoundHandicap(tempPlayer.getHandicap()); //set this to their usga ghin handicap index when they sign up.  We'll tweak this later when entering them on the set game handicaps page
-		
-		if (game1.getCourseTeeID() == null || game1.getCourseTeeID().length() == 0)
+		catch (Exception e)
 		{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No tee selected - please select tees to play from",null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		else
-		{
-			golfmain.addRound(newRound);
-			
-			this.getAvailableGameList().clear();
-			this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
-			
-			resetSignedUpMessage(game1);
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String displayedGameDate = sdf.format(game1.getGameDate());		
-		
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate,null);
-			
-			log.info("Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate);
-			
-	        FacesContext.getCurrentInstance().addMessage(null, msg);
-
-		}
-		        
+			log.error("Exception in signUp: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in signUp: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}	        
 		return "";
 	}
 	
@@ -536,32 +544,41 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " clicked withdraw button");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		try
+		{
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			
+			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 		
-		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
-	
-		Round theRound = golfmain.getRoundByGameandPlayer(game1.gameID, tempPlayer.getPlayerID());
+			Round theRound = golfmain.getRoundByGameandPlayer(game1.gameID, tempPlayer.getPlayerID());
+			
+			golfmain.deleteRoundFromDB(theRound.getRoundID());
+			
+			this.getAvailableGameList().clear();
+			this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
 		
-		golfmain.deleteRoundFromDB(theRound.getRoundID());
+			resetSignedUpMessage(game1);
+			
+			//If we have a withdrawal AFTER the game has been closed for signups, any admin role needs to know about that.  Email them.
+			//if (game1.isGameClosedForSignups())
+			//kind of want to always know about this so commented out the if block 2020-07-04
+			//{
+				emailAdminsAboutWithdrawal(game1, tempPlayer);
+			//}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String displayedGameDate = sdf.format(game1.getGameDate());		
 		
-		this.getAvailableGameList().clear();
-		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
-	
-		resetSignedUpMessage(game1);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + theRound.getPlayerName() + " successfully withdrew from game on " + displayedGameDate,null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		catch (Exception e)
+		{
+			log.error("Exception in withdraw: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in withdraw: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		
-		//If we have a withdrawal AFTER the game has been closed for signups, any admin role needs to know about that.  Email them.
-		//if (game1.isGameClosedForSignups())
-		//kind of want to always know about this so commented out the if block 2020-07-04
-		//{
-			emailAdminsAboutWithdrawal(game1, tempPlayer);
-		//}
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String displayedGameDate = sdf.format(game1.getGameDate());		
-	
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + theRound.getPlayerName() + " successfully withdrew from game on " + displayedGameDate,null);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    
 		return "";
 	}
 	
@@ -686,7 +703,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		return "";
 	}
 		
-	private void addEntryFees() 
+	private void addEntryFees() throws Exception 
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
@@ -714,7 +731,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}		
 	}
 
-	private void calculateIndividualGrossAndNet() 
+	private void calculateIndividualGrossAndNet() throws Exception 
 	{	
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
@@ -916,7 +933,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				
 	}
 
-	private void calculateTeams() 
+	private void calculateTeams() throws Exception 
 	{
 		log.info(getTempUserName() + " entering calculateTeams");
 			
@@ -1000,7 +1017,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		log.info(getTempUserName() + " leaving calculateTeams");		
 	}
 
-	private void calcTeamIndividualWinnings() 
+	private void calcTeamIndividualWinnings() throws Exception 
 	{
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
@@ -1090,7 +1107,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 	}
 
-	private void calculateSkins() 
+	private void calculateSkins() throws Exception 
 	{
 		log.info(getTempUserName() + " entering calculateSkins");
 		

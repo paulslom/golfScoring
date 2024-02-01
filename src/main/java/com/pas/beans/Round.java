@@ -523,18 +523,26 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String saveAndStayPickTeams()
 	{
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		for (int i = 0; i < this.getRoundsForGame().size(); i++) 
+		try
 		{
-			Round rd = this.getRoundsForGame().get(i);
-			golfmain.updateRoundTeamNumber(game.getSelectedGame(), rd.getPlayerID(), rd.getTeamNumber());			
+			Game game = BeanUtilJSF.getBean("pc_Game");
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			
+			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
+			{
+				Round rd = this.getRoundsForGame().get(i);
+				golfmain.updateRoundTeamNumber(game.getSelectedGame(), rd.getPlayerID(), rd.getTeamNumber());			
+			}
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Teams Saved", "Teams saved"));	 
 		}
+		catch (Exception e) 
+		{
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}	
 		
-		FacesContext context = FacesContext.getCurrentInstance();
-	    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Teams Saved", "Teams saved"));
-	 
 		return "";
 	}
 	public String proceedToPickTeams()
@@ -925,106 +933,123 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	{
 		log.info(getTempUserName() + " entering updateAllRounds method");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		int updatedRounds = 0;
-		
-		this.setDisableRunGameNavigate(false);
-		
-		synchronized (this.getSyncGameRoundList())
+		try
 		{
-			for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			
+			int updatedRounds = 0;
+			
+			this.setDisableRunGameNavigate(false);
+			
+			synchronized (this.getSyncGameRoundList())
 			{
-				Round tempRound = this.getSyncGameRoundList().get(i);
-				
-				if (tempRound.getHole1Score() == null)
+				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
 				{
-					continue;
+					Round tempRound = this.getSyncGameRoundList().get(i);
+					
+					if (tempRound.getHole1Score() == null)
+					{
+						continue;
+					}
+					
+					log.info(getTempUserName() + " in updateAllRounds method roundID = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName());
+					
+					int frontScore = tempRound.getHole1Score() + tempRound.getHole2Score() + tempRound.getHole3Score();
+					frontScore = frontScore + tempRound.getHole4Score() + tempRound.getHole5Score() + tempRound.getHole6Score();
+					frontScore = frontScore + tempRound.getHole7Score() + tempRound.getHole8Score() + tempRound.getHole9Score();
+					
+					tempRound.setFront9Total(frontScore);
+					
+					int backScore = tempRound.getHole10Score() + tempRound.getHole11Score() + tempRound.getHole12Score();
+					backScore = backScore + tempRound.getHole13Score() + tempRound.getHole14Score() + tempRound.getHole15Score();
+					backScore = backScore + tempRound.getHole16Score() + tempRound.getHole17Score() + tempRound.getHole18Score();
+					
+					tempRound.setBack9Total(backScore);
+					
+					tempRound.setTotalScore(frontScore + backScore); 
+					
+					if (tempRound.getTotalScore() == 0)
+					{
+						this.setDisableRunGameNavigate(true);
+					}
+					
+					tempRound.setNetScore((new BigDecimal(tempRound.getTotalScore())).subtract(tempRound.getRoundHandicap()));
+					
+					Game game = golfmain.getGameByGameID(tempRound.getGameID());
+					Course course = golfmain.getCoursesMap().get(game.getCourseID());
+					int coursePar = course.getCoursePar();
+					int scoreToPar = tempRound.getTotalScore() - coursePar;
+					String scoreToParString = "";
+					if (scoreToPar < 0)
+					{
+						scoreToParString = String.valueOf(scoreToPar);
+					}
+					else if (scoreToPar == 0)
+					{
+						scoreToParString = "E";
+					}
+					else
+					{
+						scoreToParString = "+" + String.valueOf(scoreToPar);
+					}
+					
+					tempRound.setTotalToPar(scoreToParString);
+					
+					log.info(getTempUserName() + " about to update round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
+					
+					golfmain.updateRound(tempRound);
+					
+					log.info(getTempUserName() + " completed updating round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
+					
+					updatedRounds++;
 				}
-				
-				log.info(getTempUserName() + " in updateAllRounds method roundID = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName());
-				
-				int frontScore = tempRound.getHole1Score() + tempRound.getHole2Score() + tempRound.getHole3Score();
-				frontScore = frontScore + tempRound.getHole4Score() + tempRound.getHole5Score() + tempRound.getHole6Score();
-				frontScore = frontScore + tempRound.getHole7Score() + tempRound.getHole8Score() + tempRound.getHole9Score();
-				
-				tempRound.setFront9Total(frontScore);
-				
-				int backScore = tempRound.getHole10Score() + tempRound.getHole11Score() + tempRound.getHole12Score();
-				backScore = backScore + tempRound.getHole13Score() + tempRound.getHole14Score() + tempRound.getHole15Score();
-				backScore = backScore + tempRound.getHole16Score() + tempRound.getHole17Score() + tempRound.getHole18Score();
-				
-				tempRound.setBack9Total(backScore);
-				
-				tempRound.setTotalScore(frontScore + backScore); 
-				
-				if (tempRound.getTotalScore() == 0)
-				{
-					this.setDisableRunGameNavigate(true);
-				}
-				
-				tempRound.setNetScore((new BigDecimal(tempRound.getTotalScore())).subtract(tempRound.getRoundHandicap()));
-				
-				Game game = golfmain.getGameByGameID(tempRound.getGameID());
-				Course course = golfmain.getCoursesMap().get(game.getCourseID());
-				int coursePar = course.getCoursePar();
-				int scoreToPar = tempRound.getTotalScore() - coursePar;
-				String scoreToParString = "";
-				if (scoreToPar < 0)
-				{
-					scoreToParString = String.valueOf(scoreToPar);
-				}
-				else if (scoreToPar == 0)
-				{
-					scoreToParString = "E";
-				}
-				else
-				{
-					scoreToParString = "+" + String.valueOf(scoreToPar);
-				}
-				
-				tempRound.setTotalToPar(scoreToParString);
-				
-				log.info(getTempUserName() + " about to update round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
-				
-				golfmain.updateRound(tempRound);
-				
-				log.info(getTempUserName() + " completed updating round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
-				
-				updatedRounds++;
 			}
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,updatedRounds + " Rounds updated",null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,updatedRounds + " Rounds updated",null);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+		catch (Exception e)
+		{
+			log.error("Exception in updateAllRounds: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in updateAllRounds: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}		
         
 		return "";
 	}
 	
 	public String deleteSelectedPlayerRound()
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		Round rd = this.getSelectedRound();
-		golfmain.deleteRoundFromDB(rd.getRoundID());
-		
-		int indexToRemove = -1;
-		
-		synchronized (this.getSyncGameRoundList())
+		try
 		{
-			for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
+			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			
+			Round rd = this.getSelectedRound();
+			golfmain.deleteRoundFromDB(rd.getRoundID());
+			
+			int indexToRemove = -1;
+			
+			synchronized (this.getSyncGameRoundList())
 			{
-				Round tempRound = this.getSyncGameRoundList().get(i);
-				if (tempRound.getRoundID() == rd.getRoundID())
+				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
 				{
-					indexToRemove = i;
-					break;
+					Round tempRound = this.getSyncGameRoundList().get(i);
+					if (tempRound.getRoundID() == rd.getRoundID())
+					{
+						indexToRemove = i;
+						break;
+					}
 				}
 			}
+			
+			this.getSyncGameRoundList().remove(indexToRemove);		
 		}
-		
-		this.getSyncGameRoundList().remove(indexToRemove);
-		
+		catch (Exception e)
+		{
+			log.error("Exception in deleteSelectedPlayerRound: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in deleteSelectedPlayerRound: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}	
 		return "";
 	}
 	
