@@ -25,8 +25,7 @@
 				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
 				         <p:ajax listener="#{pc_Game.valueChangeGame}" event="change" 
 				         	update="gameForm"/>
-				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+				 		 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					
 				   </td>

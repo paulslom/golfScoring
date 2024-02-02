@@ -448,7 +448,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " picked a game on select players for game form");
+		log.info(getTempUserName() + " picked a game");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
@@ -2902,12 +2902,12 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
         {
             return true;
         }
-        if (!(o instanceof Integer)) 
+        if (!(o instanceof String)) 
         {
             return false;
         }
         
-        final Integer that = (Integer) o;
+        final String that = (String) o;
         return Objects.equals(gameID, that);
     }
 	

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
@@ -149,6 +150,22 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		return "roundID = " + this.getRoundID() + " player: " + this.getPlayerName() + " handicap: " + this.getRoundHandicap()
 					+ " team number: " + this.getTeamNumber() + " score: " + this.getTotalScore();
 	}
+	
+	@Override
+    public boolean equals(final Object o) 
+	{
+        if (this == o) 
+        {
+            return true;
+        }
+        if (!(o instanceof String)) 
+        {
+            return false;
+        }
+        
+        final String that = (String) o;
+        return Objects.equals(roundID, that);
+    }
 	
 	public String selectRowAjax(SelectEvent<Round> event)
 	{

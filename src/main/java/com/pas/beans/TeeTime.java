@@ -265,12 +265,12 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
         {
             return true;
         }
-        if (!(o instanceof Integer)) 
+        if (!(o instanceof String)) 
         {
             return false;
         }
         
-        final Integer that = (Integer) o;
+        final String that = (String) o;
         return Objects.equals(teeTimeID, that);
     }
 	

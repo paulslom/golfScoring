@@ -26,17 +26,21 @@ import com.pas.beans.Game;
 import com.pas.beans.Round;
 import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoRound;
 import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.Utils;
 
 import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
+import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 @Repository
 public class RoundDAO implements Serializable
@@ -90,7 +94,18 @@ public class RoundDAO implements Serializable
 	
 	public void readAllRoundsFromDB()
     {
-		Iterator<DynamoRound> results = roundsTable.scan().items().iterator();
+		String oneMonthAgo = Utils.getOneMonthAgoDate();
+		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(oneMonthAgo));
+		
+		ScanEnhancedRequest request = ScanEnhancedRequest.builder()
+                .consistentRead(true)
+                .filterExpression(Expression.builder()
+                        .expression("signupDateTime >= :min_value")
+                        .expressionValues(av)
+                        .build())
+                .build();
+		
+		Iterator<DynamoRound> results = roundsTable.scan(request).items().iterator();
 	  	
 		while (results.hasNext()) 
         {

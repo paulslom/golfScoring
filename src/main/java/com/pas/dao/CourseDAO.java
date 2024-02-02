@@ -120,7 +120,7 @@ public class CourseDAO implements Serializable
 			hole.setPar(dynamoCourse.getHole9Par());
 			course.getHolesList().add(hole);
 			
-			new Hole();
+			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(10);
 			hole.setPar(dynamoCourse.getHole10Par());
@@ -173,6 +173,8 @@ public class CourseDAO implements Serializable
 			hole.setHoleNumber(18);
 			hole.setPar(dynamoCourse.getHole18Par());
 			course.getHolesList().add(hole);
+			
+			course.setHolesMap(course.getHolesList().stream().collect(Collectors.toMap(listHole->listHole.getHoleNumber(),listHole-> listHole)));
 			
             this.getCourseSelections().add(course);			
         }

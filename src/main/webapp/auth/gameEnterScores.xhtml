@@ -36,7 +36,7 @@
 				         <p:ajax listener="#{pc_Round.valueChangeGame}" event="change" 
 				         	update="gameForm:label1 gameForm:label2 scoresForm"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					
 				   </td>

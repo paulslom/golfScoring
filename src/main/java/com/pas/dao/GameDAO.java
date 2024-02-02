@@ -34,11 +34,15 @@ import com.pas.util.Utils;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
+import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+
 
 @Repository
 public class GameDAO implements Serializable 
@@ -154,7 +158,18 @@ public class GameDAO implements Serializable
 
 	public void readGamesFromDB() throws Exception 
     {
-		Iterator<DynamoGame> results = gamesTable.scan().items().iterator();
+		String oneMonthAgo = Utils.getOneMonthAgoDate();
+		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(oneMonthAgo));
+		
+		ScanEnhancedRequest request = ScanEnhancedRequest.builder()
+                .consistentRead(true)
+                .filterExpression(Expression.builder()
+                        .expression("gameDate >= :min_value")
+                        .expressionValues(av)
+                        .build())
+                .build();
+		
+		Iterator<DynamoGame> results = gamesTable.scan(request).items().iterator();
 	  	
 		while (results.hasNext()) 
         {

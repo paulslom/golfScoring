@@ -93,12 +93,12 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
         {
             return true;
         }
-        if (!(o instanceof Integer)) 
+        if (!(o instanceof String)) 
         {
             return false;
         }
         
-        final Integer that = (Integer) o;
+        final String that = (String) o;
         return Objects.equals(playerTeePreferenceID, that);
     }
 

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
@@ -48,6 +49,22 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 		log.info("about to run Player Money");
 		runTheMoney();		
 	}
+	
+	@Override
+    public boolean equals(final Object o) 
+	{
+        if (this == o) 
+        {
+            return true;
+        }
+        if (!(o instanceof String)) 
+        {
+            return false;
+        }
+        
+        final String that = (String) o;
+        return Objects.equals(playerMoneyID, that);
+    }
 	
 	public String runTheMoney()
 	{
