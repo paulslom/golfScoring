@@ -698,7 +698,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		{
 			log.error("Exception in runSelectedGame: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in runSelectedGame: " + e.getMessage(),null);
-	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+	        FacesContext.getCurrentInstance().addMessage("runGameMessageId", msg);    
 		}
 		return "";
 	}
@@ -809,7 +809,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				for (int i = 0; i < netRounds.size(); i++) 
 				{
 					Round round = netRounds.get(i);
-					if (round.getPlayerID() == multipleWinningPlayer.getPlayerID())
+					if (round.getPlayerID().equalsIgnoreCase(multipleWinningPlayer.getPlayerID()))
 					{
 						netRounds.remove(i);
 						break;
@@ -821,7 +821,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				for (int i = 0; i < grossRounds.size(); i++) 
 				{
 					Round round = grossRounds.get(i);
-					if (round.getPlayerID() == multipleWinningPlayer.getPlayerID())
+					if (round.getPlayerID().equalsIgnoreCase(multipleWinningPlayer.getPlayerID()))
 					{
 						grossRounds.remove(i);
 						break;
@@ -833,7 +833,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				for (int i = 0; i < netRounds.size(); i++) 
 				{
 					Round round = grossRounds.get(i);
-					if (round.getPlayerID() == multipleWinningPlayer.getPlayerID())
+					if (round.getPlayerID().equalsIgnoreCase(multipleWinningPlayer.getPlayerID()))
 					{
 						lowestNetScore = netScores.get(1);
 						netRounds.remove(i);

@@ -18,16 +18,23 @@ import com.pas.beans.Game;
 import com.pas.beans.Player;
 import com.pas.beans.PlayerMoney;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoPlayerMoney;
 import com.pas.dynamodb.DynamoUtil;
 
 import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
 @Repository
 public class PlayerMoneyDAO implements Serializable 
@@ -64,7 +71,7 @@ public class PlayerMoneyDAO implements Serializable
 		{
 			PlayerMoney playerMoney = playerMoneyList.get(i);
 			
-			if (playerMoney.getPlayerID() == player.getPlayerID())
+			if (playerMoney.getPlayerID().equalsIgnoreCase(player.getPlayerID()))
 			{
 				playerMoneyListByPlayer.add(playerMoney);
 			}
@@ -80,7 +87,7 @@ public class PlayerMoneyDAO implements Serializable
 		{
 			PlayerMoney playerMoney = playerMoneyList.get(i);
 			
-			if (playerMoney.getGameID() == game.getGameID())
+			if (playerMoney.getGameID().equalsIgnoreCase(game.getGameID()))
 			{
 				playerMoneyListByGame.add(playerMoney);
 			}
@@ -140,23 +147,47 @@ public class PlayerMoneyDAO implements Serializable
 	}
 	
 	//deletes all player money rows from the db for this game
-	public void deletePlayerMoneyFromDB(String pmID)
+	public void deletePlayerMoneyFromDB(String gameID) throws Exception
     {
-		Key key = Key.builder().partitionValue(pmID).build();
-		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
-		playerMoneyTable.deleteItem(deleteItemEnhancedRequest);
-	
-		log.info("LoggedDBOperation: function-delete; table:playermoney; rows:1");
+		DynamoDbIndex<DynamoPlayerMoney> gsi = playerMoneyTable.index("gsi_GameID");
 		
-		for (int i = 0; i < playerMoneyList.size(); i++)
-		{
-			PlayerMoney playerMoney = playerMoneyList.get(i);
-			
-			if (playerMoney.getGameID() == pmID)
-			{
-				this.getPlayerMoneyMap().remove(playerMoney.getPlayerMoneyID());
+		Key key = Key.builder().partitionValue(gameID).build();
+    	QueryConditional qc = QueryConditional.keyEqualTo(key);
+    	
+    	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+                .queryConditional(qc)
+                .build();
+    	SdkIterable<Page<DynamoPlayerMoney>> pmsByGameID = gsi.query(qer);
+    	     
+    	PageIterable<DynamoPlayerMoney> pages = PageIterable.create(pmsByGameID);
+    	
+    	List<DynamoPlayerMoney> dtList = pages.items().stream().toList();
+    	
+    	if (dtList != null && dtList.size() > 0)
+    	{
+    		for (int i = 0; i < dtList.size(); i++) 
+    		{
+    			DynamoPlayerMoney dpm = dtList.get(i);
+        		String playerMoneyID = dpm.getPlayerMoneyID();
+        		
+        		Key key2 = Key.builder().partitionValue(playerMoneyID).build();
+        		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key2).build();
+        		playerMoneyTable.deleteItem(deleteItemEnhancedRequest);
+        	
+        		log.info("LoggedDBOperation: function-delete; table:playermoney; rows:1");        		
 			}
-		}		
+    		
+    		for (int j = 0; j < playerMoneyList.size(); j++)
+    		{
+    			PlayerMoney playerMoney = playerMoneyList.get(j);
+    			
+    			if (playerMoney.getGameID().equalsIgnoreCase(gameID))
+    			{
+    				this.getPlayerMoneyMap().remove(playerMoney.getPlayerMoneyID());
+    			}
+    		}	
+    		
+    	}			
 		
 		this.getPlayerMoneyList().clear();
 		Collection<PlayerMoney> values = this.getPlayerMoneyMap().values();
@@ -184,13 +215,8 @@ public class PlayerMoneyDAO implements Serializable
 		dynamoPlayerMoney.setGameID(playerMoney.getGameID());
 		
 		PutItemEnhancedRequest<DynamoPlayerMoney> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoPlayerMoney.class).item(dynamoPlayerMoney).build();
+		putItemEnhancedRequest.returnValues();
 		PutItemEnhancedResponse<DynamoPlayerMoney> putItemEnhancedResponse = playerMoneyTable.putItemWithResponse(putItemEnhancedRequest);
-		DynamoPlayerMoney returnedObject = putItemEnhancedResponse.attributes();
-		
-		if (!returnedObject.equals(dynamoPlayerMoney))
-		{
-			throw new Exception("something went wrong with dynamo player upsert - returned item not the same as what we attempted to put");
-		}	
 		
 		return dynamoPlayerMoney;
 	}

@@ -376,7 +376,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				{
 					Round rd = this.getRoundsForGame().get(j);
 					Player tempPlayer = rd.getPlayer();
-					if (bPlayer.getPlayerID() == tempPlayer.getPlayerID())
+					if (bPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						rd.setTeamNumber(i+1);
 						break;
@@ -388,7 +388,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				{
 					Round rd = this.getRoundsForGame().get(j);
 					Player tempPlayer = rd.getPlayer();
-					if (cPlayer.getPlayerID() == tempPlayer.getPlayerID())
+					if (cPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						rd.setTeamNumber(i+1);
 						break;
@@ -419,7 +419,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 					{
 						Round rd = this.getRoundsForGame().get(j);
 						Player tempPlayer = rd.getPlayer();
-						if (ePlayer.getPlayerID() == tempPlayer.getPlayerID())
+						if (ePlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
 							break;
@@ -435,7 +435,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 					{
 						Round rd = this.getRoundsForGame().get(j);
 						Player tempPlayer = rd.getPlayer();
-						if (fPlayer.getPlayerID() == tempPlayer.getPlayerID())
+						if (fPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
 							break;
@@ -451,7 +451,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 					{
 						Round rd = this.getRoundsForGame().get(j);
 						Player tempPlayer = rd.getPlayer();
-						if (gPlayer.getPlayerID() == tempPlayer.getPlayerID())
+						if (gPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
 							break;
@@ -467,7 +467,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 					{
 						Round rd = this.getRoundsForGame().get(j);
 						Player tempPlayer = rd.getPlayer();
-						if (hPlayer.getPlayerID() == tempPlayer.getPlayerID())
+						if (hPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
 							break;
@@ -750,7 +750,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 			
 				{
 					Round rd = this.getSyncGameRoundList().get(i);
-					if (rd.getPlayerID() == tempPlayer.getPlayerID())
+					if (rd.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						tempTeeTimeID = rd.getTeeTimeID();
 						break;
@@ -1051,7 +1051,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
 				{
 					Round tempRound = this.getSyncGameRoundList().get(i);
-					if (tempRound.getRoundID() == rd.getRoundID())
+					if (tempRound.getRoundID().equalsIgnoreCase(rd.getRoundID()))
 					{
 						indexToRemove = i;
 						break;

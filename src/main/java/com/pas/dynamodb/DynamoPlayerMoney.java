@@ -30,6 +30,7 @@ public class DynamoPlayerMoney
 		this.playerID = playerID;
 	}
 
+	@DynamoDBAttribute(attributeName = "oldPlayerID")
 	public int getOldPlayerID() {
 		return oldPlayerID;
 	}
@@ -38,6 +39,7 @@ public class DynamoPlayerMoney
 		this.oldPlayerID = oldPlayerID;
 	}
 
+	@DynamoDBAttribute(attributeName = "playerMoneyID")
 	@DynamoDbPartitionKey //primary key
 	public String getPlayerMoneyID() {
 		return playerMoneyID;
@@ -47,6 +49,7 @@ public class DynamoPlayerMoney
 		this.playerMoneyID = playerMoneyID;
 	}
 
+	@DynamoDBAttribute(attributeName = "oldPlayerMoneyID")
 	public int getOldPlayerMoneyID() {
 		return oldPlayerMoneyID;
 	}
@@ -55,6 +58,8 @@ public class DynamoPlayerMoney
 		this.oldPlayerMoneyID = oldPlayerMoneyID;
 	}
 
+	@DynamoDBAttribute(attributeName = "gameID")
+	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_GameID")
 	public String getGameID() {
 		return gameID;
 	}
@@ -63,6 +68,7 @@ public class DynamoPlayerMoney
 		this.gameID = gameID;
 	}
 
+	@DynamoDBAttribute(attributeName = "oldGameID")
 	public int getOldGameID() {
 		return oldGameID;
 	}
@@ -71,6 +77,7 @@ public class DynamoPlayerMoney
 		this.oldGameID = oldGameID;
 	}
 
+	@DynamoDBAttribute(attributeName = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -79,6 +86,7 @@ public class DynamoPlayerMoney
 		this.description = description;
 	}
 
+	@DynamoDBAttribute(attributeName = "amount")
 	public BigDecimal getAmount() {
 		return amount;
 	}

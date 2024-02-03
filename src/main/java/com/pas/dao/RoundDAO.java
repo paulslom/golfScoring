@@ -24,9 +24,9 @@ import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
 import com.pas.beans.Round;
+import com.pas.beans.Score;
 import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
-import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoRound;
 import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.Utils;
@@ -154,6 +154,8 @@ public class RoundDAO implements Serializable
 			round.setTotalToPar(dynamoRound.getTotalToPar());
 			round.setNetScore(dynamoRound.getNetScore());
 			
+			round.setRoundbyHoleScores(setHoleScoresList(round));
+			
             this.getFullRoundsList().add(round);			
         }	
 		
@@ -170,7 +172,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == selectedGame.getGameID())
+			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()))
 			{
 				roundsByGameList.add(rd);
 			}
@@ -212,7 +214,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == selectedGame.getGameID())
+			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()))
 			{
 				count++;
 			}
@@ -233,7 +235,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == gameID && rd.getPlayerID() == playerID)
+			if (rd.getGameID().equalsIgnoreCase(gameID) && rd.getPlayerID().equalsIgnoreCase(playerID))
 			{
 				return rd;
 			}
@@ -265,7 +267,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == gameID)
+			if (rd.getGameID().equalsIgnoreCase(gameID))
 			{
 				deleteRoundFromDB(rd.getRoundID());
 				this.getFullRoundsMap().remove(rd.getRoundID());
@@ -379,7 +381,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == selectedGame.getGameID() && rd.getPlayerID() == playerID)
+			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()) && rd.getPlayerID().equalsIgnoreCase(playerID))
 			{
 				rd.setRoundHandicap(handicap);
 				dynamoUpsert(rd);
@@ -404,7 +406,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID() == selectedGame.getGameID() && rd.getPlayerID() == playerID)
+			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()) && rd.getPlayerID().equalsIgnoreCase(playerID))
 			{
 				rd.setTeamNumber(teamNumber);
 				dynamoUpsert(rd);
@@ -422,6 +424,88 @@ public class RoundDAO implements Serializable
 		
 		log.debug(getTempUserName() + " update team number for playerID: " + playerID + " to: " + teamNumber + " on round table complete");		
 	}	
+	
+	private List<Score> setHoleScoresList(Round rd)
+	{
+		List<Score> scoreList = new ArrayList<>();
+		
+		for (int holeNumber = 1; holeNumber <= 18; holeNumber++) 
+		{
+			Score score = new Score();
+			score.setHoleNumber(holeNumber);
+			Integer scoreInteger = null;
+			switch (holeNumber) 
+			{
+				case 1:						
+					scoreInteger = rd.getHole1Score();									
+					break;					
+				case 2:					
+					scoreInteger = rd.getHole2Score();								
+					break;					
+				case 3:	
+					scoreInteger = rd.getHole3Score();
+					break;					
+				case 4:	
+					scoreInteger = rd.getHole4Score();
+					break;					
+				case 5:						
+					scoreInteger = rd.getHole5Score();
+					break;					
+				case 6:						
+					scoreInteger = rd.getHole6Score();
+					break;
+				case 7:						
+					scoreInteger = rd.getHole7Score();
+					break;					
+				case 8:	
+					scoreInteger = rd.getHole8Score();
+					break;					
+				case 9:	
+					scoreInteger = rd.getHole9Score();
+					break;
+					
+				//back 9
+				case 10:	
+					scoreInteger = rd.getHole10Score();
+					break;					
+				case 11:	
+					scoreInteger = rd.getHole11Score();
+					break;					
+				case 12:	
+					scoreInteger = rd.getHole12Score();
+					break;					
+				case 13:	
+					scoreInteger = rd.getHole13Score();
+					break;					
+				case 14:	
+					scoreInteger = rd.getHole14Score();
+					break;					
+				case 15:	
+					scoreInteger = rd.getHole15Score();
+					break;					
+				case 16:	
+					scoreInteger = rd.getHole16Score();
+					break;					
+				case 17:	
+					scoreInteger = rd.getHole17Score();
+					break;					
+				case 18:	
+					scoreInteger = rd.getHole18Score();
+					break;
+					
+				default:
+					break;
+			}
+			
+			if (scoreInteger != null)
+			{
+				score.setScore(scoreInteger);
+				scoreList.add(score);	
+			}			
+		}
+		
+		return scoreList;
+	}
 	
 	private void refreshListsAndMaps(String function, Round round)
 	{

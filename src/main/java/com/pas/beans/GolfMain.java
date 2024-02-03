@@ -450,7 +450,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		for (int i = 0; i < getCourseTees().size(); i++) 
 		{
 			CourseTee courseTee = getCourseTees().get(i);
-			if (courseTee.getCourseID() == inGame.getCourseID())
+			if (courseTee.getCourseID().equalsIgnoreCase(inGame.getCourseID()))
 			{
 				SelectItem selItem = new SelectItem();
 				selItem.setLabel(courseTee.getTeeColor());
@@ -473,7 +473,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	public List<TeeTime> getGameSpecificTeeTimes(Game game)
 	{
 		List<TeeTime> gameTeeTimes = this.getTeeTimeList().stream()
-			.filter(p -> p.getGameID() == game.getGameID())
+			.filter(p -> p.getGameID().equalsIgnoreCase(game.getGameID()))
 			.collect(Collectors.mapping(
 				      p -> new TeeTime(p.getTeeTimeID(), p.getGameID(), p.getPlayGroupNumber(), p.getTeeTimeString(), p.getGameDate(), p.getCourseName()),
 				      Collectors.toList()));
@@ -1379,9 +1379,9 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		teeTimeDAO.deleteTeeTimesForGameFromDB(gameID);		
 	}
 
-	public void deletePlayerMoneyFromDB(String pmID)
+	public void deletePlayerMoneyFromDB(String gameID) throws Exception
 	{
-		playerMoneyDAO.deletePlayerMoneyFromDB(pmID);		
+		playerMoneyDAO.deletePlayerMoneyFromDB(gameID);		
 	}
 
 	public List<PlayerMoney> getPlayerMoneyByGame(Game selectedGame) 

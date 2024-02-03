@@ -386,7 +386,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			{
 				CourseTee courseTee = courseTees.get(k);
 				
-				if (courseTee.getCourseID() == course.getCourseID()
+				if (courseTee.getCourseID().equalsIgnoreCase(course.getCourseID())
 				&&  courseTee.getTeeColor().equalsIgnoreCase(teePreference))
 				{
 					ptp.setCourseTeeID(courseTee.getCourseTeeID());
@@ -690,7 +690,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			{
 				Round rd = this.getRoundsForGame().get(j);
 				
-				if (rd.getTeeTimeID() == teeTime.getTeeTimeID())
+				if (rd.getTeeTimeID().equalsIgnoreCase(teeTime.getTeeTimeID()))
 				{
 					targetPlayerList.add(rd.getPlayer());
 					if (sourcePlayerMap.containsKey(rd.getPlayer().getPlayerID()))
@@ -1251,7 +1251,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList0.size(); j++) 
 							{
 								Player tempPlayer = sourceList0.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList0.remove(j);
 									break;
@@ -1261,7 +1261,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList0.size(); j++) 
 							{
 								Player tempPlayer = targetList0.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList0.remove(j);
 									break;
@@ -1276,7 +1276,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList1.size(); j++) 
 							{
 								Player tempPlayer = sourceList1.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList1.remove(j);
 									break;
@@ -1286,7 +1286,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList1.size(); j++) 
 							{
 								Player tempPlayer = targetList1.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList1.remove(j);
 									break;
@@ -1300,7 +1300,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList2.size(); j++) 
 							{
 								Player tempPlayer = sourceList2.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList2.remove(j);
 									break;
@@ -1310,7 +1310,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList2.size(); j++) 
 							{
 								Player tempPlayer = targetList2.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList2.remove(j);
 									break;
@@ -1324,7 +1324,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList3.size(); j++) 
 							{
 								Player tempPlayer = sourceList3.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList3.remove(j);
 									break;
@@ -1334,7 +1334,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList3.size(); j++) 
 							{
 								Player tempPlayer = targetList3.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList3.remove(j);
 									break;
@@ -1348,7 +1348,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList4.size(); j++) 
 							{
 								Player tempPlayer = sourceList4.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList4.remove(j);
 									break;
@@ -1358,7 +1358,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList4.size(); j++) 
 							{
 								Player tempPlayer = targetList4.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList4.remove(j);
 									break;
@@ -1372,7 +1372,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList5.size(); j++) 
 							{
 								Player tempPlayer = sourceList5.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList5.remove(j);
 									break;
@@ -1382,7 +1382,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList5.size(); j++) 
 							{
 								Player tempPlayer = targetList5.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList5.remove(j);
 									break;
@@ -1396,7 +1396,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList6.size(); j++) 
 							{
 								Player tempPlayer = sourceList6.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList6.remove(j);
 									break;
@@ -1406,7 +1406,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList6.size(); j++) 
 							{
 								Player tempPlayer = targetList6.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList6.remove(j);
 									break;
@@ -1420,7 +1420,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < sourceList7.size(); j++) 
 							{
 								Player tempPlayer = sourceList7.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList7.remove(j);
 									break;
@@ -1430,7 +1430,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 							for (int j = 0; j < targetList7.size(); j++) 
 							{
 								Player tempPlayer = targetList7.get(j);
-								if (tempPlayer.getPlayerID() == playerMoved.getPlayerID())
+								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList7.remove(j);
 									break;

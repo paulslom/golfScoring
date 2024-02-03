@@ -72,7 +72,7 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 		{
 			CourseTee courseTee = gm.getCourseTeesList().get(i);
 			
-			if (courseTee.getCourseID() == this.getCourseID())
+			if (courseTee.getCourseID().equalsIgnoreCase(this.getCourseID()))
 			{
 				if (this.getTeeColor().equalsIgnoreCase(courseTee.getTeeColor()))
 				{

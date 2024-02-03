@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -229,20 +230,30 @@ public class CreateTableDynamoDBLocal_PlayerMoney
     
     private static DynamoDbTable<DynamoPlayerMoney> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
     {
-        DynamoDbTable<DynamoPlayerMoney> teetimesTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
+        DynamoDbTable<DynamoPlayerMoney> playerMoneyTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
         
         // Create the DynamoDB table.  If it exists, it'll throw an exception
         
         try
         {
-        	teetimesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(
-                        EnhancedGlobalSecondaryIndex.builder()
-                                                    .indexName("gsi_PlayerID")
-                                                    .projection(p -> p.projectionType(ProjectionType.ALL))
-                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                                                    .build()));
-	        
+        	ArrayList<EnhancedGlobalSecondaryIndex> gsindices = new ArrayList<>();
+        	
+        	EnhancedGlobalSecondaryIndex gameIDGSI = EnhancedGlobalSecondaryIndex.builder()
+        			.indexName("gsi_GameID")
+        			.projection(p -> p.projectionType(ProjectionType.ALL))
+        			.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+        			.build();
+        	gsindices.add(gameIDGSI);
+        	
+        	EnhancedGlobalSecondaryIndex oldTeeTimeIDGSI = EnhancedGlobalSecondaryIndex.builder()
+                    .indexName("gsi_PlayerID")
+                    .projection(p -> p.projectionType(ProjectionType.ALL))
+                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                    .build();
+        	gsindices.add(oldTeeTimeIDGSI);
+               	
+        	playerMoneyTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                    .globalSecondaryIndices(gsindices).build());        	       
         }
         catch (ResourceInUseException riue)
         {
@@ -266,7 +277,7 @@ public class CreateTableDynamoDBLocal_PlayerMoney
             System.out.println(AWS_TABLE_NAME + " table was created.");
         }        
         
-        return teetimesTable;
+        return playerMoneyTable;
     }
    
 }

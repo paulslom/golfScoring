@@ -67,7 +67,7 @@ public class TeeTimeDAO implements Serializable
 		for (int i = 0; i < this.getTeeTimeList().size(); i++)
 		{
 			TeeTime teeTime = this.getTeeTimeList().get(i);
-			if (teeTime.getGameID() == game.getGameID())
+			if (teeTime.getGameID().equalsIgnoreCase(game.getGameID()))
 			{
 				ttList.add(teeTime);
 			}
@@ -211,7 +211,7 @@ public class TeeTimeDAO implements Serializable
 		for (int i = 0; i < this.getTeeTimeList().size(); i++)
 		{
 			TeeTime teeTime = this.getTeeTimeList().get(i);
-			if (teeTime.getGameID() == gameID)
+			if (teeTime.getGameID().equalsIgnoreCase(gameID))
 			{
 				teeTimeIDs.add(teeTime.getTeeTimeID());
 				deleteTeeTimeFromDB(teeTime.getTeeTimeID());
