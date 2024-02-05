@@ -37,11 +37,11 @@ public class Scan_All_Dynamo_Tables
 	    	ScanTableCourseTees.main(callingArgs);
 	    	ScanTableGames.main(callingArgs);
 	    	ScanTableTeeTimes.main(callingArgs);
+	    	*/
 	    	ScanTablePlayers.main(callingArgs);	
-	    	ScanTablePlayerTeePreferences.main(callingArgs);	    	
-            ScanTableGames.main(callingArgs);
-            */
-	    	ScanTablePlayerMoney.main(callingArgs);	    	
+	    	//ScanTablePlayerTeePreferences.main(callingArgs);	    	
+            //ScanTableGames.main(callingArgs);            
+	    	//ScanTablePlayerMoney.main(callingArgs);	    	
 	    	//ScanTableRounds.main(callingArgs);
 	    	
 			log.debug("**********  END of program ***********");

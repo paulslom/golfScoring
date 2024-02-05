@@ -15,12 +15,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
+import com.pas.beans.GolfMain;
 import com.pas.beans.Player;
 import com.pas.beans.PlayerMoney;
 import com.pas.dynamodb.DynamoClients;
-import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoPlayerMoney;
 import com.pas.dynamodb.DynamoUtil;
+import com.pas.util.BeanUtilJSF;
 
 import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
@@ -32,7 +33,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.Page;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
@@ -49,7 +49,7 @@ public class PlayerMoneyDAO implements Serializable
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoPlayerMoney> playerMoneyTable;
 	private static final String AWS_TABLE_NAME = "playermoney";
-
+	
 	@PostConstruct
 	private void initialize() 
 	{
@@ -100,6 +100,11 @@ public class PlayerMoneyDAO implements Serializable
     {
 		Iterator<DynamoPlayerMoney> results = playerMoneyTable.scan().items().iterator();
 		
+		//since this full read is only done at app startup, we can't use golfmain's jsf bean to get it... so just redo the playerdao read
+		PlayerDAO playerDAO = new PlayerDAO();		
+		playerDAO.readPlayersFromDB();
+		Map<String,Player> fullPlayersMapByPlayerID = playerDAO.getFullPlayersMapByPlayerID();
+		
 		while (results.hasNext()) 
         {
 			DynamoPlayerMoney dynamoPlayerMoney = results.next();
@@ -111,6 +116,8 @@ public class PlayerMoneyDAO implements Serializable
 			playerMoney.setDescription(dynamoPlayerMoney.getDescription());
 			playerMoney.setAmount(dynamoPlayerMoney.getAmount());
 			
+        	playerMoney.setPlayer(fullPlayersMapByPlayerID.get(dynamoPlayerMoney.getPlayerID()));
+        	        	
             this.getPlayerMoneyList().add(playerMoney);			
         }
 		
@@ -121,10 +128,17 @@ public class PlayerMoneyDAO implements Serializable
 	public void addPlayerMoney(PlayerMoney playerMoney) throws Exception
 	{
 		DynamoPlayerMoney dpm = dynamoUpsert(playerMoney);
-		playerMoney.setPlayerMoneyID(dpm.getPlayerMoneyID());
-		
 		log.info("LoggedDBOperation: function-add; table:playermoney; rows:1");
 		
+		playerMoney.setPlayerMoneyID(dpm.getPlayerMoneyID());
+		
+		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		if (golfmain != null)
+		{
+			Player player = golfmain.getPlayerByPlayerID(dpm.getPlayerID());
+			playerMoney.setPlayer(player);
+		}
+			
 		this.getPlayerMoneyList().add(playerMoney);
 		this.getPlayerMoneyMap().put(playerMoney.getPlayerMoneyID(), playerMoney);
 		
@@ -209,14 +223,13 @@ public class PlayerMoneyDAO implements Serializable
 			dynamoPlayerMoney.setPlayerMoneyID(playerMoney.getPlayerMoneyID());
 		}
 		
-		dynamoPlayerMoney.setPlayerID(UUID.randomUUID().toString());
+		dynamoPlayerMoney.setPlayerID(playerMoney.getPlayerID());
 		dynamoPlayerMoney.setAmount(playerMoney.getAmount());
 		dynamoPlayerMoney.setDescription(playerMoney.getDescription());
 		dynamoPlayerMoney.setGameID(playerMoney.getGameID());
 		
 		PutItemEnhancedRequest<DynamoPlayerMoney> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoPlayerMoney.class).item(dynamoPlayerMoney).build();
-		putItemEnhancedRequest.returnValues();
-		PutItemEnhancedResponse<DynamoPlayerMoney> putItemEnhancedResponse = playerMoneyTable.putItemWithResponse(putItemEnhancedRequest);
+		playerMoneyTable.putItem(putItemEnhancedRequest);
 		
 		return dynamoPlayerMoney;
 	}

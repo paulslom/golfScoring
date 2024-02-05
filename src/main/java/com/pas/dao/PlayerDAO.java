@@ -121,15 +121,8 @@ public class PlayerDAO implements Serializable
         {
 			DynamoPlayer dynamoPlayer = results.next();
             
-			Player player = new Player();
-			player.setPlayerID(dynamoPlayer.getPlayerID());
-			player.setActive(dynamoPlayer.isActive());
-			player.setEmailAddress(dynamoPlayer.getEmailAddress());
-			player.setFirstName(dynamoPlayer.getFirstName());
-			player.setLastName(dynamoPlayer.getLastName());
-			player.setHandicap(dynamoPlayer.getHandicap());
-			player.setUsername(dynamoPlayer.getUsername());
-			
+			Player player = convertDynamoPlayerToPlayer(dynamoPlayer);
+						
             this.getFullPlayerList().add(player);			
         }
 		
@@ -191,8 +184,6 @@ public class PlayerDAO implements Serializable
 		this.fullPlayerList = fullPlayerList;
 	}
 
-	
-
 	public Map<String, Player> getFullPlayersMapByUserName() 
 	{
 		return fullPlayersMapByUserName;
@@ -209,6 +200,21 @@ public class PlayerDAO implements Serializable
 
 	public void setFullPlayersMapByPlayerID(Map<String, Player> fullPlayersMapByPlayerID) {
 		this.fullPlayersMapByPlayerID = fullPlayersMapByPlayerID;
+	}
+
+	public static Player convertDynamoPlayerToPlayer(DynamoPlayer dynamoPlayer) 
+	{
+		Player player = new Player();
+		
+		player.setPlayerID(dynamoPlayer.getPlayerID());
+		player.setActive(dynamoPlayer.isActive());
+		player.setEmailAddress(dynamoPlayer.getEmailAddress());
+		player.setFirstName(dynamoPlayer.getFirstName());
+		player.setLastName(dynamoPlayer.getLastName());
+		player.setHandicap(dynamoPlayer.getHandicap());
+		player.setUsername(dynamoPlayer.getUsername());
+		
+		return player;
 	}
 	
 
