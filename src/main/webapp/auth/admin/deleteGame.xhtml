@@ -26,7 +26,7 @@
 				         <p:ajax listener="#{pc_Game.valueChangeGame}" event="change" 
 				         	update="deleteGameForm"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					
 				   </td>
@@ -69,7 +69,7 @@
 						
 						<p:growl id="message" showDetail="true" />
      
-					    <p:commandButton value="Delete Selected Game" action="#{pc_Game.deleteGame}" update="message">
+					    <p:commandButton value="Delete Selected Game" action="#{pc_Game.deleteGame}" update="deleteGameForm">
 					        <p:confirm header="Confirmation" message="Really completely delete this game??" icon="pi pi-exclamation-triangle" />
 					    </p:commandButton>
 					     

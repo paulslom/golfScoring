@@ -25,7 +25,6 @@ import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 
 @Repository
 public class PlayerDAO implements Serializable 
@@ -91,14 +90,8 @@ public class PlayerDAO implements Serializable
 		dynamoPlayer.setUsername(player.getUsername());
 		
 		PutItemEnhancedRequest<DynamoPlayer> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoPlayer.class).item(dynamoPlayer).build();
-		PutItemEnhancedResponse<DynamoPlayer> putItemEnhancedResponse = playersTable.putItemWithResponse(putItemEnhancedRequest);
-		DynamoPlayer returnedObject = putItemEnhancedResponse.attributes();
-		
-		if (!returnedObject.equals(dynamoPlayer))
-		{
-			throw new Exception("something went wrong with dynamo player upsert - returned item not the same as what we attempted to put");
-		}	
-		
+		playersTable.putItem(putItemEnhancedRequest);
+			
 		return dynamoPlayer;
 	}
 

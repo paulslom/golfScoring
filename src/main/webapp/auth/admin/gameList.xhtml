@@ -119,6 +119,7 @@
 		
 		  <p:commandButton id="addGameButtonID"
                value="#{bundle.add}"
+               update="gameForm"
                action="#{pc_Game.addGameFromGameList}">
 		  </p:commandButton>
 					
@@ -373,7 +374,7 @@
 						   <p:commandButton 
 							   value="#{bundle.ok}" 
 							   action="#{pc_Game.saveGame}"	
-							   update="gameForm:gamesTableID"															   
+							   update="gameForm"															   
 							   oncomplete="PF('maintainGamesDialog').hide();">
 						   </p:commandButton> 
 						   

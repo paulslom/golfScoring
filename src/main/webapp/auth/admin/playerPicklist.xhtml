@@ -14,7 +14,7 @@
     
  	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
 			
-		   <h:form id="gameListPlayersForm">
+		   <h:form id="playerPicklistForm">
 		   		
 		   		<h3>Player PickList</h3>
 		   		
@@ -34,9 +34,9 @@
 						
 					      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
 					         <p:ajax listener="#{pc_Player.valueChangeGame}" event="change" 
-					         	update="gameListPlayersForm:label1 gameListPlayersForm:label2 gameListPlayersForm playersPicklistForm"/>
+					         	update="playerPicklistForm"/>
 					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 						  </p:selectOneMenu>
 						
 					   </td>
@@ -78,16 +78,12 @@
 					<f:facet name="sourceCaption">Available</f:facet>
 			        <f:facet name="targetCaption">Playing</f:facet>
 			 
-			        <p:ajax event="transfer" listener="#{pc_Player.onTransfer}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3" />
-			        <p:ajax event="select" listener="#{pc_Player.onSelect}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3"/>
-			        <p:ajax event="unselect" listener="#{pc_Player.onUnselect}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3"/>
-			        <p:ajax event="reorder" listener="#{pc_Player.onReorder}" update="playersPicklistForm:facesMessagesID gameListPlayersForm:label3"/>
+			        <p:ajax event="transfer" listener="#{pc_Player.onTransfer}" update="playerPicklistForm playersPicklistForm" />
+			        <p:ajax event="select" listener="#{pc_Player.onSelect}" update="playerPicklistForm playersPicklistForm" />
+			        <p:ajax event="unselect" listener="#{pc_Player.onUnselect}" update="playerPicklistForm playersPicklistForm" />
+			        <p:ajax event="reorder" listener="#{pc_Player.onReorder}" update="playerPicklistForm playersPicklistForm" />
 			        
-					<p:column style="width:10%">
-						#{player.playerID}
-					</p:column>
-					
-					<p:column style="width:90%">
+					<p:column style="width:100%">
 						#{player.fullName}
 					</p:column>
 					
@@ -95,12 +91,14 @@
 				 
 				<p:commandButton id="saveAndStayButtonID"
 	                value="#{bundle.saveAndStay}"
-	                action="#{pc_Player.saveAndStayPickList}">
+	                action="#{pc_Player.saveAndStayPickList}"
+	                update="playersPicklistForm">
 				</p:commandButton> 
 				
 				<p:commandButton id="proceedToTeeTimesButtonID"
 	                value="#{bundle.proceedToTeeTimes}"
-	                action="#{pc_Player.proceedToTeeTimes}">
+	                action="#{pc_Player.proceedToTeeTimes}"
+					update="playersPicklistForm">
 				</p:commandButton> 
 								 
 				<p:messages id="facesMessagesID" showDetail="false">

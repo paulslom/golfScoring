@@ -32,7 +32,7 @@
 					         <p:ajax listener="#{pc_Player.valueChangeGame}" event="change" 
 					         	update="teeTimeGameForm:label1 teeTimeGameForm:label2 teeTimeGameForm teeTimesPicklistForm"/>
 					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 						  </p:selectOneMenu>
 						
 					   </td>
@@ -81,11 +81,7 @@
 					         
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime1}" update="teeTimesPicklistForm" />
 					   
-							<p:column style="width:10%">
-								#{player1.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player1.fullName}
 							</p:column>
 							
@@ -106,11 +102,7 @@
 					         
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime2}" update="teeTimesPicklistForm" />
 			           
-							<p:column style="width:10%">
-								#{player2.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player2.fullName}
 							</p:column>
 							
@@ -133,11 +125,7 @@
 					        
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime3}" update="teeTimesPicklistForm" />
 			            
-							<p:column style="width:10%">
-								#{player3.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player3.fullName}
 							</p:column>
 							
@@ -159,11 +147,7 @@
 					        
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime4}" update="teeTimesPicklistForm" />
 			            
-							<p:column style="width:10%">
-								#{player4.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player4.fullName}
 							</p:column>
 							
@@ -186,11 +170,7 @@
 					        
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime5}" update="teeTimesPicklistForm" />
 			            
-							<p:column style="width:10%">
-								#{player5.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player5.fullName}
 							</p:column>
 							
@@ -212,11 +192,7 @@
 					        
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime6}" update="teeTimesPicklistForm" />
 			            
-							<p:column style="width:10%">
-								#{player6.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player6.fullName}
 							</p:column>
 							
@@ -239,11 +215,7 @@
 					        
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime7}" update="teeTimesPicklistForm" />
 			            
-							<p:column style="width:10%">
-								#{player7.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player7.fullName}
 							</p:column>
 							
@@ -265,11 +237,7 @@
 					        
 					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime8}" update="teeTimesPicklistForm" />
 			            
-							<p:column style="width:10%">
-								#{player8.playerID}
-							</p:column>
-							
-							<p:column style="width:90%">
+							<p:column style="width:100%">
 								#{player8.fullName}
 							</p:column>
 							

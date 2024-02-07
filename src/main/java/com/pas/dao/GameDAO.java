@@ -1,7 +1,6 @@
 package com.pas.dao;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -12,7 +11,6 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,6 +23,7 @@ import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.beans.Round;
+import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoUtil;
@@ -39,7 +38,6 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -56,9 +54,7 @@ public class GameDAO implements Serializable
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoGame> gamesTable;
 	private static final String AWS_TABLE_NAME = "games";
-
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-	
+		
 	@PostConstruct
 	private void initialize() 
 	{
@@ -123,11 +119,7 @@ public class GameDAO implements Serializable
 		}
 		
 		dynamoGame.setOldGameID(game.getOldGameID());		
-
-		sdf.setTimeZone(TimeZone.getTimeZone("EST"));
-		String gameDateText = sdf.format(game.getGameDate());
-		
-		dynamoGame.setGameDate(gameDateText);
+		dynamoGame.setGameDate(DateToStringConverter.convertDateToDynamoStringFormat(game.getGameDate()));
 		dynamoGame.setCourseID(game.getCourseID());
 		dynamoGame.setFieldSize(game.getFieldSize());
 		dynamoGame.setTotalPlayers(game.getTotalPlayers());
@@ -145,14 +137,8 @@ public class GameDAO implements Serializable
 		dynamoGame.setGameNoteForEmail(game.getGameNoteForEmail());
 		
 		PutItemEnhancedRequest<DynamoGame> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoGame.class).item(dynamoGame).build();
-		PutItemEnhancedResponse<DynamoGame> putItemEnhancedResponse = gamesTable.putItemWithResponse(putItemEnhancedRequest);
-		DynamoGame returnedObject = putItemEnhancedResponse.attributes();
-		
-		if (!returnedObject.equals(dynamoGame))
-		{
-			throw new Exception("something went wrong with dynamo game upsert - returned item not the same as what we attempted to put");
-		}	
-		
+		gamesTable.putItem(putItemEnhancedRequest);
+				
 		return dynamoGame;
 	}
 
@@ -181,7 +167,8 @@ public class GameDAO implements Serializable
 			game.setOldGameID(dynamoGame.getOldGameID());		
 			
 			String gameDate = dynamoGame.getGameDate();
-			Date dGameDate = sdf.parse(gameDate);
+			DateToStringConverter dsc = new DateToStringConverter();
+			Date dGameDate = dsc.unconvert(gameDate);
 			game.setGameDate(dGameDate);
 			
 			game.setCourseID(dynamoGame.getCourseID());

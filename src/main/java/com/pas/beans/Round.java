@@ -213,24 +213,34 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
 		}
 		
+		createTeamNumberList(game.getSelectedGame());	
+	}
+	
+	private void createTeamNumberList(Game game) 
+	{
 		this.getTeamNumberList().clear();
 		
-		//add team -1 in case this person is skins only!
 		SelectItem selItem = new SelectItem();
+		selItem.setLabel("--select--");
+		selItem.setValue("0");
+		this.getTeamNumberList().add(selItem);
+		
+		//add team -1 in case this person is skins only!
+		selItem = new SelectItem();
 		selItem.setLabel("Skins Only");
 		selItem.setValue("-1");
 		this.getTeamNumberList().add(selItem);
 			
-		for (int i = 1; i <= game.getSelectedGame().getTotalTeams(); i++) 
+		for (int i = 1; i <= game.getTotalTeams(); i++) 
 		{
 			selItem = new SelectItem();
 			selItem.setLabel(String.valueOf(i));
 			selItem.setValue(String.valueOf(i));
 			this.getTeamNumberList().add(selItem);
-		}				
+		}			
 		
 	}
-	
+
 	public String resetTeams() 
 	{
 		log.info("User clicked reset teams from player selection screen");
@@ -504,21 +514,8 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 			this.setRoundsForGame(golfmain.getRoundsForGame(selectedOption));
 		}
 		
-		this.getTeamNumberList().clear();
+		createTeamNumberList(selectedOption);
 		
-		//add team -1 in case this person is skins only!
-		SelectItem selItem = new SelectItem();
-		selItem.setLabel("Skins Only");
-		selItem.setValue("-1");
-		this.getTeamNumberList().add(selItem);
-			
-		for (int i = 1; i <= selectedOption.getTotalTeams(); i++) 
-		{
-			selItem = new SelectItem();
-			selItem.setLabel(String.valueOf(i));
-			selItem.setValue(String.valueOf(i));
-			this.getTeamNumberList().add(selItem);
-		}
 	}
 	
 

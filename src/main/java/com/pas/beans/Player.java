@@ -447,6 +447,8 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 					}
 					newRound.setRoundHandicap(tempPlayer.getHandicap());
 					
+					newRound.setSignupDateTime(new Date());
+					
 					if (roundSignupDateTimesMap != null)
 					{
 						Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
@@ -690,7 +692,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			{
 				Round rd = this.getRoundsForGame().get(j);
 				
-				if (rd.getTeeTimeID().equalsIgnoreCase(teeTime.getTeeTimeID()))
+				if (rd.getTeeTimeID() != null && rd.getTeeTimeID().equalsIgnoreCase(teeTime.getTeeTimeID()))
 				{
 					targetPlayerList.add(rd.getPlayer());
 					if (sourcePlayerMap.containsKey(rd.getPlayer().getPlayerID()))

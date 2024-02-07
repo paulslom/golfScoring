@@ -38,7 +38,6 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -283,7 +282,7 @@ public class RoundDAO implements Serializable
 	{
 		DynamoRound dynamoRound = new DynamoRound();
         
-		if (dynamoRound.getRoundID() == null)
+		if (round.getRoundID() == null)
 		{
 			dynamoRound.setRoundID(UUID.randomUUID().toString());
 		}
@@ -292,7 +291,6 @@ public class RoundDAO implements Serializable
 			dynamoRound.setRoundID(round.getRoundID());
 		}
 		
-		dynamoRound.setRoundID(round.getRoundID());
 		dynamoRound.setGameID(round.getGameID());
 		dynamoRound.setPlayerID(round.getPlayerID());
 		dynamoRound.setTeamNumber(round.getTeamNumber());
@@ -303,12 +301,7 @@ public class RoundDAO implements Serializable
 		dynamoRound.setCourseTeeID(round.getCourseTeeID());
 		dynamoRound.setCourseTeeColor(round.getCourseTeeColor());
 		dynamoRound.setRoundHandicapDifferential(round.getRoundHandicapDifferential());
-		
-		Date ddate = round.getSignupDateTime();
-		DateToStringConverter dtsc = new DateToStringConverter();
-		String sdate = dtsc.convert(ddate);
-		dynamoRound.setSignupDateTime(sdate);
-		
+		dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(round.getSignupDateTime()));
 		dynamoRound.setHole1Score(round.getHole1Score());
 		dynamoRound.setHole2Score(round.getHole2Score());
 		dynamoRound.setHole3Score(round.getHole3Score());
@@ -335,13 +328,7 @@ public class RoundDAO implements Serializable
 		
 		
 		PutItemEnhancedRequest<DynamoRound> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoRound.class).item(dynamoRound).build();
-		PutItemEnhancedResponse<DynamoRound> putItemEnhancedResponse = roundsTable.putItemWithResponse(putItemEnhancedRequest);
-		DynamoRound returnedObject = putItemEnhancedResponse.attributes();
-		
-		if (!returnedObject.equals(dynamoRound))
-		{
-			throw new Exception("something went wrong with dynamo round upsert - returned item not the same as what we attempted to put");
-		}	
+		roundsTable.putItem(putItemEnhancedRequest);
 		
 		return dynamoRound;
 	}

@@ -182,9 +182,13 @@ public class Utils
 		return totalScore;
 	}
 	
-	public static String getFront9StyleClass(int score, Course course)
+	public static String getFront9StyleClass(Integer score, Course course)
 	{
-		if (course.getFront9Par() > score)
+		if (score == null)
+		{
+			return PAR_OR_WORSE_STYLECLASS;
+		}
+		else if (course.getFront9Par() > score)
 		{
 			return BIRDIE_OR_BETTER_STYLECLASS;
 		}
@@ -195,9 +199,13 @@ public class Utils
 		
 	}
 	
-	public static String getBack9StyleClass(int score, Course course)
+	public static String getBack9StyleClass(Integer score, Course course)
 	{
-		if (course.getBack9Par() > score)
+		if (score == null)
+		{
+			return PAR_OR_WORSE_STYLECLASS;
+		}
+		else if (course.getBack9Par() > score)
 		{
 			return BIRDIE_OR_BETTER_STYLECLASS;
 		}
@@ -208,9 +216,13 @@ public class Utils
 		
 	}
 	
-	public static String getTotalStyleClass(int score, Course course)
+	public static String getTotalStyleClass(Integer score, Course course)
 	{
-		if (course.getCoursePar() > score)
+		if (score == null)
+		{
+			return PAR_OR_WORSE_STYLECLASS;
+		}
+		else if (course.getCoursePar() > score)
 		{
 			return BIRDIE_OR_BETTER_STYLECLASS;
 		}

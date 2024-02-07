@@ -32,7 +32,7 @@
 				         <p:ajax listener="#{pc_Round.valueChangeGameHandicaps}" event="change" 
 				         	update="handicapsGameForm:label1 handicapsGameForm:label2 handicapsPlayerForm"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					
 				   </td>

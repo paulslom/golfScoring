@@ -206,6 +206,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				Course course = golfmain.getCoursesMap().get(this.getCourseID());
 				this.setCourse(course);
 				this.setCourseName(course.getCourseName());
+				this.setGameID(null); //should not have a game id on an add
 				String newGameID = golfmain.addGame(this);
 				golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
 				log.info(getTempUserName() + " after add Game");
@@ -2390,6 +2391,9 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			
 			log.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
 			this.setSelectedGame(golfmain.getFullGameList().get(0));
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Game successfully deleted",null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 			
 		}
 		catch (Exception e)

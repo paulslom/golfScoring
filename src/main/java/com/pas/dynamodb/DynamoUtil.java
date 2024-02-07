@@ -93,4 +93,21 @@ public class DynamoUtil
         
         return dynamoClients;
 	}
+	
+	public static void stopDynamoServer()
+	{
+		if (Utils.isLocalEnv())
+        {
+        	logger.info("We are operating in LOCAL env - STOPPING dynamoDB local server");
+        	try 
+        	{
+				server.stop();
+			} 
+        	catch (Exception e) 
+        	{
+				logger.error("Unable to stop local dynamo server: " + e.getMessage(), e);
+			}
+        }
+	}
+	
 }

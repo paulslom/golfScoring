@@ -26,7 +26,6 @@ import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
  
 @Repository
 public class PlayerTeePreferenceDAO implements Serializable
@@ -154,14 +153,8 @@ public class PlayerTeePreferenceDAO implements Serializable
 		dynamoPtp.setTeeColor(ptp.getTeeColor());
 				
 		PutItemEnhancedRequest<DynamoPlayerTeePreference> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoPlayerTeePreference.class).item(dynamoPtp).build();
-		PutItemEnhancedResponse<DynamoPlayerTeePreference> putItemEnhancedResponse = playerTeePreferencesTable.putItemWithResponse(putItemEnhancedRequest);
-		DynamoPlayerTeePreference returnedObject = putItemEnhancedResponse.attributes();
-		
-		if (!returnedObject.equals(dynamoPtp))
-		{
-			throw new Exception("something went wrong with dynamo player tee preference upsert - returned item not the same as what we attempted to put");
-		}	
-		
+		playerTeePreferencesTable.putItem(putItemEnhancedRequest);
+				
 		return dynamoPtp;
 	}
 	

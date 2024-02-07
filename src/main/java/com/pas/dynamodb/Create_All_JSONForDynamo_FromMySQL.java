@@ -8,12 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,36 +48,34 @@ public class Create_All_JSONForDynamo_FromMySQL
     private static String jsonOutputFilePlayerTees = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayerTeesData.json"; 	
     private static String jsonOutputFilePlayerMoney = "C:/Paul/GitHub/golfScoring/src/main/resources/data/PlayerMoneyData.json"; 
     private static String jsonOutputFileRounds = "C:/Paul/GitHub/golfScoring/src/main/resources/data/RoundsData.json"; 	
-  
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    
+     
     public static void main(String[] args) throws Exception
     { 
     	log.debug("**********  START of program ***********");   	
     	
-    	List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
-    	List<Group> groupList = getGroupsFromMySQLDB();	//2
-    	List<Course> courseList = getCoursesFromMySQLDB();	//3
+    	//List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
+    	//List<Group> groupList = getGroupsFromMySQLDB();	//2
+    	//List<Course> courseList = getCoursesFromMySQLDB();	//3
     	List<CourseTee> courseTeeList = getCourseTeesFromMySQLDB();	//4 
-    	List<Game> gameList = getGamesFromMySQLDB();	//5
-    	List<TeeTime> teeTimesList = getTeeTimesFromMySQLDB();	//6
-    	List<Player> playerList = getPlayersFromMySQLDB();	//7
-    	List<PlayerTeePreference> playerTeePreferenceList = getPlayerTeePreferenceFromMySQLDB();	//8
-    	List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
-    	List<Round> roundList = getRoundsFromMySQLDB();	//10
+    	//List<Game> gameList = getGamesFromMySQLDB();	//5
+    	//List<TeeTime> teeTimesList = getTeeTimesFromMySQLDB();	//6
+    	//List<Player> playerList = getPlayersFromMySQLDB();	//7
+    	//List<PlayerTeePreference> playerTeePreferenceList = getPlayerTeePreferenceFromMySQLDB();	//8
+    	//List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
+    	//List<Round> roundList = getRoundsFromMySQLDB();	//10
      	
     	log.debug("********** starting write of JSON files ***********"); 
     	
-	   	writeGolfUsersJSONFile(golfUserList);  //1
-    	writeGroupsJSONFile(groupList); //2
-	   	writeCoursesJSONFile(courseList); //3
+	   	//writeGolfUsersJSONFile(golfUserList);  //1
+    	//writeGroupsJSONFile(groupList); //2
+	   	//writeCoursesJSONFile(courseList); //3
 	    writeCourseTeeJSONFile(courseTeeList); //4
-    	writeGamesJSONFile(gameList); //5
-	    writeTeeTimesJSONFile(teeTimesList); //6
-    	writePlayersJSONFile(playerList); //7
-	    writePlayerTeePreferenceJSONFile(playerTeePreferenceList); //8
-    	writePlayerMoneyJSONFile(playerMoneyList); //9    	
-    	writeRoundsJSONFile(roundList); //10	 	
+    	//writeGamesJSONFile(gameList); //5
+	    //writeTeeTimesJSONFile(teeTimesList); //6
+    	//writePlayersJSONFile(playerList); //7
+	    //writePlayerTeePreferenceJSONFile(playerTeePreferenceList); //8
+    	//writePlayerMoneyJSONFile(playerMoneyList); //9    	
+    	//writeRoundsJSONFile(roundList); //10	 	
     	
 	   	log.debug("********** finished write of JSON files ***********");   	
 	   	
@@ -1193,7 +1189,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				bw.newLine();	
 				bw.write("\t\"courseRating\":" + courseTee.getCourseRating() + "," );
 				bw.newLine();	
-				bw.write("\t\"courseSlope\":" + courseTee.getSlopeRating() + "," );
+				bw.write("\t\"slopeRating\":" + courseTee.getSlopeRating() + "," );
 				bw.newLine();	
 				bw.write("\t\"teeColor\": \"" + courseTee.getTeeColor() + "\"," );
 				bw.newLine();	
@@ -1453,9 +1449,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				bw.write("\t\"oldCourseID\":" + game.getOldCourseID() + "," );
 				bw.newLine();				
 				
-				
-				sdf.setTimeZone(TimeZone.getTimeZone(etZoneId));
-				String gameDateText = sdf.format(game.getGameDate());
+				String gameDateText = DateToStringConverter.convertDateToDynamoStringFormat(game.getGameDate());
 						
 				bw.write("\t\"gameDate\": \""  + gameDateText + "\"," );
 				bw.newLine();
@@ -1553,8 +1547,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				bw.write("\t\"teamNumber\":" + round.getTeamNumber() + "," );
 				bw.newLine();
 				
-				sdf.setTimeZone(TimeZone.getTimeZone(etZoneId));
-				String dateText = sdf.format(round.getSignupDateTime());
+				String dateText = DateToStringConverter.convertDateToDynamoStringFormat(round.getSignupDateTime());
 			
 				bw.write("\t\"signupDateTime\": \""  + dateText + "\"," );
 				bw.newLine();

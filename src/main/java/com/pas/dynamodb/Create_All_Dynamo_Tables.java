@@ -30,7 +30,7 @@ public class Create_All_Dynamo_Tables
     
             String[] callingArgs = {AWS_REGION, uri};
             
-            /*
+            /*  */       
             CreateTableDynamoDBLocal_GolfUsers.main(callingArgs);
 	    	CreateTableDynamoDBLocal_Groups.main(callingArgs);
 	    	CreateTableDynamoDBLocal_Courses.main(callingArgs);
@@ -38,12 +38,12 @@ public class Create_All_Dynamo_Tables
 	    	CreateTableDynamoDBLocal_Games.main(callingArgs);
 	    	CreateTableDynamoDBLocal_TeeTimes.main(callingArgs);
 	    	CreateTableDynamoDBLocal_Players.main(callingArgs);	
-	    	CreateTableDynamoDBLocal_PlayerTeePreferences.main(callingArgs);
-	    	*/
-	    	CreateTableDynamoDBLocal_PlayerMoney.main(callingArgs);
-	    	            
-	    	//CreateTableDynamoDBLocal_Rounds.main(callingArgs);
-	    		   	
+	    	CreateTableDynamoDBLocal_PlayerTeePreferences.main(callingArgs);	    	
+	    	CreateTableDynamoDBLocal_PlayerMoney.main(callingArgs);	    	    
+	    	CreateTableDynamoDBLocal_Rounds.main(callingArgs);
+	    	
+	    	server.stop();
+	    	
 			log.debug("**********  END of program ***********");
          }
     	 catch (Exception e)

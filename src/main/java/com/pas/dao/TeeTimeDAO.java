@@ -30,7 +30,6 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 
 @Repository
 public class TeeTimeDAO implements Serializable
@@ -192,14 +191,8 @@ public class TeeTimeDAO implements Serializable
 		dynamoTeeTime.setTeeTimeString(teeTime.getTeeTimeString());
 		
 		PutItemEnhancedRequest<DynamoTeeTime> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoTeeTime.class).item(dynamoTeeTime).build();
-		PutItemEnhancedResponse<DynamoTeeTime> putItemEnhancedResponse = teeTimesTable.putItemWithResponse(putItemEnhancedRequest);
-		DynamoTeeTime returnedObject = putItemEnhancedResponse.attributes();
-		
-		if (!returnedObject.equals(dynamoTeeTime))
-		{
-			throw new Exception("something went wrong with dynamo tee timee upsert - returned item not the same as what we attempted to put");
-		}	
-		
+		teeTimesTable.putItem(putItemEnhancedRequest);
+			
 		return dynamoTeeTime;
 	}
 	

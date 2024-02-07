@@ -14,6 +14,8 @@ import jakarta.servlet.annotation.WebListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.pas.dynamodb.DynamoUtil;
+
 @WebListener
 public class BackgroundJobManager implements ServletContextListener 
 {
@@ -57,6 +59,8 @@ public class BackgroundJobManager implements ServletContextListener
 	@Override
     public void contextDestroyed(ServletContextEvent event) 
     {
+		log.info("Destroying servlet and app is shutting down");
+		DynamoUtil.stopDynamoServer();
         scheduler.shutdownNow();
     }
 

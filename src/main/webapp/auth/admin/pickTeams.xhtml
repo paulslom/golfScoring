@@ -31,8 +31,7 @@
 					      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
 					         <p:ajax listener="#{pc_Round.valueChangeGamePickTeams}" event="change" 
 					         	update="gameListPlayersForm:label1 gameListPlayersForm:label2 gameListPlayersForm:label3 playersSelectionForm"/>
-					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+					      	 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 						  </p:selectOneMenu>
 						
 					   </td>
@@ -99,8 +98,7 @@
 					  
 					  <p:column style="width:20%" headerText="Team">												
 						  <p:selectOneMenu id="teamNumList" value="#{rd.teamNumber}" hideNoSelectionOption="true">
-					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							 <f:selectItems value="#{pc_Round.teamNumberList}" var="t" itemLabel="#{t.label}" itemValue="#{t.value}"/>					
+					    	 <f:selectItems value="#{pc_Round.teamNumberList}" var="t" itemLabel="#{t.label}" itemValue="#{t.value}"/>					
 						  </p:selectOneMenu>													
 					  </p:column>						  
 						  

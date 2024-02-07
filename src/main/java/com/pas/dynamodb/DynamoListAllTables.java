@@ -40,6 +40,8 @@ public class DynamoListAllTables
             System.out.println("-------------------------------");
             ListTablesResponse listTablesResponse = ddbClient.listTables();
             System.out.println(listTablesResponse.tableNames());
+            
+            server.stop();
         } 
         catch (Exception e) 
         {

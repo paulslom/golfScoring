@@ -22,7 +22,6 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedResponse;
 
 @Repository
 public class GolfUsersDAO implements Serializable
@@ -123,14 +122,8 @@ public class GolfUsersDAO implements Serializable
 		gu.setPassword(encodedPW);
 		
 		PutItemEnhancedRequest<GolfUser> putItemEnhancedRequest = PutItemEnhancedRequest.builder(GolfUser.class).item(gu).build();
-		PutItemEnhancedResponse<GolfUser> putItemEnhancedResponse = golfUsersTable.putItemWithResponse(putItemEnhancedRequest);
-		GolfUser returnedUser = putItemEnhancedResponse.attributes();
-		
-		if (!returnedUser.equals(gu))
-		{
-			throw new Exception("something went wrong with addUser - returned item not the same as what we attempted to put");
-		}
-		
+		golfUsersTable.putItem(putItemEnhancedRequest);
+			
 		log.info("LoggedDBOperation: function-update; table:golfusers; rows:1");
 					
 		refreshListsAndMaps("add", gu);	
