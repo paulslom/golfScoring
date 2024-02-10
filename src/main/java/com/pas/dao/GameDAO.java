@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.pas.beans.CourseTee;
+import com.pas.beans.Course;
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
+import com.pas.beans.Group;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.beans.Round;
 import com.pas.dynamodb.DateToStringConverter;
@@ -31,7 +33,6 @@ import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.faces.model.SelectItem;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -172,6 +173,38 @@ public class GameDAO implements Serializable
 			game.setGameDate(dGameDate);
 			
 			game.setCourseID(dynamoGame.getCourseID());
+			
+			GolfMain golfmain = null;
+			try
+			{
+				golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+			}
+			catch (Exception e)
+			{			
+			}
+			
+			Map<String, Course> coursesMap = new HashMap<>();
+			if (golfmain == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
+			{
+				GroupDAO groupDAO = new GroupDAO();
+				groupDAO.readGroupsFromDB();
+				Group defaultGroup = groupDAO.getGroupsList().get(0);
+				CourseDAO courseDAO = new CourseDAO();		
+				courseDAO.readCoursesFromDB(defaultGroup);
+				coursesMap = courseDAO.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
+			}
+			else
+			{
+				coursesMap = golfmain.getCoursesMap();
+			}
+			
+			if (coursesMap != null && coursesMap.containsKey(game.getCourseID()))
+			{
+				Course course = coursesMap.get(game.getCourseID());
+				game.setCourse(course);
+				game.setCourseName(course.getCourseName());
+			}
+			
 			game.setFieldSize(dynamoGame.getFieldSize());
 			game.setTotalPlayers(dynamoGame.getTotalPlayers());
 			game.setTotalTeams(dynamoGame.getTotalTeams());
@@ -246,8 +279,6 @@ public class GameDAO implements Serializable
 			
 		} 
     	
-    	assignCourseToGameList(gameList);
-    	
     	Collections.sort(gameList, new Comparator<Game>() 
 		{
 		   public int compare(Game o1, Game o2) 
@@ -290,8 +321,6 @@ public class GameDAO implements Serializable
 			}
 		}
 		
-		assignCourseToGameList(gameList);
-		
 		Collections.sort(gameList, new Comparator<Game>() 
 		{
 		   public int compare(Game o1, Game o2) 
@@ -322,9 +351,7 @@ public class GameDAO implements Serializable
 				//this is not enough though - need to know if the player is a part of the game.
 			}
 		}
-		
-		assignCourseToGameList(gameList);
-		
+			
 		Collections.sort(gameList, new Comparator<Game>() 
 		{
 		   public int compare(Game o1, Game o2) 
@@ -340,7 +367,6 @@ public class GameDAO implements Serializable
     {
 		Map<String, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
 		Game game = fullGameMap.get(gameID);
-		assignCourseToGame(game);
     	return game;		
 	}
 
@@ -350,42 +376,7 @@ public class GameDAO implements Serializable
 		username = Utils.getLoggedInUserName();			
 		return username;
 	}
-	
-	private void assignCourseToGameList(List<Game> gameList)
-	{
-		for (int i = 0; i < gameList.size(); i++) 
-		{
-			Game tempGame = gameList.get(i);
-			assignCourseToGame(tempGame);
-		}
-	}
-	
-	private void assignCourseToGame(Game inGame)
-	{
-		try
-		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			CourseTee courseTee = BeanUtilJSF.getBean("pc_CourseTee");	
-			
-			if (golfmain != null)
-			{
-				inGame.setCourse(golfmain.getCoursesMap().get(inGame.getCourseID()));
-				inGame.setCourseName(inGame.getCourse().getCourseName());
-			}
-			
-			if (courseTee != null)
-			{
-				Map<String, List<SelectItem>> teeSelectionsMap = courseTee.getTeeSelectionsMap();
-				List<SelectItem> courseTeeSelections = teeSelectionsMap.get(inGame.getCourseID());	
-				inGame.setTeeSelections(courseTeeSelections);
-			}
-		}
-		catch (Exception e)
-		{
-			log.trace("unable to assign course to game.  Exception: " + e.getMessage());
-		}
-	}
-	
+		
 	private void refreshGameList(String function, String gameID, Game inputgame) throws Exception
 	{	
 		Game gm = new Game();

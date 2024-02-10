@@ -70,7 +70,7 @@ public class DailyEmailJob implements Runnable
    
 	}
 
-	private void sendFutureGameEmail(Game inputGame) 
+	private void sendFutureGameEmail(Game inputGame) throws Exception 
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 		
@@ -90,7 +90,7 @@ public class DailyEmailJob implements Runnable
 		log.info("email successfully sent");
 	}
 
-	private String getTeeTimes(Game inputGame) 
+	private String getTeeTimes(Game inputGame) throws Exception 
 	{
 		TeeTimeDAO teeTimeDAO = new TeeTimeDAO();
 		teeTimeDAO.readTeeTimesFromDB();

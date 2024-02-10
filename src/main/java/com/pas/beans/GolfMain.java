@@ -210,7 +210,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		}		
 	}
 
-	private void loadRoundList() 
+	private void loadRoundList() throws Exception
 	{
 		roundDAO.readAllRoundsFromDB();
 		log.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
@@ -230,13 +230,14 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		    }	    
 			
 			Game game = fullGameMap.get(round.getGameID());
-			assignCourseToGame(game);
+			
 			Course course = game.getCourse();
 			
 			Player player = this.getFullPlayersMapByPlayerID().get(round.getPlayerID());
 			
 			TeeTime teeTime = this.getTeeTimesMap().get(round.getTeeTimeID());
 			
+			round.setGame(game);
 			round.setPlayer(player);
 			
 			round.setPlayerName(player.getFirstName() + " " + player.getLastName());		
@@ -298,13 +299,13 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		
 	}
 
-	public void loadCourseSelections()
+	public void loadCourseSelections()  throws Exception
 	{
 		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
 		log.info("Courses read in. List size = " + this.getCourseSelections().size());		
     }
 	
-	public void loadCourseTees()
+	public void loadCourseTees()  throws Exception
 	{
 		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
 		log.info("Course Tees read in. List size = " + this.getCourseTees().size());		
@@ -320,9 +321,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		for (int i = 0; i < this.getFullGameList().size(); i++) 
 		{
 			Game game = this.getFullGameList().get(i);
-			Course course = this.getCoursesMap().get(game.getCourseID());
-			game.setCourse(course);
-			game.setCourseName(course.getCourseName());
+			assignCourseToGame(game);
 			tempMap.put(game.getGameID(), game);
 		}
 			
@@ -338,13 +337,13 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		});
 	}
 	
-	public void loadTeeTimeList()
+	public void loadTeeTimeList() throws Exception
 	{
 		teeTimeDAO.readTeeTimesFromDB();			
 		log.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
 	}
 	
-	public void loadPlayerMoneyList()
+	public void loadPlayerMoneyList()  throws Exception
 	{
 		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
@@ -440,7 +439,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		log.info("Player Tee Preferences read in. List size = " + this.getFullPlayerTeePreferencesList().size());		
 	}
 
-	private void assignCourseToGame(Game inGame)
+	public void assignCourseToGame(Game inGame)
 	{
 		inGame.setCourse(getCoursesMap().get(inGame.getCourseID()));
 		inGame.setCourseName(inGame.getCourse().getCourseName());

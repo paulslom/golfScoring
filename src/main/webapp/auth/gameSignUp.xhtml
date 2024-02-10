@@ -28,44 +28,44 @@
 			  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowSignup}" 
 			       update="gameSignUpForm:whoIsSignedUpID" ></p:ajax>
 					
-			  <p:column id="tblGameID" headerText="Game ID" sortBy="#{game.gameID}">												
+			  <p:column style="width:15%" id="tblGameID" headerText="Game ID" sortBy="#{game.gameID}">												
 				  <h:outputText value="#{game.gameID}"/>														
 			  </p:column>
 			  
-			  <p:column id="tblGameDate" headerText="Game Date" sortBy="#{game.gameDate}">												
+			  <p:column style="width:10%" id="tblGameDate" headerText="Game Date" sortBy="#{game.gameDate}">												
 				  <h:outputText value="#{game.gameDate}">
 				     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
 				  </h:outputText>														
 			  </p:column>
 			  
-			  <p:column headerText="Course" sortBy="#{game.courseName}">												
+			  <p:column style="width:15%" headerText="Course" sortBy="#{game.courseName}">												
 				  <h:outputText value="#{game.courseName}"/>														
 			  </p:column>
 			  
-			  <p:column headerText="Field Size" sortBy="#{game.fieldSize}">												
+			  <p:column style="width:5%" headerText="Field Size" sortBy="#{game.fieldSize}">												
 				  <h:outputText value="#{game.fieldSize}"/>														
 			  </p:column>
 			  
-			  <p:column headerText="Spots Available" sortBy="#{game.spotsAvailable}">												
+			  <p:column style="width:5%" headerText="Spots Available" sortBy="#{game.spotsAvailable}">												
 				  <h:outputText value="#{game.spotsAvailable}"/>														
 			  </p:column>		 
 			 
-			  <p:column id="signUpID" headerText="Sign Up">												
+			  <p:column style="width:10%" id="signUpID" headerText="Sign Up">												
 				  <p:commandButton value="Sign up" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" action="#{pc_Game.signUp(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>
 			  </p:column>
 				
-			  <p:column headerText="Tee" styleClass="centeredColumnContent">												
+			  <p:column style="width:25%" headerText="Tee" styleClass="centeredColumnContent">												
 				  <p:selectOneRadio id="teeColorID" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" value="#{game.courseTeeID}">
                        <f:selectItems value="#{game.teeSelections}"/>
 	              </p:selectOneRadio>
 	              <h:outputText rendered="#{!game.renderSignUp}" value="#{game.courseTeeColor}"/>														
   			  </p:column>
   			  
-			  <p:column id="wdID" headerText="Withdraw">												
+			  <p:column style="width:10%" id="wdID" headerText="Withdraw">												
 				  <p:commandButton value="Withdraw" rendered="#{game.renderWithdraw}" action="#{pc_Game.withdraw(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>	
 			  </p:column>
 			  
-			  <p:column id="closedID" headerText="Closed">												
+			  <p:column style="width:5%" id="closedID" headerText="Closed">												
 				  <h:outputText value="#{bundle.gameClosedOnSignupScreen}" rendered="#{game.gameClosedForSignups}"/>	
 			  </p:column>
  

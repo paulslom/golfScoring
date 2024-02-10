@@ -1427,8 +1427,7 @@ public class Create_All_JSONForDynamo_FromMySQL
     private static void writeGamesJSONFile(List<Game> gameList) 
 	{
     	BufferedWriter bw = null;
-    	ZoneId etZoneId = ZoneId.of(Utils.MY_TIME_ZONE);
-    	
+      	
 		try
 		{
 			FileWriter fw = new FileWriter(jsonOutputFileGames, false);
@@ -1519,7 +1518,6 @@ public class Create_All_JSONForDynamo_FromMySQL
     private static void writeRoundsJSONFile(List<Round> roundList) 
 	{
     	BufferedWriter bw = null;
-    	ZoneId etZoneId = ZoneId.of(Utils.MY_TIME_ZONE);
     	
 		try
 		{

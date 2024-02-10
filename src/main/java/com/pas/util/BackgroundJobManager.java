@@ -39,8 +39,8 @@ public class BackgroundJobManager implements ServletContextListener
     	int minute = 0;
     	int second = 0;
     	
-    	//int hour = 16;
-    	//int minute = 28;
+    	//int hour = 19;
+    	//int minute = 15;
     	//int second = 0;
     	
     	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));

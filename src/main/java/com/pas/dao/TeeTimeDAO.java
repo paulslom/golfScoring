@@ -19,10 +19,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
+import com.pas.beans.GolfMain;
 import com.pas.beans.TeeTime;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoTeeTime;
 import com.pas.dynamodb.DynamoUtil;
+import com.pas.util.BeanUtilJSF;
 
 import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -86,10 +88,32 @@ public class TeeTimeDAO implements Serializable
     	return ttList;
     }
 	
-	public void readTeeTimesFromDB()
+	public void readTeeTimesFromDB() throws Exception
     {
 		Iterator<DynamoTeeTime> results = teeTimesTable.scan().items().iterator();
 	  	
+		GolfMain golfmain = null;
+		try
+		{
+			golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		}
+		catch (Exception e)
+		{			
+		}
+		
+		Map<String, Game> fullGameMap = new HashMap<>();
+		if (golfmain == null)
+		{
+			//if golfmain jsf bean unavailable... so just redo the gamedao read
+			GameDAO gameDAO = new GameDAO();		
+			gameDAO.readGamesFromDB();
+			fullGameMap = gameDAO.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		}
+		else
+		{
+			fullGameMap = golfmain.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		}
+		
 		while (results.hasNext()) 
         {
 			DynamoTeeTime dynamoTeeTime = results.next();
@@ -100,6 +124,13 @@ public class TeeTimeDAO implements Serializable
 			teeTime.setGameID(dynamoTeeTime.getGameID());	
 			teeTime.setTeeTimeString(dynamoTeeTime.getTeeTimeString());
 			teeTime.setPlayGroupNumber(dynamoTeeTime.getPlayGroupNumber());
+			
+			if (fullGameMap != null && fullGameMap.containsKey(teeTime.getGameID()))
+			{
+				Game game = fullGameMap.get(teeTime.getGameID());
+				teeTime.setGameDate(game.getGameDate());
+				teeTime.setCourseName(game.getCourseName());
+			}
 			
             this.getTeeTimeList().add(teeTime);			
         }		 
@@ -118,12 +149,11 @@ public class TeeTimeDAO implements Serializable
 	public void addTeeTime(TeeTime teeTime) throws Exception
 	{
 		DynamoTeeTime dtt = dynamoUpsert(teeTime);
+		teeTime.setTeeTimeID(dtt.getTeeTimeID());
 		
 		log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");		
 		
-		this.getTeeTimesMap().put(dtt.getTeeTimeID(), teeTime);
-		
-		refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
+		refreshListsAndMaps("add", teeTime); 
 				
 		log.info("addTeeTime complete");	
 	}

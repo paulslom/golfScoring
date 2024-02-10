@@ -285,10 +285,12 @@ public class RoundDAO implements Serializable
 		if (round.getRoundID() == null)
 		{
 			dynamoRound.setRoundID(UUID.randomUUID().toString());
+			dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(new Date()));
 		}
 		else
 		{
 			dynamoRound.setRoundID(round.getRoundID());
+			dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(round.getSignupDateTime()));
 		}
 		
 		dynamoRound.setGameID(round.getGameID());
@@ -301,7 +303,7 @@ public class RoundDAO implements Serializable
 		dynamoRound.setCourseTeeID(round.getCourseTeeID());
 		dynamoRound.setCourseTeeColor(round.getCourseTeeColor());
 		dynamoRound.setRoundHandicapDifferential(round.getRoundHandicapDifferential());
-		dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(round.getSignupDateTime()));
+
 		dynamoRound.setHole1Score(round.getHole1Score());
 		dynamoRound.setHole2Score(round.getHole2Score());
 		dynamoRound.setHole3Score(round.getHole3Score());
@@ -338,6 +340,8 @@ public class RoundDAO implements Serializable
 		DynamoRound dr = dynamoUpsert(round);
 		
 		round.setRoundID(dr.getRoundID());
+		DateToStringConverter dsc = new DateToStringConverter();
+		round.setSignupDateTime(dsc.unconvert(dr.getSignupDateTime()));
 		
 		log.info("LoggedDBOperation: function-update; table:round; rows:1");
 		

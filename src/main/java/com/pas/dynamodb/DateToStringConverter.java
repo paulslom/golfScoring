@@ -2,6 +2,7 @@ package com.pas.dynamodb;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -25,8 +26,8 @@ public class DateToStringConverter implements DynamoDBTypeConverter<String, Date
     	//Example of what we are unconverting: 2020-03-21T00:00:00.000-04:00
     	
     	DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH);
-    	LocalDate ldt = LocalDate.parse(s, inputFormatter);
-    	Date returnDate = Date.from(ldt.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    	LocalDateTime ldt = LocalDateTime.parse(s, inputFormatter);
+    	Date returnDate = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
         return returnDate;
     }
     

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
@@ -35,15 +37,24 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 	
 		Group selectedGroup = (Group)selectonemenu.getValue();
 		
-		if (selectedGroup != null)
+		try 
 		{
-			log.info("loading up golf courses from MySQL DB golfScoring");	 
-			GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
-			
-			gm.loadCourseSelections();			
-			
-			gm.setDisableProceedToSelectGame(false);			
-		}
+			if (selectedGroup != null)
+			{
+				log.info("loading up golf courses");	 
+				GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
+				gm.loadCourseSelections();				
+				gm.setDisableProceedToSelectGame(false);			
+			}
+		} 
+		catch (Exception e) 
+		{
+			log.error("Exception in Group valueChangeGroup: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in Group valueChangeGroup: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+	
+		}			
+		
 		
 	}
 	@Override

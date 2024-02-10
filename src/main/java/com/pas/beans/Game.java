@@ -202,10 +202,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			
 			if (operation.equalsIgnoreCase("Add"))
 			{
-				log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");	
-				Course course = golfmain.getCoursesMap().get(this.getCourseID());
-				this.setCourse(course);
-				this.setCourseName(course.getCourseName());
+				log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");
+				golfmain.assignCourseToGame(this);
 				this.setGameID(null); //should not have a game id on an add
 				String newGameID = golfmain.addGame(this);
 				golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
@@ -2501,8 +2499,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception when composing pregame email: " +e.getMessage(),e);
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when composing pregame email: " + e.getMessage(),null);
+			log.error("Exception when composing pregame email.  Have tee times been assigned to everyone?: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when composing pregame email.  Have tee times been assigned to everyone? " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
 		

@@ -158,7 +158,7 @@
 						
 					    <p:selectOneMenu id="gameList2ID" value="#{pc_TeeTime.gameID}" required="true"  hideNoSelectionOption="true">
 				            <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						    <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDate}" itemValue="#{g.gameID}"/>					
+						    <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					    </p:selectOneMenu>
 						
 					 </td>
