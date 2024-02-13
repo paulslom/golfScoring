@@ -32,7 +32,7 @@ import com.pas.util.Utils;
 public class Round extends SpringBeanAutowiringSupport implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(Round.class);
+	private static Logger logger = LogManager.getLogger(Round.class);
 
 	private String roundID;
 	private int oldRoundID;
@@ -142,7 +142,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public Round() 
 	{
-		//log.debug("In Round constructor.  hash code is this: " + this.hashCode());
+		//logger.debug("In Round constructor.  hash code is this: " + this.hashCode());
 	}
 	
 	public String toString()
@@ -169,7 +169,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String selectRowAjax(SelectEvent<Round> event)
 	{
-		log.info(getTempUserName() + " selected a row in Round selection list");
+		logger.info(getTempUserName() + " selected a row in Round selection list");
 		Round rd = event.getObject();
 		this.setSelectedRound(rd);
 		
@@ -243,7 +243,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public String resetTeams() 
 	{
-		log.info("User clicked reset teams from player selection screen");
+		logger.info("User clicked reset teams from player selection screen");
 		
 		for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 		{
@@ -256,7 +256,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String pickTeams() 
 	{
-		log.info("User clicked pick teams from pick teams screen");
+		logger.info("User clicked pick teams from pick teams screen");
 		
 		//How many players per team?  Need lists that we can snake through by handicap.
 		
@@ -501,7 +501,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChangeGamePickTeams(AjaxBehaviorEvent event) 
 	{
-		log.info("User picked a game on select players for game form");
+		logger.info("User picked a game on select players for game form");
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
@@ -521,7 +521,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public String proceedToPreGameEmail()
 	{
-		log.info("User is done with picking teams for game, proceed to pregame email");
+		logger.info("User is done with picking teams for game, proceed to pregame email");
 		
 		saveAndStayPickTeams();
 		
@@ -561,7 +561,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	}
 	public String proceedToPickTeams()
 	{
-		log.info("Game Handicap entry done, proceed to pick teams");
+		logger.info("Game Handicap entry done, proceed to pick teams");
 		updateGameHandicaps();
 		return "success";
 	}
@@ -697,7 +697,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String onLoadGameEnterScores()
 	{
-		log.info(getTempUserName() + " in onLoadGameEnterScores");
+		logger.info(getTempUserName() + " in onLoadGameEnterScores");
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
@@ -771,7 +771,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
 				{
 					Round tempRd = this.getSyncGameRoundList().get(i);
-					log.info(getTempUserName() + " showing user round for entering scores: roundID = " + tempRd.getRoundID() + " player: " + tempRd.getPlayerName());
+					logger.info(getTempUserName() + " showing user round for entering scores: roundID = " + tempRd.getRoundID() + " player: " + tempRd.getPlayerName());
 				}
 			}
 		}	
@@ -780,7 +780,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public void valueChangeGameHandicaps(AjaxBehaviorEvent event) 
 	{
-		log.info("User picked a game on game handicaps form");
+		logger.info("User picked a game on game handicaps form");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
@@ -797,7 +797,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " picked a game on game enter scores");
+		logger.info(getTempUserName() + " picked a game on game enter scores");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 		
@@ -945,7 +945,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public synchronized String updateAllRounds()
 	{
-		log.info(getTempUserName() + " entering updateAllRounds method");
+		logger.info(getTempUserName() + " entering updateAllRounds method");
 		
 		try
 		{
@@ -966,7 +966,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 						continue;
 					}
 					
-					log.info(getTempUserName() + " in updateAllRounds method roundID = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName());
+					logger.info(getTempUserName() + " in updateAllRounds method roundID = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName());
 					
 					int frontScore = tempRound.getHole1Score() + tempRound.getHole2Score() + tempRound.getHole3Score();
 					frontScore = frontScore + tempRound.getHole4Score() + tempRound.getHole5Score() + tempRound.getHole6Score();
@@ -1009,11 +1009,11 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 					
 					tempRound.setTotalToPar(scoreToParString);
 					
-					log.info(getTempUserName() + " about to update round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
+					logger.info(getTempUserName() + " about to update round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
 					
 					golfmain.updateRound(tempRound);
 					
-					log.info(getTempUserName() + " completed updating round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
+					logger.info(getTempUserName() + " completed updating round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
 					
 					updatedRounds++;
 				}
@@ -1024,7 +1024,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in updateAllRounds: " +e.getMessage(),e);
+			logger.error("Exception in updateAllRounds: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in updateAllRounds: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}		
@@ -1060,7 +1060,7 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in deleteSelectedPlayerRound: " +e.getMessage(),e);
+			logger.error("Exception in deleteSelectedPlayerRound: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in deleteSelectedPlayerRound: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}	
@@ -1320,14 +1320,6 @@ public class Round extends SpringBeanAutowiringSupport implements Serializable
 
 	public void setNetScore(BigDecimal netScore) {
 		this.netScore = netScore;
-	}
-
-	public static Logger getLog() {
-		return log;
-	}
-
-	public static void setLog(Logger log) {
-		Round.log = log;
 	}
 
 	public Integer getHole1Score() {

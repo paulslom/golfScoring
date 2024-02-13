@@ -22,7 +22,7 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(Game.class);
+	private static Logger logger = LogManager.getLogger(Game.class);
 
 	private String groupID;
 	private Integer oldGroupID;
@@ -31,7 +31,7 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 			
 	public void valueChangeGroup(AjaxBehaviorEvent event) 
 	{
-		log.info("user selected a golf Group from main page");
+		logger.info("user selected a golf Group from main page");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
@@ -41,7 +41,7 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 		{
 			if (selectedGroup != null)
 			{
-				log.info("loading up golf courses");	 
+				logger.info("loading up golf courses");	 
 				GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
 				gm.loadCourseSelections();				
 				gm.setDisableProceedToSelectGame(false);			
@@ -49,7 +49,7 @@ public class Group extends SpringBeanAutowiringSupport implements Serializable
 		} 
 		catch (Exception e) 
 		{
-			log.error("Exception in Group valueChangeGroup: " +e.getMessage(),e);
+			logger.error("Exception in Group valueChangeGroup: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in Group valueChangeGroup: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 	

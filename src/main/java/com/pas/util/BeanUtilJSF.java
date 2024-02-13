@@ -10,7 +10,7 @@ import com.pas.beans.TeeTime;
 
 public class BeanUtilJSF
 {
-	private static Logger log = LogManager.getLogger(TeeTime.class);
+	private static Logger logger = LogManager.getLogger(TeeTime.class);
 
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String beanName) 
@@ -28,7 +28,7 @@ public class BeanUtilJSF
         } 
         catch (Exception e)
         {
-            log.error("Error saving instance of bean " + beanName + ". Exception is = " + e.getMessage());           
+            logger.error("Error saving instance of bean " + beanName + ". Exception is = " + e.getMessage());           
         }
     }
 }

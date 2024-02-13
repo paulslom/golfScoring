@@ -28,7 +28,7 @@ public class CourseDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(CourseDAO.class);
+	private static Logger logger = LogManager.getLogger(CourseDAO.class);
 	
 	private Map<String,Course> coursesMap = new HashMap<>();
 	private List<Course> courseSelections = new ArrayList<Course>();
@@ -46,7 +46,7 @@ public class CourseDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 	
@@ -179,7 +179,7 @@ public class CourseDAO implements Serializable
             this.getCourseSelections().add(course);			
         }
 		
-		log.info("LoggedDBOperation: function-inquiry; table:course; rows:" + this.getCourseSelections().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:course; rows:" + this.getCourseSelections().size());
 		
 		coursesMap = this.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
     }

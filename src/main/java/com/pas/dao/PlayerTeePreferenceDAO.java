@@ -32,7 +32,7 @@ public class PlayerTeePreferenceDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(PlayerTeePreferenceDAO.class);
+	private static Logger logger = LogManager.getLogger(PlayerTeePreferenceDAO.class);
 		
 	private Map<String,PlayerTeePreference> playerTeePreferencesMap = new HashMap<>();
 	private List<PlayerTeePreference> playerTeePreferencesList = new ArrayList<>();
@@ -51,7 +51,7 @@ public class PlayerTeePreferenceDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 
@@ -77,7 +77,7 @@ public class PlayerTeePreferenceDAO implements Serializable
             this.getPlayerTeePreferencesList().add(playerTeePreference);			
         }
 		
-		log.info("LoggedDBOperation: function-inquiry; table:playerteepreference; rows:" + playerTeePreferencesList.size());
+		logger.info("LoggedDBOperation: function-inquiry; table:playerteepreference; rows:" + playerTeePreferencesList.size());
 		
 		playerTeePreferencesMap = playerTeePreferencesList.stream().collect(Collectors.toMap(PlayerTeePreference::getPlayerTeePreferenceID, PlayerTeePreference -> PlayerTeePreference));
 			
@@ -91,7 +91,7 @@ public class PlayerTeePreferenceDAO implements Serializable
 		{
 			playerTeePreference = this.getPlayerTeePreferencesList().get(i);
 			
-			//log.info("ptp id: " + playerTeePreference.getPlayerTeePreferenceID() + " player id: " + playerTeePreference.getPlayerID() + " course tee id: " + playerTeePreference.getCourseTeeID());
+			//logger.info("ptp id: " + playerTeePreference.getPlayerTeePreferenceID() + " player id: " + playerTeePreference.getPlayerID() + " course tee id: " + playerTeePreference.getCourseTeeID());
 			
 			if (playerTeePreference.getPlayerID().equalsIgnoreCase(playerID) 
 			&& playerTeePreference.getCourseID().equalsIgnoreCase(courseID))
@@ -114,21 +114,21 @@ public class PlayerTeePreferenceDAO implements Serializable
 		DynamoPlayerTeePreference dptp = dynamoUpsert(playerTeePreference);
 		playerTeePreference.setPlayerTeePreferenceID(dptp.getPlayerTeePreferenceID());
 		
-		log.info("LoggedDBOperation: function-add; table:playerteepreference; rows:1");
+		logger.info("LoggedDBOperation: function-add; table:playerteepreference; rows:1");
 		
 		refreshListsAndMaps("add",playerTeePreference);
 		
-		log.info("addPlayerTeePreference complete");	
+		logger.info("addPlayerTeePreference complete");	
 	}
 	
 	public void updatePlayerTeePreference(PlayerTeePreference playerTeePreference) throws Exception
 	{
 		dynamoUpsert(playerTeePreference);
-     	log.info("LoggedDBOperation: function-update; table:playerteepreference; rows:1");
+     	logger.info("LoggedDBOperation: function-update; table:playerteepreference; rows:1");
 		
 		refreshListsAndMaps("update", playerTeePreference);
 			
-		log.debug("update player tee preference table complete");		
+		logger.debug("update player tee preference table complete");		
 	}
 	
 	private DynamoPlayerTeePreference dynamoUpsert(PlayerTeePreference ptp) throws Exception 

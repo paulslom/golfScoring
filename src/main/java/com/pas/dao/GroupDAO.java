@@ -25,7 +25,7 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 public class GroupDAO implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(GroupDAO.class);
+	private static Logger logger = LogManager.getLogger(GroupDAO.class);
 	
 	private Map<String,Group> groupsMap = new HashMap<>();
 	private List<Group> groupsList = new ArrayList<>();
@@ -44,13 +44,13 @@ public class GroupDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 
 	public void readGroupsFromDB() 
     {
-		log.info("attempting to readGroupsFromDB");
+		logger.info("attempting to readGroupsFromDB");
 		
 		Iterator<DynamoGroup> results = groupsTable.scan().items().iterator();
 		
@@ -65,9 +65,9 @@ public class GroupDAO implements Serializable
             this.getGroupsList().add(group);			
         }
 		
-		log.info("successfully read groups in readGroupsFromDB");
+		logger.info("successfully read groups in readGroupsFromDB");
 		
-		log.info("LoggedDBOperation: function-inquiry; table:group; rows:" + this.getGroupsList().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:group; rows:" + this.getGroupsList().size());
 		
 		groupsMap = this.getGroupsList().stream().collect(Collectors.toMap(Group::getGroupID, group -> group));	 		
 	}

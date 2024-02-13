@@ -1,6 +1,5 @@
 package com.pas.util;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -17,8 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import javax.naming.InitialContext;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpSession;
@@ -38,7 +35,7 @@ import com.pas.beans.Score;
 
 public class Utils 
 {
-	private static Logger log = LogManager.getLogger(Utils.class);	
+	private static Logger logger = LogManager.getLogger(Utils.class);	
 	
 	private static ResourceBundle genericProps = ResourceBundle.getBundle("ApplicationProperties");
 	
@@ -613,7 +610,7 @@ public class Utils
    			    String port = System.getProperty("RDS_PORT");
    			    String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
    			    
-   			    //log.info("jdbcUrl for datasource: " + jdbcUrl);
+   			    //logger.info("jdbcUrl for datasource: " + jdbcUrl);
    			    
    			    ds.setURL(jdbcUrl);
    			    ds.setPassword(password);
@@ -622,7 +619,7 @@ public class Utils
    			  }
    			  catch (Exception e) 
    		      { 
-   				  log.error(e.toString());
+   				  logger.error(e.toString());
    			  }   			  
    		}
        	

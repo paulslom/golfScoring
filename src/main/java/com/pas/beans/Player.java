@@ -37,7 +37,7 @@ import com.pas.util.Utils;
 public class Player extends SpringBeanAutowiringSupport implements Serializable
 {	
 	private static final long serialVersionUID = 4089402354585236177L;
-	private static Logger log = LogManager.getLogger(Game.class);
+	private static Logger logger = LogManager.getLogger(Game.class);
 	
 	private String playerID;
 	private int oldPlayerID;
@@ -177,7 +177,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String proceedToGameHandicaps()
 	{
-		log.info("User is done with tee times for game, proceed to enter player handicaps specific to this game");
+		logger.info("User is done with tee times for game, proceed to enter player handicaps specific to this game");
 		
 		saveAndStayTeeTimesPickList();
 		
@@ -186,7 +186,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String proceedToTeeTimes()
 	{
-		log.info("User is done selecting players for game, proceed to tee times");
+		logger.info("User is done selecting players for game, proceed to tee times");
 		
 		saveAndStayPickList();
 		
@@ -197,7 +197,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
-		log.info("User picked a game on select players for game form");
+		logger.info("User picked a game on select players for game form");
 			
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
@@ -221,7 +221,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	}
 	private String loadSelectedPlayers(Game game) 
 	{
-		log.info("load of gameSelectPlayers; loading those already selected");
+		logger.info("load of gameSelectPlayers; loading those already selected");
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
@@ -293,7 +293,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String savePlayer()
 	{
-		log.info("user clicked Save Player from maintain player dialog");	
+		logger.info("user clicked Save Player from maintain player dialog");	
 		
 		try
 		{
@@ -301,7 +301,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			
 			if (operation.equalsIgnoreCase("Add"))
 			{
-				log.info("user clicked Save Player from maintain player dialog, from an add");	
+				logger.info("user clicked Save Player from maintain player dialog, from an add");	
 				
 				//first need to make sure the chosen userid does not already exist in the system.
 				Player existingPlayer = golfmain.getPlayerByUserName(this.getUsername());
@@ -325,11 +325,11 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 					FacesContext.getCurrentInstance().validationFailed();
 				}
 					
-				log.info("after add Player");
+				logger.info("after add Player");
 			}
 			else if (operation.equalsIgnoreCase("Update"))
 			{
-				log.info("user clicked Save Player from maintain player dialog; from an update");			
+				logger.info("user clicked Save Player from maintain player dialog; from an update");			
 				golfmain.updatePlayer(this);
 				
 				if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
@@ -348,16 +348,16 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 					golfmain.updateRole(gu); 
 				}
 							
-				log.info("after update Player");
+				logger.info("after update Player");
 			}
 			else
 			{
-				log.info("neither add nor update from maintain player dialog - doing nothing");
+				logger.info("neither add nor update from maintain player dialog - doing nothing");
 			}
 		}
 		catch (Exception e)
 		{
-			log.error("savePlayer failed: " + e.getMessage(), e);
+			logger.error("savePlayer failed: " + e.getMessage(), e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when saving player: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 
@@ -481,7 +481,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in saveRounds: " +e.getMessage(),e);
+			logger.error("Exception in saveRounds: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveRounds: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}	
@@ -489,7 +489,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String saveAndStayTeeTimesPickList()
 	{
-		log.info("saving player round records with tee times");
+		logger.info("saving player round records with tee times");
 		
 		try
 		{			
@@ -568,7 +568,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in saveAndStayTeeTimesPickList: " +e.getMessage(),e);
+			logger.error("Exception in saveAndStayTeeTimesPickList: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveAndStayTeeTimesPickList: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}	
@@ -577,7 +577,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String saveAndStayPickList()
 	{
-		log.info("saving info from player picklist screen");
+		logger.info("saving info from player picklist screen");
 		
 		//clear out first for this
 		Game game = BeanUtilJSF.getBean("pc_Game");
@@ -665,7 +665,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String showTeeTimePicklist()
 	{
-		log.info("setting up tee times for selected game");
+		logger.info("setting up tee times for selected game");
 		
 		setShowGameTeeTimeList3(false);
 		setShowGameTeeTimeList4(false);
@@ -888,7 +888,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String proceedToEnterScores() 
 	{
-		log.info("User clicked proceed from player selection screen; saving new player round records and sending them to enter scores");
+		logger.info("User clicked proceed from player selection screen; saving new player round records and sending them to enter scores");
 		
 		//clear out first for this
 		Game game = BeanUtilJSF.getBean("pc_Game");//we want to preserve the signup dates/times here
@@ -914,7 +914,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 
 	public String selectMultiRowAjax(UnselectEvent<Player> event)
 	{
-		log.info("User unchecked a checkbox in Player selection list");
+		logger.info("User unchecked a checkbox in Player selection list");
 		
 		processSel();
 				
@@ -923,7 +923,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String selectMultiRowAjax(SelectEvent<Player> event)
 	{
-		log.info("User clicked a checkbox in Player selection list");
+		logger.info("User clicked a checkbox in Player selection list");
 		
 		processSel();
 				
@@ -932,7 +932,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String selectRowAjax(SelectEvent<Player> event)
 	{
-		log.info("User clicked on a row in Player list");
+		logger.info("User clicked on a row in Player list");
 		
 		Player item = event.getObject();
 		
@@ -1884,12 +1884,12 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				}
 				else
 				{
-					log.error("unable to determine who logged in player is - this could be a problem!");
+					logger.error("unable to determine who logged in player is - this could be a problem!");
 				}
 			}
 			else
 			{
-				log.error("unable to determine who logged in player is - this could be a problem!");				
+				logger.error("unable to determine who logged in player is - this could be a problem!");				
 			}
 		}
 		else
@@ -1901,7 +1901,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			}
 		}		
 		
-		log.info("currently logged in user is: " + loggedInPlayerName);		
+		logger.info("currently logged in user is: " + loggedInPlayerName);		
 		
 		return loggedInPlayerName;
 	}
@@ -1963,12 +1963,12 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 				}
 				else
 				{
-					log.error("unable to determine who logged in player is - this could be a problem!");
+					logger.error("unable to determine who logged in player is - this could be a problem!");
 				}
 			}
 			else
 			{
-				log.error("unable to determine who logged in player is - this could be a problem!");				
+				logger.error("unable to determine who logged in player is - this could be a problem!");				
 			}
 		}
 		else
@@ -1980,7 +1980,7 @@ public class Player extends SpringBeanAutowiringSupport implements Serializable
 			}
 		}		
 		
-		log.info("currently logged in user's email is: " + loggedInPlayerEmail);		
+		logger.info("currently logged in user's email is: " + loggedInPlayerEmail);		
 		
 		return loggedInPlayerEmail;
 	}

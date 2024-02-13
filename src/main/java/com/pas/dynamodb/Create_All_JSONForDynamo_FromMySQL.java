@@ -34,7 +34,7 @@ import com.pas.beans.TeeTime;
 
 public class Create_All_JSONForDynamo_FromMySQL
 {
-	private static Logger log = LogManager.getLogger(Create_All_JSONForDynamo_FromMySQL.class); //log4j for Logging
+	private static Logger logger = LogManager.getLogger(Create_All_JSONForDynamo_FromMySQL.class); //log4j for Logging
 	 
     private static String jsonOutputFileGolfUsers = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GolfUsersData.json"; 
     private static String jsonOutputFileGolfGroups = "C:/Paul/GitHub/golfScoring/src/main/resources/data/GolfGroupsData.json"; 	
@@ -49,7 +49,7 @@ public class Create_All_JSONForDynamo_FromMySQL
      
     public static void main(String[] args) throws Exception
     { 
-    	log.debug("**********  START of program ***********");   	
+    	logger.debug("**********  START of program ***********");   	
     	
     	List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
     	List<Group> groupList = getGroupsFromMySQLDB();	//2
@@ -62,7 +62,7 @@ public class Create_All_JSONForDynamo_FromMySQL
     	List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
     	List<Round> roundList = getRoundsFromMySQLDB();	//10
      	
-    	log.debug("********** starting write of JSON files ***********"); 
+    	logger.debug("********** starting write of JSON files ***********"); 
     	
 	   	writeGolfUsersJSONFile(golfUserList);  //1
     	writeGroupsJSONFile(groupList); //2
@@ -75,9 +75,9 @@ public class Create_All_JSONForDynamo_FromMySQL
     	writePlayerMoneyJSONFile(playerMoneyList); //9    	
     	writeRoundsJSONFile(roundList); //10	 	
     	
-	   	log.debug("********** finished write of JSON files ***********");   	
+	   	logger.debug("********** finished write of JSON files ***********");   	
 	   	
-		log.debug("**********  END of program ***********");		
+		logger.debug("**********  END of program ***********");		
 	}
 
 	private static List<PlayerTeePreference> getPlayerTeePreferenceFromMySQLDB() 
@@ -106,7 +106,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + playerTeePreferenceList.size() + " playerTeePreference rows from DB");
+    	logger.debug("successfully read in " + playerTeePreferenceList.size() + " playerTeePreference rows from DB");
 		return playerTeePreferenceList;
 	}
 
@@ -139,7 +139,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + courseTeeList.size() + " courseTee rows from DB");
+    	logger.debug("successfully read in " + courseTeeList.size() + " courseTee rows from DB");
 		return courseTeeList;
 	}
 
@@ -170,7 +170,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + playerMoneyList.size() + " playerMoney rows from DB");
+    	logger.debug("successfully read in " + playerMoneyList.size() + " playerMoney rows from DB");
 		return playerMoneyList;
 	}
 
@@ -200,7 +200,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + teeTimesList.size() + " tee times from DB");
+    	logger.debug("successfully read in " + teeTimesList.size() + " tee times from DB");
 		return teeTimesList;
 	}
 
@@ -228,7 +228,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + groupList.size() + " groups from DB");
+    	logger.debug("successfully read in " + groupList.size() + " groups from DB");
 		return groupList;
 	}
 
@@ -566,7 +566,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + roundList.size() + " rounds from DB");
+    	logger.debug("successfully read in " + roundList.size() + " rounds from DB");
 		return roundList;
 	}
 
@@ -618,7 +618,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + gameList.size() + " games from DB");
+    	logger.debug("successfully read in " + gameList.size() + " games from DB");
 		return gameList;
 	}
 
@@ -659,7 +659,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + playerList.size() + " players from DB");
+    	logger.debug("successfully read in " + playerList.size() + " players from DB");
 		return playerList;
 	}
 
@@ -687,7 +687,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + userList.size() + " users from DB");
+    	logger.debug("successfully read in " + userList.size() + " users from DB");
 		return userList;
 	}
     
@@ -857,7 +857,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    }
 		});
     	
-    	log.debug("successfully read in " + courseList.size() + " courses from DB");
+    	logger.debug("successfully read in " + courseList.size() + " courses from DB");
 		return courseList;
 	}
     
@@ -936,7 +936,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file GolfUsers ***********"); 
+		logger.debug("********** finished write of JSON file GolfUsers ***********"); 
 		
 	}	
 
@@ -1030,7 +1030,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				e.printStackTrace();
 			}
 		}
-		log.debug("********** finished write of JSON file Courses ***********"); 
+		logger.debug("********** finished write of JSON file Courses ***********"); 
 		
 	}    
 
@@ -1093,7 +1093,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file TeeTimes ***********"); 
+		logger.debug("********** finished write of JSON file TeeTimes ***********"); 
 		
 	}
     
@@ -1158,7 +1158,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file PlayerMoney ***********"); 
+		logger.debug("********** finished write of JSON file PlayerMoney ***********"); 
 		
 	}
 
@@ -1229,7 +1229,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file CourseTees ***********"); 
+		logger.debug("********** finished write of JSON file CourseTees ***********"); 
 		
 	}
     
@@ -1292,7 +1292,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file PlayerTeePreferences ***********"); 
+		logger.debug("********** finished write of JSON file PlayerTeePreferences ***********"); 
 	}
     
     private static void writeGroupsJSONFile(List<Group> groupList) 
@@ -1350,7 +1350,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file Groups ***********"); 
+		logger.debug("********** finished write of JSON file Groups ***********"); 
 		
 	}
     
@@ -1419,7 +1419,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file Players ***********"); 
+		logger.debug("********** finished write of JSON file Players ***********"); 
 	}
     
     private static void writeGamesJSONFile(List<Game> gameList) 
@@ -1510,7 +1510,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file Games ***********"); 
+		logger.debug("********** finished write of JSON file Games ***********"); 
 	}
     
     private static void writeRoundsJSONFile(List<Round> roundList) 
@@ -1631,7 +1631,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 			}
 		}
 		
-		log.debug("********** finished write of JSON file Rounds ***********"); 
+		logger.debug("********** finished write of JSON file Rounds ***********"); 
 	}
 
 	
@@ -1656,7 +1656,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		    String port = prop.getProperty("RDS_PORT");
 		    String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
 		    
-		    //log.info("jdbcUrl for datasource: " + jdbcUrl);
+		    //logger.info("jdbcUrl for datasource: " + jdbcUrl);
 		    
 		    ds.setURL(jdbcUrl);
 		    ds.setPassword(password);
@@ -1665,7 +1665,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 		 }
 		 catch (Exception e) 
 	     { 
-		    log.error(e.toString());
+		    logger.error(e.toString());
 		 }     		
        	
        	return ds;

@@ -48,7 +48,7 @@ public class GameDAO implements Serializable
 {	
 	private static final long serialVersionUID = 1L;
 	
-	private static Logger log = LogManager.getLogger(GameDAO.class);
+	private static Logger logger = LogManager.getLogger(GameDAO.class);
 	
 	private List<Game> fullGameList = new ArrayList<Game>();		
 
@@ -66,7 +66,7 @@ public class GameDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing GameDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing GameDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 		
@@ -75,7 +75,7 @@ public class GameDAO implements Serializable
 		DynamoGame dynamoGame = dynamoUpsert(game);	
 		game.setGameID(dynamoGame.getGameID());
 		
-		log.info("LoggedDBOperation: function-add; table:game; rows:1");
+		logger.info("LoggedDBOperation: function-add; table:game; rows:1");
 		
 		refreshGameList("add", game.getGameID(), game);
 		
@@ -86,11 +86,11 @@ public class GameDAO implements Serializable
 	{
 		dynamoUpsert(game);		
 			
-		log.info("LoggedDBOperation: function-update; table:game; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:game; rows:1");
 		
 		refreshGameList("update", game.getGameID(), game);	
        		
-		log.debug(getTempUserName() + " update game table complete");		
+		logger.debug(getTempUserName() + " update game table complete");		
 	}
 	
 	public void deleteGame(String gameID) throws Exception 
@@ -99,11 +99,11 @@ public class GameDAO implements Serializable
 		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
 		gamesTable.deleteItem(deleteItemEnhancedRequest);
 		
-		log.info("LoggedDBOperation: function-delete; table:game; rows:1");
+		logger.info("LoggedDBOperation: function-delete; table:game; rows:1");
 		
 		refreshGameList("delete", gameID, null);		
 		
-		log.info(getTempUserName() + " deleteGame complete");	
+		logger.info(getTempUserName() + " deleteGame complete");	
 	}
 	
 	private DynamoGame dynamoUpsert(Game game) throws Exception 
@@ -231,7 +231,7 @@ public class GameDAO implements Serializable
 		   }
 		});
 		
-		log.info("LoggedDBOperation: function-inquiry; table:game; rows:" + this.getFullGameList().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:game; rows:" + this.getFullGameList().size());
 	}
 	
 	public List<Game> getAvailableGames(String playerID) 
@@ -447,7 +447,7 @@ public class GameDAO implements Serializable
 		{
 			Game gm = fullGameList.get(i);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			log.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
+			logger.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
 		}
 		*/
 		
@@ -460,7 +460,7 @@ public class GameDAO implements Serializable
 		{
 			Game gm = fullGameList.get(i);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			log.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
+			logger.info("gameID: " + gm.getGameID() + ", game date: " + sdf.format(gm.getGameDate()));
 		}
 		*/
 		return fullGameList;

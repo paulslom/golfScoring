@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 public class SAMailUtility 
 {
-	private static Logger log = LogManager.getLogger(SAMailUtility.class);
+	private static Logger logger = LogManager.getLogger(SAMailUtility.class);
 	
 	public static final String CLASS_NAME = "com.lfg.util.SAMailUtility";
 
@@ -49,7 +49,7 @@ public class SAMailUtility
 	
 	public static void sendEmail(String mailSubject, String emailMessage, ArrayList<String> ccArrayList, boolean useJSF)
 	{
-		log.info("entering sendEmail()");
+		logger.info("entering sendEmail()");
 				
 		String mailFrom = genericProps.getString("mailFrom");
 		String mailTo = genericProps.getString("mailTo");
@@ -60,7 +60,7 @@ public class SAMailUtility
 		
 		sendTheEmail(mailFrom, mailTo, mailSubject, mailBody.toString(), ccArrayList, useJSF);		
 
-		log.info("leaving sendEmail()");
+		logger.info("leaving sendEmail()");
 	}
 
 	// catch all exceptions here. Do NOT want this method to break the app.
@@ -120,7 +120,7 @@ public class SAMailUtility
 		} 		
 		catch (AddressException e)
 		{
-			log.error("AddressException encountered in SAMailUtility => ", e);
+			logger.error("AddressException encountered in SAMailUtility => ", e);
 			if (useJSF)
 		    {
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email error: " + e.getMessage(),null);
@@ -129,7 +129,7 @@ public class SAMailUtility
 		} 
 		catch (MessagingException e) 
 		{
-			log.error("MessagingException encountered in SAMailUtility => ", e);
+			logger.error("MessagingException encountered in SAMailUtility => ", e);
 			if (useJSF)
 		    {
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email error: " + e.getMessage(),null);

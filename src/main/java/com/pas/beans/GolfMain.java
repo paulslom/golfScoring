@@ -69,7 +69,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	}
 	
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(GolfMain.class);	
+	private static Logger logger = LogManager.getLogger(GolfMain.class);	
 		
 	private List<SelectItem> totalPlayersSelections = new ArrayList<SelectItem>();
 	private List<SelectItem> totalTeamsSelections = new ArrayList<SelectItem>();
@@ -206,14 +206,14 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		} 
 		catch (Exception e) 
 		{
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}		
 	}
 
 	private void loadRoundList() throws Exception
 	{
 		roundDAO.readAllRoundsFromDB();
-		log.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
+		logger.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
 		
 		Map<String,Round> tempMap = new HashMap<>();
 		
@@ -302,19 +302,19 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	public void loadCourseSelections()  throws Exception
 	{
 		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
-		log.info("Courses read in. List size = " + this.getCourseSelections().size());		
+		logger.info("Courses read in. List size = " + this.getCourseSelections().size());		
     }
 	
 	public void loadCourseTees()  throws Exception
 	{
 		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
-		log.info("Course Tees read in. List size = " + this.getCourseTees().size());		
+		logger.info("Course Tees read in. List size = " + this.getCourseTees().size());		
     }
 	
 	public void loadFullGameList() throws Exception 
 	{
 		gameDAO.readGamesFromDB();			
-		log.info("Full Game list read in. List size = " + this.getFullGameList().size());	
+		logger.info("Full Game list read in. List size = " + this.getFullGameList().size());	
 		
 		Map<String,Game> tempMap = new HashMap<>();
 		
@@ -340,7 +340,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	public void loadTeeTimeList() throws Exception
 	{
 		teeTimeDAO.readTeeTimesFromDB();			
-		log.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
+		logger.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
 	}
 	
 	public void loadPlayerMoneyList()  throws Exception
@@ -365,7 +365,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		Collection<PlayerMoney> values = playerMoneyDAO.getPlayerMoneyMap().values();
 		playerMoneyDAO.setPlayerMoneyList(new ArrayList<>(values));		
 		
-		log.info("Player Money read in. List size = " + this.getPlayerMoneyList().size());			
+		logger.info("Player Money read in. List size = " + this.getPlayerMoneyList().size());			
 	}
 	
 	public void loadFullPlayerList() throws Exception 
@@ -384,7 +384,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			
 			if (gu == null)
 			{
-				log.error("golfuser is null for player: " + tempPlayer.getUsername());
+				logger.error("golfuser is null for player: " + tempPlayer.getUsername());
 			}
 			else
 			{
@@ -394,7 +394,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			
 		}
 			
-		log.info("Players read in. List size = " + this.getFullPlayerList().size());
+		logger.info("Players read in. List size = " + this.getFullPlayerList().size());
 	}
 
 	public void loadFullPlayerTeePreferencesList() throws Exception 
@@ -412,7 +412,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	   		
 	   		if (player == null)
 	   		{
-	   			log.info("player is null when loading player tee preferences.  ptp player id = " + ptp.getPlayerID() 
+	   			logger.info("player is null when loading player tee preferences.  ptp player id = " + ptp.getPlayerID() 
 	   			  + " and full name is " + ptp.getPlayerFullName()); 
 	   		}
 	   		ptp.setTeeColor(ct.getTeeColor());       
@@ -436,7 +436,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		   }
 		});        	
 		
-		log.info("Player Tee Preferences read in. List size = " + this.getFullPlayerTeePreferencesList().size());		
+		logger.info("Player Tee Preferences read in. List size = " + this.getFullPlayerTeePreferencesList().size());		
 	}
 
 	public void assignCourseToGame(Game inGame)
@@ -463,7 +463,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	
 	public void onLoadEmailGroup() 
 	{
-		log.info(getTempUserName() + " In onLoadEmailGroup GolfMain.java");
+		logger.info(getTempUserName() + " In onLoadEmailGroup GolfMain.java");
 		
 		groupEmailDisclaimer = "The note you compose here will go to the entire group so please use wisely!  Thank you";
 		groupEmailSender = getTempUserName();
@@ -871,7 +871,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	
 	public String sendGroupEmail()
 	{
-		log.info("User clicked sendGroupEmail");
+		logger.info("User clicked sendGroupEmail");
 		
 		String subjectLine = "Group Email";
 		
@@ -902,7 +902,7 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		
 		sb.append("<H3>" + groupEmailMessage + "</H3>");	
 		
-		log.info("Group email message about to be sent: " + sb.toString());		
+		logger.info("Group email message about to be sent: " + sb.toString());		
 		
 		emailRecipients = Utils.setEmailFullRecipientList(fullPlayerList);
 		if (emailRecipients.size() >= 100)
@@ -916,13 +916,13 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 			SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients, true); //last param means use jsf
 		}		
 		
-		log.info("User sent email to entire group successfully");
+		logger.info("User sent email to entire group successfully");
 		
 		return "";
 	}
  	public String proceedToSelectGame() 
 	{
-		log.info("User clicked proceed from Main screen; sending them to game list/add screen");
+		logger.info("User clicked proceed from Main screen; sending them to game list/add screen");
 		
 		return "success";
 	} 	

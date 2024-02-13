@@ -22,7 +22,7 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(PlayerMoney.class);	
+	private static Logger logger = LogManager.getLogger(PlayerMoney.class);	
 	
 	private String playerMoneyID;
 	private int oldPlayerMoneyID;
@@ -46,7 +46,7 @@ public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializ
 	
 	public void onLoadPlayerMoney() 
 	{
-		log.info("about to run Player Money");
+		logger.info("about to run Player Money");
 		runTheMoney();		
 	}
 	

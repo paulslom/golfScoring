@@ -27,7 +27,7 @@ import com.pas.dao.TeeTimeDAO;
 
 public class DailyEmailJob implements Runnable 
 {
-	private static Logger log = LogManager.getLogger(DailyEmailJob.class);
+	private static Logger logger = LogManager.getLogger(DailyEmailJob.class);
 	
 	private static long TEN_HOURS = 36000000; //in milliseconds
 	private static long SIX_DAYS = 518400000; //in milliseconds
@@ -37,7 +37,7 @@ public class DailyEmailJob implements Runnable
 	@Override
 	public void run() 
 	{
-		log.info("Running Daily email job");
+		logger.info("Running Daily email job");
 		
 		Date todaysDate = new Date();
 		
@@ -65,7 +65,7 @@ public class DailyEmailJob implements Runnable
 		} 
 		catch (Exception e) 
 		{
-			log.error("Exception encountered in DailyEmailJob: " + e.getMessage(), e);
+			logger.error("Exception encountered in DailyEmailJob: " + e.getMessage(), e);
 		}		
    
 	}
@@ -75,19 +75,19 @@ public class DailyEmailJob implements Runnable
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 		
 		String gameDateStr = sdf.format(inputGame.getGameDate());	
-		log.info("I've got a game with date = " + gameDateStr + " that I will set up email for.");
+		logger.info("I've got a game with date = " + gameDateStr + " that I will set up email for.");
 		
 		String subjectLine = "Golf game on " + Utils.getDayofWeekString(inputGame.getGameDate()) + " " + sdf.format(inputGame.getGameDate()) + " on " + inputGame.getCourseName();
 		
 		inputGame.setFutureGameEmailMessage(inputGame.getFutureGameEmailMessage().replace("~~~teeTimes~~~", getTeeTimes(inputGame)));
 		inputGame.setFutureGameEmailMessage(inputGame.getFutureGameEmailMessage().replace("~~~gameDetails~~~", getGameParticipants(inputGame)));
 		
-		log.info("establishing email recipients");		
+		logger.info("establishing email recipients");		
 		ArrayList<String> emailRecipients = establishEmailRecipients();		
-		log.info("email recipients successfully established");
+		logger.info("email recipients successfully established");
 		
 		SAMailUtility.sendEmail(subjectLine, inputGame.getFutureGameEmailMessage(), emailRecipients, false); //last false parameter means do not use jsf
-		log.info("email successfully sent");
+		logger.info("email successfully sent");
 	}
 
 	private String getTeeTimes(Game inputGame) throws Exception 
@@ -164,7 +164,7 @@ public class DailyEmailJob implements Runnable
 		{
 			Game tempGame = tempList.get(i);			
 			Course tempCourse = courseDAO.getCoursesMap().get(tempGame.getCourseID());
-			log.info("LoggedDBOperation: function-inquiry; table:course; rows:1");
+			logger.info("LoggedDBOperation: function-inquiry; table:course; rows:1");
 			tempGame.setCourse(tempCourse);
 			tempGame.setCourseName(tempGame.getCourse().getCourseName());		
 		}

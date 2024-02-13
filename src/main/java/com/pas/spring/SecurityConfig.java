@@ -28,7 +28,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 public class SecurityConfig
 {
-	private static Logger log = LogManager.getLogger(SecurityConfig.class);
+	private static Logger logger = LogManager.getLogger(SecurityConfig.class);
 
 	AuthenticationManager authenticationManager;
    
@@ -44,7 +44,7 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsService userDetailsService, HandlerMappingIntrospector introspector) throws Exception 
     {
-    	log.info("entering filterChain of SecurityConfig");    	
+    	logger.info("entering filterChain of SecurityConfig");    	
     	
     	MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
@@ -77,7 +77,7 @@ public class SecurityConfig
     	
     	//http.httpBasic();
     	
-	    log.info("exiting filterChain of SecurityConfig");
+	    logger.info("exiting filterChain of SecurityConfig");
 	    
         return http.build();
     }

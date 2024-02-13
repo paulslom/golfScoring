@@ -2,7 +2,6 @@ package com.pas.dynamodb;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Create_All_Dynamo_Tables
 {
-	private static Logger log = LogManager.getLogger(Create_All_Dynamo_Tables.class); //log4j for Logging 
+	private static Logger logger = LogManager.getLogger(Create_All_Dynamo_Tables.class); //log4j for Logging 
 	
 	private static String GOLFUSERS_JSONFILE = "GolfUsersData.json";
 	private static String COURSES_JSONFILE = "CoursesData.json";
@@ -25,7 +24,7 @@ public class Create_All_Dynamo_Tables
 	
     public static void main(String[] args) throws Exception
     { 
-    	log.debug("**********  START of program ***********");   	
+    	logger.debug("**********  START of program ***********");   	
     	
     	 try 
          {
@@ -44,11 +43,11 @@ public class Create_All_Dynamo_Tables
 	       	
 	    	 DynamoUtil.stopDynamoServer();
 	    	
-			 log.debug("**********  END of program ***********");
+			 logger.debug("**********  END of program ***********");
          }
     	 catch (Exception e)
     	 {
-    		 log.error("Exception in Create_All_Dynamo_Tables " + e.getMessage(), e);
+    		 logger.error("Exception in Create_All_Dynamo_Tables " + e.getMessage(), e);
     	 }
 		System.exit(1);
 	}

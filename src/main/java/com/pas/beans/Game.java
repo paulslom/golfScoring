@@ -45,7 +45,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(Game.class);	
+	private static Logger logger = LogManager.getLogger(Game.class);	
 	
 	private static ResourceBundle genericProps = ResourceBundle.getBundle("ApplicationProperties");
 	
@@ -122,7 +122,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void onLoadGameList() 
 	{
-		log.info(getTempUserName() + " In onLoadGameList Game.java");
+		logger.info(getTempUserName() + " In onLoadGameList Game.java");
 	}
 	
 	public String addGame()
@@ -156,7 +156,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in addGameFromGameList: " +e.getMessage(),e);
+			logger.error("Exception in addGameFromGameList: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in addGameFromGameList: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -187,7 +187,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in updateGame: " +e.getMessage(),e);
+			logger.error("Exception in updateGame: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in updateGame: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -196,7 +196,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String saveGame()
 	{
-		log.info(getTempUserName() + " user clicked Save Player from maintain player dialog");	
+		logger.info(getTempUserName() + " user clicked Save Player from maintain player dialog");	
 		
 		try
 		{
@@ -204,22 +204,22 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			
 			if (operation.equalsIgnoreCase("Add"))
 			{
-				log.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");
+				logger.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");
 				golfmain.assignCourseToGame(this);
 				this.setGameID(null); //should not have a game id on an add
 				String newGameID = golfmain.addGame(this);
 				golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
-				log.info(getTempUserName() + " after add Game");
+				logger.info(getTempUserName() + " after add Game");
 			}
 			else if (operation.equalsIgnoreCase("Update"))
 			{
-				log.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");			
+				logger.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");			
 				golfmain.updateGame(this);
-				log.info(getTempUserName() + " after update Game");
+				logger.info(getTempUserName() + " after update Game");
 			}
 			else
 			{
-				log.info(getTempUserName() + " neither add nor update from maintain player dialog - doing nothing");
+				logger.info(getTempUserName() + " neither add nor update from maintain player dialog - doing nothing");
 			}
 			
 			this.setSelectedGame(this);
@@ -227,7 +227,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in saveGame: " +e.getMessage(),e);
+			logger.error("Exception in saveGame: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveGame: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -237,7 +237,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String onLoadEmailFuture()
 	{
-		log.info(getTempUserName() + " in onLoadEmailFuture");	
+		logger.info(getTempUserName() + " in onLoadEmailFuture");	
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		this.setFutureGamesList(golfmain.getFutureGames());
 		return "";
@@ -245,13 +245,13 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String onLoadGameSignUp()
 	{
-		log.info(getTempUserName() + " in onLoadGameSignUp");
+		logger.info(getTempUserName() + " in onLoadGameSignUp");
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());	
 		
 		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
-		log.info(getTempUserName() + " At end of onLoadGameSignUp method in Game.java - size of available game list is: " + this.getAvailableGameList().size());		
+		logger.info(getTempUserName() + " At end of onLoadGameSignUp method in Game.java - size of available game list is: " + this.getAvailableGameList().size());		
 
 		if (this.getAvailableGameList().size() == 0)
 		{
@@ -312,7 +312,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String proceedToPlayerPicklist() 
 	{
-		log.info(getTempUserName() + " clicked player picklist from game add/select screen; sending them to player picklist screen");
+		logger.info(getTempUserName() + " clicked player picklist from game add/select screen; sending them to player picklist screen");
 		
 		Player playerBean = BeanUtilJSF.getBean("pc_Player");
 		
@@ -322,7 +322,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String selectRowSignup(SelectEvent<Game> event)
 	{
-		log.info(getTempUserName() + " clicked on a row in Game list on game signup screen");
+		logger.info(getTempUserName() + " clicked on a row in Game list on game signup screen");
 		
 		Game item = event.getObject();
 		
@@ -333,7 +333,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String selectRowAjax(SelectEvent<Game> event)
 	{
-		log.info(getTempUserName() + " clicked on a row in Game list");
+		logger.info(getTempUserName() + " clicked on a row in Game list");
 		
 		Game item = event.getObject();
 		
@@ -354,7 +354,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChgTotalPlayersAdd(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " changed total players on update game dialog");
+		logger.info(getTempUserName() + " changed total players on update game dialog");
 		
 		try
 		{
@@ -370,7 +370,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in valueChgTotalPlayersAdd: " +e.getMessage(),e);
+			logger.error("Exception in valueChgTotalPlayersAdd: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in valueChgTotalPlayersAdd: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -378,7 +378,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChgFieldSize(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " changed field size on update game dialog");
+		logger.info(getTempUserName() + " changed field size on update game dialog");
 		
 		try
 		{
@@ -395,7 +395,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in valueChgFieldSize: " +e.getMessage(),e);
+			logger.error("Exception in valueChgFieldSize: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in valueChgFieldSize: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -403,7 +403,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChgTotalPlayersUpdate(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " changed total players on update game dialog");
+		logger.info(getTempUserName() + " changed total players on update game dialog");
 		
 		try
 		{
@@ -419,7 +419,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in valueChgTotalPlayersUpdate: " +e.getMessage(),e);
+			logger.error("Exception in valueChgTotalPlayersUpdate: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in valueChgTotalPlayersUpdate: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -427,7 +427,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void selectTotalPlayers(Integer totalPlayers) throws Exception 
 	{		
-		log.debug(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
+		logger.debug(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
 		
 		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
 		
@@ -449,7 +449,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " picked a game");
+		logger.info(getTempUserName() + " picked a game");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
@@ -482,7 +482,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String signUp(Game game1)
 	{
-		log.info(getTempUserName() + " clicked signup button");
+		logger.info(getTempUserName() + " clicked signup button");
 		
 		try
 		{
@@ -526,7 +526,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate,null);
 				
-				log.info("Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate);
+				logger.info("Player " + newRound.getPlayerName() + " successfully signed up for game on " + displayedGameDate);
 				
 		        FacesContext.getCurrentInstance().addMessage(null, msg);
 	
@@ -534,7 +534,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in signUp: " +e.getMessage(),e);
+			logger.error("Exception in signUp: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in signUp: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}	        
@@ -543,7 +543,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String withdraw(Game game1)
 	{
-		log.info(getTempUserName() + " clicked withdraw button");
+		logger.info(getTempUserName() + " clicked withdraw button");
 		
 		try
 		{
@@ -575,7 +575,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in withdraw: " +e.getMessage(),e);
+			logger.error("Exception in withdraw: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in withdraw: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -620,14 +620,14 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 			
-		log.info(getTempUserName() + " emailing withdrawal to: " + emailRecipients);
+		logger.info(getTempUserName() + " emailing withdrawal to: " + emailRecipients);
 		
 		SAMailUtility.sendEmail(subjectLine, withdrawalMessageContent, emailRecipients, true);	//last param means use jsf	
 	}
 
 	public void calculatePMTotal(Object o) 
 	{	    
-	   //log.info("inside calculateTotal.  Object = " + o);
+	   //logger.info("inside calculateTotal.  Object = " + o);
 	   String objectString = (String)o; //Player name comes back here... i guess because we're sorting by that?
 	   this.setTotalWon(new BigDecimal(0.0));
 	   
@@ -645,7 +645,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	 * This was for the original non-database way
 	public String setUpWeeklyGame()
 	{
-		log.info("entering setUpWeeklyGame method");
+		logger.info("entering setUpWeeklyGame method");
 		
 		boolean validInput = validateInput();
 		
@@ -660,7 +660,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	*/
 	public String runSelectedGame()
 	{
-		log.info(getTempUserName() + " entering runSelectedGame method");
+		logger.info(getTempUserName() + " entering runSelectedGame method");
 		
 		try
 		{
@@ -697,7 +697,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in runSelectedGame: " +e.getMessage(),e);
+			logger.error("Exception in runSelectedGame: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in runSelectedGame: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage("runGameMessageId", msg);    
 		}
@@ -936,7 +936,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	private void calculateTeams() throws Exception 
 	{
-		log.info(getTempUserName() + " entering calculateTeams");
+		logger.info(getTempUserName() + " entering calculateTeams");
 			
 		int totalMembersPerTeam = this.getTotalPlayers() / this.getTotalTeams();
 		
@@ -967,7 +967,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			//ok now we have everyone's score card on this team.
 			for (int i = 1; i <= this.getHowManyBalls(); i++)
 			{
-				log.info(getTempUserName() + " working on team: " + teamNumber + " ball: " + i);
+				logger.info(getTempUserName() + " working on team: " + teamNumber + " ball: " + i);
 				
 				Round tempRound = new Round();
 				Player tempPlayer = new Player();
@@ -978,7 +978,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				
 				for (int holeNumber = 1; holeNumber <= 18; holeNumber++) 
 				{
-					log.info(getTempUserName() + "      working on hole: " + holeNumber);					
+					logger.info(getTempUserName() + "      working on hole: " + holeNumber);					
 					int lowestScore = Utils.getTeamScoreOnHole(teamRoundsList, holeNumber, i);  //i represents ball number					
 					tempRound = Utils.setDisplayScore(holeNumber, lowestScore, course, tempRound);
 				}
@@ -1015,7 +1015,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		calcTeamIndividualWinnings();
 				
-		log.info(getTempUserName() + " leaving calculateTeams");		
+		logger.info(getTempUserName() + " leaving calculateTeams");		
 	}
 
 	private void calcTeamIndividualWinnings() throws Exception 
@@ -1076,10 +1076,10 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			}
 			
 			//at the end of that loop, we should have the winning ball(s).
-			log.info(getTempUserName() + " Ball " + i + " has " + winningBallList.size() + " winner(s)");
+			logger.info(getTempUserName() + " Ball " + i + " has " + winningBallList.size() + " winner(s)");
 		
 			BigDecimal individualBallPrize = eachBallWorth.divide(new BigDecimal(winningBallList.size()).multiply(playersPerTeam), 2, RoundingMode.HALF_UP);
-			log.info(getTempUserName() + " Ball " + i + " individualBallPrize = " + individualBallPrize);
+			logger.info(getTempUserName() + " Ball " + i + " individualBallPrize = " + individualBallPrize);
 			
 			//for each player on these teams, they get the individual ball prize.
 			for (int j = 0; j < winningBallList.size(); j++)
@@ -1110,7 +1110,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 
 	private void calculateSkins() throws Exception 
 	{
-		log.info(getTempUserName() + " entering calculateSkins");
+		logger.info(getTempUserName() + " entering calculateSkins");
 		
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
@@ -1178,7 +1178,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		{
 			BigDecimal skinValue = skinsPot.divide(new BigDecimal(totalSkins), new MathContext(100));
 			
-			log.info(getTempUserName() + " Skins won: " + totalSkins + " at " + skinValue + " each");
+			logger.info(getTempUserName() + " Skins won: " + totalSkins + " at " + skinValue + " each");
 			
 			for (int i = 0; i < tempSkinsList.size(); i++) 
 			{
@@ -1196,7 +1196,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			}
 		}		
 		
-		log.info(getTempUserName() + " leaving calculateSkins");
+		logger.info(getTempUserName() + " leaving calculateSkins");
 	}
 	
 	/*
@@ -1221,7 +1221,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String saveNewPlayers()
 	{
-		log.info(getTempUserName() + " clicked save new players");
+		logger.info(getTempUserName() + " clicked save new players");
 		
 		return "";
 	}
@@ -1262,7 +1262,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	}
 	public String showScores()
 	{
-		log.info(getTempUserName() + " clicked show scores button");
+		logger.info(getTempUserName() + " clicked show scores button");
 		this.setShowPlayerScores(true);
 		return "";
 	}
@@ -1291,7 +1291,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			
 		emailRecipients.add(emailAddress);
 		
-		log.info(getTempUserName() + " emailing to: " + emailRecipients);
+		logger.info(getTempUserName() + " emailing to: " + emailRecipients);
 		
 		return "";
 	}
@@ -1865,8 +1865,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		sb.append("</table></body></html>");
 		
-		log.info(getTempUserName() + " team results html");
-		log.info(getTempUserName() + sb.toString());
+		logger.info(getTempUserName() + " team results html");
+		logger.info(getTempUserName() + sb.toString());
 		
 		return sb;
 	
@@ -2303,8 +2303,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		sb.append("</table></body></html>");
 		
-		log.info(getTempUserName() + " scores html");
-		log.info(getTempUserName() + sb.toString());
+		logger.info(getTempUserName() + " scores html");
+		logger.info(getTempUserName() + sb.toString());
 		
 		return sb;
 	}
@@ -2378,7 +2378,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String deleteGame()
 	{
-		log.info(getTempUserName() + " entering Delete Game.  About to delete: " + this.getSelectedGame().getGameDate());
+		logger.info(getTempUserName() + " entering Delete Game.  About to delete: " + this.getSelectedGame().getGameDate());
 		
 		try
 		{
@@ -2389,7 +2389,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			golfmain.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
 			golfmain.deleteGame(this.getSelectedGame().getGameID());
 			
-			log.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
+			logger.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
 			this.setSelectedGame(golfmain.getFullGameList().get(0));
 			
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Game successfully deleted",null);
@@ -2398,7 +2398,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception in deleteGame: " +e.getMessage(),e);
+			logger.error("Exception in deleteGame: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in deleteGame: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -2473,7 +2473,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		emailRecipients = Utils.setEmailFullRecipientList(fullPlayerList);
 				
-		log.info(getTempUserName() + " future game composing email: will email to these recipients if sendemail clicked: " + emailRecipients);	
+		logger.info(getTempUserName() + " future game composing email: will email to these recipients if sendemail clicked: " + emailRecipients);	
 	}
 
 	public String composePreGameEmail()
@@ -2501,7 +2501,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		}
 		catch (Exception e)
 		{
-			log.error("Exception when composing pregame email.  Have tee times been assigned to everyone?: " +e.getMessage(),e);
+			logger.error("Exception when composing pregame email.  Have tee times been assigned to everyone?: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when composing pregame email.  Have tee times been assigned to everyone? " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -2564,7 +2564,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.add("cleclerc@bryanpark.com");
 		}	
 				
-		log.info(getTempUserName() + " emailing to: " + emailRecipients);
+		logger.info(getTempUserName() + " emailing to: " + emailRecipients);
 		
 	}
 
@@ -2754,7 +2754,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 		emailRecipients = getEmailAdminsRecipientList();
 			
-		log.info(getTempUserName() + " emailing game add to: " + emailRecipients);
+		logger.info(getTempUserName() + " emailing game add to: " + emailRecipients);
 		
 		SAMailUtility.sendEmail(subjectLine, messageContent, emailRecipients, true); //last param means use jsf		
 	}

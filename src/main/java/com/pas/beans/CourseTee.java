@@ -140,14 +140,14 @@ public class CourseTee extends SpringBeanAutowiringSupport implements Serializab
 		//let's log the teeSelections map here
 		for (Map.Entry<String, List<SelectItem>> entry : teeSelectionsMap.entrySet())
 		{
-			//log.info("Course ID = " + entry.getKey());
+			//logger.info("Course ID = " + entry.getKey());
 			List<SelectItem> loggedList = entry.getValue();
 			for (int i = 0; i < loggedList.size(); i++) 
 			{
 				//SelectItem selItem = loggedList.get(i);
-				//log.info("Tee ID = " + selItem.getValue() + " Tee Color = " + selItem.getLabel());
+				//logger.info("Tee ID = " + selItem.getValue() + " Tee Color = " + selItem.getLabel());
 			}
-			//log.info("---------");
+			//logger.info("---------");
 		}
                              
 		return teeSelectionsMap;

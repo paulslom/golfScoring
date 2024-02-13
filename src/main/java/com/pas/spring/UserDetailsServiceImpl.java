@@ -15,7 +15,7 @@ import com.pas.beans.GolfUser;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService 
 {
-	  private static Logger log = LogManager.getLogger(UserDetailsServiceImpl.class);	
+	  private static Logger logger = LogManager.getLogger(UserDetailsServiceImpl.class);	
 	  
 	  @Autowired
 	  GolfMain golfmain;
@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	  @Override
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
 	  {
-		  log.info("User " + username + " attempting to log in");
+		  logger.info("User " + username + " attempting to log in");
 	      GolfUser golfuser = golfmain.getGolfUser(username);
 
 	      UserBuilder builder = null;
@@ -34,11 +34,11 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	         builder.password(golfuser.getPassword());
 	         builder.roles(golfuser.getUserRole());
 	         
-	         log.info("User " + username + " successfully found on database as " + golfuser.getUserName());
+	         logger.info("User " + username + " successfully found on database as " + golfuser.getUserName());
 	     } 
 	     else 
 	     {
-	    	 log.info("User " + username + " not found on database.");
+	    	 logger.info("User " + username + " not found on database.");
 	         throw new UsernameNotFoundException("User not found.");
 	     }
 

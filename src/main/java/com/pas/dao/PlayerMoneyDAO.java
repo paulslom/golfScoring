@@ -41,7 +41,7 @@ public class PlayerMoneyDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(PlayerMoneyDAO.class);
+	private static Logger logger = LogManager.getLogger(PlayerMoneyDAO.class);
 		
 	private List<PlayerMoney> playerMoneyList = new ArrayList<>();
 	private Map<String,PlayerMoney> playerMoneyMap = new HashMap<>();
@@ -60,7 +60,7 @@ public class PlayerMoneyDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 		
@@ -122,13 +122,13 @@ public class PlayerMoneyDAO implements Serializable
         }
 		
 		this.setPlayerMoneyMap(this.getPlayerMoneyList().stream().collect(Collectors.toMap(PlayerMoney::getPlayerMoneyID, gm -> gm)));		
-		log.info("LoggedDBOperation: function-inquiry; table:playermoney; rows:" + playerMoneyList.size());		
+		logger.info("LoggedDBOperation: function-inquiry; table:playermoney; rows:" + playerMoneyList.size());		
     }
 	
 	public void addPlayerMoney(PlayerMoney playerMoney) throws Exception
 	{
 		DynamoPlayerMoney dpm = dynamoUpsert(playerMoney);
-		log.info("LoggedDBOperation: function-add; table:playermoney; rows:1");
+		logger.info("LoggedDBOperation: function-add; table:playermoney; rows:1");
 		
 		playerMoney.setPlayerMoneyID(dpm.getPlayerMoneyID());
 		
@@ -142,14 +142,14 @@ public class PlayerMoneyDAO implements Serializable
 		this.getPlayerMoneyList().add(playerMoney);
 		this.getPlayerMoneyMap().put(playerMoney.getPlayerMoneyID(), playerMoney);
 		
-		log.info("addPlayerMoney complete");	
+		logger.info("addPlayerMoney complete");	
 	}
 	
 	public void updatePlayerMoney(PlayerMoney playerMoney) throws Exception
 	{
 		dynamoUpsert(playerMoney);
 		
-		log.info("LoggedDBOperation: function-update; table:playermoney; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:playermoney; rows:1");
 			
 		this.getPlayerMoneyMap().remove(playerMoney.getPlayerMoneyID());
 		this.getPlayerMoneyMap().put(playerMoney.getPlayerMoneyID(), playerMoney);
@@ -157,7 +157,7 @@ public class PlayerMoneyDAO implements Serializable
 		Collection<PlayerMoney> values = this.getPlayerMoneyMap().values();
 		this.setPlayerMoneyList(new ArrayList<>(values));
 		
-		log.info("updatePlayerMoney complete");		
+		logger.info("updatePlayerMoney complete");		
 	}
 	
 	//deletes all player money rows from the db for this game
@@ -188,7 +188,7 @@ public class PlayerMoneyDAO implements Serializable
         		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key2).build();
         		playerMoneyTable.deleteItem(deleteItemEnhancedRequest);
         	
-        		log.info("LoggedDBOperation: function-delete; table:playermoney; rows:1");        		
+        		logger.info("LoggedDBOperation: function-delete; table:playermoney; rows:1");        		
 			}
     		
     		for (int j = 0; j < playerMoneyList.size(); j++)
@@ -207,7 +207,7 @@ public class PlayerMoneyDAO implements Serializable
 		Collection<PlayerMoney> values = this.getPlayerMoneyMap().values();
 		this.setPlayerMoneyList(new ArrayList<>(values));
 		
-		log.info("deletePlayerMoneyFromDB complete");    	
+		logger.info("deletePlayerMoneyFromDB complete");    	
     }
 
 	private DynamoPlayerMoney dynamoUpsert(PlayerMoney playerMoney) throws Exception 

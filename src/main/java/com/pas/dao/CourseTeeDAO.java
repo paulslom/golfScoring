@@ -27,7 +27,7 @@ public class CourseTeeDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(CourseTeeDAO.class);
+	private static Logger logger = LogManager.getLogger(CourseTeeDAO.class);
 		
 	private Map<String,CourseTee> courseTeesMap = new HashMap<>();
 	private List<CourseTee> courseTeesList = new ArrayList<CourseTee>();
@@ -46,7 +46,7 @@ public class CourseTeeDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 	
@@ -70,7 +70,7 @@ public class CourseTeeDAO implements Serializable
             this.getCourseTeesList().add(courseTee);			
         }
 		
-		log.info("LoggedDBOperation: function-inquiry; table:courseTee; rows:" + this.getCourseTeesList().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:courseTee; rows:" + this.getCourseTeesList().size());
 		
 		courseTeesMap = this.getCourseTeesList().stream().collect(Collectors.toMap(CourseTee::getCourseTeeID, CourseTee -> CourseTee));
 			

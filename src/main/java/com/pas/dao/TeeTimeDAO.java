@@ -38,7 +38,7 @@ public class TeeTimeDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(TeeTimeDAO.class);
+	private static Logger logger = LogManager.getLogger(TeeTimeDAO.class);
 		
 	private Map<String,TeeTime> teeTimesMap = new HashMap<>(); //we need this for the TeeTimeConverter class
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();	
@@ -57,7 +57,7 @@ public class TeeTimeDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 	
@@ -135,7 +135,7 @@ public class TeeTimeDAO implements Serializable
             this.getTeeTimeList().add(teeTime);			
         }		 
 		
-		log.info("LoggedDBOperation: function-inquiry; table:teetimes; rows:" + teeTimeList.size());
+		logger.info("LoggedDBOperation: function-inquiry; table:teetimes; rows:" + teeTimeList.size());
 		
 		this.setTeeTimesMap(this.getTeeTimeList().stream().collect(Collectors.toMap(TeeTime::getTeeTimeID, tt -> tt)));    	
     }
@@ -151,22 +151,22 @@ public class TeeTimeDAO implements Serializable
 		DynamoTeeTime dtt = dynamoUpsert(teeTime);
 		teeTime.setTeeTimeID(dtt.getTeeTimeID());
 		
-		log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");		
+		logger.info("LoggedDBOperation: function-add; table:teetimes; rows:1");		
 		
 		refreshListsAndMaps("add", teeTime); 
 				
-		log.info("addTeeTime complete");	
+		logger.info("addTeeTime complete");	
 	}
 	
 	public void updateTeeTime(TeeTime teeTime) throws Exception
 	{
 		dynamoUpsert(teeTime);
 		
-		log.info("LoggedDBOperation: function-update; table:teetimes; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:teetimes; rows:1");
 		
 		refreshListsAndMaps("update", teeTime);
 		
-		log.info("updateTeeTime complete");	
+		logger.info("updateTeeTime complete");	
 	}
 	
 	public void addTeeTimes(String newGameID, String teeTimesString, Date gameDate, String courseName) throws Exception
@@ -190,7 +190,7 @@ public class TeeTimeDAO implements Serializable
  			
  			DynamoTeeTime dtt = dynamoUpsert(teeTime);
  			
- 			log.info("LoggedDBOperation: function-add; table:teetimes; rows:1");
+ 			logger.info("LoggedDBOperation: function-add; table:teetimes; rows:1");
  			
  	 		teeTime.setTeeTimeID(dtt.getTeeTimeID());
  			
@@ -200,7 +200,7 @@ public class TeeTimeDAO implements Serializable
  			refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
 	 	}
 	 	
-	 	log.info("addTeeTimes complete");				
+	 	logger.info("addTeeTimes complete");				
 	}	
 	
 	private DynamoTeeTime dynamoUpsert(TeeTime teeTime) throws Exception 
@@ -248,7 +248,7 @@ public class TeeTimeDAO implements Serializable
 		
 		refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
 		
-		log.info("deleteTeeTimeForGameFromDB complete");			
+		logger.info("deleteTeeTimeForGameFromDB complete");			
 	}
 		
 	//deletes a particular tee time
@@ -258,14 +258,14 @@ public class TeeTimeDAO implements Serializable
 		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
 		teeTimesTable.deleteItem(deleteItemEnhancedRequest);
 		
-		log.info("LoggedDBOperation: function-delete; table:teetimes; rows:1");
+		logger.info("LoggedDBOperation: function-delete; table:teetimes; rows:1");
 		
 		TeeTime teeTime = new TeeTime();
 		teeTime.setTeeTimeID(teeTimeID);
 		
 		refreshListsAndMaps("delete", teeTime); 		
 		
-		log.info("deleteTeeTimeFromDB complete");	
+		logger.info("deleteTeeTimeFromDB complete");	
     }
 
 	private void refreshListsAndMaps(String function, TeeTime teeTime)

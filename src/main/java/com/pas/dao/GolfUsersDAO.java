@@ -27,7 +27,7 @@ import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 public class GolfUsersDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(GolfUsersDAO.class);
+	private static Logger logger = LogManager.getLogger(GolfUsersDAO.class);
 	
 	private Map<String,GolfUser> fullUserMap = new HashMap<>();
 	private Map<String,GolfUser> adminUserMap = new HashMap<>();
@@ -46,7 +46,7 @@ public class GolfUsersDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing GolfUsersDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing GolfUsersDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 
@@ -67,7 +67,7 @@ public class GolfUsersDAO implements Serializable
             
             if (this.getFullUserMap().containsKey(gu.getUserName()))
 			{
-				log.error("duplicate user: " + gu.getUserName());
+				logger.error("duplicate user: " + gu.getUserName());
 			}
 			else
 			{
@@ -80,7 +80,7 @@ public class GolfUsersDAO implements Serializable
 			}
         }
           	
-		log.info("LoggedDBOperation: function-inquiry; table:golfusers; rows:" + this.getFullUserMap().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:golfusers; rows:" + this.getFullUserMap().size());
 				
 		//this loop only for debugging purposes
 		/*
@@ -89,11 +89,11 @@ public class GolfUsersDAO implements Serializable
 		    String key = entry.getKey();
 		    GolfUser golfUser = entry.getValue();
 
-		    log.info("Key = " + key + ", value = " + golfUser.getUserName());
+		    logger.info("Key = " + key + ", value = " + golfUser.getUserName());
 		}
 		*/
 		
-		log.info("exiting");
+		logger.info("exiting");
 		
 	}
 		
@@ -109,7 +109,7 @@ public class GolfUsersDAO implements Serializable
 		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
 		golfUsersTable.deleteItem(deleteItemEnhancedRequest);
 		
-		log.info("LoggedDBOperation: function-update; table:users; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:users; rows:1");
 		
 		GolfUser gu = new GolfUser();
 		gu.setUserName(username);
@@ -124,7 +124,7 @@ public class GolfUsersDAO implements Serializable
 		PutItemEnhancedRequest<GolfUser> putItemEnhancedRequest = PutItemEnhancedRequest.builder(GolfUser.class).item(gu).build();
 		golfUsersTable.putItem(putItemEnhancedRequest);
 			
-		log.info("LoggedDBOperation: function-update; table:golfusers; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:golfusers; rows:1");
 					
 		refreshListsAndMaps("add", gu);	
 	}
@@ -159,17 +159,17 @@ public class GolfUsersDAO implements Serializable
 		String encodedPW=new BCryptPasswordEncoder().encode(gu.getUserName()); //resets to their username
 		gu.setPassword(encodedPW);
 		
-		//log.debug("encoded password for user " + gu.getUserName() + " is " + encodedPW);
+		//logger.debug("encoded password for user " + gu.getUserName() + " is " + encodedPW);
 		
 		updateUser(gu);
 		
-		log.debug("successfully reset password for user " + gu);			
+		logger.debug("successfully reset password for user " + gu);			
 	}
 	
 	public void updateRole(GolfUser gu)  throws Exception
 	{
 		updateUser(gu);		
-		log.debug("successfully reset role for user " + gu.getUserName());			
+		logger.debug("successfully reset role for user " + gu.getUserName());			
 	}	
 
 	public Map<String, GolfUser> getFullUserMap() 

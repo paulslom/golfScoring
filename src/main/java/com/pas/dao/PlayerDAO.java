@@ -30,7 +30,7 @@ import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 public class PlayerDAO implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger(PlayerDAO.class);
+	private static Logger logger = LogManager.getLogger(PlayerDAO.class);
 	
 	private Map<String,Player> fullPlayersMapByPlayerID = new HashMap<>(); 
 	private Map<String,Player> fullPlayersMapByUserName = new HashMap<String, Player>(); 
@@ -50,7 +50,7 @@ public class PlayerDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 	
@@ -60,11 +60,11 @@ public class PlayerDAO implements Serializable
 		 
 		player.setPlayerID(dynamoPlayer.getPlayerID());
 		
-		log.info("LoggedDBOperation: function-add; table:player; rows:1");
+		logger.info("LoggedDBOperation: function-add; table:player; rows:1");
 		
 		refreshListsAndMaps("add", player);	
 				
-		log.info("addPlayer complete");		
+		logger.info("addPlayer complete");		
 		
 		return dynamoPlayer.getPlayerID(); //this is the key that was just added
 	}
@@ -99,11 +99,11 @@ public class PlayerDAO implements Serializable
 	{
 		dynamoUpsert(player);		
 			
-		log.info("LoggedDBOperation: function-update; table:player; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:player; rows:1");
 		
 		refreshListsAndMaps("update", player);	
 		
-		log.debug("update player table complete");		
+		logger.debug("update player table complete");		
 	}
 	
 	public void readPlayersFromDB() 
@@ -119,7 +119,7 @@ public class PlayerDAO implements Serializable
             this.getFullPlayerList().add(player);			
         }
 		
-		log.info("LoggedDBOperation: function-inquiry; table:player; rows:" + this.getFullPlayerList().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:player; rows:" + this.getFullPlayerList().size());
 		
 		this.setFullPlayersMapByPlayerID(this.getFullPlayerList().stream().collect(Collectors.toMap(Player::getPlayerID, ply -> ply)));
 		this.setFullPlayersMapByUserName(this.getFullPlayerList().stream().collect(Collectors.toMap(Player::getUsername, ply -> ply)));	

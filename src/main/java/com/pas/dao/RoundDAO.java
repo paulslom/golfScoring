@@ -49,7 +49,7 @@ public class RoundDAO implements Serializable
   
 	private static final long serialVersionUID = 1L;
 	
-	private static Logger log = LogManager.getLogger(RoundDAO.class);
+	private static Logger logger = LogManager.getLogger(RoundDAO.class);
 	
 	private Map<String, Round> fullRoundsMap = new HashMap<>();	
 	private List<Round> fullRoundsList = new ArrayList<Round>();
@@ -68,7 +68,7 @@ public class RoundDAO implements Serializable
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      log.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 	
@@ -158,7 +158,7 @@ public class RoundDAO implements Serializable
             this.getFullRoundsList().add(round);			
         }	
 		
-		log.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());
 		
 		this.setFullRoundsMap(this.getFullRoundsList().stream().collect(Collectors.toMap(Round::getRoundID, rd -> rd)));		
     }
@@ -250,14 +250,14 @@ public class RoundDAO implements Serializable
 		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
 		roundsTable.deleteItem(deleteItemEnhancedRequest);
 	
-		log.info("LoggedDBOperation: function-delete; table:round; rows:1");
+		logger.info("LoggedDBOperation: function-delete; table:round; rows:1");
 		
 		Round rd = new Round();
 		rd.setRoundID(roundID);
 		
 		refreshListsAndMaps("delete", rd);		
 		
-		log.info(getTempUserName() + " delete round table complete");
+		logger.info(getTempUserName() + " delete round table complete");
     }
 	
 	public void deleteRoundsFromDB(String gameID)
@@ -275,7 +275,7 @@ public class RoundDAO implements Serializable
 		
 		refreshListsAndMaps("special", null);	
 		
-		log.info(getTempUserName() + " delete rounds table complete");		
+		logger.info(getTempUserName() + " delete rounds table complete");		
     }
 
 	private DynamoRound dynamoUpsert(Round round) throws Exception 
@@ -343,11 +343,11 @@ public class RoundDAO implements Serializable
 		DateToStringConverter dsc = new DateToStringConverter();
 		round.setSignupDateTime(dsc.unconvert(dr.getSignupDateTime()));
 		
-		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:round; rows:1");
 		
 		refreshListsAndMaps("add", round);	
 		
-		log.info(getTempUserName() + " insert round table complete");
+		logger.info(getTempUserName() + " insert round table complete");
 		
 		return round.getRoundID();
 	}
@@ -356,11 +356,11 @@ public class RoundDAO implements Serializable
 	{
 		dynamoUpsert(round);
 		
-		log.info("LoggedDBOperation: function-update; table:round; rows:1");
+		logger.info("LoggedDBOperation: function-update; table:round; rows:1");
 		
 		refreshListsAndMaps("update", round);	
 		
-		log.debug(getTempUserName() + " update round table complete.  Round id updated: " + round.getRoundID());
+		logger.debug(getTempUserName() + " update round table complete.  Round id updated: " + round.getRoundID());
 		
 	}
 
@@ -376,7 +376,7 @@ public class RoundDAO implements Serializable
 			{
 				rd.setRoundHandicap(handicap);
 				dynamoUpsert(rd);
-				log.info("LoggedDBOperation: function-update; table:round; rows:1");
+				logger.info("LoggedDBOperation: function-update; table:round; rows:1");
 				this.getFullRoundsMap().remove(rd.getRoundID());
 				this.getFullRoundsMap().put(rd.getRoundID(), rd);
 				this.getFullRoundsList().clear();
@@ -388,7 +388,7 @@ public class RoundDAO implements Serializable
 		
 		refreshListsAndMaps("special", null);
 		
-		log.debug(getTempUserName() + " update player handicap for playerID: " + playerID + " to: " + handicap + " on round table complete");		
+		logger.debug(getTempUserName() + " update player handicap for playerID: " + playerID + " to: " + handicap + " on round table complete");		
 	}	
 	
 	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) throws Exception 
@@ -401,7 +401,7 @@ public class RoundDAO implements Serializable
 			{
 				rd.setTeamNumber(teamNumber);
 				dynamoUpsert(rd);
-				log.info("LoggedDBOperation: function-update; table:round; rows:1");
+				logger.info("LoggedDBOperation: function-update; table:round; rows:1");
 				this.getFullRoundsMap().remove(rd.getRoundID());
 				this.getFullRoundsMap().put(rd.getRoundID(), rd);
 				this.getFullRoundsList().clear();
@@ -413,7 +413,7 @@ public class RoundDAO implements Serializable
 		
 		refreshListsAndMaps("special", null);
 		
-		log.debug(getTempUserName() + " update team number for playerID: " + playerID + " to: " + teamNumber + " on round table complete");		
+		logger.debug(getTempUserName() + " update team number for playerID: " + playerID + " to: " + teamNumber + " on round table complete");		
 	}	
 	
 	private List<Score> setHoleScoresList(Round rd)

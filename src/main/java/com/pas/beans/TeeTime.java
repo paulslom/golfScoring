@@ -32,7 +32,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(TeeTime.class);
+	private static Logger logger = LogManager.getLogger(TeeTime.class);
 
 	private ArrayList<String> emailRecipients = new ArrayList<String>();
 	
@@ -73,7 +73,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 
 	public String selectRowAjax(SelectEvent<TeeTime> event)
 	{
-		log.info(getTempUserName() + " User clicked on a row in Tee Time list");
+		logger.info(getTempUserName() + " User clicked on a row in Tee Time list");
 		
 		TeeTime item = event.getObject();
 		
@@ -85,7 +85,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
-		log.info(getTempUserName() + " picked a game on tee times form");
+		logger.info(getTempUserName() + " picked a game on tee times form");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
@@ -125,7 +125,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	 
 	public String deleteSelectedTeeTime()
 	{
-		log.info(getTempUserName() + " is deleting a tee time");
+		logger.info(getTempUserName() + " is deleting a tee time");
 		
 		try
 		{
@@ -152,11 +152,11 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"tee time successfully removed",null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);  
 	        
-	        log.info(getTempUserName() + " successfully deleted tee time from game");
+	        logger.info(getTempUserName() + " successfully deleted tee time from game");
 		}
 		catch (Exception e)
 		{
-			log.error("Exception when deleting tee time: " +e.getMessage(),e);
+			logger.error("Exception when deleting tee time: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when deleting tee time: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
@@ -166,7 +166,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 	
 	public String saveTeeTime()
 	{
-		log.info(getTempUserName() + " user clicked Save Tee Time from maintain tee time dialog");	
+		logger.info(getTempUserName() + " user clicked Save Tee Time from maintain tee time dialog");	
 		
 		try
 		{
@@ -202,16 +202,16 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 			for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 			{
 				TeeTime tt = this.getTeeTimeList().get(i);
-				log.info("tee time id: " + tt.getTeeTimeID() + ", play group number: " + tt.getPlayGroupNumber() + ", tee time: " + tt.getTeeTimeString());
+				logger.info("tee time id: " + tt.getTeeTimeID() + ", play group number: " + tt.getPlayGroupNumber() + ", tee time: " + tt.getTeeTimeString());
 			}
 		}
 		catch (Exception e)
 		{
-			log.error("Exception when saving tee time: " +e.getMessage(),e);
+			logger.error("Exception when saving tee time: " +e.getMessage(),e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when saving tee time: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
-		log.info(getTempUserName() + " exiting saveTeeTime");
+		logger.info(getTempUserName() + " exiting saveTeeTime");
 		
 		return "";
 			
@@ -253,7 +253,7 @@ public class TeeTime extends SpringBeanAutowiringSupport implements Serializable
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 			
-		log.info(getTempUserName() + " emailing tee time removal to: " + emailRecipients);
+		logger.info(getTempUserName() + " emailing tee time removal to: " + emailRecipients);
 		
 		SAMailUtility.sendEmail(subjectLine, messageContent, emailRecipients, true); //last param means use jsf		
 	}

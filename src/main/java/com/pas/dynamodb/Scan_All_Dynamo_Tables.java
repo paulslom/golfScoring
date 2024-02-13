@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 
 public class Scan_All_Dynamo_Tables
 {
-	private static Logger log = LogManager.getLogger(Scan_All_Dynamo_Tables.class); //log4j for Logging	 
+	private static Logger logger = LogManager.getLogger(Scan_All_Dynamo_Tables.class); //log4j for Logging	 
      
 	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
 	private static String AWS_REGION = "us-east-1";
@@ -16,7 +16,7 @@ public class Scan_All_Dynamo_Tables
 
     public static void main(String[] args) throws Exception
     { 
-    	log.debug("**********  START of program ***********");   	
+    	logger.debug("**********  START of program ***********");   	
     	
     	 try 
          {
@@ -44,11 +44,11 @@ public class Scan_All_Dynamo_Tables
 	    	
 	    	server.stop();
 	    	
-			log.debug("**********  END of program ***********");
+			logger.debug("**********  END of program ***********");
          }
     	 catch (Exception e)
     	 {
-    		 log.error("Exception in Create_All_Dynamo_Tables " + e.getMessage(), e);
+    		 logger.error("Exception in Create_All_Dynamo_Tables " + e.getMessage(), e);
     	 }
 		System.exit(1);
 	}

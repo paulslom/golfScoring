@@ -18,7 +18,7 @@ import com.pas.util.BeanUtilJSF;
 public class PlayerTeePreference extends SpringBeanAutowiringSupport implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
-	private static Logger log = LogManager.getLogger(PlayerTeePreference.class);
+	private static Logger logger = LogManager.getLogger(PlayerTeePreference.class);
 	
 	private String playerTeePreferenceID;
 	private int oldPlayerTeePreferenceID;
@@ -39,7 +39,7 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 			
 	public String selectRowAjax(SelectEvent<PlayerTeePreference> event)
 	{
-		log.info("User clicked on a row in Player Tee Preference list");
+		logger.info("User clicked on a row in Player Tee Preference list");
 		
 		PlayerTeePreference item = event.getObject();
 		
@@ -64,7 +64,7 @@ public class PlayerTeePreference extends SpringBeanAutowiringSupport implements 
 	
 	public String updatePrefs() throws Exception
 	{
-		log.info("entering updatePrefs");
+		logger.info("entering updatePrefs");
 		
 		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
 		

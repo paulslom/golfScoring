@@ -19,7 +19,7 @@ import com.pas.dynamodb.DynamoUtil;
 @WebListener
 public class BackgroundJobManager implements ServletContextListener 
 {
-	private static Logger log = LogManager.getLogger(BackgroundJobManager.class);
+	private static Logger logger = LogManager.getLogger(BackgroundJobManager.class);
 
     private ScheduledExecutorService scheduler;
    
@@ -30,7 +30,7 @@ public class BackgroundJobManager implements ServletContextListener
         scheduler = Executors.newSingleThreadScheduledExecutor();
         long scDelay = get8AMinEast();
         scheduler.scheduleAtFixedRate(new DailyEmailJob(), scDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);       
-		log.info("Daily email job set to run every day at 8 am ET");
+		logger.info("Daily email job set to run every day at 8 am ET");
     }
 
     private long get8AMinEast() 
@@ -59,7 +59,7 @@ public class BackgroundJobManager implements ServletContextListener
 	@Override
     public void contextDestroyed(ServletContextEvent event) 
     {
-		log.info("Destroying servlet and app is shutting down");
+		logger.info("Destroying servlet and app is shutting down");
 		DynamoUtil.stopDynamoServer();
         scheduler.shutdownNow();
     }

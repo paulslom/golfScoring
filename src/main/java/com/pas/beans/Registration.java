@@ -40,7 +40,7 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 	
 	private static final long serialVersionUID = 1L;
 
-	private static Logger log = LogManager.getLogger(Registration.class);	
+	private static Logger logger = LogManager.getLogger(Registration.class);	
 	
 	public String changePassword()
 	{
@@ -133,7 +133,7 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 		
 		emailRecipients.add(mailTo);
 		
-		log.info("emailing new player registration for " + this.getFirstName() + " " + this.getLastName() + ".  Email about to be sent to: " + emailRecipients);
+		logger.info("emailing new player registration for " + this.getFirstName() + " " + this.getLastName() + ".  Email about to be sent to: " + emailRecipients);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		String subjectLine = "New Player request sent to admin on " + sdf.format(new Date());
@@ -144,7 +144,7 @@ public class Registration extends SpringBeanAutowiringSupport implements Seriali
 	
 	public String cancel()
 	{
-		log.info("cancel clicked on new player registration screen");		
+		logger.info("cancel clicked on new player registration screen");		
 		return "success";
 	}	
 	
