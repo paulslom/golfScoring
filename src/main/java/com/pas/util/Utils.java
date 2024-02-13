@@ -1,7 +1,11 @@
 package com.pas.util;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -693,30 +697,17 @@ public class Utils
 	{
 		boolean isLocal = false;
 		
-		String env = getJ2EESYS();
-		if ("LOCAL".equalsIgnoreCase(env))
+		try 
 		{
-			isLocal = true;
+			Path dir = (Path)Paths.get("/Paul", "GitHub");
+			isLocal = Files.isDirectory(dir);
+		} 
+		catch (Exception e) 
+		{			
 		}
+				
 		return isLocal;
 	}
 	
-	private static String getJ2EESYS()
-	{
-		String currentEnv = null;
-		
-		try 
-		{
-			Object env = new InitialContext().lookup("java:comp/env/J2EE_SYS");
-			currentEnv = env.toString();
-		} 
-		catch (Exception e) 
-		{
-			log.error("Exception encountered retrieving J2EE_SYS: " + e.getMessage());
-		}
-		
-		return currentEnv;
-	}
-
 		
 }

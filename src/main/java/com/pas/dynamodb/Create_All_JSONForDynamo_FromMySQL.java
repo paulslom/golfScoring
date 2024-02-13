@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -32,7 +31,6 @@ import com.pas.beans.PlayerTeePreference;
 import com.pas.beans.Round;
 import com.pas.beans.Score;
 import com.pas.beans.TeeTime;
-import com.pas.util.Utils;
 
 public class Create_All_JSONForDynamo_FromMySQL
 {
@@ -53,29 +51,29 @@ public class Create_All_JSONForDynamo_FromMySQL
     { 
     	log.debug("**********  START of program ***********");   	
     	
-    	//List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
-    	//List<Group> groupList = getGroupsFromMySQLDB();	//2
-    	//List<Course> courseList = getCoursesFromMySQLDB();	//3
+    	List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
+    	List<Group> groupList = getGroupsFromMySQLDB();	//2
+    	List<Course> courseList = getCoursesFromMySQLDB();	//3
     	List<CourseTee> courseTeeList = getCourseTeesFromMySQLDB();	//4 
-    	//List<Game> gameList = getGamesFromMySQLDB();	//5
-    	//List<TeeTime> teeTimesList = getTeeTimesFromMySQLDB();	//6
-    	//List<Player> playerList = getPlayersFromMySQLDB();	//7
-    	//List<PlayerTeePreference> playerTeePreferenceList = getPlayerTeePreferenceFromMySQLDB();	//8
-    	//List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
-    	//List<Round> roundList = getRoundsFromMySQLDB();	//10
+    	List<Game> gameList = getGamesFromMySQLDB();	//5
+    	List<TeeTime> teeTimesList = getTeeTimesFromMySQLDB();	//6
+    	List<Player> playerList = getPlayersFromMySQLDB();	//7
+    	List<PlayerTeePreference> playerTeePreferenceList = getPlayerTeePreferenceFromMySQLDB();	//8
+    	List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
+    	List<Round> roundList = getRoundsFromMySQLDB();	//10
      	
     	log.debug("********** starting write of JSON files ***********"); 
     	
-	   	//writeGolfUsersJSONFile(golfUserList);  //1
-    	//writeGroupsJSONFile(groupList); //2
-	   	//writeCoursesJSONFile(courseList); //3
+	   	writeGolfUsersJSONFile(golfUserList);  //1
+    	writeGroupsJSONFile(groupList); //2
+	   	writeCoursesJSONFile(courseList); //3
 	    writeCourseTeeJSONFile(courseTeeList); //4
-    	//writeGamesJSONFile(gameList); //5
-	    //writeTeeTimesJSONFile(teeTimesList); //6
-    	//writePlayersJSONFile(playerList); //7
-	    //writePlayerTeePreferenceJSONFile(playerTeePreferenceList); //8
-    	//writePlayerMoneyJSONFile(playerMoneyList); //9    	
-    	//writeRoundsJSONFile(roundList); //10	 	
+    	writeGamesJSONFile(gameList); //5
+	    writeTeeTimesJSONFile(teeTimesList); //6
+    	writePlayersJSONFile(playerList); //7
+	    writePlayerTeePreferenceJSONFile(playerTeePreferenceList); //8
+    	writePlayerMoneyJSONFile(playerMoneyList); //9    	
+    	writeRoundsJSONFile(roundList); //10	 	
     	
 	   	log.debug("********** finished write of JSON files ***********");   	
 	   	

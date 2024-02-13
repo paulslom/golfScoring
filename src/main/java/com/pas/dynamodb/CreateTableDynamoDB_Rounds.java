@@ -1,20 +1,18 @@
 package com.pas.dynamodb;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.internal.waiters.ResponseOrException;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -27,18 +25,15 @@ import software.amazon.awssdk.enhanced.dynamodb.model.Page;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
-import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
-import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
-public class CreateTableDynamoDBLocal_Rounds
+public class CreateTableDynamoDB_Rounds
 {	 
-	private static String AWS_JSON_FILE_NAME = "RoundsData.json";
+	private static Logger logger = LogManager.getLogger(CreateTableDynamoDB_Rounds.class);
 	private static String AWS_TABLE_NAME = "rounds";
 	
 	private static DynamoDbTable<DynamoPlayer> playersTable;
@@ -53,93 +48,43 @@ public class CreateTableDynamoDBLocal_Rounds
 	private static DynamoDbTable<DynamoCourseTee> courseTeesTable;
 	private static final String AWS_TABLE_NAME_COURSETEES = "coursetees";
 	
-    public static void main(String[] args) 
-    {
-        try 
-        {
-        	String AWS_REGION = args[0];
-        	String uri = args[1];
-            
-            DynamoDbClient ddbClient =  DynamoDbClient.builder()
-            		.endpointOverride(URI.create(uri))
-                    .region(Region.of(AWS_REGION))
-                    .credentialsProvider(ProfileCredentialsProvider.create("default"))
-                    .build();
-            
-            //  Create a client and connect to DynamoDB Local, using an instance of the standard client.
-            DynamoDbEnhancedClient ddbEnhancedClient = DynamoDbEnhancedClient.builder()
-                    .dynamoDbClient(ddbClient)                           
-                    .build();
-            
-            //Delete the table in DynamoDB Local if it exists
-            deleteTable(ddbEnhancedClient);
-            
-            // Create a table in DynamoDB Local
-            DynamoDbTable<DynamoRound> teetimeTable = createTable(ddbEnhancedClient, ddbClient);
-
-            //need the these tables to look up ids
-            playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME_PLAYERS, TableSchema.fromBean(DynamoPlayer.class));
-            gamesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_GAMES, TableSchema.fromBean(DynamoGame.class));
-            teeTimesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_TEETIMES, TableSchema.fromBean(DynamoTeeTime.class));
-            courseTeesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_COURSETEES, TableSchema.fromBean(DynamoCourseTee.class));
-            
-            loadTableData(teetimeTable);
-            
-            scan(teetimeTable);
-            
-        } 
-        catch (Exception e) 
-        {
-        	e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        
-        //System.exit(1);
-    }
-    
-    private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
-    {
-    	DynamoDbTable<DynamoRound> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
-        
+	public void loadTable(DynamoClients dynamoClients, InputStream inputStream) throws Exception 
+	{
+		//Delete the table in DynamoDB Local if it exists.  If not, just catch the exception and move on
         try
         {
-        	table.deleteTable();
+        	deleteTable(dynamoClients.getDynamoDbEnhancedClient());
         }
         catch (Exception e)
         {
-        	System.out.println("Table did not already exist, so no delete table executed! " + e.getMessage());
+        	logger.info(e.getMessage());
         }
+        
+        // Create a table in DynamoDB Local
+        DynamoDbTable<DynamoRound> table = createTable(dynamoClients.getDynamoDbEnhancedClient(), dynamoClients.getDdbClient());           
+
+        //need the these tables to look up ids
+        playersTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_PLAYERS, TableSchema.fromBean(DynamoPlayer.class));
+        gamesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_GAMES, TableSchema.fromBean(DynamoGame.class));
+        teeTimesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_TEETIMES, TableSchema.fromBean(DynamoTeeTime.class));
+        courseTeesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_COURSETEES, TableSchema.fromBean(DynamoCourseTee.class));
+        
+        loadTableData(table, inputStream);		
 		
 	}
-
-	private static void scan(DynamoDbTable<DynamoRound> roundsTable) 
-    {
-        try 
-        {
-            Iterator<DynamoRound> results = roundsTable.scan().items().iterator();
-            
-            while (results.hasNext()) 
-            {
-                DynamoRound rec = results.next();
-                System.out.println("ID = " + rec.getRoundID() + " .. playerID = " + rec.getPlayerID());
-            }
-        } 
-        catch (DynamoDbException e) 
-        {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        System.out.println("Done with dynamo scan");
-    }
    
-    private static void loadTableData(DynamoDbTable<DynamoRound> roundsTable) throws Exception
+    private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient) throws Exception
+    {
+    	DynamoDbTable<DynamoRound> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
+       	table.deleteTable();
+	}
+   
+    private static void loadTableData(DynamoDbTable<DynamoRound> roundsTable, InputStream inputStream) throws Exception
     {   
         // Insert data into the table
-        System.out.println();
-        System.out.println("Inserting data into the table:" + AWS_TABLE_NAME);
-        System.out.println();        
-        
-        List<DynamoRound> roundsList = readFromFileAndConvert();
+        logger.info("Inserting data into the table:" + AWS_TABLE_NAME);
+          
+        List<DynamoRound> roundsList = readFromFileAndConvert(inputStream);
         
         DynamoDbIndex<DynamoPlayer> playersGSI = playersTable.index("gsi_OldPlayerID");
         DynamoDbIndex<DynamoGame> gamesGSI = gamesTable.index("gsi_OldGameID");
@@ -148,8 +93,7 @@ public class CreateTableDynamoDBLocal_Rounds
         
         if (roundsList == null)
         {
-        	System.err.println("list from json file is Empty - can't do anything more so exiting");
-            System.exit(1);
+        	logger.error("list from json file is Empty - can't do anything more so exiting");
         }
         else
         {
@@ -182,7 +126,7 @@ public class CreateTableDynamoDBLocal_Rounds
             	} 
             	else
             	{
-            		System.err.println("Player ID will be null on this one! OldPlayerID = " + dr.getOldPlayerID());
+            		logger.error("Player ID will be null on this one! OldPlayerID = " + dr.getOldPlayerID());
             	}
              	
             	//GameID
@@ -206,7 +150,7 @@ public class CreateTableDynamoDBLocal_Rounds
             	}
             	else
             	{
-            		System.err.println("Game ID will be null on this one! OldGameID = " + dr.getOldGameID());
+            		logger.error("Game ID will be null on this one! OldGameID = " + dr.getOldGameID());
             	}
             	
             	//CourseTeeID
@@ -249,45 +193,21 @@ public class CreateTableDynamoDBLocal_Rounds
             	}
             	else
             	{
-            		System.err.println("TeeTime ID will be null on this one! OldTeeTimeID = " + dr.getOldTeeTimeID());
+            		logger.error("TeeTime ID will be null on this one! OldTeeTimeID = " + dr.getOldTeeTimeID());
             	}
-            	
-                try 
-                {
-                	roundsTable.putItem(dr);
-                } 
-                catch (ResourceNotFoundException e) 
-                {
-                    System.err.format("Error: The Amazon DynamoDB table \"%s\" can't be found.\n", AWS_TABLE_NAME);
-                    System.err.println("Be sure that it exists and that you've typed its name correctly!");
-                    System.exit(1);
-                } 
-                catch (DynamoDbException e) 
-                {
-                    System.err.println(e.getMessage());
-                    System.exit(1);
-                }
+            
+            	roundsTable.putItem(dr);               
     		}             
         }
         
 	}
     
-    private static List<DynamoRound> readFromFileAndConvert() 
+    private static List<DynamoRound> readFromFileAndConvert(InputStream inputStream) 
     {
-    	String jsonFile = "C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\data\\" + AWS_JSON_FILE_NAME;
-    	
-        try (InputStream inputStream = new FileInputStream(new File(jsonFile));
-        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) 
-        {
-        	DynamoRound[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoRound[].class);
-        	List<DynamoRound> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
-        	return tempList;
-        } 
-        catch (final Exception exception) 
-        {
-        	System.out.println("Got an exception while reading the json file " + AWS_JSON_FILE_NAME + exception.getMessage());
-        }
-        return null;
+    	Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+       	DynamoRound[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoRound[].class);
+        List<DynamoRound> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
+        return tempList;      
     }
     
     private static DynamoDbTable<DynamoRound> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
@@ -309,7 +229,7 @@ public class CreateTableDynamoDBLocal_Rounds
         }
         catch (ResourceInUseException riue)
         {
-        	System.out.println("Table already exists! " + riue.getMessage());
+        	logger.error("Table already exists! " + riue.getMessage());
         	throw riue;
         }
         // The 'dynamoDbClient' instance that's passed to the builder for the DynamoDbWaiter is the same instance
@@ -326,7 +246,7 @@ public class CreateTableDynamoDBLocal_Rounds
                     () -> new RuntimeException(AWS_TABLE_NAME + " was not created."));
             
             // The actual error can be inspected in response.exception()
-            System.out.println(AWS_TABLE_NAME + " table was created.");
+            logger.info(AWS_TABLE_NAME + " table was created.");
         }        
         
         return teetimesTable;

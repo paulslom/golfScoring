@@ -1,20 +1,18 @@
 package com.pas.dynamodb;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.internal.waiters.ResponseOrException;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -27,18 +25,15 @@ import software.amazon.awssdk.enhanced.dynamodb.model.Page;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
-import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
-import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
-public class CreateTableDynamoDBLocal_PlayerTeePreferences
+public class CreateTableDynamoDB_PlayerTeePreferences
 {	 
-	private static String AWS_JSON_FILE_NAME = "PlayerTeesData.json";
+	private static Logger logger = LogManager.getLogger(CreateTableDynamoDB_Players.class);
 	private static String AWS_TABLE_NAME = "playerteepreferences";
 		
 	private static DynamoDbTable<DynamoPlayer> playersTable;
@@ -50,49 +45,29 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
 	private static DynamoDbTable<DynamoCourseTee> courseTeesTable;
 	private static final String AWS_TABLE_NAME_COURSETEES = "coursetees";
 	
-    public static void main(String[] args) 
-    {
-        try 
+	public void loadTable(DynamoClients dynamoClients, InputStream inputStream) throws Exception 
+	{
+		//Delete the table in DynamoDB Local if it exists.  If not, just catch the exception and move on
+        try
         {
-        	String AWS_REGION = args[0];
-        	String uri = args[1];
-            
-            DynamoDbClient ddbClient =  DynamoDbClient.builder()
-            		.endpointOverride(URI.create(uri))
-                    .region(Region.of(AWS_REGION))
-                    .credentialsProvider(ProfileCredentialsProvider.create("default"))
-                    .build();
-            
-            //  Create a client and connect to DynamoDB Local, using an instance of the standard client.
-            DynamoDbEnhancedClient ddbEnhancedClient = DynamoDbEnhancedClient.builder()
-                    .dynamoDbClient(ddbClient)                           
-                    .build();
-            
-            //Delete the table in DynamoDB Local if it exists
-            deleteTable(ddbEnhancedClient);
-            
-            // Create a table in DynamoDB Local
-            DynamoDbTable<DynamoPlayerTeePreference> teetimeTable = createTable(ddbEnhancedClient, ddbClient);
-
-            //need the these tables to look up ids
-            playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME_PLAYERS, TableSchema.fromBean(DynamoPlayer.class));
-            coursesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_COURSES, TableSchema.fromBean(DynamoCourse.class));
-            courseTeesTable = ddbEnhancedClient.table(AWS_TABLE_NAME_COURSETEES, TableSchema.fromBean(DynamoCourseTee.class));
-            
-            loadTableData(teetimeTable);
-            
-            scan(teetimeTable);
-            
-        } 
-        catch (Exception e) 
+        	deleteTable(dynamoClients.getDynamoDbEnhancedClient());
+        }
+        catch (Exception e)
         {
-        	e.printStackTrace();
-            throw new RuntimeException(e);
+        	logger.info(e.getMessage());
         }
         
-        //System.exit(1);
-    }
-    
+        // Create a table in DynamoDB Local
+        DynamoDbTable<DynamoPlayerTeePreference> table = createTable(dynamoClients.getDynamoDbEnhancedClient(), dynamoClients.getDdbClient());           
+
+        //need the these tables to look up ids
+        playersTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_PLAYERS, TableSchema.fromBean(DynamoPlayer.class));
+        coursesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_COURSES, TableSchema.fromBean(DynamoCourse.class));
+        courseTeesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME_COURSETEES, TableSchema.fromBean(DynamoCourseTee.class));
+        
+        loadTableData(table, inputStream);			
+	}
+	    
     private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
     {
     	DynamoDbTable<DynamoPlayerTeePreference> table = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerTeePreference.class));
@@ -107,35 +82,13 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         }
 		
 	}
-
-	private static void scan(DynamoDbTable<DynamoPlayerTeePreference> teetimeTable) 
-    {
-        try 
-        {
-            Iterator<DynamoPlayerTeePreference> results = teetimeTable.scan().items().iterator();
-            
-            while (results.hasNext()) 
-            {
-                DynamoPlayerTeePreference rec = results.next();
-                System.out.println("ID = " + rec.getPlayerTeePreferenceID() + " .. playerID = " + rec.getPlayerID());
-            }
-        } 
-        catch (DynamoDbException e) 
-        {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        System.out.println("Done with dynamo scan");
-    }
    
-    private static void loadTableData(DynamoDbTable<DynamoPlayerTeePreference> playerTeePreferenceTable) throws Exception
+    private static void loadTableData(DynamoDbTable<DynamoPlayerTeePreference> playerTeePreferenceTable, InputStream inputStream) throws Exception
     {   
         // Insert data into the table
-        System.out.println();
-        System.out.println("Inserting data into the table:" + AWS_TABLE_NAME);
-        System.out.println();        
-        
-        List<DynamoPlayerTeePreference> playerTeePreferenceList = readFromFileAndConvert();
+        logger.info("Inserting data into the table:" + AWS_TABLE_NAME);
+         
+        List<DynamoPlayerTeePreference> playerTeePreferenceList = readFromFileAndConvert(inputStream);
         
         DynamoDbIndex<DynamoPlayer> playersGSI = playersTable.index("gsi_OldPlayerID");
         DynamoDbIndex<DynamoCourse> coursesGSI = coursesTable.index("gsi_OldCourseID");
@@ -143,8 +96,7 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         
         if (playerTeePreferenceList == null)
         {
-        	System.err.println("list from json file is Empty - can't do anything more so exiting");
-            System.exit(1);
+        	logger.error("list from json file is Empty - can't do anything more so exiting");
         }
         else
         {
@@ -175,7 +127,7 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
             	} 
             	else
             	{
-            		System.err.println("Player ID will be null on this one! OldPlayerID = " + dtt.getOldPlayerID());
+            		logger.error("Player ID will be null on this one! OldPlayerID = " + dtt.getOldPlayerID());
             	}
              	
              	key = Key.builder().partitionValue(dtt.getOldCourseID()).build();
@@ -216,42 +168,19 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
             		dtt.setTeeColor(dct.getTeeColor());
             	}
             	
-                try 
-                {
-                	playerTeePreferenceTable.putItem(dtt);
-                } 
-                catch (ResourceNotFoundException e) 
-                {
-                    System.err.format("Error: The Amazon DynamoDB table \"%s\" can't be found.\n", AWS_TABLE_NAME);
-                    System.err.println("Be sure that it exists and that you've typed its name correctly!");
-                    System.exit(1);
-                } 
-                catch (DynamoDbException e) 
-                {
-                    System.err.println(e.getMessage());
-                    System.exit(1);
-                }
+                playerTeePreferenceTable.putItem(dtt);
+                
     		}             
         }
         
 	}
     
-    private static List<DynamoPlayerTeePreference> readFromFileAndConvert() 
+    private static List<DynamoPlayerTeePreference> readFromFileAndConvert(InputStream inputStream) 
     {
-    	String jsonFile = "C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\data\\" + AWS_JSON_FILE_NAME;
-    	
-        try (InputStream inputStream = new FileInputStream(new File(jsonFile));
-        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) 
-        {
-        	DynamoPlayerTeePreference[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoPlayerTeePreference[].class);
-        	List<DynamoPlayerTeePreference> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
-        	return tempList;
-        } 
-        catch (final Exception exception) 
-        {
-        	System.out.println("Got an exception while reading the json file " + AWS_JSON_FILE_NAME + exception.getMessage());
-        }
-        return null;
+    	Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+       	DynamoPlayerTeePreference[] dynamoPlayerTeePreferenceArray = new Gson().fromJson(reader, DynamoPlayerTeePreference[].class);
+       	List<DynamoPlayerTeePreference> tempList = Arrays.asList(dynamoPlayerTeePreferenceArray);
+       	return tempList;       
     }
     
     private static DynamoDbTable<DynamoPlayerTeePreference> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
@@ -273,7 +202,7 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
         }
         catch (ResourceInUseException riue)
         {
-        	System.out.println("Table already exists! " + riue.getMessage());
+        	logger.error("Table already exists! " + riue.getMessage());
         	throw riue;
         }
         // The 'dynamoDbClient' instance that's passed to the builder for the DynamoDbWaiter is the same instance
@@ -290,10 +219,12 @@ public class CreateTableDynamoDBLocal_PlayerTeePreferences
                     () -> new RuntimeException(AWS_TABLE_NAME + " was not created."));
             
             // The actual error can be inspected in response.exception()
-            System.out.println(AWS_TABLE_NAME + " table was created.");
+            logger.info(AWS_TABLE_NAME + " table was created.");
         }        
         
         return teetimesTable;
     }
+
+	
    
 }

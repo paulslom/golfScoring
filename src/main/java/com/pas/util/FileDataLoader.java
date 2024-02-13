@@ -1,33 +1,41 @@
 package com.pas.util;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-import com.pas.beans.GolfUser;
+import com.pas.dynamodb.CreateTableDynamoDB_CourseTees;
+import com.pas.dynamodb.CreateTableDynamoDB_Courses;
+import com.pas.dynamodb.CreateTableDynamoDB_Games;
+import com.pas.dynamodb.CreateTableDynamoDB_GolfUsers;
+import com.pas.dynamodb.CreateTableDynamoDB_Groups;
+import com.pas.dynamodb.CreateTableDynamoDB_PlayerMoney;
+import com.pas.dynamodb.CreateTableDynamoDB_PlayerTeePreferences;
+import com.pas.dynamodb.CreateTableDynamoDB_Players;
+import com.pas.dynamodb.CreateTableDynamoDB_Rounds;
+import com.pas.dynamodb.CreateTableDynamoDB_TeeTimes;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
 
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
-
-/**
- * Class to load data from JSON file.
- */
 @Component
 public class FileDataLoader 
 {
 	private static Logger logger = LogManager.getLogger(FileDataLoader.class);
-    private static final boolean loadData = false;
+    private static final boolean loadData = true;
     
+    private static String GOLFUSERS_JSONFILE = "/data/GolfUsersData.json";
+	private static String COURSES_JSONFILE = "/data/CoursesData.json";
+	private static String GAMES_JSONFILE = "/data/GamesData.json";
+	private static String GOLFCOURSETEES_JSONFILE = "/data/GolfCourseTeesData.json";
+	private static String PLAYERMONEY_JSONFILE = "/data/PlayerMoneyData.json";
+	private static String PLAYERS_JSONFILE = "/data/PlayersData.json";
+	private static String PLAYERTEES_JSONFILE = "/data/PlayerTeesData.json";
+	private static String ROUNDS_JSONFILE = "/data/RoundsData.json";
+	private static String TEETIMES_JSONFILE = "/data/TeeTimesData.json";
+	private static String GOLFGROUPS_JSONFILE = "/data/GolfGroupsData.json";
+	
     public boolean load() throws Exception 
     {
         if (!loadData) 
@@ -37,57 +45,79 @@ public class FileDataLoader
         }
         
         DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
-                		
-        DynamoDbTable<GolfUser> table = dynamoClients.getDynamoDbEnhancedClient().table("GolfUsers", TableSchema.fromBean(GolfUser.class));
-        table.createTable();
         
-        List<GolfUser> golfUserList = loadFile();
-        loadDynamoDb(golfUserList, table);
-        
+        doTable(dynamoClients, GOLFUSERS_JSONFILE);
+		doTable(dynamoClients, GOLFGROUPS_JSONFILE);
+		doTable(dynamoClients, COURSES_JSONFILE);
+		doTable(dynamoClients, GOLFCOURSETEES_JSONFILE);
+		doTable(dynamoClients, GAMES_JSONFILE);
+		doTable(dynamoClients, TEETIMES_JSONFILE);
+		doTable(dynamoClients, PLAYERS_JSONFILE);
+		doTable(dynamoClients, PLAYERTEES_JSONFILE);
+		doTable(dynamoClients, PLAYERMONEY_JSONFILE);
+		doTable(dynamoClients, ROUNDS_JSONFILE);
+		
+        InputStream inputStream = FileDataLoader.class.getResourceAsStream("/data/GolfUsersData.json");
+        CreateTableDynamoDB_GolfUsers ctgu = new CreateTableDynamoDB_GolfUsers();
+        ctgu.loadTable(dynamoClients, inputStream);
+                
         return true;
     }
-
-    private void loadDynamoDb(List<GolfUser> datalist, DynamoDbTable<GolfUser> table) 
-    {
-        for (int i = 0; i < datalist.size(); i++) 
-        {
-			GolfUser gu = datalist.get(i);
-			table.putItem(gu);
-		}
-           
-        logger.info("Completed loading data to DB.");
-    }
     
-    private List<GolfUser> loadFile() throws Exception 
-    {
-        List<GolfUser> golfUserList = (List<GolfUser>) readFromFileAndConvert();
-
-        if (golfUserList == null || golfUserList.isEmpty()) 
+    private static void doTable(DynamoClients dynamoClients, String jsonFileName) throws Exception 
+	{
+    	InputStream inputStream = FileDataLoader.class.getResourceAsStream(jsonFileName);
+		 		 
+        if (jsonFileName.equalsIgnoreCase(GOLFUSERS_JSONFILE))
         {
-            logger.info("Failed to load GolfUsersData.json in memory.");
-            throw new Exception("Failed to load GolfUsersData.json in memory.");
-        } 
-        else 
-        {
-            logger.info("Loaded GolfUsersData.json in memory. Found {} items.", golfUserList.size());
-            return golfUserList;
+        	CreateTableDynamoDB_GolfUsers ct = new CreateTableDynamoDB_GolfUsers();
+        	ct.loadTable(dynamoClients, inputStream);		
         }
-    }
-
-    private static List<GolfUser> readFromFileAndConvert() 
-    {
-    	try (InputStream inputStream = FileDataLoader.class.getResourceAsStream("/data/GolfUsersData.json");
-        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) 
+        else if (jsonFileName.equalsIgnoreCase(GOLFGROUPS_JSONFILE))
         {
-        	GolfUser[] golfUserArray = new Gson().fromJson(reader, GolfUser[].class);
-        	List<GolfUser> golfUserList = Arrays.asList(golfUserArray);
-        	return golfUserList;
-        } 
-        catch (final Exception exception) 
-        {
-        	logger.error("Got an exception while reading the json file /data/golfusersdata.json", exception);
+        	CreateTableDynamoDB_Groups ct = new CreateTableDynamoDB_Groups();
+        	ct.loadTable(dynamoClients, inputStream);		
         }
-        return null;
-    }
+        else if (jsonFileName.equalsIgnoreCase(COURSES_JSONFILE))
+        {
+        	CreateTableDynamoDB_Courses ct = new CreateTableDynamoDB_Courses();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(GOLFCOURSETEES_JSONFILE))
+        {
+        	CreateTableDynamoDB_CourseTees ct = new CreateTableDynamoDB_CourseTees();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(GAMES_JSONFILE))
+        {
+        	CreateTableDynamoDB_Games ct = new CreateTableDynamoDB_Games();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(TEETIMES_JSONFILE))
+        {
+        	CreateTableDynamoDB_TeeTimes ct = new CreateTableDynamoDB_TeeTimes();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(PLAYERS_JSONFILE))
+        {
+        	CreateTableDynamoDB_Players ct = new CreateTableDynamoDB_Players();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(PLAYERTEES_JSONFILE))
+        {
+        	CreateTableDynamoDB_PlayerTeePreferences ct = new CreateTableDynamoDB_PlayerTeePreferences();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(PLAYERMONEY_JSONFILE))
+        {
+        	CreateTableDynamoDB_PlayerMoney ct = new CreateTableDynamoDB_PlayerMoney();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }
+        else if (jsonFileName.equalsIgnoreCase(ROUNDS_JSONFILE))
+        {
+        	CreateTableDynamoDB_Rounds ct = new CreateTableDynamoDB_Rounds();
+        	ct.loadTable(dynamoClients, inputStream);		
+        }		
+	}
 }
 

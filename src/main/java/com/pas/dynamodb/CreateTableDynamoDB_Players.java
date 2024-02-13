@@ -1,78 +1,54 @@
 package com.pas.dynamodb;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.pas.beans.Player;
 
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.internal.waiters.ResponseOrException;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.EnhancedGlobalSecondaryIndex;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
-import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
-import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
-public class CreateTableDynamoDBLocal_Players
-{	 
-	private static String AWS_JSON_FILE_NAME = "PlayersData.json";
+public class CreateTableDynamoDB_Players
+{
+	private static Logger logger = LogManager.getLogger(CreateTableDynamoDB_Players.class);
 	private static String AWS_TABLE_NAME = "players";
 	
-    public static void main(String[] args) 
-    {
-        try 
+	public void loadTable(DynamoClients dynamoClients, InputStream inputStream) throws Exception 
+	{		
+		//Delete the table in DynamoDB Local if it exists.  If not, just catch the exception and move on
+        try
         {
-        	String AWS_REGION = args[0];
-        	String uri = args[1];
-            
-            DynamoDbClient ddbClient =  DynamoDbClient.builder()
-            		.endpointOverride(URI.create(uri))
-                    .region(Region.of(AWS_REGION))
-                    .credentialsProvider(ProfileCredentialsProvider.create("default"))
-                    .build();
-            
-            //  Create a client and connect to DynamoDB Local, using an instance of the standard client.
-            DynamoDbEnhancedClient ddbEnhancedClient = DynamoDbEnhancedClient.builder()
-                    .dynamoDbClient(ddbClient)                           
-                    .build();
-            
-            //Delete the table in DynamoDB Local if it exists
-            deleteTable(ddbEnhancedClient);
-            
-            // Create a table in DynamoDB Local
-            DynamoDbTable<DynamoPlayer> playerTable = createTable(ddbEnhancedClient, ddbClient);
-
-            loadTableData(playerTable);
-            
-            scan(playerTable);            
-        } 
-        catch (Exception e) 
+        	deleteTable(dynamoClients.getDynamoDbEnhancedClient());
+        }
+        catch (Exception e)
         {
-        	e.printStackTrace();
-            throw new RuntimeException(e);
+        	logger.info(e.getMessage());
         }
         
-        //System.exit(1);
-    }
-    
+        // Create a table in DynamoDB Local
+        DynamoDbTable<DynamoPlayer> table = createTable(dynamoClients.getDynamoDbEnhancedClient(), dynamoClients.getDdbClient());           
+
+        loadTableData(table, inputStream);	
+	}
+     
     private static void deleteTable(DynamoDbEnhancedClient ddbEnhancedClient)
     {
     	DynamoDbTable<DynamoPlayer> playersTable = ddbEnhancedClient.table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
@@ -87,35 +63,13 @@ public class CreateTableDynamoDBLocal_Players
         }
 		
 	}
-
-	private static void scan(DynamoDbTable<DynamoPlayer> playerTable) 
-    {
-        try 
-        {
-            Iterator<DynamoPlayer> results = playerTable.scan().items().iterator();
-            
-            while (results.hasNext()) 
-            {
-                DynamoPlayer rec = results.next();
-                System.out.println("ID = " + rec.getPlayerID() + " .. last name = " + rec.getLastName());
-            }
-        } 
-        catch (DynamoDbException e) 
-        {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        System.out.println("Done with dynamo scan");
-    }
    
-    private static void loadTableData(DynamoDbTable<DynamoPlayer> playerTable) throws Exception
+    private static void loadTableData(DynamoDbTable<DynamoPlayer> playerTable, InputStream inputStream) throws Exception
     {   
         // Insert data into the table
-        System.out.println();
-        System.out.println("Inserting data into the table:" + AWS_TABLE_NAME);
-        System.out.println();        
-        
-        List<Player> playerList = readFromFileAndConvert();
+        logger.info("Inserting data into the table:" + AWS_TABLE_NAME);
+         
+        List<Player> playerList = readFromFileAndConvert(inputStream);
         
         if (playerList == null)
         {
@@ -138,43 +92,19 @@ public class CreateTableDynamoDBLocal_Players
             	dynamoObj.setHandicap(obj.getHandicap());
             	dynamoObj.setEmailAddress(obj.getEmailAddress());
             	dynamoObj.setActive(obj.isActive());
-            	
-                try 
-                {
-                    playerTable.putItem(dynamoObj);
-                } 
-                catch (ResourceNotFoundException e) 
-                {
-                    System.err.format("Error: The Amazon DynamoDB table \"%s\" can't be found.\n", AWS_TABLE_NAME);
-                    System.err.println("Be sure that it exists and that you've typed its name correctly!");
-                    System.exit(1);
-                } 
-                catch (DynamoDbException e) 
-                {
-                    System.err.println(e.getMessage());
-                    System.exit(1);
-                }
+            
+            	playerTable.putItem(dynamoObj);                
     		}             
         }
         
 	}
     
-    private static List<Player> readFromFileAndConvert() 
+    private static List<Player> readFromFileAndConvert(InputStream inputStream) throws Exception
     {
-    	String jsonFile = "C:\\Paul\\GitHub\\golfScoring\\src\\main\\resources\\data\\" + AWS_JSON_FILE_NAME;
-    	
-        try (InputStream inputStream = new FileInputStream(new File(jsonFile));
-        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) 
-        {
-        	Player[] playerArray = new Gson().fromJson(reader, Player[].class);
-        	List<Player> playerList = Arrays.asList(playerArray);
-        	return playerList;
-        } 
-        catch (final Exception exception) 
-        {
-        	System.out.println("Got an exception while reading the json file " + AWS_JSON_FILE_NAME + exception.getMessage());
-        }
-        return null;
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+       	Player[] playerArray = new Gson().fromJson(reader, Player[].class);
+       	List<Player> playerList = Arrays.asList(playerArray);
+       	return playerList;        
     }
     
     private static DynamoDbTable<DynamoPlayer> createTable(DynamoDbEnhancedClient ddbEnhancedClient, DynamoDbClient ddbClient) 
@@ -228,5 +158,7 @@ public class CreateTableDynamoDBLocal_Players
         
         return playersTable;
     }
+
+	
    
 }

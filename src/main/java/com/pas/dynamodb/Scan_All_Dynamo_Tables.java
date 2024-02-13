@@ -31,17 +31,16 @@ public class Scan_All_Dynamo_Tables
             String[] callingArgs = {AWS_REGION, uri};
             
             /**/
-	       	//ScanTableGolfUsers.main(callingArgs);
-	    	//ScanTableGroups.main(callingArgs);
-	    	//ScanTableCourses.main(callingArgs);
+	       	ScanTableGolfUsers.main(callingArgs);
+	    	ScanTableGroups.main(callingArgs);
+	    	ScanTableCourses.main(callingArgs);
 	    	ScanTableCourseTees.main(callingArgs);
-	    	//ScanTableGames.main(callingArgs);
-	    	//ScanTableTeeTimes.main(callingArgs);	    	
-	    	//ScanTablePlayers.main(callingArgs);	
-	    	//ScanTablePlayerTeePreferences.main(callingArgs);	    	
-            //ScanTableGames.main(callingArgs);            
-	    	//ScanTablePlayerMoney.main(callingArgs);	    	
-	    	//ScanTableRounds.main(callingArgs);
+	    	ScanTableGames.main(callingArgs);
+	    	ScanTableTeeTimes.main(callingArgs);	    	
+	    	ScanTablePlayers.main(callingArgs);	
+	    	ScanTablePlayerTeePreferences.main(callingArgs);                 
+	    	ScanTablePlayerMoney.main(callingArgs);	    	
+	    	ScanTableRounds.main(callingArgs);
 	    	
 	    	server.stop();
 	    	

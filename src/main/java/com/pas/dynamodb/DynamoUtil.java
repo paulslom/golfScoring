@@ -1,15 +1,12 @@
 package com.pas.dynamodb;
 
-import java.io.InputStream;
 import java.net.URI;
-import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
-import com.pas.util.FileDataLoader;
 import com.pas.util.Utils;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -22,7 +19,8 @@ public class DynamoUtil
 {
 	private static Logger logger = LogManager.getLogger(DynamoUtil.class);
 	
-	private static String AWS_REGION;
+	private static String AWS_REGION = "us-east-1";
+	private static String AWS_DYNAMODB_LOCAL_PORT = "8000";
 	
 	private static DynamoDBProxyServer server;
 	
@@ -47,15 +45,7 @@ public class DynamoUtil
         {
         	logger.info("We are operating in LOCAL env - connecting to DynamoDBLocal");
         	
-        	Properties prop = new Properties();
-			
-	    	InputStream stream = FileDataLoader.class.getResourceAsStream("/dynamoDb.properties"); 
-	    	prop.load(stream);   		
-		 	
-		    String AWS_REGION = prop.getProperty("region");
-		    String AWS_DYNAMODB_LOCAL_PORT = prop.getProperty("local_port");
-		    
-		    System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
+        	System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
             String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
             
             // Create an instance of DynamoDB Local that runs over HTTP
