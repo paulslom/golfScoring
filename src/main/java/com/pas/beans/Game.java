@@ -51,6 +51,8 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	private static String NEWLINE = "<br/>";	
 	
+	private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com/login.xhtml";
+	
 	private boolean courseSelected = false;
 	private boolean disableShowScores = true;
 	private boolean showPlayerScores = false;
@@ -1272,7 +1274,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		
 		sb.append(NEWLINE);
 		sb.append(NEWLINE);
-		sb.append("<a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>Golf Scoring</a>");
+		sb.append("<a href='" + WEBSITE_URL + "'>Golf Scoring</a>");
 		
 		this.setTestEmailMessage(sb.toString());
 		
@@ -2345,7 +2347,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 				
 		sb.append("To sign up to play (or withdraw if you've already signed up but can no longer play), go to this site:");
 		sb.append(NEWLINE);
-		sb.append("<a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>Golf Scoring</a>");	
+		sb.append("<a href='" + WEBSITE_URL + "'>Golf Scoring</a>");
 		sb.append(NEWLINE);
 		sb.append("Please do not send email requests to sign up to play - the way to sign up or withdraw now is the website above.  The gmail box is not monitored regularly and you may be left out of a game if you request to get in that way.");
 		sb.append(NEWLINE);
@@ -2513,7 +2515,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(NEWLINE);
-		sb.append("When done with your round if one person in the group could login to the website <a href='http://golfscoring.us-east-1.elasticbeanstalk.com/login.xhtml'>Golf Scoring</a> ");
+		sb.append("When done with your round if one person in the group could login to the website <a href='" + WEBSITE_URL + "'>Golf Scoring</a> ");
 		sb.append(NEWLINE);
 		sb.append("and post all the scores for your play group it would be greatly appreciated.  Click on Scores menu, and then choose the Enter scores for game option");
 		sb.append(NEWLINE);

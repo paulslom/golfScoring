@@ -1762,5 +1762,17 @@
 	"oldPlayerID":148,
 	"oldCourseID":3,
 	"oldCourseTeeID":10
+},
+{
+	"oldPlayerTeePreferenceID":333,
+	"oldPlayerID":149,
+	"oldCourseID":1,
+	"oldCourseTeeID":1
+},
+{
+	"oldPlayerTeePreferenceID":334,
+	"oldPlayerID":149,
+	"oldCourseID":2,
+	"oldCourseTeeID":5
 }
 ]

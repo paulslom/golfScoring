@@ -540,6 +540,15 @@
 	"active":true
 },
 {
+	"oldPlayerID":149,
+	"firstName": "Jeff",
+	"lastName": "Bruce",
+	"handicap":4.0,
+	"username": "jbruce",
+	"emailAddress": "jbruce10@att.net",
+	"active":true
+},
+{
 	"oldPlayerID":120,
 	"firstName": "Jack",
 	"lastName": "Draper",
