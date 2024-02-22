@@ -27,14 +27,13 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 @Named("pc_Player")
 @SessionScoped
-public class Player extends SpringBeanAutowiringSupport implements Serializable
+public class Player implements Serializable
 {	
 	private static final long serialVersionUID = 4089402354585236177L;
 	private static Logger logger = LogManager.getLogger(Game.class);

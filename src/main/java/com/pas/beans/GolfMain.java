@@ -23,11 +23,8 @@ import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
 import com.pas.dao.GameDAO;
@@ -37,6 +34,8 @@ import com.pas.dao.PlayerMoneyDAO;
 import com.pas.dao.PlayerTeePreferenceDAO;
 import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoUtil;
 import com.pas.dao.GolfUsersDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
@@ -44,7 +43,7 @@ import com.pas.util.Utils;
 
 @Named("pc_GolfMain")
 @SessionScoped
-public class GolfMain extends SpringBeanAutowiringSupport implements Serializable
+public class GolfMain implements Serializable
 {
 	static
 	{
@@ -106,16 +105,16 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 	
 	private static String NEWLINE = "<br/>";	
 	
-	@Autowired private GameDAO gameDAO;
-	@Autowired private GolfUsersDAO golfUsersDAO;
-	@Autowired private RoundDAO roundDAO;
-	@Autowired private TeeTimeDAO teeTimeDAO;
-	@Autowired private CourseDAO courseDAO;
-	@Autowired private CourseTeeDAO courseTeeDAO;
-	@Autowired private PlayerDAO playerDAO;
-	@Autowired private PlayerMoneyDAO playerMoneyDAO;
-	@Autowired private PlayerTeePreferenceDAO playerTeePreferencesDAO;
-	@Autowired private GroupDAO groupDAO;
+	private GameDAO gameDAO;
+	private GolfUsersDAO golfUsersDAO;
+	private RoundDAO roundDAO;
+	private TeeTimeDAO teeTimeDAO;
+	private CourseDAO courseDAO;
+	private CourseTeeDAO courseTeeDAO;
+	private PlayerDAO playerDAO;
+	private PlayerMoneyDAO playerMoneyDAO;
+	private PlayerTeePreferenceDAO playerTeePreferencesDAO;
+	private GroupDAO groupDAO;
 	
 	@PostConstruct
 	public void init()
@@ -188,20 +187,23 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		try 
 		{
 			//this gets populated at app startup, no need to do it again when someone logs in.
-			if (golfUsersDAO.getFullUserMap().isEmpty())
+			if (golfUsersDAO == null || golfUsersDAO.getFullUserMap().isEmpty())
 			{
+				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
+				golfUsersDAO = new GolfUsersDAO(dynamoClients);
+				groupDAO = new GroupDAO(dynamoClients);
 				groupDAO.readGroupsFromDB();
 				Group defaultGroup = this.getGroupsList().get(0);
 				this.setDefaultGroup(defaultGroup);
 				
-				loadCourseSelections();
-				loadCourseTees();
-				loadFullGameList();
-				loadTeeTimeList();
-				loadFullPlayerList();
-				loadFullPlayerTeePreferencesList();
-				loadPlayerMoneyList();
-				loadRoundList();
+				loadCourseSelections(dynamoClients);
+				loadCourseTees(dynamoClients);
+				loadFullGameList(dynamoClients, defaultGroup);
+				loadTeeTimeList(dynamoClients, defaultGroup);
+				loadFullPlayerList(dynamoClients);
+				loadFullPlayerTeePreferencesList(dynamoClients);
+				loadPlayerMoneyList(dynamoClients);
+				loadRoundList(dynamoClients);
 			}	
 		} 
 		catch (Exception e) 
@@ -210,8 +212,9 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		}		
 	}
 
-	private void loadRoundList() throws Exception
+	private void loadRoundList(DynamoClients dynamoClients) throws Exception
 	{
+		roundDAO = new RoundDAO(dynamoClients);
 		roundDAO.readAllRoundsFromDB();
 		logger.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
 		
@@ -299,21 +302,24 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		
 	}
 
-	public void loadCourseSelections()  throws Exception
+	public void loadCourseSelections(DynamoClients dynamoClients)  throws Exception
 	{
+		courseDAO = new CourseDAO(dynamoClients);
 		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
 		logger.info("Courses read in. List size = " + this.getCourseSelections().size());		
     }
 	
-	public void loadCourseTees()  throws Exception
+	public void loadCourseTees(DynamoClients dynamoClients)  throws Exception
 	{
+		courseTeeDAO = new CourseTeeDAO(dynamoClients);
 		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
 		logger.info("Course Tees read in. List size = " + this.getCourseTees().size());		
     }
 	
-	public void loadFullGameList() throws Exception 
+	public void loadFullGameList(DynamoClients dynamoClients, Group defaultGroup) throws Exception 
 	{
-		gameDAO.readGamesFromDB();			
+		gameDAO = new GameDAO(dynamoClients);
+		gameDAO.readGamesFromDB(defaultGroup);			
 		logger.info("Full Game list read in. List size = " + this.getFullGameList().size());	
 		
 		Map<String,Game> tempMap = new HashMap<>();
@@ -337,14 +343,16 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		});
 	}
 	
-	public void loadTeeTimeList() throws Exception
+	public void loadTeeTimeList(DynamoClients dynamoClients, Group defaultGroup) throws Exception
 	{
-		teeTimeDAO.readTeeTimesFromDB();			
+		teeTimeDAO = new TeeTimeDAO(dynamoClients);
+		teeTimeDAO.readTeeTimesFromDB(defaultGroup);			
 		logger.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
 	}
 	
-	public void loadPlayerMoneyList()  throws Exception
+	public void loadPlayerMoneyList(DynamoClients dynamoClients)  throws Exception
 	{
+		playerMoneyDAO = new PlayerMoneyDAO(dynamoClients);
 		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
 		Map<String,PlayerMoney> tempMap = new HashMap<>();
@@ -368,8 +376,9 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		logger.info("Player Money read in. List size = " + this.getPlayerMoneyList().size());			
 	}
 	
-	public void loadFullPlayerList() throws Exception 
+	public void loadFullPlayerList(DynamoClients dynamoClients) throws Exception 
 	{
+		playerDAO = new PlayerDAO(dynamoClients);
 		playerDAO.readPlayersFromDB();			
 		golfUsersDAO.readAllUsersFromDB();
 						
@@ -397,8 +406,9 @@ public class GolfMain extends SpringBeanAutowiringSupport implements Serializabl
 		logger.info("Players read in. List size = " + this.getFullPlayerList().size());
 	}
 
-	public void loadFullPlayerTeePreferencesList() throws Exception 
+	public void loadFullPlayerTeePreferencesList(DynamoClients dynamoClients) throws Exception 
 	{
+		playerTeePreferencesDAO = new PlayerTeePreferenceDAO(dynamoClients);
 		playerTeePreferencesDAO.readPlayerTeePreferencesFromDB(this.getDefaultGroup());
 		
 		Map<String,PlayerTeePreference> tempMap = new HashMap<>();

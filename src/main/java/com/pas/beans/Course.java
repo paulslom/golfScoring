@@ -10,11 +10,9 @@ import java.util.Objects;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
 @Named("pc_Course")
 @RequestScoped
-public class Course extends SpringBeanAutowiringSupport implements Serializable
+public class Course implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
 	

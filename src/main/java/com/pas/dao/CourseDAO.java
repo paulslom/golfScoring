@@ -10,20 +10,16 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Course;
 import com.pas.beans.Group;
 import com.pas.beans.Hole;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoCourse;
-import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
  
-@Repository
 public class CourseDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -36,18 +32,17 @@ public class CourseDAO implements Serializable
 	private static DynamoDbTable<DynamoCourse> coursesTable;
 	private static final String AWS_TABLE_NAME = "courses";
 	
-	@PostConstruct
-	private void initialize() 
+	public CourseDAO(DynamoClients dynamoClients2) 
 	{
-	   try 
-	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
-	       coursesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoCourse.class));
-	   } 
-	   catch (final Exception ex) 
-	   {
-	      logger.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
-	   }	   
+		try 
+		   {
+		       dynamoClients = dynamoClients2;
+		       coursesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoCourse.class));
+		   } 
+		   catch (final Exception ex) 
+		   {
+		      logger.error("Got exception while initializing CourseDAO. Ex = " + ex.getMessage(), ex);
+		   }	   
 	}
 	
 	public void readCoursesFromDB(Group grp)

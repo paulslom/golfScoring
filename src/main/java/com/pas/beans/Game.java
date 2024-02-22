@@ -33,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
@@ -41,7 +40,7 @@ import com.pas.util.Utils;
 
 @Named("pc_Game")
 @SessionScoped
-public class Game extends SpringBeanAutowiringSupport implements Serializable
+public class Game implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -51,7 +50,7 @@ public class Game extends SpringBeanAutowiringSupport implements Serializable
 	
 	private static String NEWLINE = "<br/>";	
 	
-	private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com/login.xhtml";
+	private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";
 	
 	private boolean courseSelected = false;
 	private boolean disableShowScores = true;

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -20,10 +19,8 @@ import com.pas.beans.Player;
 import com.pas.beans.PlayerMoney;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayerMoney;
-import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.BeanUtilJSF;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -36,7 +33,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
-@Repository
 public class PlayerMoneyDAO implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -50,17 +46,16 @@ public class PlayerMoneyDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayerMoney> playerMoneyTable;
 	private static final String AWS_TABLE_NAME = "playermoney";
 	
-	@PostConstruct
-	private void initialize() 
+	public PlayerMoneyDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       playerMoneyTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
 	   } 
 	   catch (final Exception ex) 
 	   {
-	      logger.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
+	      logger.error("Got exception while initializing PlayerMoneyDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
 		
@@ -101,7 +96,7 @@ public class PlayerMoneyDAO implements Serializable
 		Iterator<DynamoPlayerMoney> results = playerMoneyTable.scan().items().iterator();
 		
 		//since this full read is only done at app startup, we can't use golfmain's jsf bean to get it... so just redo the playerdao read
-		PlayerDAO playerDAO = new PlayerDAO();		
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);		
 		playerDAO.readPlayersFromDB();
 		Map<String,Player> fullPlayersMapByPlayerID = playerDAO.getFullPlayersMapByPlayerID();
 		

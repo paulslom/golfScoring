@@ -24,16 +24,30 @@ import com.pas.dao.GroupDAO;
 import com.pas.dao.PlayerDAO;
 import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoUtil;
 
 public class DailyEmailJob implements Runnable 
 {
+	private static DynamoClients dynamoClients;
 	private static Logger logger = LogManager.getLogger(DailyEmailJob.class);
 	
 	private static long TEN_HOURS = 36000000; //in milliseconds
 	private static long SIX_DAYS = 518400000; //in milliseconds
 	
-	private static String NEWLINE = "<br/>";	
+	private static String NEWLINE = "<br/>";
+	
+	private static Group defaultGroup;
+	
+	public DailyEmailJob() throws Exception 
+	{
+		dynamoClients = DynamoUtil.getDynamoClients();
 		
+		GroupDAO groupDAO = new GroupDAO(dynamoClients);
+		groupDAO.readGroupsFromDB();
+		defaultGroup = groupDAO.getGroupsList().get(0);
+	}
+	
 	@Override
 	public void run() 
 	{
@@ -92,8 +106,8 @@ public class DailyEmailJob implements Runnable
 
 	private String getTeeTimes(Game inputGame) throws Exception 
 	{
-		TeeTimeDAO teeTimeDAO = new TeeTimeDAO();
-		teeTimeDAO.readTeeTimesFromDB();
+		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients);
+		teeTimeDAO.readTeeTimesFromDB(defaultGroup);
 		List<TeeTime> teeTimeList = teeTimeDAO.getTeeTimesByGame(inputGame);
 		
 		StringBuffer sb = new StringBuffer();
@@ -111,7 +125,7 @@ public class DailyEmailJob implements Runnable
 
 	private ArrayList<String> establishEmailRecipients() 
 	{
-		PlayerDAO playerDAO = new PlayerDAO();
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);
 		playerDAO.readPlayersFromDB();
 		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerDAO.getFullPlayerList());		
 		
@@ -125,8 +139,8 @@ public class DailyEmailJob implements Runnable
 	
 	private List<Game> getFutureGames() throws Exception
 	{
-		GameDAO gameDAO = new GameDAO();
-		gameDAO.readGamesFromDB();
+		GameDAO gameDAO = new GameDAO(dynamoClients);		
+		gameDAO.readGamesFromDB(defaultGroup);
 		List<Game> gameList = gameDAO.getFullGameList();
 		
 		List<Game> tempList = new ArrayList<>();
@@ -154,10 +168,8 @@ public class DailyEmailJob implements Runnable
 			
 		}
 		
-		GroupDAO groupDAO = new GroupDAO();
-		groupDAO.readGroupsFromDB();
-		Group defaultGroup = groupDAO.getGroupsList().get(0);
-		CourseDAO courseDAO = new CourseDAO();
+		DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
+		CourseDAO courseDAO = new CourseDAO(dynamoClients);
 		courseDAO.readCoursesFromDB(defaultGroup);
 		
 	    for (int i = 0; i < tempList.size(); i++) 
@@ -179,7 +191,7 @@ public class DailyEmailJob implements Runnable
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
 				
-		RoundDAO roundDAO = new RoundDAO();
+		RoundDAO roundDAO = new RoundDAO(dynamoClients);
 		roundDAO.readAllRoundsFromDB();
 		List<Round> roundList = roundDAO.getRoundsForGame(inputGame);
 		

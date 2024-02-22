@@ -10,18 +10,13 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Group;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGroup;
-import com.pas.dynamodb.DynamoUtil;
-
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
-@Repository
 public class GroupDAO implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -34,18 +29,19 @@ public class GroupDAO implements Serializable
 	private static DynamoDbTable<DynamoGroup> groupsTable;
 	private static final String AWS_TABLE_NAME = "groups";
 	
-	@PostConstruct
-	private void initialize() 
+	public GroupDAO(DynamoClients dynamoClients2) 
 	{
-	   try 
-	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+		dynamoClients = dynamoClients2;
+		
+		try 
+	    {
 	       groupsTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoGroup.class));
-	   } 
-	   catch (final Exception ex) 
-	   {
-	      logger.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
-	   }	   
+	    } 
+	    catch (final Exception ex) 
+	    {
+	       logger.error("Got exception while initializing PlayersDAO. Ex = " + ex.getMessage(), ex);
+	    }	  
+		
 	}
 
 	public void readGroupsFromDB() 

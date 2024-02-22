@@ -29,8 +29,16 @@ public class BackgroundJobManager implements ServletContextListener
     {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         long scDelay = get8AMinEast();
-        scheduler.scheduleAtFixedRate(new DailyEmailJob(), scDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);       
-		logger.info("Daily email job set to run every day at 8 am ET");
+        try 
+        {
+			scheduler.scheduleAtFixedRate(new DailyEmailJob(), scDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
+			logger.info("Daily email job set to run every day at 8 am ET");
+		}
+        catch (Exception e) 
+        {
+			logger.error("unable to create scheduler for DailyEmailJob " + e.getMessage(), e);
+		}       
+		
     }
 
     private long get8AMinEast() 

@@ -10,19 +10,15 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.CourseTee;
 import com.pas.beans.Group;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoCourseTee;
-import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
  
-@Repository
 public class CourseTeeDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -36,18 +32,17 @@ public class CourseTeeDAO implements Serializable
 	private static DynamoDbTable<DynamoCourseTee> courseTeesTable;
 	private static final String AWS_TABLE_NAME = "coursetees";
 
-	@PostConstruct
-	private void initialize() 
+	public CourseTeeDAO(DynamoClients dynamoClients2) 
 	{
-	   try 
-	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
-	       courseTeesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoCourseTee.class));
-	   } 
-	   catch (final Exception ex) 
-	   {
-	      logger.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
-	   }	   
+		try 
+		{
+		    dynamoClients = dynamoClients2;
+		    courseTeesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoCourseTee.class));
+		} 
+		catch (final Exception ex) 
+		{
+		   logger.error("Got exception while initializing CourseTeeDAO. Ex = " + ex.getMessage(), ex);
+		}	   
 	}
 	
 	public List<CourseTee> readCourseTeesFromDB(Group grp)

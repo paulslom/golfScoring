@@ -6,26 +6,32 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler 
+public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler
 { 
+	private static Logger logger = LogManager.getLogger(MyAuthenticationSuccessHandler.class);
+	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 
-      HttpServletResponse response, Authentication authentication) 
-      throws IOException 
+      HttpServletResponse response, Authentication authentication) throws IOException 
     {
+    	logger.info("entering onAuthenticationSuccess method of MyAuthenticationSuccessHandler");
+    	
         HttpSession session = request.getSession(true);
         if (session != null) 
         {
             session.setAttribute("currentGolfUser", authentication.getName()); //so we can know who this is later.
         }
         
-        response.sendRedirect("auth/main.xhtml");
-    }
-
-	
+        String whereTo = "/auth/main.xhtml";
+        logger.info("redirecting to: " + whereTo);
+		response.sendRedirect(whereTo);
+        
+    }	
 }

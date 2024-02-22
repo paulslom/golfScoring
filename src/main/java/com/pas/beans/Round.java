@@ -22,14 +22,13 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 @Named("pc_Round")
 @SessionScoped
-public class Round extends SpringBeanAutowiringSupport implements Serializable 
+public class Round implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LogManager.getLogger(Round.class);

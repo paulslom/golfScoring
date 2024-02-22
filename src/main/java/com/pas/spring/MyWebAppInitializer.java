@@ -2,56 +2,34 @@ package com.pas.spring;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.annotation.Configuration;
 
 import com.pas.util.FileDataLoader;
 import com.sun.faces.config.FacesInitializer;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletRegistration;
 
-public class MyWebAppInitializer extends FacesInitializer implements WebApplicationInitializer 
+@Configuration
+public class MyWebAppInitializer extends FacesInitializer implements ServletContextInitializer 
 {
 	private static Logger logger = LogManager.getLogger(MyWebAppInitializer.class);	
 	
 	@Override
     public void onStartup(ServletContext sc) 
-	{
-        AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(AppConfig.class);
-        rootContext.register(SecurityConfig.class);       
-        
-        sc.addListener(new ContextLoaderListener(rootContext));
-
-        sc.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
-          .addMappingForUrlPatterns(null, false, "/*");
-       
-        // Create the dispatcher servlet's Spring application context
-        AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
-        dispatcherContext.register(DispatcherConfig.class);
-
-        // Register and map the dispatcher servlet
-        ServletRegistration.Dynamic dispatcher = sc.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/");
-        
+	{                
         try 
         {
-            logger.info("ApplicationReady event trigger to insert");
-            logger.info("Loading data files to table...");
+            logger.info("Calling file data Loader which might reload data files to table depending on setting...");
             FileDataLoader fileDataLoader = new FileDataLoader();
             boolean success = fileDataLoader.load();
             if (success) 
             {
-                logger.info("Successfully updated database.");
+                logger.info("Successfully updated dynamo db database.");
             }
             else 
             {
-                logger.error("Failed to update database.");
+                logger.error("Failed to update dynamo db database.");
             }
         } 
         catch (final Exception ex) 

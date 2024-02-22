@@ -4,7 +4,6 @@ import java.io.InputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import com.pas.dynamodb.CreateTableDynamoDB_CourseTees;
 import com.pas.dynamodb.CreateTableDynamoDB_Courses;
@@ -19,11 +18,10 @@ import com.pas.dynamodb.CreateTableDynamoDB_TeeTimes;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
 
-@Component
 public class FileDataLoader 
 {
 	private static Logger logger = LogManager.getLogger(FileDataLoader.class);
-    private static final boolean loadData = true;
+    private static final boolean loadData = false;
     
     private static String GOLFUSERS_JSONFILE = "/data/GolfUsersData.json";
 	private static String COURSES_JSONFILE = "/data/CoursesData.json";

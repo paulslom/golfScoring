@@ -15,7 +15,6 @@ import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
@@ -23,7 +22,7 @@ import com.pas.util.Utils;
 
 @Named("pc_Registration")
 @RequestScoped
-public class Registration extends SpringBeanAutowiringSupport implements Serializable
+public class Registration implements Serializable
 {
 	private String firstName;
 	private String lastName;

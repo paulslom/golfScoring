@@ -14,20 +14,16 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Group;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayerTeePreference;
-import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
  
-@Repository
 public class PlayerTeePreferenceDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -41,12 +37,11 @@ public class PlayerTeePreferenceDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayerTeePreference> playerTeePreferencesTable;
 	private static final String AWS_TABLE_NAME = "playerteepreferences";
 
-	@PostConstruct
-	private void initialize() 
+	public PlayerTeePreferenceDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       playerTeePreferencesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerTeePreference.class));
 	   } 
 	   catch (final Exception ex) 

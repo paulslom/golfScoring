@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Course;
 import com.pas.beans.Game;
@@ -32,7 +31,6 @@ import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -42,8 +40,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-
-@Repository
 public class GameDAO implements Serializable 
 {	
 	private static final long serialVersionUID = 1L;
@@ -56,12 +52,11 @@ public class GameDAO implements Serializable
 	private static DynamoDbTable<DynamoGame> gamesTable;
 	private static final String AWS_TABLE_NAME = "games";
 		
-	@PostConstruct
-	private void initialize() 
+	public GameDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       gamesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoGame.class));
 	   } 
 	   catch (final Exception ex) 
@@ -143,8 +138,30 @@ public class GameDAO implements Serializable
 		return dynamoGame;
 	}
 
-	public void readGamesFromDB() throws Exception 
+	public void readGamesFromDB(Group defaultGroup) throws Exception 
     {
+		GolfMain golfmain = null;
+		try
+		{
+			golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
+		}
+		catch (Exception e)
+		{			
+		}	
+		
+		Map<String, Course> coursesMap = new HashMap<>();
+		if (golfmain == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
+		{
+			DynamoClients dynamoClients = DynamoUtil.getDynamoClients();				
+			CourseDAO courseDAO = new CourseDAO(dynamoClients);		
+			courseDAO.readCoursesFromDB(defaultGroup);
+			coursesMap = courseDAO.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
+		}
+		else
+		{
+			coursesMap = golfmain.getCoursesMap();
+		}
+		
 		String oneMonthAgo = Utils.getOneMonthAgoDate();
 		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(oneMonthAgo));
 		
@@ -172,31 +189,7 @@ public class GameDAO implements Serializable
 			Date dGameDate = dsc.unconvert(gameDate);
 			game.setGameDate(dGameDate);
 			
-			game.setCourseID(dynamoGame.getCourseID());
-			
-			GolfMain golfmain = null;
-			try
-			{
-				golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-			}
-			catch (Exception e)
-			{			
-			}
-			
-			Map<String, Course> coursesMap = new HashMap<>();
-			if (golfmain == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
-			{
-				GroupDAO groupDAO = new GroupDAO();
-				groupDAO.readGroupsFromDB();
-				Group defaultGroup = groupDAO.getGroupsList().get(0);
-				CourseDAO courseDAO = new CourseDAO();		
-				courseDAO.readCoursesFromDB(defaultGroup);
-				coursesMap = courseDAO.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
-			}
-			else
-			{
-				coursesMap = golfmain.getCoursesMap();
-			}
+			game.setCourseID(dynamoGame.getCourseID());				
 			
 			if (coursesMap != null && coursesMap.containsKey(game.getCourseID()))
 			{

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
 import com.pas.beans.Round;
@@ -28,10 +27,8 @@ import com.pas.beans.Score;
 import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoRound;
-import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.Utils;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -41,7 +38,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-@Repository
 public class RoundDAO implements Serializable
 {
 	static DateTimeFormatter etFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -58,12 +54,11 @@ public class RoundDAO implements Serializable
 	private static DynamoDbTable<DynamoRound> roundsTable;
 	private static final String AWS_TABLE_NAME = "rounds";
 	
-	@PostConstruct
-	private void initialize() 
+	public RoundDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       roundsTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
 	   } 
 	   catch (final Exception ex) 

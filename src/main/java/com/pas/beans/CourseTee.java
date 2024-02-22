@@ -12,13 +12,11 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
 import com.pas.util.BeanUtilJSF;
 
 @Named("pc_CourseTee")
 @SessionScoped
-public class CourseTee extends SpringBeanAutowiringSupport implements Serializable
+public class CourseTee implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
 		

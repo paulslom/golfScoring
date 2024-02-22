@@ -16,24 +16,21 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
+import com.pas.beans.Group;
 import com.pas.beans.TeeTime;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoTeeTime;
-import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.BeanUtilJSF;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 
-@Repository
 public class TeeTimeDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -47,12 +44,11 @@ public class TeeTimeDAO implements Serializable
 	private static DynamoDbTable<DynamoTeeTime> teeTimesTable;
 	private static final String AWS_TABLE_NAME = "teetimes";
 	
-	@PostConstruct
-	private void initialize() 
+	public TeeTimeDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       teeTimesTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoTeeTime.class));
 	   } 
 	   catch (final Exception ex) 
@@ -88,7 +84,7 @@ public class TeeTimeDAO implements Serializable
     	return ttList;
     }
 	
-	public void readTeeTimesFromDB() throws Exception
+	public void readTeeTimesFromDB(Group defaultGroup) throws Exception
     {
 		Iterator<DynamoTeeTime> results = teeTimesTable.scan().items().iterator();
 	  	
@@ -105,8 +101,8 @@ public class TeeTimeDAO implements Serializable
 		if (golfmain == null)
 		{
 			//if golfmain jsf bean unavailable... so just redo the gamedao read
-			GameDAO gameDAO = new GameDAO();		
-			gameDAO.readGamesFromDB();
+			GameDAO gameDAO = new GameDAO(dynamoClients);		
+			gameDAO.readGamesFromDB(defaultGroup);
 			fullGameMap = gameDAO.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
 		}
 		else

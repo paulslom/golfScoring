@@ -10,20 +10,16 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.GolfUser;
 import com.pas.dynamodb.DynamoClients;
-import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 
-@Repository
 public class GolfUsersDAO implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -36,12 +32,11 @@ public class GolfUsersDAO implements Serializable
 	private static DynamoDbTable<GolfUser> golfUsersTable;
 	private static final String AWS_TABLE_NAME = "golfUsers";
 	
-	@PostConstruct
-	private void initialize() 
+	public GolfUsersDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       golfUsersTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(GolfUser.class));
 	   } 
 	   catch (final Exception ex) 

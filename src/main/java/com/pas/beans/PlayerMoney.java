@@ -12,13 +12,12 @@ import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.pas.util.BeanUtilJSF;
 
 @Named("pc_PlayerMoney")
 @SessionScoped
-public class PlayerMoney extends SpringBeanAutowiringSupport implements Serializable 
+public class PlayerMoney implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
 

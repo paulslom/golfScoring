@@ -14,19 +14,15 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.pas.beans.Player;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayer;
-import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 
-@Repository
 public class PlayerDAO implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -40,12 +36,11 @@ public class PlayerDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayer> playersTable;
 	private static final String AWS_TABLE_NAME = "players";
 	
-	@PostConstruct
-	private void initialize() 
+	public PlayerDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
 	   {
-	       dynamoClients = DynamoUtil.getDynamoClients();
+	       dynamoClients = dynamoClients2;
 	       playersTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayer.class));
 	   } 
 	   catch (final Exception ex) 

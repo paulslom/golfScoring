@@ -13,29 +13,7 @@
 	     <name>primefaces</name>
 	     <others />
 	  </after>
-	</ordering>  	
-	   		
-	<!-- Navigation Rules -->
-	
-	<navigation-rule>
-		<from-view-id>/register.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{pc_Registration.emailAdminNewPlayer}</from-action>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/login.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-	</navigation-rule>
-	
-	<navigation-rule>
-		<from-view-id>/register.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{pc_Registration.cancel}</from-action>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/login.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-	</navigation-rule>
+	</ordering>  
 		
 	<navigation-rule>
 		<from-view-id>/auth/admin/gameList.xhtml</from-view-id>
