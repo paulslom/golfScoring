@@ -12,11 +12,13 @@ import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.pas.util.BeanUtilJSF;
 
 @Named("pc_PlayerMoney")
-@SessionScoped
+@Component
 public class PlayerMoney implements Serializable 
 {
 	private static final long serialVersionUID = 1L;

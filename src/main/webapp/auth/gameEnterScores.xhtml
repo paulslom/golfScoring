@@ -193,7 +193,7 @@
 			</p:dataTable>
 		
 		    <p:commandButton id="deleteSelectedButtonID"
-		          rendered="#{request.isUserInRole('ROLE_ADMIN')}"
+		          rendered="#{#{sessionScope.currentUserisAdmin}}"
                   value="#{bundle.deleteSelectedPlayerRound}"
                   disabled="#{pc_GolfMain.disableDeleteSelectedPlayerRound}"
                   action="#{pc_Round.deleteSelectedPlayerRound}"
@@ -208,7 +208,7 @@
 		    
 		    <p:commandButton id="runGameButtonID"
                   value="#{bundle.runGameNavigate}"
-                  rendered="#{request.isUserInRole('ROLE_ADMIN')}"
+                  rendered="#{#{sessionScope.currentUserisAdmin}}"
                   disabled="#{pc_Round.disableRunGameNavigate}"
                   action="#{pc_Round.runGameNavigate}"
                   update="facesMessagesID">

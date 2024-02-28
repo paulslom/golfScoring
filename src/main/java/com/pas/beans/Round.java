@@ -21,13 +21,15 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 @Named("pc_Round")
-@SessionScoped
+@Component
 public class Round implements Serializable 
 {
 	private static final long serialVersionUID = 1L;

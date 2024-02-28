@@ -25,14 +25,15 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
-
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 @Named("pc_Player")
-@SessionScoped
+@Component
 public class Player implements Serializable
 {	
 	private static final long serialVersionUID = 4089402354585236177L;
@@ -1865,6 +1866,7 @@ public class Player implements Serializable
 	public String getLoggedInPlayerName() 
 	{
 		//assign who the logged in player is using their login username
+		logger.info("entering getLoggedInPlayerName()");
 		
 		GolfUser gu = BeanUtilJSF.getBean("pc_GolfUser");
 		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");

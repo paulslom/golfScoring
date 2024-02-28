@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
@@ -15,7 +18,7 @@ import jakarta.inject.Named;
 import com.pas.util.BeanUtilJSF;
 
 @Named("pc_CourseTee")
-@SessionScoped
+@Component
 public class CourseTee implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;

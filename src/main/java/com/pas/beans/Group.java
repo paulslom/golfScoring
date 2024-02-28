@@ -12,12 +12,15 @@ import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.BeanUtilJSF;
 
 @Named("pc_Group")
-@SessionScoped
+@Component
 public class Group implements Serializable 
 {
 	private static final long serialVersionUID = 1L;

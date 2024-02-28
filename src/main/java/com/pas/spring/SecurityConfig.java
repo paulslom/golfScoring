@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,12 +46,7 @@ public class SecurityConfig
 
     	http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-
-            .requestMatchers(mvcMatcherBuilder.pattern("/auth/admin/*")).hasAuthority("ROLE_ADMIN")
-
-            .requestMatchers(mvcMatcherBuilder.pattern("/auth/*")).hasAuthority("ROLE_USER")
-            
-            .requestMatchers(
+        	.requestMatchers(
                 mvcMatcherBuilder.pattern("/resources/**"),
                 mvcMatcherBuilder.pattern("/jakarta.faces.resource/**"),
                 mvcMatcherBuilder.pattern("/register.xhtml"),
@@ -75,11 +68,4 @@ public class SecurityConfig
         return http.build();
     }    
        
-    RoleHierarchy roleHierarchy() 
-    {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-        return roleHierarchy;
-    }
-    
 }

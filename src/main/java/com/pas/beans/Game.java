@@ -33,13 +33,15 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
 @Named("pc_Game")
-@SessionScoped
+@Component
 public class Game implements Serializable
 {
 	private static final long serialVersionUID = 1L;

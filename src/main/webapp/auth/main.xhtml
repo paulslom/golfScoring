@@ -16,7 +16,7 @@
   				<p:outputLabel value="#{pc_Player.loggedInPlayerName}"></p:outputLabel>
   			</h1>
   		
-		    <p:selectOneMenu id="groupList" disabled="true" rendered="#{request.isUserInRole('ROLE_ADMIN')}" value="#{pc_Group.selectedGroup}" required="true" hideNoSelectionOption="true">
+		    <p:selectOneMenu id="groupList" disabled="true" rendered="#{sessionScope.currentUserisAdmin}" value="#{pc_Group.selectedGroup}" required="true" hideNoSelectionOption="true">
 		     	<f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />						
 		   		<f:selectItems value="#{pc_GolfMain.groupsList}" var="c" itemLabel="#{c.groupName}" itemValue="#{c.groupID}"/>					
 		    </p:selectOneMenu>		    

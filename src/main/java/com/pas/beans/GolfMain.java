@@ -23,8 +23,11 @@ import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
 import com.pas.dao.GameDAO;
@@ -42,7 +45,7 @@ import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
 @Named("pc_GolfMain")
-@SessionScoped
+@Component
 public class GolfMain implements Serializable
 {
 	static

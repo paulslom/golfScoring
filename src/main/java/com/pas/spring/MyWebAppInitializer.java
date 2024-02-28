@@ -6,12 +6,11 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 
 import com.pas.util.FileDataLoader;
-import com.sun.faces.config.FacesInitializer;
 
 import jakarta.servlet.ServletContext;
 
 @Configuration
-public class MyWebAppInitializer extends FacesInitializer implements ServletContextInitializer 
+public class MyWebAppInitializer implements ServletContextInitializer 
 {
 	private static Logger logger = LogManager.getLogger(MyWebAppInitializer.class);	
 	
@@ -20,6 +19,7 @@ public class MyWebAppInitializer extends FacesInitializer implements ServletCont
 	{                
         try 
         {
+        	logger.info("entering MyWebAppInitializer");
             logger.info("Calling file data Loader which might reload data files to table depending on setting...");
             FileDataLoader fileDataLoader = new FileDataLoader();
             boolean success = fileDataLoader.load();

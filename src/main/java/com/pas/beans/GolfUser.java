@@ -2,13 +2,16 @@ package com.pas.beans;
 
 import java.io.Serializable;
 
-import jakarta.enterprise.context.RequestScoped;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 @Named("pc_GolfUser")
-@RequestScoped
+@Component
 @DynamoDbBean
 public class GolfUser implements Serializable
 {

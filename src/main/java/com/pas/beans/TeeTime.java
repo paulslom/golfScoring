@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
@@ -26,7 +28,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named("pc_TeeTime")
-@SessionScoped
+@Component
 public class TeeTime implements Serializable
 {
 	private static final long serialVersionUID = 1L;
