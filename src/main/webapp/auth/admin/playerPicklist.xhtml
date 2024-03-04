@@ -79,10 +79,7 @@
 			        <f:facet name="targetCaption">Playing</f:facet>
 			 
 			        <p:ajax event="transfer" listener="#{pc_Player.onTransfer}" update="playerPicklistForm playersPicklistForm" />
-			        <p:ajax event="select" listener="#{pc_Player.onSelect}" update="playerPicklistForm playersPicklistForm" />
-			        <p:ajax event="unselect" listener="#{pc_Player.onUnselect}" update="playerPicklistForm playersPicklistForm" />
-			        <p:ajax event="reorder" listener="#{pc_Player.onReorder}" update="playerPicklistForm playersPicklistForm" />
-			        
+			           
 					<p:column style="width:100%">
 						#{player.fullName}
 					</p:column>

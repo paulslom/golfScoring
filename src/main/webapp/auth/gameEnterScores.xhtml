@@ -35,8 +35,7 @@
 				      <p:selectOneMenu id="gameList" value="#{pc_Round.game}" required="true"  hideNoSelectionOption="true">
 				         <p:ajax listener="#{pc_Round.valueChangeGame}" event="change" 
 				         	update="gameForm:label1 gameForm:label2 scoresForm"/>
-				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
+				      	 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					
 				   </td>
@@ -193,7 +192,7 @@
 			</p:dataTable>
 		
 		    <p:commandButton id="deleteSelectedButtonID"
-		          rendered="#{#{sessionScope.currentUserisAdmin}}"
+		          rendered="#{sessionScope.currentUserisAdmin}"
                   value="#{bundle.deleteSelectedPlayerRound}"
                   disabled="#{pc_GolfMain.disableDeleteSelectedPlayerRound}"
                   action="#{pc_Round.deleteSelectedPlayerRound}"
@@ -208,7 +207,7 @@
 		    
 		    <p:commandButton id="runGameButtonID"
                   value="#{bundle.runGameNavigate}"
-                  rendered="#{#{sessionScope.currentUserisAdmin}}"
+                  rendered="#{sessionScope.currentUserisAdmin}"
                   disabled="#{pc_Round.disableRunGameNavigate}"
                   action="#{pc_Round.runGameNavigate}"
                   update="facesMessagesID">

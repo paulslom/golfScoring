@@ -3,16 +3,14 @@ package com.pas.beans;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.SelectEvent;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.pas.util.BeanUtilJSF;
+
+import jakarta.inject.Named;
 
 @Named("pc_PlayerTeePreference")
 @Component

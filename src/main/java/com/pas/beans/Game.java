@@ -18,7 +18,17 @@ import java.util.ResourceBundle;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-import jakarta.enterprise.context.SessionScoped;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.springframework.stereotype.Component;
+
+import com.pas.util.BeanUtilJSF;
+import com.pas.util.SAMailUtility;
+import com.pas.util.Utils;
+
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIColumn;
 import jakarta.faces.component.UIComponent;
@@ -27,18 +37,6 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.ComponentUtils;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.pas.util.BeanUtilJSF;
-import com.pas.util.SAMailUtility;
-import com.pas.util.Utils;
 
 @Named("pc_Game")
 @Component

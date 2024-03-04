@@ -3,21 +3,19 @@ package com.pas.beans;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.BeanUtilJSF;
+
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Named;
 
 @Named("pc_Group")
 @Component

@@ -7,15 +7,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.pas.util.BeanUtilJSF;
+
+import jakarta.inject.Named;
 
 @Named("pc_PlayerMoney")
 @Component

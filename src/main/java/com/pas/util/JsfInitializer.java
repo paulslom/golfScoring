@@ -48,7 +48,7 @@ public class JsfInitializer implements ServletContextInitializer
         //context.setInitParameter("primefaces.PRIVATE_CAPTCHA_KEY", "EEEEE");
         context.setInitParameter("primefaces.UPLOADER", "commons");
         
-        facesInitializer.onStartup(loadJSFAnnotatedClasses("com.pas.beans"), context);
+        facesInitializer.onStartup(loadJSFAnnotatedClasses("com.pas.beans", "com.pas.util"), context);
         
         logger.info("exiting JsfInitializer.  All annotated classes loaded");
     }

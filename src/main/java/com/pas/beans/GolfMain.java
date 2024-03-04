@@ -14,16 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.faces.model.SelectItem;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -31,6 +23,7 @@ import org.springframework.stereotype.Component;
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
 import com.pas.dao.GameDAO;
+import com.pas.dao.GolfUsersDAO;
 import com.pas.dao.GroupDAO;
 import com.pas.dao.PlayerDAO;
 import com.pas.dao.PlayerMoneyDAO;
@@ -39,10 +32,15 @@ import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
-import com.pas.dao.GolfUsersDAO;
 import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
 
 @Named("pc_GolfMain")
 @Component
