@@ -1,8 +1,9 @@
 package com.pas.util;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,7 @@ import jakarta.servlet.ServletContainerInitializer;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 
-import com.google.common.reflect.ClassPath;
+//import com.google.common.reflect.ClassPath;
 //import com.google.common.collect.ImmutableMap;
 
 import com.sun.faces.config.FacesInitializer;
@@ -34,6 +35,8 @@ public class JsfInitializer implements ServletContextInitializer
 
         ServletContainerInitializer facesInitializer = new FacesInitializer();
         
+        //context.setAttribute("org.jboss.weld.environment.servlet.enhancedListenerUsed", Boolean.TRUE); 
+        
         context.setInitParameter("com.sun.faces.forceLoadConfiguration", Boolean.TRUE.toString()); 
         context.setInitParameter("jakarta.faces.DEFAULT_SUFFIX", ".xhtml");
         context.setInitParameter("jakarta.faces.STATE_SAVING_METHOD", "client");
@@ -43,24 +46,32 @@ public class JsfInitializer implements ServletContextInitializer
         context.setInitParameter("jakarta.faces.FACELETS_VIEW_MAPPINGS", "*.xhtml");
         context.setInitParameter("jakarta.faces.CONFIG_FILES", "/WEB-INF/main-faces-config.xml");
         context.setInitParameter("jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE", "true");
-        //context.setInitParameter("primefaces.THEME", "aristo");
-        //context.setInitParameter("primefaces.PUBLIC_CAPTCHA_KEY", "DDDDD");
-        //context.setInitParameter("primefaces.PRIVATE_CAPTCHA_KEY", "EEEEE");
         context.setInitParameter("primefaces.UPLOADER", "commons");
         
-        facesInitializer.onStartup(loadJSFAnnotatedClasses("com.pas.beans", "com.pas.util"), context);
+        //only one class is necessary here, not sure why they are not ALL needed but they are not.
+        Set<Class<?>> jsfAnnotatedClasses = new HashSet<>();
+        jsfAnnotatedClasses.add(com.pas.beans.GolfUser.class);
+        
+        logger.info("total jsf annotated classes: " + jsfAnnotatedClasses.size()); 
+        
+        Iterator<Class<?>> itr = jsfAnnotatedClasses.iterator(); 
+        while(itr.hasNext())
+        { 
+        	logger.info(itr.next()); 
+        }
+        facesInitializer.onStartup(jsfAnnotatedClasses, context);
         
         logger.info("exiting JsfInitializer.  All annotated classes loaded");
     }
     
+    /*
     private Set<Class<?>> loadJSFAnnotatedClasses(String... packageNames) 
     {
         Set<Class<?>> annotatedClasses = new HashSet<Class<?>>();
         try 
         {
             for (String packageName : packageNames) 
-            {
-                annotatedClasses.addAll(ClassPath.from(ClassLoader.getSystemClassLoader()).getAllClasses().stream()
+            {  annotatedClasses.addAll(ClassPath.from(ClassLoader.getSystemClassLoader()).getAllClasses().stream()
                         .filter(clazz -> clazz.getPackageName().equalsIgnoreCase(packageName))
                         .map(clazz -> clazz.load()).collect(Collectors.toSet()));
             }
@@ -72,5 +83,6 @@ public class JsfInitializer implements ServletContextInitializer
 
         return annotatedClasses;
     }
+    */
 
 }
