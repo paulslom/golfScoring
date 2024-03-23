@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
@@ -32,11 +33,9 @@ import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
-import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
@@ -44,6 +43,7 @@ import jakarta.inject.Named;
 
 @Named("pc_GolfMain")
 @Component
+@ApplicationScope
 public class GolfMain implements Serializable
 {
 	static
@@ -87,6 +87,9 @@ public class GolfMain implements Serializable
 	private String groupEmailDisclaimer = "";  
 	private String groupEmailSender;
 	
+	private String loggedInPlayerName;
+	private String loggedInPlayerEmail;
+
 	private Group defaultGroup = null;
 	
 	private ArrayList<String> emailRecipients = new ArrayList<String>();
@@ -117,9 +120,10 @@ public class GolfMain implements Serializable
 	private PlayerTeePreferenceDAO playerTeePreferencesDAO;
 	private GroupDAO groupDAO;
 	
-	@PostConstruct
-	public void init()
-	{			
+	public GolfMain() 
+	{
+		logger.info("Entering GolfMain constructor.  Should only be here ONE time with Spring singleton pattern implemented");	
+		       
 		final int MIN_PLAYERS = 4;
 		final int MIN_BALLS = 1;
 		final int MIN_TEAMS = 1;
@@ -192,7 +196,7 @@ public class GolfMain implements Serializable
 			{
 				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
 				golfUsersDAO = new GolfUsersDAO(dynamoClients);
-				groupDAO = new GroupDAO(dynamoClients);
+				groupDAO = new GroupDAO(dynamoClients, this);
 				groupDAO.readGroupsFromDB();
 				Group defaultGroup = this.getGroupsList().get(0);
 				this.setDefaultGroup(defaultGroup);
@@ -215,7 +219,7 @@ public class GolfMain implements Serializable
 
 	private void loadRoundList(DynamoClients dynamoClients) throws Exception
 	{
-		roundDAO = new RoundDAO(dynamoClients);
+		roundDAO = new RoundDAO(dynamoClients, this, null);
 		roundDAO.readAllRoundsFromDB();
 		logger.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
 		
@@ -241,7 +245,6 @@ public class GolfMain implements Serializable
 			
 			TeeTime teeTime = this.getTeeTimesMap().get(round.getTeeTimeID());
 			
-			round.setGame(game);
 			round.setPlayer(player);
 			
 			round.setPlayerName(player.getFirstName() + " " + player.getLastName());		
@@ -305,6 +308,7 @@ public class GolfMain implements Serializable
 
 	public void loadCourseSelections(DynamoClients dynamoClients)  throws Exception
 	{
+		logger.info("entering loadCourseSelections");
 		courseDAO = new CourseDAO(dynamoClients);
 		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
 		logger.info("Courses read in. List size = " + this.getCourseSelections().size());		
@@ -312,14 +316,18 @@ public class GolfMain implements Serializable
 	
 	public void loadCourseTees(DynamoClients dynamoClients)  throws Exception
 	{
-		courseTeeDAO = new CourseTeeDAO(dynamoClients);
+		logger.info("entering loadCourseTees");
+		
+		courseTeeDAO = new CourseTeeDAO(dynamoClients, this);
 		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
 		logger.info("Course Tees read in. List size = " + this.getCourseTees().size());		
     }
 	
 	public void loadFullGameList(DynamoClients dynamoClients, Group defaultGroup) throws Exception 
 	{
-		gameDAO = new GameDAO(dynamoClients);
+		logger.info("entering loadFullGameList");
+		
+		gameDAO = new GameDAO(dynamoClients, this);
 		gameDAO.readGamesFromDB(defaultGroup);			
 		logger.info("Full Game list read in. List size = " + this.getFullGameList().size());	
 		
@@ -346,14 +354,16 @@ public class GolfMain implements Serializable
 	
 	public void loadTeeTimeList(DynamoClients dynamoClients, Group defaultGroup) throws Exception
 	{
-		teeTimeDAO = new TeeTimeDAO(dynamoClients);
+		logger.info("entering loadTeeTimeList");
+		teeTimeDAO = new TeeTimeDAO(dynamoClients, this);
 		teeTimeDAO.readTeeTimesFromDB(defaultGroup);			
 		logger.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
 	}
 	
 	public void loadPlayerMoneyList(DynamoClients dynamoClients)  throws Exception
 	{
-		playerMoneyDAO = new PlayerMoneyDAO(dynamoClients);
+		logger.info("entering loadPlayerMoneyList");
+		playerMoneyDAO = new PlayerMoneyDAO(dynamoClients, this);
 		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
 		Map<String,PlayerMoney> tempMap = new HashMap<>();
@@ -379,7 +389,8 @@ public class GolfMain implements Serializable
 	
 	public void loadFullPlayerList(DynamoClients dynamoClients) throws Exception 
 	{
-		playerDAO = new PlayerDAO(dynamoClients);
+		logger.info("entering loadFullPlayerList");
+		playerDAO = new PlayerDAO(dynamoClients, this);
 		playerDAO.readPlayersFromDB();			
 		golfUsersDAO.readAllUsersFromDB();
 						
@@ -409,7 +420,8 @@ public class GolfMain implements Serializable
 
 	public void loadFullPlayerTeePreferencesList(DynamoClients dynamoClients) throws Exception 
 	{
-		playerTeePreferencesDAO = new PlayerTeePreferenceDAO(dynamoClients);
+		logger.info("entering loadFullPlayerTeePreferencesList");
+		playerTeePreferencesDAO = new PlayerTeePreferenceDAO(dynamoClients, this);
 		playerTeePreferencesDAO.readPlayerTeePreferencesFromDB(this.getDefaultGroup());
 		
 		Map<String,PlayerTeePreference> tempMap = new HashMap<>();
@@ -485,7 +497,7 @@ public class GolfMain implements Serializable
 		List<TeeTime> gameTeeTimes = this.getTeeTimeList().stream()
 			.filter(p -> p.getGameID().equalsIgnoreCase(game.getGameID()))
 			.collect(Collectors.mapping(
-				      p -> new TeeTime(p.getTeeTimeID(), p.getGameID(), p.getPlayGroupNumber(), p.getTeeTimeString(), p.getGameDate(), p.getCourseName()),
+				      p -> new TeeTime(p.getTeeTimeID(), p.getGameID(), p.getPlayGroupNumber(), p.getTeeTimeString(), p.getGameDate(), p.getCourseName(), this),
 				      Collectors.toList()));
 		
 		Collections.sort(gameTeeTimes, new Comparator<TeeTime>() 
@@ -896,11 +908,9 @@ public class GolfMain implements Serializable
 		}
 		
 		List<Player> fullPlayerList = this.getFullPlayerList();
-		
-		Player player = BeanUtilJSF.getBean("pc_Player");
-		
-		String senderName = player.getLoggedInPlayerName();
-		String senderReplyEmail = player.getLoggedInPlayerEmail();
+			
+		String senderName = getLoggedInPlayerName();
+		String senderReplyEmail = getLoggedInPlayerEmail();
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -1463,6 +1473,74 @@ public class GolfMain implements Serializable
 	public void updateRole(GolfUser gu) throws Exception 
 	{
 		golfUsersDAO.updateRole(gu); 		
+	}
+
+	public String getLoggedInPlayerName() 
+	{
+		//assign who the logged in player is using their login username
+		logger.info("entering getLoggedInPlayerName()");
+	
+		String tempUserName = getTempUserName();
+		GolfUser gu = getGolfUser(tempUserName);
+		
+		if (gu != null && gu.getUserName() != null)
+		{
+			Player tempPlayer = getFullPlayersMapByUserName().get(gu.getUserName());			
+			if (tempPlayer != null)
+			{
+				this.setLoggedInPlayerName(tempPlayer.getFullName());
+			}
+			else
+			{
+				logger.error("unable to determine who logged in player is - this could be a problem!");
+			}
+		}
+		else
+		{
+			logger.error("unable to determine who logged in player is - this could be a problem!");				
+		}
+		
+		logger.info("currently logged in user is: " + loggedInPlayerName);		
+		
+		return loggedInPlayerName;
+	}
+
+	public void setLoggedInPlayerName(String loggedInPlayerName) 
+	{
+		this.loggedInPlayerName = loggedInPlayerName;
+	}
+
+	public String getLoggedInPlayerEmail() 
+	{
+		//assign who the logged in player is using their login username
+		String tempUserName = getTempUserName();
+		GolfUser gu = getGolfUser(tempUserName);
+			
+		if (gu != null && gu.getUserName() != null)
+		{
+			Player tempPlayer = getFullPlayersMapByUserName().get(gu.getUserName());			
+			if (tempPlayer != null)
+			{
+				this.setLoggedInPlayerEmail(tempPlayer.getEmailAddress());
+			}
+			else
+			{
+				logger.error("unable to determine who logged in player is - this could be a problem!");
+			}
+		}
+		else
+		{
+			logger.error("unable to determine who logged in player is - this could be a problem!");				
+		}
+				
+		logger.info("currently logged in user's email is: " + loggedInPlayerEmail);		
+		
+		return loggedInPlayerEmail;
+	}
+
+	public void setLoggedInPlayerEmail(String loggedInPlayerEmail) 
+	{
+		this.loggedInPlayerEmail = loggedInPlayerEmail;
 	}
 		
 }

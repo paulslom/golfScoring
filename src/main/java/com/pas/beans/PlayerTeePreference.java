@@ -6,14 +6,11 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.SelectEvent;
-import org.springframework.stereotype.Component;
-
-import com.pas.util.BeanUtilJSF;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.inject.Named;
 
 @Named("pc_PlayerTeePreference")
-@Component
 public class PlayerTeePreference implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
@@ -35,7 +32,14 @@ public class PlayerTeePreference implements Serializable
 	private boolean disableDialogButton = true;
 	
 	private PlayerTeePreference selectedPlayerTeePreference;
-			
+	
+	@Autowired private final GolfMain golfmain;
+	
+	public PlayerTeePreference(GolfMain golfmain) 
+	{
+		this.golfmain = golfmain;
+	}
+	
 	public String selectRowAjax(SelectEvent<PlayerTeePreference> event)
 	{
 		logger.info("User clicked on a row in Player Tee Preference list");
@@ -65,11 +69,9 @@ public class PlayerTeePreference implements Serializable
 	{
 		logger.info("entering updatePrefs");
 		
-		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		for (int i = 0; i < gm.getCourseTeesList().size(); i++) 
+		for (int i = 0; i < golfmain.getCourseTeesList().size(); i++) 
 		{
-			CourseTee courseTee = gm.getCourseTeesList().get(i);
+			CourseTee courseTee = golfmain.getCourseTeesList().get(i);
 			
 			if (courseTee.getCourseID().equalsIgnoreCase(this.getCourseID()))
 			{
@@ -81,7 +83,7 @@ public class PlayerTeePreference implements Serializable
 			}
 		}
 		
-		gm.updatePlayerTeePreference(this);
+		golfmain.updatePlayerTeePreference(this);
 		return "";
 	}
 		

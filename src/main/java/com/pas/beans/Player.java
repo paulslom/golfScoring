@@ -1,5 +1,6 @@
 package com.pas.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,11 +20,8 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
-import com.pas.util.BeanUtilJSF;
-import com.pas.util.Utils;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -56,8 +54,6 @@ public class Player implements Serializable
 	private boolean resetPassword;
 	
 	private Player selectedPlayer;
-	private String loggedInPlayerName;
-	private String loggedInPlayerEmail;
 	
 	private boolean disablePlayersDialogButton = true;
 	private List<Player> selectedPlayers = new ArrayList<Player>();
@@ -97,49 +93,37 @@ public class Player implements Serializable
 	private boolean disablePickTeams = true;
 	
 	private TeeTime teeTime;
+	private Game selectedGame;
+	
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
 	
 	private String operation = "";
 	
+	@Autowired private final GolfMain golfmain;
+	
+	public Player(GolfMain golfmain) 
+	{
+		this.golfmain = golfmain;
+		//logger.info("Player constructor called");
+	}
+	
 	public void onLoadPlayerPickList() 
 	{			
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+		loadSelectedPlayers(golfmain.getFullGameList().get(0));		
 		
-		if (game == null || game.getSelectedGame() == null)
-		{
-			game.setSelectedGame(golfmain.getFullGameList().get(0));
-		}
-		
-		loadSelectedPlayers(game.getSelectedGame());		
-		
-		setPlayerPickLists(game.getSelectedGame());			
+		setPlayerPickLists(golfmain.getFullGameList().get(0));			
 	}
 	
 	public void onLoadTeeTimePickList() 
 	{
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
-		if (game == null || game.getSelectedGame() == null)
-		{
-			game.setSelectedGame(golfmain.getFullGameList().get(0));
-			loadSelectedPlayers(game.getSelectedGame());	
-		}
-		else if (CollectionUtils.isEmpty(this.getSelectedPlayers()))
-		{
-			loadSelectedPlayers(game.getSelectedGame());
-		}	
-		
-		this.setTeeTimeList(golfmain.getTeeTimesByGame(game.getSelectedGame()));		
+		loadSelectedPlayers(golfmain.getFullGameList().get(0));
+		this.setTeeTimeList(golfmain.getTeeTimesByGame(golfmain.getFullGameList().get(0)));		
 		
 		showTeeTimePicklist();
 	}
 	
 	public void setPlayerPickLists(Game game) 
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		if (playersPickListSource != null)
 		{
 			playersPickListSource.clear();
@@ -173,16 +157,18 @@ public class Player implements Serializable
 	}
 
 	
-	public String proceedToGameHandicaps()
+	public String proceedToGameHandicaps() throws IOException
 	{
 		logger.info("User is done with tee times for game, proceed to enter player handicaps specific to this game");
 		
 		saveAndStayTeeTimesPickList();
 		
-		return "success";
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/gameHandicaps.xhtml");
+		
+		return "";
 	}
 	
-	public String proceedToTeeTimes()
+	public String proceedToTeeTimes() throws IOException
 	{
 		logger.info("User is done selecting players for game, proceed to tee times");
 		
@@ -190,7 +176,9 @@ public class Player implements Serializable
 		
 		onLoadTeeTimePickList();
 		
-		return "success";
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/teeTimePickList.xhtml");
+		
+		return "";
 	}	
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
@@ -200,14 +188,13 @@ public class Player implements Serializable
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
 		Game selectedOption = (Game)selectonemenu.getValue();
+		this.setSelectedGame(selectedOption);
 		
 		if (selectedOption != null)
 		{
 			loadSelectedPlayers(selectedOption);
 			
 			setPlayerPickLists(selectedOption);
-			
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 			
 			this.setTeeTimeList(golfmain.getTeeTimesByGame(selectedOption));		
 			
@@ -220,8 +207,6 @@ public class Player implements Serializable
 	private String loadSelectedPlayers(Game game) 
 	{
 		logger.info("load of gameSelectPlayers; loading those already selected");
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		this.getSelectedPlayers().clear();
 			
@@ -258,8 +243,7 @@ public class Player implements Serializable
 		
 		if (roundsForGame.size() > 0)
 		{
-			GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
-			gm.setDisableProceedToEnterScores(false);					
+			golfmain.setDisableProceedToEnterScores(false);					
 		}
 		
 		return "";
@@ -295,8 +279,6 @@ public class Player implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			
 			if (operation.equalsIgnoreCase("Add"))
 			{
 				logger.info("user clicked Save Player from maintain player dialog, from an add");	
@@ -368,15 +350,13 @@ public class Player implements Serializable
 	{
 		String teePreference = this.getTeePreference();
 		
-		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		List<CourseTee> courseTees = gm.getCourseTeesList(); 			
-		List<Course> courses = gm.getCourseSelections();
+		List<CourseTee> courseTees = golfmain.getCourseTeesList(); 			
+		List<Course> courses = golfmain.getCourseSelections();
 		
 		for (int j = 0; j < courses.size(); j++) 
 		{
 			Course course = courses.get(j);
-			PlayerTeePreference ptp = new PlayerTeePreference();
+			PlayerTeePreference ptp = new PlayerTeePreference(golfmain);
 			ptp.setPlayerID(newPlayerID);
 			ptp.setCourseID(course.getCourseID());
 			ptp.setPlayerFullName(this.getFirstName() + " " +this.getLastName());
@@ -388,7 +368,7 @@ public class Player implements Serializable
 				&&  courseTee.getTeeColor().equalsIgnoreCase(teePreference))
 				{
 					ptp.setCourseTeeID(courseTee.getCourseTeeID());
-					gm.addPlayerTeePreference(ptp);	
+					golfmain.addPlayerTeePreference(ptp);	
 					break;
 				}
 			}
@@ -396,44 +376,18 @@ public class Player implements Serializable
 		
 	}
 
-	private void processSel()
-	{
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		
-		if (game != null && game.getSelectedGame() != null)
-		{
-			GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");		
-			gm.setDisableProceedToEnterScores(false);
-		}	
-		
-		if (this.getSelectedPlayers().size() == game.getSelectedGame().getTotalPlayers())
-		{
-			this.setDisablePickTeams(false);
-		}
-		else
-		{
-			this.setDisablePickTeams(true);
-		}
-	}
-	
-	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap)
+	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap, Game selectedGame)
 	{
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			Game game = BeanUtilJSF.getBean("pc_Game");
-			Round roundBean = BeanUtilJSF.getBean("pc_Round");
-			
-			if (game != null && game.getSelectedGame() != null)
+			if (selectedGame != null)
 			{
-				roundBean.getSyncGameRoundList().clear();
-				
 				for (int i = 0; i < this.getSelectedPlayers().size(); i++) 
 				{
 					Player tempPlayer = this.getSelectedPlayers().get(i);
 					
-					Round newRound = new Round();
-					newRound.setGameID(game.getSelectedGame().getGameID());
+					Round newRound = new Round(golfmain, selectedGame);
+					newRound.setGameID(selectedGame.getSelectedGame().getGameID());
 					newRound.setPlayerID(tempPlayer.getPlayerID());
 					newRound.setPlayer(tempPlayer);
 					newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
@@ -463,7 +417,7 @@ public class Player implements Serializable
 						
 						if (courseTeeID == null)
 						{
-							newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), game.getSelectedGame().getCourseID()));
+							newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), selectedGame.getCourseID()));
 						}
 						else
 						{
@@ -471,9 +425,7 @@ public class Player implements Serializable
 						}
 					}		
 					
-					golfmain.addRound(newRound);					
-					
-					roundBean.getSyncGameRoundList().add(newRound);				
+					golfmain.addRound(newRound);		
 				} 
 			}
 		}
@@ -491,10 +443,7 @@ public class Player implements Serializable
 		
 		try
 		{			
-			Game game = BeanUtilJSF.getBean("pc_Game");
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
-			if (game != null && game.getSelectedGame() != null)
+			if (selectedGame != null)
 			{
 				for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 				{
@@ -551,7 +500,7 @@ public class Player implements Serializable
 					for (int j = 0; j < tempPlayerList.size(); j++) 
 					{
 						String playerID = tempPlayerList.get(j).getPlayerID();
-						String gameID = game.getSelectedGame().getGameID();
+						String gameID = selectedGame.getGameID();
 						Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
 						rd.setTeeTimeID(teeTime.getTeeTimeID());
 						rd.setTeeTime(teeTime);
@@ -578,43 +527,38 @@ public class Player implements Serializable
 		logger.info("saving info from player picklist screen");
 		
 		//clear out first for this
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		//we want to preserve the signup dates/times here
 		Map<String,Date> roundSignupDateTimesMap = null;
 		
 		//we want to preserve the tee selections here
 		Map<String, String> roundTeeSelectionsMap = null;
 		
-		if (game != null && game.getSelectedGame() != null)
+		if (selectedGame != null)
 		{
-			roundSignupDateTimesMap = preserveSignupDateTimes(game.getSelectedGame());
-			roundTeeSelectionsMap = preserveTeeSelections(game.getSelectedGame());
-			golfmain.deleteRoundsFromDB(game.getSelectedGame().getGameID());
-		}
-		
-		this.getSelectedPlayers().clear();
-		
-		for (int i = 0; i < this.getPlayersPickList().getTarget().size(); i++) 
-		{
-			this.getSelectedPlayers().add(this.getPlayersPickList().getTarget().get(i));
+			roundSignupDateTimesMap = preserveSignupDateTimes(selectedGame);
+			roundTeeSelectionsMap = preserveTeeSelections(selectedGame);
+			golfmain.deleteRoundsFromDB(selectedGame.getGameID());
+			
+			this.getSelectedPlayers().clear();
+			
+			for (int i = 0; i < this.getPlayersPickList().getTarget().size(); i++) 
+			{
+				this.getSelectedPlayers().add(this.getPlayersPickList().getTarget().get(i));
+			}		
+			
+			saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, selectedGame);
+			
+			loadSelectedPlayers(selectedGame); //this resets roundsforgame.  If they deleted a player then we need this list reset
+
 		}		
-		
-		saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap);
-		
-		loadSelectedPlayers(game); //this resets roundsforgame.  If they deleted a player then we need this list reset
-		
+			
 		return "";
 	}
 	
 	private Map<String, Date> preserveSignupDateTimes(Game selectedGame) 
 	{
 		Map<String,Date> roundSignupDateTimesMap = new HashMap<>();
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
+			
 		//get all the rounds for this game first.		
 		List<Round> roundsForGame = golfmain.getRoundsForGame(selectedGame);
 		
@@ -630,8 +574,6 @@ public class Player implements Serializable
 	private Map<String, String> preserveTeeSelections(Game selectedGame) 
 	{
 		Map<String, String> roundTeeSelectionsMap = new HashMap<>();
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		//get all the rounds for this game first.		
 		List<Round> roundsForGame = golfmain.getRoundsForGame(selectedGame);
@@ -884,47 +826,37 @@ public class Player implements Serializable
 		return "success";
 	}
 	
-	public String proceedToEnterScores() 
+	public String proceedToEnterScores(Game selectedGame) 
 	{
 		logger.info("User clicked proceed from player selection screen; saving new player round records and sending them to enter scores");
 		
 		//clear out first for this
-		Game game = BeanUtilJSF.getBean("pc_Game");//we want to preserve the signup dates/times here
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		Map<String,Date> roundSignupDateTimesMap = null;
 		
 		//we want to preserve the tee selections here
-		Map<String, String> roundTeeSelectionsMap = null;
-				
+		Map<String, String> roundTeeSelectionsMap = null;				
 		
-		if (game != null && game.getSelectedGame() != null)
+		if (selectedGame != null)
 		{
-			roundSignupDateTimesMap = preserveSignupDateTimes(game.getSelectedGame());
-			roundTeeSelectionsMap = preserveTeeSelections(game.getSelectedGame());
-			golfmain.deleteRoundsFromDB(game.getSelectedGame().getGameID());
+			roundSignupDateTimesMap = preserveSignupDateTimes(selectedGame);
+			roundTeeSelectionsMap = preserveTeeSelections(selectedGame);
+			golfmain.deleteRoundsFromDB(selectedGame.getGameID());
 		}
 				
-		saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap);
+		saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, selectedGame);
 		
 		return "success";
 	}
 
 	public String selectMultiRowAjax(UnselectEvent<Player> event)
 	{
-		logger.info("User unchecked a checkbox in Player selection list");
-		
-		processSel();
-				
+		logger.info("User unchecked a checkbox in Player selection list");				
 		return "";
 	}
 	
 	public String selectMultiRowAjax(SelectEvent<Player> event)
 	{
-		logger.info("User clicked a checkbox in Player selection list");
-		
-		processSel();
-				
+		logger.info("User clicked a checkbox in Player selection list");				
 		return "";
 	}
 	
@@ -938,7 +870,6 @@ public class Player implements Serializable
 		this.setDisablePlayersDialogButton(false); //if they've picked one, then they can update it
 		
 		//get the role for this player on the authorities table
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		GolfUser gu = golfmain.getGolfUser(item.getUsername());
 		
 		String userRole = gu.getUserRole();
@@ -1861,55 +1792,6 @@ public class Player implements Serializable
 		this.oldUsername = oldUsername;
 	}
 
-	public String getLoggedInPlayerName() 
-	{
-		//assign who the logged in player is using their login username
-		logger.info("entering getLoggedInPlayerName()");
-		
-		GolfUser gu = BeanUtilJSF.getBean("pc_GolfUser");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		if (gu == null || gu.getUserName() == null) //first time here gu will have no user name.  henceforth it should..
-		{
-			String tempUserName = getTempUserName();
-			gu = golfmain.getGolfUser(tempUserName);
-			
-			if (gu != null && gu.getUserName() != null)
-			{
-				Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
-				if (tempPlayer != null)
-				{
-					this.setLoggedInPlayerName(tempPlayer.getFullName());
-				}
-				else
-				{
-					logger.error("unable to determine who logged in player is - this could be a problem!");
-				}
-			}
-			else
-			{
-				logger.error("unable to determine who logged in player is - this could be a problem!");				
-			}
-		}
-		else
-		{
-			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
-			if (tempPlayer != null)
-			{
-				this.setLoggedInPlayerName(tempPlayer.getFullName());
-			}
-		}		
-		
-		logger.info("currently logged in user is: " + loggedInPlayerName);		
-		
-		return loggedInPlayerName;
-	}
-
-	public void setLoggedInPlayerName(String loggedInPlayerName) 
-	{
-		this.loggedInPlayerName = loggedInPlayerName;
-	}
-
 	public boolean isResetPassword() {
 		return resetPassword;
 	}
@@ -1934,61 +1816,6 @@ public class Player implements Serializable
 		this.oldRole = oldRole;
 	}
 	
-	private String getTempUserName() 
-	{
-		String username = "";		
-		username = Utils.getLoggedInUserName();			
-		return username;
-	}
-
-	public String getLoggedInPlayerEmail() 
-	{
-		//assign who the logged in player is using their login username
-		
-		GolfUser gu = BeanUtilJSF.getBean("pc_GolfUser");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		if (gu == null || gu.getUserName() == null) //first time here gu will have no user name.  henceforth it should..
-		{
-			String tempUserName = getTempUserName();
-			gu = golfmain.getGolfUser(tempUserName);
-			
-			if (gu != null && gu.getUserName() != null)
-			{
-				Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
-				if (tempPlayer != null)
-				{
-					this.setLoggedInPlayerEmail(tempPlayer.getEmailAddress());
-				}
-				else
-				{
-					logger.error("unable to determine who logged in player is - this could be a problem!");
-				}
-			}
-			else
-			{
-				logger.error("unable to determine who logged in player is - this could be a problem!");				
-			}
-		}
-		else
-		{
-			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(gu.getUserName());			
-			if (tempPlayer != null)
-			{
-				this.setLoggedInPlayerEmail(tempPlayer.getEmailAddress());
-			}
-		}		
-		
-		logger.info("currently logged in user's email is: " + loggedInPlayerEmail);		
-		
-		return loggedInPlayerEmail;
-	}
-
-	public void setLoggedInPlayerEmail(String loggedInPlayerEmail) 
-	{
-		this.loggedInPlayerEmail = loggedInPlayerEmail;
-	}
-
 	public String getTeePreference() 
 	{
 		return teePreference;
@@ -2022,6 +1849,14 @@ public class Player implements Serializable
 
 	public void setOldPlayerID(int oldPlayerID) {
 		this.oldPlayerID = oldPlayerID;
+	}
+
+	public Game getSelectedGame() {
+		return selectedGame;
+	}
+
+	public void setSelectedGame(Game selectedGame) {
+		this.selectedGame = selectedGame;
 	}
 
 

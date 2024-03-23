@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pas.beans.GolfMain;
 import com.pas.beans.Group;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.dynamodb.DynamoClients;
@@ -37,8 +39,12 @@ public class PlayerTeePreferenceDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayerTeePreference> playerTeePreferencesTable;
 	private static final String AWS_TABLE_NAME = "playerteepreferences";
 
-	public PlayerTeePreferenceDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	
+	public PlayerTeePreferenceDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -58,7 +64,7 @@ public class PlayerTeePreferenceDAO implements Serializable
         {
 			DynamoPlayerTeePreference dynamoPlayerTeePreference = results.next();
           	
-			PlayerTeePreference playerTeePreference = new PlayerTeePreference();
+			PlayerTeePreference playerTeePreference = new PlayerTeePreference(golfmain);
 			
 			playerTeePreference.setPlayerTeePreferenceID(dynamoPlayerTeePreference.getPlayerTeePreferenceID());
 			playerTeePreference.setPlayerID(dynamoPlayerTeePreference.getPlayerID());
@@ -81,7 +87,7 @@ public class PlayerTeePreferenceDAO implements Serializable
 	
 	public PlayerTeePreference getPlayerTeePreference(String playerID, String courseID)
     {
-		PlayerTeePreference playerTeePreference = new PlayerTeePreference();
+		PlayerTeePreference playerTeePreference = new PlayerTeePreference(golfmain);
 		for (int i = 0; i < this.getPlayerTeePreferencesList().size(); i++) 
 		{
 			playerTeePreference = this.getPlayerTeePreferencesList().get(i);

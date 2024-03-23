@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebListener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pas.beans.GolfMain;
 import com.pas.dynamodb.DynamoUtil;
 
 @WebListener
@@ -23,7 +25,13 @@ public class BackgroundJobManager implements ServletContextListener
 
     private ScheduledExecutorService scheduler;
    
-
+    @Autowired private final GolfMain golfmain;
+    
+    public BackgroundJobManager(GolfMain golfmain) 
+    {
+		this.golfmain = golfmain;
+	}
+    
     @Override
     public void contextInitialized(ServletContextEvent event) 
     {
@@ -31,7 +39,7 @@ public class BackgroundJobManager implements ServletContextListener
         long scDelay = get8AMinEast();
         try 
         {
-			scheduler.scheduleAtFixedRate(new DailyEmailJob(), scDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
+			scheduler.scheduleAtFixedRate(new DailyEmailJob(golfmain), scDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
 			logger.info("Daily email job set to run every day at 8 am ET");
 		}
         catch (Exception e) 

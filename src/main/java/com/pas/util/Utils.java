@@ -2,9 +2,6 @@ package com.pas.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,9 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import jakarta.faces.context.FacesContext;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +26,9 @@ import com.pas.beans.CourseTee;
 import com.pas.beans.Player;
 import com.pas.beans.Round;
 import com.pas.beans.Score;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpSession;
 
 public class Utils 
 {
@@ -692,8 +689,8 @@ public class Utils
 	
 	public static boolean isLocalEnv()
 	{
-		boolean isLocal = false;
-		
+		boolean isLocal = true; //just set to true when running locally
+		/*
 		try 
 		{
 			Path dir = (Path)Paths.get("/Paul", "GitHub");
@@ -702,7 +699,7 @@ public class Utils
 		catch (Exception e) 
 		{			
 		}
-				
+		*/		
 		return isLocal;
 	}
 	

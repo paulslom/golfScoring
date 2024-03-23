@@ -218,12 +218,10 @@ public class CreateTableDynamoDB_Rounds
         
         try
         {
-        	teetimesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(
+        	teetimesTable.createTable(r -> r.globalSecondaryIndices(
                         EnhancedGlobalSecondaryIndex.builder()
                                                     .indexName("gsi_GameID")
                                                     .projection(p -> p.projectionType(ProjectionType.ALL))
-                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                                                     .build()));
 	        
         }

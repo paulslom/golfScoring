@@ -12,9 +12,13 @@
 	
     <ui:define name="content">
     
+       <h:outputScript name="javascript/golfJS.js" target="head" />
+       
  	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
 			
 		   <h:form id="teeTimeGameForm">
+		   		
+		   		<h:inputHidden id="hiddenSelectedGame" value="#{pc_Game.selectedGame}" />
 		   		
 		   		<h3>Playing group tee times</h3>
 		   		

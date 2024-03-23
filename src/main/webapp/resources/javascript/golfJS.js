@@ -251,3 +251,11 @@ function updateScores(rowIndex)
 	document.getElementById(back9ElementName).innerHTML = back9Total;
 	document.getElementById(totalScoreElementName).innerHTML = totalScore;	
 }
+
+function composePickListParms()
+{
+	var inputElement = document.getElementById("gameList");
+	var elementValue = inputElement.value;
+	var game = elementValue.options[e.selectedIndex];
+	return game;
+}

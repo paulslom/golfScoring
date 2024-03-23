@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pas.beans.GolfMain;
 import com.pas.beans.Player;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayer;
@@ -36,8 +38,12 @@ public class PlayerDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayer> playersTable;
 	private static final String AWS_TABLE_NAME = "players";
 	
-	public PlayerDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	
+	public PlayerDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -190,9 +196,9 @@ public class PlayerDAO implements Serializable
 		this.fullPlayersMapByPlayerID = fullPlayersMapByPlayerID;
 	}
 
-	public static Player convertDynamoPlayerToPlayer(DynamoPlayer dynamoPlayer) 
+	public Player convertDynamoPlayerToPlayer(DynamoPlayer dynamoPlayer) 
 	{
-		Player player = new Player();
+		Player player = new Player(golfmain);
 		
 		player.setPlayerID(dynamoPlayer.getPlayerID());
 		player.setActive(dynamoPlayer.isActive());

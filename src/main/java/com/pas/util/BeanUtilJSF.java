@@ -15,6 +15,7 @@ public class BeanUtilJSF
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String beanName) 
     {
+    	logger.info("entering BeanUtilJSF.  Trying to get bean: " + beanName);
         FacesContext context = FacesContext.getCurrentInstance();
         return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
     }

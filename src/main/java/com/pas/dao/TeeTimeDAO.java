@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -23,7 +24,6 @@ import com.pas.beans.Group;
 import com.pas.beans.TeeTime;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoTeeTime;
-import com.pas.util.BeanUtilJSF;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -37,15 +37,21 @@ public class TeeTimeDAO implements Serializable
 
 	private static Logger logger = LogManager.getLogger(TeeTimeDAO.class);
 		
-	private Map<String,TeeTime> teeTimesMap = new HashMap<>(); //we need this for the TeeTimeConverter class
+	private Map<String,TeeTime> teeTimesMap = new HashMap<>();
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();	
 
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoTeeTime> teeTimesTable;
 	private static final String AWS_TABLE_NAME = "teetimes";
 	
-	public TeeTimeDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	//@Autowired private final Game game;
+	
+	public TeeTimeDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		//this.game = game;
+		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -88,20 +94,11 @@ public class TeeTimeDAO implements Serializable
     {
 		Iterator<DynamoTeeTime> results = teeTimesTable.scan().items().iterator();
 	  	
-		GolfMain golfmain = null;
-		try
-		{
-			golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		}
-		catch (Exception e)
-		{			
-		}
-		
 		Map<String, Game> fullGameMap = new HashMap<>();
 		if (golfmain == null)
 		{
 			//if golfmain jsf bean unavailable... so just redo the gamedao read
-			GameDAO gameDAO = new GameDAO(dynamoClients);		
+			GameDAO gameDAO = new GameDAO(dynamoClients, golfmain);		
 			gameDAO.readGamesFromDB(defaultGroup);
 			fullGameMap = gameDAO.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
 		}
@@ -114,22 +111,21 @@ public class TeeTimeDAO implements Serializable
         {
 			DynamoTeeTime dynamoTeeTime = results.next();
           	
-			TeeTime teeTime = new TeeTime();
-
-			teeTime.setTeeTimeID(dynamoTeeTime.getTeeTimeID());
-			teeTime.setGameID(dynamoTeeTime.getGameID());	
-			teeTime.setTeeTimeString(dynamoTeeTime.getTeeTimeString());
-			teeTime.setPlayGroupNumber(dynamoTeeTime.getPlayGroupNumber());
-			
-			if (fullGameMap != null && fullGameMap.containsKey(teeTime.getGameID()))
+			if (fullGameMap != null && fullGameMap.containsKey(dynamoTeeTime.getGameID()))
 			{
-				Game game = fullGameMap.get(teeTime.getGameID());
+				Game game = fullGameMap.get(dynamoTeeTime.getGameID());
+				
+				TeeTime teeTime = new TeeTime(golfmain);
 				teeTime.setGameDate(game.getGameDate());
 				teeTime.setCourseName(game.getCourseName());
+				teeTime.setTeeTimeID(dynamoTeeTime.getTeeTimeID());
+				teeTime.setGameID(dynamoTeeTime.getGameID());	
+				teeTime.setTeeTimeString(dynamoTeeTime.getTeeTimeString());
+				teeTime.setPlayGroupNumber(dynamoTeeTime.getPlayGroupNumber());
+				
+				this.getTeeTimeList().add(teeTime);			
 			}
-			
-            this.getTeeTimeList().add(teeTime);			
-        }		 
+	    }		 
 		
 		logger.info("LoggedDBOperation: function-inquiry; table:teetimes; rows:" + teeTimeList.size());
 		
@@ -176,7 +172,7 @@ public class TeeTimeDAO implements Serializable
  			String teeTimeStr = st.nextToken();
  			tokenCount++;
  				
- 			TeeTime teeTime = new TeeTime();
+ 			TeeTime teeTime = new TeeTime(golfmain);
  			teeTime.setTeeTimeID(new String());
  			teeTime.setGameID(newGameID);
  			teeTime.setPlayGroupNumber(tokenCount);
@@ -256,7 +252,7 @@ public class TeeTimeDAO implements Serializable
 		
 		logger.info("LoggedDBOperation: function-delete; table:teetimes; rows:1");
 		
-		TeeTime teeTime = new TeeTime();
+		TeeTime teeTime = new TeeTime(golfmain);
 		teeTime.setTeeTimeID(teeTimeID);
 		
 		refreshListsAndMaps("delete", teeTime); 		

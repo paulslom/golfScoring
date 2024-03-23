@@ -5,8 +5,8 @@
   
   <groupId>com.pas</groupId>
   <artifactId>golfScoring</artifactId>
-  <packaging>jar</packaging>
-  <version>3.0.1</version>
+  <packaging>war</packaging>
+  <version>3.0.21</version>
   
   <name>golfScoring Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -41,7 +41,7 @@
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-security</artifactId>
 	</dependency>
-		
+			
     <dependency>
 	    <groupId>software.amazon.awssdk</groupId>
 	    <artifactId>dynamodb</artifactId>
@@ -58,8 +58,14 @@
         <groupId>com.amazonaws</groupId>
         <artifactId>DynamoDBLocal</artifactId>
         <version>2.2.1</version>
+        <exclusions>
+	      	<exclusion>
+	      		<groupId>org.eclipse.jetty.toolchain</groupId>
+	      		<artifactId>jetty-jakarta-servlet-api</artifactId>
+	      	</exclusion>
+	    </exclusions>
     </dependency>
-    
+   
     <dependency>
         <groupId>software.amazon.awssdk</groupId>
         <artifactId>url-connection-client</artifactId>
@@ -125,14 +131,7 @@
     	<version>13.0.3</version>
     	<classifier>jakarta</classifier>
 	</dependency>
-	
-	<dependency>
-	    <groupId>org.primefaces.extensions</groupId>
-	    <artifactId>primefaces-extensions</artifactId>
-	    <version>13.0.3</version>
-    	<classifier>jakarta</classifier>
-	</dependency>
-	
+		
 	<dependency>
 	    <groupId>org.jboss.weld.servlet</groupId>
 	    <artifactId>weld-servlet-shaded</artifactId>

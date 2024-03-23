@@ -13,15 +13,13 @@ import jakarta.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
-import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
 @Named("pc_Registration")
-@Component
 public class Registration implements Serializable
 {
 	private String firstName;
@@ -41,6 +39,13 @@ public class Registration implements Serializable
 
 	private static Logger logger = LogManager.getLogger(Registration.class);	
 	
+	@Autowired private final GolfMain golfmain;
+	
+	public Registration(GolfMain golfmain) 
+	{
+		this.golfmain = golfmain;
+	}
+	
 	public String changePassword()
 	{
 		boolean valid = true;
@@ -51,7 +56,6 @@ public class Registration implements Serializable
 			String whoIsThis = Utils.getLoggedInUserName();
 			//SecurityController sc = new SecurityController();
 			//String whoIsThis = sc.getCurrentUserName();
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 			
 			GolfUser gu = golfmain.getGolfUser(whoIsThis);		
 			String currentEncryptedPW = gu.getPassword();

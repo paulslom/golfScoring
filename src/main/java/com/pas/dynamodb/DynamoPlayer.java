@@ -2,8 +2,6 @@ package com.pas.dynamodb;
 
 import java.math.BigDecimal;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
@@ -20,7 +18,6 @@ public class DynamoPlayer
 	private String emailAddress;
 	private boolean active;
 
-	@DynamoDBAttribute(attributeName = "PlayerID")
 	@DynamoDbPartitionKey //primary key
 	public String getPlayerID() {
 		return playerID;
@@ -30,7 +27,6 @@ public class DynamoPlayer
 		this.playerID = playerID;
 	}
 
-	@DynamoDBAttribute(attributeName = "Username")
 	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_Username")
 	public String getUsername() {
 		return username;
@@ -40,7 +36,6 @@ public class DynamoPlayer
 		this.username = username;
 	}
 
-	@DynamoDBAttribute(attributeName = "FirstName")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -49,7 +44,6 @@ public class DynamoPlayer
 		this.firstName = firstName;
 	}
 
-	@DynamoDBAttribute(attributeName = "LastName")
 	public String getLastName() {
 		return lastName;
 	}
@@ -58,7 +52,6 @@ public class DynamoPlayer
 		this.lastName = lastName;
 	}
 
-	@DynamoDBAttribute(attributeName = "Handicap")
 	public BigDecimal getHandicap() {
 		return handicap;
 	}
@@ -67,7 +60,6 @@ public class DynamoPlayer
 		this.handicap = handicap;
 	}
 
-	@DynamoDBAttribute(attributeName = "emailAddress")
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -76,7 +68,6 @@ public class DynamoPlayer
 		this.emailAddress = emailAddress;
 	}
 
-	@DynamoDBAttribute(attributeName = "Active")
 	public boolean isActive() {
 		return active;
 	}

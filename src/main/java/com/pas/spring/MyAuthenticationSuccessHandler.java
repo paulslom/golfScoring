@@ -44,7 +44,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             {
             	session.setAttribute("currentUserisUser", false);
             }
-        }
+        }       
         
         String whereTo = "/auth/main.xhtml";
         logger.info("redirecting to: " + whereTo);

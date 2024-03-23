@@ -170,19 +170,16 @@ public class CreateTableDynamoDB_PlayerMoney
         	EnhancedGlobalSecondaryIndex gameIDGSI = EnhancedGlobalSecondaryIndex.builder()
         			.indexName("gsi_GameID")
         			.projection(p -> p.projectionType(ProjectionType.ALL))
-        			.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
         			.build();
         	gsindices.add(gameIDGSI);
         	
         	EnhancedGlobalSecondaryIndex oldTeeTimeIDGSI = EnhancedGlobalSecondaryIndex.builder()
                     .indexName("gsi_PlayerID")
                     .projection(p -> p.projectionType(ProjectionType.ALL))
-                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                     .build();
         	gsindices.add(oldTeeTimeIDGSI);
                	
-        	playerMoneyTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(gsindices).build());        	       
+        	playerMoneyTable.createTable(r -> r.globalSecondaryIndices(gsindices).build());        	       
         }
         catch (ResourceInUseException riue)
         {

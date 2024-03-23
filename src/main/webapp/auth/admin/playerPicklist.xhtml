@@ -12,10 +12,14 @@
 	
     <ui:define name="content">
     
+       <h:outputScript name="javascript/golfJS.js" target="head" />
+       
  	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
 			
 		   <h:form id="playerPicklistForm">
 		   		
+		   		<h:inputHidden id="hiddenSelectedGame" value="#{pc_Game.selectedGame}" />
+    
 		   		<h3>Player PickList</h3>
 		   		
 		   		<table>
@@ -73,7 +77,7 @@
 			<h:form id="playersPicklistForm">				
 				
 				<p:pickList value="#{pc_Player.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
-					itemValue="#{player}" converter="playerConverter" showSourceControls="true" showTargetControls="true">
+					itemValue="#{player}" showSourceControls="true" showTargetControls="true">
 					
 					<f:facet name="sourceCaption">Available</f:facet>
 			        <f:facet name="targetCaption">Playing</f:facet>

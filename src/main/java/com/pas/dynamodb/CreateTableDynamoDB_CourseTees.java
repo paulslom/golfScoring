@@ -145,19 +145,16 @@ public class CreateTableDynamoDB_CourseTees
         	EnhancedGlobalSecondaryIndex gsi1 = EnhancedGlobalSecondaryIndex.builder()
         			.indexName("gsi_OldCourseTeeID")
         			.projection(p -> p.projectionType(ProjectionType.ALL))
-        			.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
         			.build();
         	gsindices.add(gsi1);
         	
         	EnhancedGlobalSecondaryIndex gsi2 = EnhancedGlobalSecondaryIndex.builder()
                     .indexName("gsi_courseID")
                     .projection(p -> p.projectionType(ProjectionType.ALL))
-                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                     .build();
         	gsindices.add(gsi2);       	
         	  	
-        	courseTeesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(gsindices).build());
+        	courseTeesTable.createTable(r -> r.globalSecondaryIndices(gsindices).build());
         	
         }
         catch (ResourceInUseException riue)

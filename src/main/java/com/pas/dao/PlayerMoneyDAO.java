@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -19,7 +20,6 @@ import com.pas.beans.Player;
 import com.pas.beans.PlayerMoney;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayerMoney;
-import com.pas.util.BeanUtilJSF;
 
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
@@ -46,8 +46,12 @@ public class PlayerMoneyDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayerMoney> playerMoneyTable;
 	private static final String AWS_TABLE_NAME = "playermoney";
 	
-	public PlayerMoneyDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	
+	public PlayerMoneyDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -96,7 +100,7 @@ public class PlayerMoneyDAO implements Serializable
 		Iterator<DynamoPlayerMoney> results = playerMoneyTable.scan().items().iterator();
 		
 		//since this full read is only done at app startup, we can't use golfmain's jsf bean to get it... so just redo the playerdao read
-		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);		
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients, golfmain);		
 		playerDAO.readPlayersFromDB();
 		Map<String,Player> fullPlayersMapByPlayerID = playerDAO.getFullPlayersMapByPlayerID();
 		
@@ -104,7 +108,7 @@ public class PlayerMoneyDAO implements Serializable
         {
 			DynamoPlayerMoney dynamoPlayerMoney = results.next();
             
-			PlayerMoney playerMoney = new PlayerMoney();
+			PlayerMoney playerMoney = new PlayerMoney(golfmain);
 			playerMoney.setPlayerMoneyID(dynamoPlayerMoney.getPlayerMoneyID());
 			playerMoney.setPlayerID(dynamoPlayerMoney.getPlayerID());
 			playerMoney.setGameID(dynamoPlayerMoney.getGameID());
@@ -127,7 +131,6 @@ public class PlayerMoneyDAO implements Serializable
 		
 		playerMoney.setPlayerMoneyID(dpm.getPlayerMoneyID());
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		if (golfmain != null)
 		{
 			Player player = golfmain.getPlayerByPlayerID(dpm.getPlayerID());

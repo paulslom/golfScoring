@@ -129,7 +129,7 @@
 	"oldPlayerID":15,
 	"firstName": "Barry",
 	"lastName": "Miles",
-	"handicap":11.8,
+	"handicap":9.0,
 	"username": "bmiles",
 	"emailAddress": "bdmiles@triad.rr.com",
 	"active":true
@@ -228,7 +228,7 @@
 	"oldPlayerID":2,
 	"firstName": "Bob",
 	"lastName": "Williams",
-	"handicap":5.0,
+	"handicap":3.0,
 	"username": "bwilliams",
 	"emailAddress": "bob8222003@yahoo.com",
 	"active":true
@@ -381,7 +381,7 @@
 	"oldPlayerID":11,
 	"firstName": "Derek",
 	"lastName": "Gamble",
-	"handicap":8.7,
+	"handicap":3.0,
 	"username": "dgamble",
 	"emailAddress": "derekgamble10s@gmail.com",
 	"active":true
@@ -426,7 +426,7 @@
 	"oldPlayerID":23,
 	"firstName": "Dale",
 	"lastName": "Stout",
-	"handicap":3.7,
+	"handicap":2.0,
 	"username": "dstout",
 	"emailAddress": "dalestout66@gmail.com",
 	"active":true
@@ -471,7 +471,7 @@
 	"oldPlayerID":28,
 	"firstName": "Earl",
 	"lastName": "Waddell",
-	"handicap":8.3,
+	"handicap":3.0,
 	"username": "ewaddell",
 	"emailAddress": "e.waddell410@icloud.com",
 	"active":true
@@ -561,7 +561,7 @@
 	"oldPlayerID":8,
 	"firstName": "Jim",
 	"lastName": "Elias",
-	"handicap":5.5,
+	"handicap":5.0,
 	"username": "jelias",
 	"emailAddress": "jelias@sloanled.com",
 	"active":true
@@ -705,7 +705,7 @@
 	"oldPlayerID":30,
 	"firstName": "John",
 	"lastName": "Wolfe",
-	"handicap":7.3,
+	"handicap":3.0,
 	"username": "jwolfe",
 	"emailAddress": "John.Wolfe@cornerstone-bb.com",
 	"active":true
@@ -714,7 +714,7 @@
 	"oldPlayerID":40,
 	"firstName": "Jason",
 	"lastName": "Wood",
-	"handicap":8.0,
+	"handicap":9.0,
 	"username": "jwood",
 	"emailAddress": "jwood00717@yahoo.com",
 	"active":true
@@ -777,7 +777,7 @@
 	"oldPlayerID":19,
 	"firstName": "Kenton",
 	"lastName": "Robertson",
-	"handicap":3.7,
+	"handicap":4.0,
 	"username": "krobertson",
 	"emailAddress": "kenton@kentonrobertson.com",
 	"active":true
@@ -957,7 +957,7 @@
 	"oldPlayerID":1,
 	"firstName": "Paul",
 	"lastName": "Slomkowski",
-	"handicap":-1.9,
+	"handicap":-2.0,
 	"username": "paulslom",
 	"emailAddress": "paulslomkowski@yahoo.com",
 	"active":true
@@ -1182,7 +1182,7 @@
 	"oldPlayerID":123,
 	"firstName": "Tony",
 	"lastName": "Fuqua",
-	"handicap":12.2,
+	"handicap":7.0,
 	"username": "tfuqua",
 	"emailAddress": "holtfuqua@gmail.com",
 	"active":true
@@ -1236,7 +1236,7 @@
 	"oldPlayerID":81,
 	"firstName": "Tom",
 	"lastName": "Skivington",
-	"handicap":4.9,
+	"handicap":1.0,
 	"username": "tskivington",
 	"emailAddress": "tskivington@aloi.com",
 	"active":true

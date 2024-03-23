@@ -13,7 +13,7 @@
          <h:form id="mainForm">                      
              
   			<h1>Welcome to the Golf Scoring Application 
-  				<p:outputLabel value="#{pc_Player.loggedInPlayerName}"></p:outputLabel>
+  				<p:outputLabel value="#{pc_GolfMain.loggedInPlayerName}"></p:outputLabel>
   			</h1>
   		
 		    <p:selectOneMenu id="groupList" disabled="true" rendered="#{sessionScope.currentUserisAdmin}" value="#{pc_Group.selectedGroup}" required="true" hideNoSelectionOption="true">

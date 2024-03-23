@@ -7,12 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
 import jakarta.inject.Named;
 
 @Named("pc_Course")
-@Component
 public class Course implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;

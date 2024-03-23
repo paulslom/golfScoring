@@ -9,14 +9,11 @@ import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
-
-import com.pas.util.BeanUtilJSF;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.inject.Named;
 
 @Named("pc_PlayerMoney")
-@Component
 public class PlayerMoney implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -43,6 +40,12 @@ public class PlayerMoney implements Serializable
 	
 	private BigDecimal totalAmount;
 	
+	@Autowired private final GolfMain golfmain;
+	
+	public PlayerMoney(GolfMain golfmain) 
+	{
+		this.golfmain = golfmain;
+	}
 	public void onLoadPlayerMoney() 
 	{
 		logger.info("about to run Player Money");
@@ -67,8 +70,6 @@ public class PlayerMoney implements Serializable
 	
 	public String runTheMoney()
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
 		this.setFullPlayerMoneyList(golfmain.getPlayerMoneyList());
 		
 		if (this.getFullPlayerMoneyList().size() > 0)
@@ -89,7 +90,7 @@ public class PlayerMoney implements Serializable
 				}
 				else
 				{
-					PlayerMoney totalPM = new PlayerMoney();
+					PlayerMoney totalPM = new PlayerMoney(golfmain);
 					totalPM.setPlayer(priorPlayer);
 					totalPM.setAmount(playerTotal);
 					this.getTotaledPlayerMoneyList().add(totalPM);
@@ -101,7 +102,7 @@ public class PlayerMoney implements Serializable
 				}
 			}
 			
-			PlayerMoney totalPM = new PlayerMoney();
+			PlayerMoney totalPM = new PlayerMoney(golfmain);
 			PlayerMoney lastPM = this.getFullPlayerMoneyList().get(this.getFullPlayerMoneyList().size()-1);
 			totalPM.setPlayer(lastPM.getPlayer());
 			totalPM.setAmount(playerTotal);
@@ -112,8 +113,6 @@ public class PlayerMoney implements Serializable
 	
 	public String getPlayerMoneyDetail(PlayerMoney pm)
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
 		this.setSelectedPlayerMoney(pm);
 		this.setTotalAmount(this.getSelectedPlayerMoney().getAmount());
 		this.setIndividualPlayerMoneyList(golfmain.getPlayerMoneyByPlayer(pm.getPlayer()));

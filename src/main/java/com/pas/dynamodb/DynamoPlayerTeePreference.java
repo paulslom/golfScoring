@@ -1,7 +1,5 @@
 package com.pas.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
@@ -22,7 +20,6 @@ public class DynamoPlayerTeePreference
 	private String courseName;
 	private String teeColor;
 
-	@DynamoDBAttribute(attributeName = "PlayerID")	
 	public String getPlayerID() {
 		return playerID;
 	}
@@ -31,7 +28,6 @@ public class DynamoPlayerTeePreference
 		this.playerID = playerID;
 	}
 
-	@DynamoDBAttribute(attributeName = "OldPlayerID")	
 	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_OldPlayerID")
 	public int getOldPlayerID() {
 		return oldPlayerID;
@@ -41,7 +37,6 @@ public class DynamoPlayerTeePreference
 		this.oldPlayerID = oldPlayerID;
 	}
 
-	@DynamoDBAttribute(attributeName = "PlayerTeePreferenceID")	
 	@DynamoDbPartitionKey //primary key
 	public String getPlayerTeePreferenceID() {
 		return playerTeePreferenceID;

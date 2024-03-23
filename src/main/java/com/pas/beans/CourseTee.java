@@ -8,15 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-import com.pas.util.BeanUtilJSF;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 
 @Named("pc_CourseTee")
-@Component
 public class CourseTee implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
@@ -31,6 +28,12 @@ public class CourseTee implements Serializable
 	private int slopeRating;
 	private int totalYardage;
 	
+	@Autowired private final GolfMain golfmain;
+	
+	public CourseTee(GolfMain golfmain) 
+	{
+		this.golfmain = golfmain;
+	}
 	private Map<String, List<SelectItem>> teeSelectionsMap = new HashMap<>();
 	
 	@Override
@@ -109,7 +112,6 @@ public class CourseTee implements Serializable
 			String lastCourseID = "0";
 			List<SelectItem> ctList = new ArrayList<>();
 		
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 			if (golfmain != null && golfmain.getCourseTees() != null && golfmain.getCourseTees().size() > 0)
 	      	{
 				for (int i = 0; i < golfmain.getCourseTees().size(); i++) 

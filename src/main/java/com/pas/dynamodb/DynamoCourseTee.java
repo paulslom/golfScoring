@@ -2,8 +2,6 @@ package com.pas.dynamodb;
 
 import java.math.BigDecimal;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
@@ -21,7 +19,6 @@ public class DynamoCourseTee
 	private int slopeRating;
 	private int totalYardage;
 
-	@DynamoDBAttribute(attributeName = "CourseTeeID")
 	@DynamoDbPartitionKey //primary key
 	public String getCourseTeeID() {
 		return courseTeeID;

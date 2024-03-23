@@ -20,8 +20,10 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Game;
+import com.pas.beans.GolfMain;
 import com.pas.beans.Round;
 import com.pas.beans.Score;
 import com.pas.dynamodb.DateToStringConverter;
@@ -54,8 +56,14 @@ public class RoundDAO implements Serializable
 	private static DynamoDbTable<DynamoRound> roundsTable;
 	private static final String AWS_TABLE_NAME = "rounds";
 	
-	public RoundDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	@Autowired private final Game game;
+	
+	public RoundDAO(DynamoClients dynamoClients2, GolfMain golfmain, Game game) 
 	{
+		this.golfmain = golfmain;
+		this.game = game;
+		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -105,7 +113,7 @@ public class RoundDAO implements Serializable
         {
 			DynamoRound dynamoRound = results.next();
           	
-			Round round = new Round();
+			Round round = new Round(golfmain, game);
 
 			round.setRoundID(dynamoRound.getRoundID());
 			round.setGameID(dynamoRound.getGameID());
@@ -247,7 +255,7 @@ public class RoundDAO implements Serializable
 	
 		logger.info("LoggedDBOperation: function-delete; table:round; rows:1");
 		
-		Round rd = new Round();
+		Round rd = new Round(golfmain, game);
 		rd.setRoundID(roundID);
 		
 		refreshListsAndMaps("delete", rd);		

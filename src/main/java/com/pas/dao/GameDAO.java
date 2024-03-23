@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Course;
 import com.pas.beans.Game;
@@ -28,7 +29,6 @@ import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoUtil;
-import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -46,14 +46,18 @@ public class GameDAO implements Serializable
 	
 	private static Logger logger = LogManager.getLogger(GameDAO.class);
 	
+	@Autowired private final GolfMain golfmain;
+
 	private List<Game> fullGameList = new ArrayList<Game>();		
 
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoGame> gamesTable;
 	private static final String AWS_TABLE_NAME = "games";
 		
-	public GameDAO(DynamoClients dynamoClients2) 
+	public GameDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -140,14 +144,7 @@ public class GameDAO implements Serializable
 
 	public void readGamesFromDB(Group defaultGroup) throws Exception 
     {
-		GolfMain golfmain = null;
-		try
-		{
-			golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		}
-		catch (Exception e)
-		{			
-		}	
+		logger.info("entering readGamesFromDB.  golfmain = " + golfmain);
 		
 		Map<String, Course> coursesMap = new HashMap<>();
 		if (golfmain == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
@@ -179,7 +176,7 @@ public class GameDAO implements Serializable
         {
 			DynamoGame dynamoGame = results.next();
           	
-			Game game = new Game();
+			Game game = new Game(golfmain);
 
 			game.setGameID(dynamoGame.getGameID());
 			game.setOldGameID(dynamoGame.getOldGameID());		
@@ -230,8 +227,6 @@ public class GameDAO implements Serializable
 	public List<Game> getAvailableGames(String playerID) 
     {
 		List<Game> gameList = new ArrayList<>();
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		Calendar todayMidnight = new GregorianCalendar();
 		todayMidnight.set(Calendar.HOUR_OF_DAY, 0);
@@ -285,8 +280,6 @@ public class GameDAO implements Serializable
 	
 	public String getTeePreference(String playerID, String courseID) 
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-		
 		PlayerTeePreference ptp = golfmain.getPlayerTeePreference(playerID, courseID);
 		if (ptp != null)
 		{
@@ -372,7 +365,7 @@ public class GameDAO implements Serializable
 		
 	private void refreshGameList(String function, String gameID, Game inputgame) throws Exception
 	{	
-		Game gm = new Game();
+		Game gm = new Game(golfmain);
 		
 		if (!function.equalsIgnoreCase("delete"))
 		{

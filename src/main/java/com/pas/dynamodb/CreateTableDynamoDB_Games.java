@@ -135,19 +135,16 @@ public class CreateTableDynamoDB_Games
         	EnhancedGlobalSecondaryIndex gsi1 = EnhancedGlobalSecondaryIndex.builder()
         			.indexName("gsi_GameDate")
         			.projection(p -> p.projectionType(ProjectionType.ALL))
-        			.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
         			.build();
         	gsindices.add(gsi1);
         	
         	EnhancedGlobalSecondaryIndex gsi2 = EnhancedGlobalSecondaryIndex.builder()
                     .indexName("gsi_OldGameID")
                     .projection(p -> p.projectionType(ProjectionType.ALL))
-                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                     .build();
         	gsindices.add(gsi2);       	
         	  	
-        	gamesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(gsindices).build());
+        	gamesTable.createTable(r -> r.globalSecondaryIndices(gsindices).build());
         	
         }
         catch (ResourceInUseException riue)

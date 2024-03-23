@@ -3786,24 +3786,6 @@
 	"teeTimeString": "10:05"
 },
 {
-	"oldTeeTimeID":993,
-	"oldGameID":290,
-	"playGroupNumber":2,
-	"teeTimeString": "10:15"
-},
-{
-	"oldTeeTimeID":994,
-	"oldGameID":290,
-	"playGroupNumber":3,
-	"teeTimeString": "10:25"
-},
-{
-	"oldTeeTimeID":995,
-	"oldGameID":290,
-	"playGroupNumber":4,
-	"teeTimeString": "10:35"
-},
-{
 	"oldTeeTimeID":996,
 	"oldGameID":291,
 	"playGroupNumber":1,
@@ -3822,12 +3804,6 @@
 	"teeTimeString": "10:20"
 },
 {
-	"oldTeeTimeID":999,
-	"oldGameID":291,
-	"playGroupNumber":4,
-	"teeTimeString": "10:30"
-},
-{
 	"oldTeeTimeID":1000,
 	"oldGameID":288,
 	"playGroupNumber":4,
@@ -3838,5 +3814,47 @@
 	"oldGameID":292,
 	"playGroupNumber":1,
 	"teeTimeString": "11:00"
+},
+{
+	"oldTeeTimeID":1002,
+	"oldGameID":293,
+	"playGroupNumber":1,
+	"teeTimeString": "10:05"
+},
+{
+	"oldTeeTimeID":1003,
+	"oldGameID":293,
+	"playGroupNumber":2,
+	"teeTimeString": "10:15"
+},
+{
+	"oldTeeTimeID":1004,
+	"oldGameID":293,
+	"playGroupNumber":3,
+	"teeTimeString": "10:25"
+},
+{
+	"oldTeeTimeID":1005,
+	"oldGameID":292,
+	"playGroupNumber":2,
+	"teeTimeString": "11:10"
+},
+{
+	"oldTeeTimeID":1006,
+	"oldGameID":294,
+	"playGroupNumber":1,
+	"teeTimeString": "10:00"
+},
+{
+	"oldTeeTimeID":1007,
+	"oldGameID":294,
+	"playGroupNumber":2,
+	"teeTimeString": "10:10"
+},
+{
+	"oldTeeTimeID":1008,
+	"oldGameID":294,
+	"playGroupNumber":3,
+	"teeTimeString": "10:20"
 }
 ]

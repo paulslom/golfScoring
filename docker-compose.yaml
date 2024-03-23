@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  golfscoring-web:
+    build: .
+    container_name: golfscoringContainer
+    image: golfscoring-docker:321
+    environment:
+      SERVER_PORT: 9090
+    cpus: 1.5
+    mem_limit: 2048m
+    ports:
+      - "9090:9090"
+    
+      

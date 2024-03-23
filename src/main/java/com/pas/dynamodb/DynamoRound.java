@@ -2,8 +2,6 @@ package com.pas.dynamodb;
 
 import java.math.BigDecimal;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
@@ -66,7 +64,6 @@ public class DynamoRound
 		this.oldRoundID = oldRoundID;
 	}
 	
-	@DynamoDBAttribute(attributeName = "GameID")
 	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_GameID")
 	public String getGameID() {
 		return gameID;

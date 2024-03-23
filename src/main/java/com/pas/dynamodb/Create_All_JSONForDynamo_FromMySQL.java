@@ -49,7 +49,7 @@ public class Create_All_JSONForDynamo_FromMySQL
      
     public static void main(String[] args) throws Exception
     { 
-    	logger.debug("**********  START of program ***********");   	
+    	System.out.println("**********  START of program ***********");   	
     	
     	List<GolfUser> golfUserList = getGolfUsersFromMySQLDB();  //1	
     	List<Group> groupList = getGroupsFromMySQLDB();	//2
@@ -62,7 +62,7 @@ public class Create_All_JSONForDynamo_FromMySQL
     	List<PlayerMoney> playerMoneyList = getPlayerMoneyFromMySQLDB();	//9    	
     	List<Round> roundList = getRoundsFromMySQLDB();	//10
      	
-    	logger.debug("********** starting write of JSON files ***********"); 
+    	System.out.println("********** starting write of JSON files ***********"); 
     	
 	   	writeGolfUsersJSONFile(golfUserList);  //1
     	writeGroupsJSONFile(groupList); //2
@@ -75,9 +75,9 @@ public class Create_All_JSONForDynamo_FromMySQL
     	writePlayerMoneyJSONFile(playerMoneyList); //9    	
     	writeRoundsJSONFile(roundList); //10	 	
     	
-	   	logger.debug("********** finished write of JSON files ***********");   	
+    	System.out.println("********** finished write of JSON files ***********");   	
 	   	
-		logger.debug("**********  END of program ***********");		
+    	System.out.println("**********  END of program ***********");		
 	}
 
 	private static List<PlayerTeePreference> getPlayerTeePreferenceFromMySQLDB() 
@@ -93,7 +93,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<PlayerTeePreference> playerTeePreferenceList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					PlayerTeePreference playerTeePreference = new PlayerTeePreference();
+					PlayerTeePreference playerTeePreference = new PlayerTeePreference(null);
 			        
 			        playerTeePreference.setOldPlayerTeePreferenceID(rs.getInt("idplayertees"));
 			        playerTeePreference.setOldPlayerID(rs.getInt("idplayer"));
@@ -123,7 +123,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<CourseTee> courseTeeList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					CourseTee courseTee = new CourseTee();
+					CourseTee courseTee = new CourseTee(null);
 			        
 			        courseTee.setOldCourseTeeID(rs.getInt("idGolfCourseTees"));
 			        courseTee.setOldCourseID(rs.getInt("idGolfCourse"));
@@ -156,7 +156,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<PlayerMoney> playerMoneyList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					PlayerMoney playerMoney = new PlayerMoney();
+					PlayerMoney playerMoney = new PlayerMoney(null);
 			    	
 			    	playerMoney.setOldPlayerMoneyID(rs.getInt("idplayerMoney"));
 					playerMoney.setOldGameID(rs.getInt("idgame"));
@@ -187,7 +187,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<TeeTime> teeTimesList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					TeeTime teeTime = new TeeTime();
+					TeeTime teeTime = new TeeTime(null);
 		    		
 					teeTime.setOldTeeTimeID(rs.getInt("idteeTimes"));
 					teeTime.setOldGameID(rs.getInt("idgame"));
@@ -217,7 +217,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<Group> groupList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					Group group = new Group();
+					Group group = new Group(null);
 			        
 			        group.setOldGroupID(rs.getInt("idgroup"));
 					group.setGroupName(rs.getString("groupName"));
@@ -245,7 +245,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<Round> roundList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					Round round = new Round();
+					Round round = new Round(null, null);
 			    	
 			    	round.setOldRoundID(rs.getInt("idround"));
 					round.setOldGameID(rs.getInt("idgame"));
@@ -583,7 +583,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<Game> gameList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-					Game game = new Game();    	
+					Game game = new Game(null);    	
 			     	
 			        game.setOldGameID(rs.getInt("idgame"));
 					game.setOldCourseID(rs.getInt("idgolfcourse"));		
@@ -635,7 +635,7 @@ public class Create_All_JSONForDynamo_FromMySQL
 				List<Player> playerList2 = new ArrayList<>();
 				while (rs.next()) 
 				{
-			        Player player = new Player();
+			        Player player = new Player(null);
 			        player.setOldPlayerID(rs.getInt("idplayer"));
 			     	player.setFirstName(rs.getString("firstName"));
 					player.setLastName(rs.getString("lastName"));

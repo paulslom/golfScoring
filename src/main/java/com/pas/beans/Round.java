@@ -1,5 +1,6 @@
 package com.pas.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,10 +21,10 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.pas.util.BeanUtilJSF;
 import com.pas.util.Utils;
 
 @Named("pc_Round")
@@ -53,7 +54,6 @@ public class Round implements Serializable
 	private Date signupDateTime;
 	private boolean disableFixScore = true;
 	private TeeTime teeTime;
-	private Game game;
 	private Player player;
 	private List<Score> roundbyHoleScores = new ArrayList<Score>();
 	
@@ -139,9 +139,14 @@ public class Round implements Serializable
 	
 	private List<Round> roundsForGame = new ArrayList<Round>();	
 	
-	public Round() 
+	@Autowired private final GolfMain golfmain;
+	@Autowired private final Game game;
+	
+	public Round(GolfMain golfmain, Game game) 
 	{
-		//logger.debug("In Round constructor.  hash code is this: " + this.hashCode());
+		//logger.info("In Round constructor.  hash code is this: " + this.hashCode());
+		this.golfmain = golfmain;
+		this.game = game;		
 	}
 	
 	public String toString()
@@ -171,10 +176,8 @@ public class Round implements Serializable
 		logger.info(getTempUserName() + " selected a row in Round selection list");
 		Round rd = event.getObject();
 		this.setSelectedRound(rd);
-		
-		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
-		
-		gm.setDisableDeleteSelectedPlayerRound(false);			
+			
+		golfmain.setDisableDeleteSelectedPlayerRound(false);			
 
 		this.setDisableFixScore(false);
 		
@@ -183,9 +186,6 @@ public class Round implements Serializable
 	
 	public void onLoadGameHandicaps() 
 	{
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		if (game == null || game.getSelectedGame() == null)
 		{
 			game.setSelectedGame(golfmain.getFullGameList().get(0));
@@ -199,9 +199,6 @@ public class Round implements Serializable
 
 	public void onloadPickTeams() 
 	{
-		Game game = BeanUtilJSF.getBean("pc_Game");
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		if (game == null || game.getSelectedGame() == null)
 		{
 			game.setSelectedGame(golfmain.getFullGameList().get(0));
@@ -287,7 +284,6 @@ public class Round implements Serializable
 			
 			Collections.sort(gamePlayersList, new Round.RoundComparatorByHandicap());
 			
-			Game game = BeanUtilJSF.getBean("pc_Game");
 			int playersPerTeam = game.getSelectedGame().getTotalPlayers() / game.getSelectedGame().getTotalTeams(); 
 			int totalTeams = game.getSelectedGame().getTotalTeams();
 			
@@ -502,8 +498,6 @@ public class Round implements Serializable
 	{
 		logger.info("User picked a game on select players for game form");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
 		Game selectedOption = (Game)selectonemenu.getValue();
@@ -518,29 +512,26 @@ public class Round implements Serializable
 	}
 	
 
-	public String proceedToPreGameEmail()
+	public String proceedToPreGameEmail() throws IOException
 	{
 		logger.info("User is done with picking teams for game, proceed to pregame email");
 		
 		saveAndStayPickTeams();
-		
-		Game game = BeanUtilJSF.getBean("pc_Game");
 		
 		if (game != null && game.getSelectedGame() != null)
 		{
 			game.onLoadPreGameEmail();
 		}
 		
-		return "success";
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/emailPreGame.xhtml");
+		
+		return "";
 	}
 	
 	public String saveAndStayPickTeams()
 	{
 		try
 		{
-			Game game = BeanUtilJSF.getBean("pc_Game");
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
 			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 			{
 				Round rd = this.getRoundsForGame().get(i);
@@ -558,20 +549,20 @@ public class Round implements Serializable
 		
 		return "";
 	}
-	public String proceedToPickTeams()
+	public String proceedToPickTeams() throws IOException
 	{
 		logger.info("Game Handicap entry done, proceed to pick teams");
 		updateGameHandicaps();
-		return "success";
+		
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/pickTeams.xhtml");
+		
+		return "";
 	}
 	
 	public String updateGameHandicaps()
 	{
 		try
 		{
-			Game game = BeanUtilJSF.getBean("pc_Game");		
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
 			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 			{
 				Round rd = this.getRoundsForGame().get(i);
@@ -698,8 +689,6 @@ public class Round implements Serializable
 	{
 		logger.info(getTempUserName() + " in onLoadGameEnterScores");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 	
 		boolean adminUser = Utils.isAdminUser();
@@ -716,8 +705,8 @@ public class Round implements Serializable
 		//let's take the first one
 		if (availableGamesList != null && availableGamesList.size() > 0)
 		{
-			this.setGame(availableGamesList.get(0));			
-			this.setSyncGameRoundList(golfmain.getRoundsForGame(this.getGame()));
+			Game aGame = availableGamesList.get(0);			
+			this.setSyncGameRoundList(golfmain.getRoundsForGame(aGame));
 			setUpGameEnterScores(tempPlayer);		
 		}
 		else //no games available to enter scores for
@@ -782,9 +771,7 @@ public class Round implements Serializable
 		logger.info("User picked a game on game handicaps form");
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
+			
 		Game selectedOption = (Game)selectonemenu.getValue();
 		
 		if (selectedOption != null)
@@ -804,8 +791,6 @@ public class Round implements Serializable
 		
 		if (selectedOption != null)
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
 			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 		
 			this.getSyncGameRoundList().clear();
@@ -815,18 +800,16 @@ public class Round implements Serializable
 						
 	}
 	
-	public String runGameNavigate()
+	public String runGameNavigate() throws IOException
 	{
 		boolean allScoresEntered = validateScores();
-		
+			
 		if (allScoresEntered)
 		{
-			return "success";
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/runGame.xhtml");			
 		}
-		else
-		{
-			return "";
-		}
+		
+		return "";		
 	}
 	
 	private boolean validateScores() 
@@ -948,8 +931,6 @@ public class Round implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
 			int updatedRounds = 0;
 			
 			this.setDisableRunGameNavigate(false);
@@ -1035,8 +1016,6 @@ public class Round implements Serializable
 	{
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
 			Round rd = this.getSelectedRound();
 			golfmain.deleteRoundFromDB(rd.getRoundID());
 			
@@ -1303,14 +1282,6 @@ public class Round implements Serializable
 
 	public void setTotalToParClass(String totalToParClass) {
 		this.totalToParClass = totalToParClass;
-	}
-
-	public Game getGame() {
-		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
 	}
 
 	public BigDecimal getNetScore() {

@@ -1,7 +1,6 @@
 package com.pas.dynamodb;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -9,18 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
-
-public class DateToStringConverter implements DynamoDBTypeConverter<String, Date> 
+public class DateToStringConverter
 {
-	@Override
-    public String convert(Date inputDate) 
-    {
-    	LocalDate localDate = LocalDate.ofInstant(inputDate.toInstant(), ZoneId.systemDefault());
-        return localDate.toString();
-    }
-
-    @Override
     public Date unconvert(String s) 
     {
     	//Example of what we are unconverting: 2020-03-21T00:00:00.000-04:00

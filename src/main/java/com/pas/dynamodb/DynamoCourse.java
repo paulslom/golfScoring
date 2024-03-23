@@ -1,7 +1,5 @@
 package com.pas.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
@@ -35,7 +33,6 @@ public class DynamoCourse
 	private int hole17Par;
 	private int hole18Par;
 
-	@DynamoDBAttribute(attributeName = "CourseID")
 	@DynamoDbPartitionKey //primary key
 	public String getCourseID() {
 		return courseID;

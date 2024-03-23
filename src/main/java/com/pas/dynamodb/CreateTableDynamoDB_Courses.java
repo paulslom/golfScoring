@@ -205,12 +205,10 @@ public class CreateTableDynamoDB_Courses
         
         try
         {
-        	coursesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
-                    .globalSecondaryIndices(
+        	coursesTable.createTable(r -> r.globalSecondaryIndices(
                         EnhancedGlobalSecondaryIndex.builder()
                                                     .indexName("gsi_OldCourseID")
                                                     .projection(p -> p.projectionType(ProjectionType.ALL))
-                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
                                                     .build()));
 	        
         }

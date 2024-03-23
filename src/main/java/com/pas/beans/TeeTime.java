@@ -11,12 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import com.pas.dynamodb.DateToStringConverter;
-import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
@@ -26,7 +22,6 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named("pc_TeeTime")
-@Component
 public class TeeTime implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -56,8 +51,11 @@ public class TeeTime implements Serializable
 	
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
 	
-	public TeeTime(String teeTimeID, String gameID, int playGroupNumber, String teeTimeString, Date gameDate, String courseName) 
+	@Autowired private final GolfMain golfmain;
+	
+	public TeeTime(String teeTimeID, String gameID, int playGroupNumber, String teeTimeString, Date gameDate, String courseName, GolfMain golfmain) 
 	{	
+		this.golfmain = golfmain;
 		this.setTeeTimeID(teeTimeID);
 		this.setGameID(gameID);
 		this.setPlayGroupNumber(playGroupNumber);
@@ -66,10 +64,16 @@ public class TeeTime implements Serializable
 		this.setCourseName(courseName);
 	}
 
-	public TeeTime() 
+	public TeeTime(GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
 	}
 
+	public TeeTime() 
+	{
+		this.golfmain = new GolfMain();		
+	}
+	
 	public String selectRowAjax(SelectEvent<TeeTime> event)
 	{
 		logger.info(getTempUserName() + " User clicked on a row in Tee Time list");
@@ -92,8 +96,7 @@ public class TeeTime implements Serializable
 		
 		if (selectedOption != null)
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			Game game = new Game();
+			Game game = new Game(golfmain);
 			game.setGameID(selectedOption);
 			this.getTeeTimeList().clear();
 			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(game));
@@ -128,25 +131,21 @@ public class TeeTime implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			
 			TeeTime tt = this.getSelectedTeeTime();
 			golfmain.deleteTeeTimeFromDB(this.getSelectedTeeTime().getTeeTimeID());
-				
-			Game gm = BeanUtilJSF.getBean("pc_Game");		
 			
-			gm = golfmain.getGameByGameID(tt.getGameID());
+			Game updatedGame = golfmain.getGameByGameID(tt.getGameID());
 			
-			gm.setFieldSize(gm.getFieldSize() - 4);
-			gm.setTotalPlayers(gm.getFieldSize());
-			gm.selectTotalPlayers(gm.getTotalPlayers());
+			updatedGame.setFieldSize(updatedGame.getFieldSize() - 4);
+			updatedGame.setTotalPlayers(updatedGame.getFieldSize());
+			updatedGame.selectTotalPlayers(updatedGame.getTotalPlayers());
 			
-			golfmain.updateGame(gm);
+			golfmain.updateGame(updatedGame);
 			
 			this.getTeeTimeList().clear();
-			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(gm));
+			this.setTeeTimeList(golfmain.getGameSpecificTeeTimes(updatedGame));
 			
-			emailAdminsAboutTeeTimeRemoval(gm,tt);
+			emailAdminsAboutTeeTimeRemoval(updatedGame,tt);
 			
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"tee time successfully removed",null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);  
@@ -169,11 +168,7 @@ public class TeeTime implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			
-			Game game = BeanUtilJSF.getBean("pc_Game");		
-			
-			game = golfmain.getGameByGameID(this.getGameID());
+			Game game = golfmain.getGameByGameID(this.getGameID());
 			
 			if (this.getOperation().equalsIgnoreCase("Add"))
 			{
@@ -240,8 +235,6 @@ public class TeeTime implements Serializable
 		{
 			emailRecipients.clear();
 		}
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		List<String> adminUsers = golfmain.getAdminUserList();		
 		
@@ -326,14 +319,11 @@ public class TeeTime implements Serializable
 		this.teeTimeList = teeTimeList;
 	}
 	
-	@DynamoDBTypeConverted(converter = DateToStringConverter.class)
-	@DynamoDBAttribute(attributeName = "GameDate")
 	public Date getGameDate() 
 	{
 		return gameDate;
 	}
 
-	@DynamoDBAttribute(attributeName = "GameDate")
 	public void setGameDate(Date gameDate) 
 	{
 		this.gameDate = gameDate;

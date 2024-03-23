@@ -6,11 +6,10 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
-import com.pas.util.BeanUtilJSF;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -18,7 +17,6 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named("pc_Group")
-@Component
 public class Group implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +27,14 @@ public class Group implements Serializable
 	private Integer oldGroupID;
 	private String groupName;
 	private Group selectedGroup;
-			
+	
+	@Autowired private final GolfMain golfmain;
+	
+	public Group(GolfMain golfmain) 
+	{
+		this.golfmain = golfmain;
+	}
+	
 	public void valueChangeGroup(AjaxBehaviorEvent event) 
 	{
 		logger.info("user selected a golf Group from main page");
@@ -43,10 +48,9 @@ public class Group implements Serializable
 			if (selectedGroup != null)
 			{
 				logger.info("loading up golf courses");	 
-				GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
 				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
-				gm.loadCourseSelections(dynamoClients);				
-				gm.setDisableProceedToSelectGame(false);			
+				golfmain.loadCourseSelections(dynamoClients);				
+				golfmain.setDisableProceedToSelectGame(false);			
 			}
 		} 
 		catch (Exception e) 

@@ -2,8 +2,6 @@ package com.pas.dynamodb;
 
 import java.math.BigDecimal;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
@@ -31,7 +29,6 @@ public class DynamoGame
 	private boolean gameClosedForSignups = false;	
 	private String gameNoteForEmail;
 	
-	@DynamoDBAttribute(attributeName = "GameID")
 	@DynamoDbPartitionKey //primary key
 	public String getGameID() {
 		return gameID;
@@ -41,7 +38,6 @@ public class DynamoGame
 		this.gameID = gameID;
 	}
 
-	@DynamoDBAttribute(attributeName = "GameDate")
 	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_GameDate")
 	public String getGameDate() {
 		return gameDate;
@@ -51,7 +47,6 @@ public class DynamoGame
 		this.gameDate = gameDate;
 	}
 
-	@DynamoDBAttribute(attributeName = "CourseID")
 	public String getCourseID() {
 		return courseID;
 	}
@@ -60,7 +55,6 @@ public class DynamoGame
 		this.courseID = courseID;
 	}
 
-	@DynamoDBAttribute(attributeName = "FieldSize")
 	public Integer getFieldSize() {
 		return fieldSize;
 	}
@@ -69,7 +63,6 @@ public class DynamoGame
 		this.fieldSize = fieldSize;
 	}
 
-	@DynamoDBAttribute(attributeName = "TotalPlayers")
 	public Integer getTotalPlayers() {
 		return totalPlayers;
 	}
@@ -78,7 +71,6 @@ public class DynamoGame
 		this.totalPlayers = totalPlayers;
 	}
 
-	@DynamoDBAttribute(attributeName = "TotalTeams")
 	public Integer getTotalTeams() {
 		return totalTeams;
 	}
@@ -87,7 +79,6 @@ public class DynamoGame
 		this.totalTeams = totalTeams;
 	}
 
-	@DynamoDBAttribute(attributeName = "SkinsPot")
 	public BigDecimal getSkinsPot() {
 		return skinsPot;
 	}
@@ -96,17 +87,14 @@ public class DynamoGame
 		this.skinsPot = skinsPot;
 	}
 
-	@DynamoDBAttribute(attributeName = "TeamPot")
 	public BigDecimal getTeamPot() {
 		return teamPot;
 	}
 
-	@DynamoDBAttribute(attributeName = "")
 	public void setTeamPot(BigDecimal teamPot) {
 		this.teamPot = teamPot;
 	}
 
-	@DynamoDBAttribute(attributeName = "BetAmount")
 	public BigDecimal getBetAmount() {
 		return betAmount;
 	}
@@ -115,7 +103,6 @@ public class DynamoGame
 		this.betAmount = betAmount;
 	}
 
-	@DynamoDBAttribute(attributeName = "HowManyBalls")
 	public Integer getHowManyBalls() {
 		return howManyBalls;
 	}
@@ -124,7 +111,6 @@ public class DynamoGame
 		this.howManyBalls = howManyBalls;
 	}
 
-	@DynamoDBAttribute(attributeName = "PurseAmount")
 	public BigDecimal getPurseAmount() {
 		return purseAmount;
 	}
@@ -133,7 +119,6 @@ public class DynamoGame
 		this.purseAmount = purseAmount;
 	}
 
-	@DynamoDBAttribute(attributeName = "EachBallWorth")
 	public BigDecimal getEachBallWorth() {
 		return eachBallWorth;
 	}
@@ -142,7 +127,6 @@ public class DynamoGame
 		this.eachBallWorth = eachBallWorth;
 	}
 
-	@DynamoDBAttribute(attributeName = "IndividualGrossPrize")
 	public BigDecimal getIndividualGrossPrize() {
 		return individualGrossPrize;
 	}
@@ -151,7 +135,6 @@ public class DynamoGame
 		this.individualGrossPrize = individualGrossPrize;
 	}
 
-	@DynamoDBAttribute(attributeName = "IndividualNetPrize")
 	public BigDecimal getIndividualNetPrize() {
 		return individualNetPrize;
 	}
@@ -160,7 +143,6 @@ public class DynamoGame
 		this.individualNetPrize = individualNetPrize;
 	}
 
-	@DynamoDBAttribute(attributeName = "PlayTheBallMethod")
 	public String getPlayTheBallMethod() {
 		return playTheBallMethod;
 	}
@@ -169,7 +151,6 @@ public class DynamoGame
 		this.playTheBallMethod = playTheBallMethod;
 	}
 
-	@DynamoDBAttribute(attributeName = "GameClosedForSignups")
 	public boolean isGameClosedForSignups() {
 		return gameClosedForSignups;
 	}
@@ -178,7 +159,6 @@ public class DynamoGame
 		this.gameClosedForSignups = gameClosedForSignups;
 	}
 
-	@DynamoDBAttribute(attributeName = "GameNoteForEmail")
 	public String getGameNoteForEmail() {
 		return gameNoteForEmail;
 	}

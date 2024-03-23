@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.CourseTee;
+import com.pas.beans.GolfMain;
 import com.pas.beans.Group;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoCourseTee;
@@ -32,8 +34,12 @@ public class CourseTeeDAO implements Serializable
 	private static DynamoDbTable<DynamoCourseTee> courseTeesTable;
 	private static final String AWS_TABLE_NAME = "coursetees";
 
-	public CourseTeeDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	
+	public CourseTeeDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		
 		try 
 		{
 		    dynamoClients = dynamoClients2;
@@ -53,7 +59,7 @@ public class CourseTeeDAO implements Serializable
         {
 			DynamoCourseTee dynamoCourseTee = results.next();
           	
-			CourseTee courseTee = new CourseTee();
+			CourseTee courseTee = new CourseTee(golfmain);
 			courseTee.setCourseTeeID(dynamoCourseTee.getCourseTeeID());
 			courseTee.setCourseID(dynamoCourseTee.getCourseID());
 			courseTee.setTeeColor(dynamoCourseTee.getTeeColor());

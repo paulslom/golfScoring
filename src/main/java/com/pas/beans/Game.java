@@ -1,5 +1,6 @@
 package com.pas.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -23,9 +24,9 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.pas.util.BeanUtilJSF;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
@@ -119,20 +120,31 @@ public class Game implements Serializable
 	
 	private String operation = "";
 	
+	@Autowired private final GolfMain golfmain;
+	
+	public Game(GolfMain golfmain) 
+	{
+		logger.info("In Game constructor.  hash code is this: " + this.hashCode());
+		this.golfmain = golfmain;
+	}
+	
 	public void onLoadGameList() 
 	{
 		logger.info(getTempUserName() + " In onLoadGameList Game.java");
 	}
 	
-	public String addGame()
+	public String addGame() throws IOException
 	{
 		operation = "Add";		
 		saveGame();
 		emailAdminsAboutGameAddition(this);
-		return "success";
+		
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/gameList.xhtml");
+		
+		return "";
 	}
 	
-	public String addGameFromGameList()
+	public String addGameFromGameList() throws IOException
 	{
 		operation = "Add";
 		
@@ -160,7 +172,8 @@ public class Game implements Serializable
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
 		
-		return "addGame";
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/addGame.xhtml");
+		return "";
 	}
 	
 	public String updateGame()
@@ -199,8 +212,6 @@ public class Game implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			
 			if (operation.equalsIgnoreCase("Add"))
 			{
 				logger.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");
@@ -237,7 +248,6 @@ public class Game implements Serializable
 	public String onLoadEmailFuture()
 	{
 		logger.info(getTempUserName() + " in onLoadEmailFuture");	
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		this.setFutureGamesList(golfmain.getFutureGames());
 		return "";
 	}
@@ -246,7 +256,6 @@ public class Game implements Serializable
 	{
 		logger.info(getTempUserName() + " in onLoadGameSignUp");
 		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());	
 		
 		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
@@ -275,8 +284,6 @@ public class Game implements Serializable
 		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
 		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
 		signupSDF.setTimeZone(etTimeZone);
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		List<Round> roundList = golfmain.getRoundsForGame(item);
 		
@@ -309,16 +316,7 @@ public class Game implements Serializable
 		this.setWhoIsSignedUpMessage(sb.toString());	
 	}
 	
-	public String proceedToPlayerPicklist() 
-	{
-		logger.info(getTempUserName() + " clicked player picklist from game add/select screen; sending them to player picklist screen");
 		
-		Player playerBean = BeanUtilJSF.getBean("pc_Player");
-		
-		playerBean.onLoadPlayerPickList();
-		return "success";
-	}
-	
 	public String selectRowSignup(SelectEvent<Game> event)
 	{
 		logger.info(getTempUserName() + " clicked on a row in Game list on game signup screen");
@@ -428,19 +426,17 @@ public class Game implements Serializable
 	{		
 		logger.debug(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
 		
-		GolfMain gm = BeanUtilJSF.getBean("pc_GolfMain");
+		golfmain.setRecommendations(totalPlayers);
 		
-		gm.setRecommendations(totalPlayers);
-		
-		this.setPurseAmount(gm.getRecommendedPurseAmount());
-		this.setTotalTeams(gm.getRecommendedTotalTeams());
-		this.setHowManyBalls(gm.getRecommendedHowManyBalls());
-		this.setEachBallWorth(gm.getRecommendedEachBallWorth());
-		this.setIndividualGrossPrize(gm.getRecommendedIndividualGrossPrize());
-		this.setIndividualNetPrize(gm.getRecommendedIndividualNetPrize());
-		this.setSkinsPot(gm.getRecommendedSkinsPot());
-		this.setTeamPot(gm.getRecommendedTeamPot());
-		this.setTeeTimesString(gm.getRecommendedTeeTimesString());
+		this.setPurseAmount(golfmain.getRecommendedPurseAmount());
+		this.setTotalTeams(golfmain.getRecommendedTotalTeams());
+		this.setHowManyBalls(golfmain.getRecommendedHowManyBalls());
+		this.setEachBallWorth(golfmain.getRecommendedEachBallWorth());
+		this.setIndividualGrossPrize(golfmain.getRecommendedIndividualGrossPrize());
+		this.setIndividualNetPrize(golfmain.getRecommendedIndividualNetPrize());
+		this.setSkinsPot(golfmain.getRecommendedSkinsPot());
+		this.setTeamPot(golfmain.getRecommendedTeamPot());
+		this.setTeeTimesString(golfmain.getRecommendedTeeTimesString());
 		this.setPlayTheBallMethod(GolfMain.getRecommendedPlayTheBallMethod());
 		this.setGameNoteForEmail(GolfMain.getRecommendedGameNote());
 						
@@ -485,9 +481,7 @@ public class Game implements Serializable
 		
 		try
 		{
-			Round newRound = new Round();
-			
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
+			Round newRound = new Round(golfmain, game1);
 			
 			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 			
@@ -546,8 +540,6 @@ public class Game implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-			
 			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 		
 			Round theRound = golfmain.getRoundByGameandPlayer(game1.gameID, tempPlayer.getPlayerID());
@@ -609,7 +601,6 @@ public class Game implements Serializable
 			emailRecipients.clear();
 		}
 				
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");			
 		List<String> adminUsers = golfmain.getAdminUserList();
 		
 		//anyone with admin role
@@ -663,8 +654,6 @@ public class Game implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-			
 			//first assign selected game into current game
 			this.setBetAmount(this.getSelectedGame().getBetAmount());
 			this.setCourse(this.getSelectedGame().getCourse());
@@ -705,13 +694,11 @@ public class Game implements Serializable
 		
 	private void addEntryFees() throws Exception 
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
 		for (int i = 0; i < this.getPlayerScores().size(); i++) 
 		{
 			Round rd = this.getPlayerScores().get(i);
 			
-			PlayerMoney pm = new PlayerMoney();
+			PlayerMoney pm = new PlayerMoney(golfmain);
 			pm.setGameID(this.getSelectedGame().getGameID());
 			pm.setPlayerID(rd.getPlayerID());
 			
@@ -733,8 +720,6 @@ public class Game implements Serializable
 
 	private void calculateIndividualGrossAndNet() throws Exception 
 	{	
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
 		//First get all the scores
 		List<Integer> grossScores = new ArrayList<Integer>();
 		List<BigDecimal> netScores = new ArrayList<BigDecimal>();
@@ -868,7 +853,7 @@ public class Game implements Serializable
 				int grossScore = round.getTotalScore();
 				if (grossScore == lowestGrossScore)
 				{
-					PlayerMoney pm = new PlayerMoney();
+					PlayerMoney pm = new PlayerMoney(golfmain);
 					pm.setGameID(this.getSelectedGame().getGameID());
 					pm.setPlayerID(round.getPlayerID());
 					pm.setAmount(grossPrize);
@@ -914,7 +899,7 @@ public class Game implements Serializable
 				if (netScore.compareTo(lowestNetScore) == 0)
 				{
 							
-					PlayerMoney pm = new PlayerMoney();
+					PlayerMoney pm = new PlayerMoney(golfmain);
 					pm.setGameID(this.getSelectedGame().getGameID());
 					pm.setPlayerID(round.getPlayerID());
 					pm.setAmount(netPrize);
@@ -968,8 +953,8 @@ public class Game implements Serializable
 			{
 				logger.info(getTempUserName() + " working on team: " + teamNumber + " ball: " + i);
 				
-				Round tempRound = new Round();
-				Player tempPlayer = new Player();
+				Round tempRound = new Round(golfmain, this);
+				Player tempPlayer = new Player(golfmain);
 				tempPlayer.setTeamNumber(teamNumber);
 				tempPlayer.setLastName("Ball " + i);
 				tempPlayer.setFirstName(teamName);
@@ -1019,8 +1004,6 @@ public class Game implements Serializable
 
 	private void calcTeamIndividualWinnings() throws Exception 
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
 		//First, which team(s) won each ball
 		
 		Integer playersPerTeamInt = totalPlayers / totalTeams;
@@ -1092,7 +1075,7 @@ public class Game implements Serializable
 					if (playerRound.getPlayer().getTeamNumber() == winningTeamNumber  //original method
 					||  playerRound.getTeamNumber() == winningTeamNumber) //new DB method
 					{						
-						PlayerMoney pm = new PlayerMoney();
+						PlayerMoney pm = new PlayerMoney(golfmain);
 						pm.setGameID(this.getSelectedGame().getGameID());
 						pm.setPlayerID(playerRound.getPlayerID());
 						pm.setAmount(individualBallPrize);
@@ -1110,8 +1093,6 @@ public class Game implements Serializable
 	private void calculateSkins() throws Exception 
 	{
 		logger.info(getTempUserName() + " entering calculateSkins");
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
 		
 		int totalSkins = 0;
 		List<SkinWinnings> tempSkinsList = new ArrayList<SkinWinnings>();
@@ -1132,7 +1113,7 @@ public class Game implements Serializable
 			holeScoreTreeMap.putAll(holeScoreMap); //now we're sorted
 			
 			int lowestScore = 0;
-			Player lowestPlayer = new Player();
+			Player lowestPlayer = new Player(golfmain);
 			
 			for (Map.Entry<Integer, Player> entry : holeScoreTreeMap.entrySet()) 
 			{
@@ -1185,7 +1166,7 @@ public class Game implements Serializable
 				skinWinnings.setAmountWon(skinValue);
 				this.skinWinningsList.add(skinWinnings);
 				
-				PlayerMoney pm = new PlayerMoney();
+				PlayerMoney pm = new PlayerMoney(golfmain);
 				pm.setGameID(this.getSelectedGame().getGameID());
 				pm.setPlayerID(skinWinnings.getPlayerID());
 				pm.setAmount(skinValue);
@@ -2308,9 +2289,10 @@ public class Game implements Serializable
 		return sb;
 	}
 
-	public String navigateToEmail()
+	public String navigateToEmail() throws IOException
 	{
-		return "success";
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/emailPostGame.xhtml");
+		return "";
 	}	
 
 	public String onLoadPreGameEmail() 
@@ -2381,8 +2363,6 @@ public class Game implements Serializable
 		
 		try
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
-			
 			golfmain.deleteRoundsFromDB(this.getSelectedGame().getGameID());		
 			golfmain.deleteTeeTimesForGameFromDB(this.getSelectedGame().getGameID());
 			golfmain.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
@@ -2410,8 +2390,6 @@ public class Game implements Serializable
 		
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
-	
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		List<String> roundPlayers = golfmain.getGameParticipantsFromDB(this.getSelectedGame());
 		
@@ -2465,8 +2443,6 @@ public class Game implements Serializable
 		{
 			emailRecipients.clear();
 		}
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
 		
 		List<Player> fullPlayerList = golfmain.getFullPlayerList();
 		
@@ -2527,9 +2503,7 @@ public class Game implements Serializable
 	private void establishEmailRecipients() 
 	{
 		String mailTo = genericProps.getString("mailTo");
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
+			
 		if (emailRecipients == null)
 		{
 			emailRecipients = new ArrayList<String>();
@@ -2569,8 +2543,6 @@ public class Game implements Serializable
 
 	private StringBuffer getEmailMoneyTeamDetails() 
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
 		StringBuffer sb = new StringBuffer();
 		
 		StringBuffer sbSkinsOnlyPlayers = new StringBuffer();
@@ -2647,8 +2619,6 @@ public class Game implements Serializable
 
 	private StringBuffer getEmailPlayGroupDetails() throws Exception
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-		
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(NEWLINE);
@@ -2717,8 +2687,6 @@ public class Game implements Serializable
 		
 		if (useJSFBean)
 		{
-			GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");	
-			
 			List<TeeTime> teeTimeList = golfmain.getTeeTimesByGame(gm);
 			for (int i = 0; i < teeTimeList.size(); i++) 
 			{
@@ -2761,8 +2729,6 @@ public class Game implements Serializable
 	private ArrayList<String> getEmailAdminsRecipientList() 
 	{
 		ArrayList<String> emailRecipients = new ArrayList<String>();
-		
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");
 		
 		//anyone with admin role
 		for (int i = 0; i < golfmain.getAdminUserList().size(); i++) 
@@ -3333,8 +3299,6 @@ public class Game implements Serializable
 
 	public String getCourseTeeColor() 
 	{
-		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-		
 		if (courseTeeID != null && !courseTeeID.equalsIgnoreCase("0") && (courseTeeColor == null || courseTeeColor.trim().length() == 0))
 		{
 			String tempColor = "";

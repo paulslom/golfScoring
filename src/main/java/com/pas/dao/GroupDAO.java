@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pas.beans.GolfMain;
 import com.pas.beans.Group;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGroup;
@@ -29,8 +31,12 @@ public class GroupDAO implements Serializable
 	private static DynamoDbTable<DynamoGroup> groupsTable;
 	private static final String AWS_TABLE_NAME = "groups";
 	
-	public GroupDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	
+	public GroupDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+		this.golfmain = golfmain;
+		
 		dynamoClients = dynamoClients2;
 		
 		try 
@@ -54,7 +60,7 @@ public class GroupDAO implements Serializable
         {
 			DynamoGroup dynamoGroup = results.next();
             
-			Group group = new Group();
+			Group group = new Group(golfmain);
 			group.setGroupID(dynamoGroup.getGroupID());
 			group.setGroupName(dynamoGroup.getGroupName());
 			

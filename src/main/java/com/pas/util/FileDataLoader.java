@@ -21,7 +21,8 @@ import com.pas.dynamodb.DynamoUtil;
 public class FileDataLoader 
 {
 	private static Logger logger = LogManager.getLogger(FileDataLoader.class);
-    private static final boolean loadData = false;
+    //private static final boolean loadData = false;
+    private static final boolean loadData = true;
     
     private static String GOLFUSERS_JSONFILE = "/data/GolfUsersData.json";
 	private static String COURSES_JSONFILE = "/data/CoursesData.json";
@@ -45,7 +46,7 @@ public class FileDataLoader
         DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
         
         doTable(dynamoClients, GOLFUSERS_JSONFILE);
-		doTable(dynamoClients, GOLFGROUPS_JSONFILE);
+		doTable(dynamoClients, GOLFGROUPS_JSONFILE);		
 		doTable(dynamoClients, COURSES_JSONFILE);
 		doTable(dynamoClients, GOLFCOURSETEES_JSONFILE);
 		doTable(dynamoClients, GAMES_JSONFILE);
@@ -54,10 +55,7 @@ public class FileDataLoader
 		doTable(dynamoClients, PLAYERTEES_JSONFILE);
 		doTable(dynamoClients, PLAYERMONEY_JSONFILE);
 		doTable(dynamoClients, ROUNDS_JSONFILE);
-		
-        InputStream inputStream = FileDataLoader.class.getResourceAsStream("/data/GolfUsersData.json");
-        CreateTableDynamoDB_GolfUsers ctgu = new CreateTableDynamoDB_GolfUsers();
-        ctgu.loadTable(dynamoClients, inputStream);
+		/**/       
                 
         return true;
     }

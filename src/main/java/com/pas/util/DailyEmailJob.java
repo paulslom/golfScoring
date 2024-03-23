@@ -12,9 +12,11 @@ import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Course;
 import com.pas.beans.Game;
+import com.pas.beans.GolfMain;
 import com.pas.beans.Group;
 import com.pas.beans.Round;
 import com.pas.beans.TeeTime;
@@ -39,11 +41,15 @@ public class DailyEmailJob implements Runnable
 	
 	private static Group defaultGroup;
 	
-	public DailyEmailJob() throws Exception 
+	@Autowired private final GolfMain golfmain;
+	
+	public DailyEmailJob(GolfMain golfmain) throws Exception 
 	{
+		this.golfmain = golfmain;
+		
 		dynamoClients = DynamoUtil.getDynamoClients();
 		
-		GroupDAO groupDAO = new GroupDAO(dynamoClients);
+		GroupDAO groupDAO = new GroupDAO(dynamoClients, new GolfMain());
 		groupDAO.readGroupsFromDB();
 		defaultGroup = groupDAO.getGroupsList().get(0);
 	}
@@ -97,7 +103,7 @@ public class DailyEmailJob implements Runnable
 		inputGame.setFutureGameEmailMessage(inputGame.getFutureGameEmailMessage().replace("~~~gameDetails~~~", getGameParticipants(inputGame)));
 		
 		logger.info("establishing email recipients");		
-		ArrayList<String> emailRecipients = establishEmailRecipients();		
+		ArrayList<String> emailRecipients = establishEmailRecipients(inputGame);		
 		logger.info("email recipients successfully established");
 		
 		SAMailUtility.sendEmail(subjectLine, inputGame.getFutureGameEmailMessage(), emailRecipients, false); //last false parameter means do not use jsf
@@ -106,7 +112,7 @@ public class DailyEmailJob implements Runnable
 
 	private String getTeeTimes(Game inputGame) throws Exception 
 	{
-		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients);
+		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients, golfmain);
 		teeTimeDAO.readTeeTimesFromDB(defaultGroup);
 		List<TeeTime> teeTimeList = teeTimeDAO.getTeeTimesByGame(inputGame);
 		
@@ -123,9 +129,9 @@ public class DailyEmailJob implements Runnable
 		return sb.toString();
 	}
 
-	private ArrayList<String> establishEmailRecipients() 
+	private ArrayList<String> establishEmailRecipients(Game inputGame) 
 	{
-		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients, golfmain);
 		playerDAO.readPlayersFromDB();
 		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerDAO.getFullPlayerList());		
 		
@@ -139,7 +145,7 @@ public class DailyEmailJob implements Runnable
 	
 	private List<Game> getFutureGames() throws Exception
 	{
-		GameDAO gameDAO = new GameDAO(dynamoClients);		
+		GameDAO gameDAO = new GameDAO(dynamoClients, new GolfMain());		
 		gameDAO.readGamesFromDB(defaultGroup);
 		List<Game> gameList = gameDAO.getFullGameList();
 		
@@ -191,7 +197,7 @@ public class DailyEmailJob implements Runnable
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
 				
-		RoundDAO roundDAO = new RoundDAO(dynamoClients);
+		RoundDAO roundDAO = new RoundDAO(dynamoClients, golfmain, inputGame);
 		roundDAO.readAllRoundsFromDB();
 		List<Round> roundList = roundDAO.getRoundsForGame(inputGame);
 		

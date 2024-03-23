@@ -9,11 +9,13 @@ import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import com.pas.util.Utils;
 
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+//import software.amazon.awssdk.enhanced.dynamodb.model.EnhancedGlobalSecondaryIndex;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
+//import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
+//import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
 
 public class DynamoUtil 
 {
@@ -26,10 +28,32 @@ public class DynamoUtil
 	
 	private static DynamoClients dynamoClients = null;	
 
-	public static final Long READ_CAPACITY = 10L;
-	public static final Long WRITE_CAPACITY = 5L;
-	public static final ProvisionedThroughput DEFAULT_PROVISIONED_THROUGHPUT =
-	            ProvisionedThroughput.builder().readCapacityUnits(READ_CAPACITY).writeCapacityUnits(WRITE_CAPACITY).build();
+	/*
+	The maximum number of strongly consistent reads and writes consumed per second before DynamoDB returns a ThrottlingException.
+	* For more information, see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html
+    *  If read/write capacity mode is PAY_PER_REQUEST the value is set to 0.
+    *  
+    *  If you don't specify provisionedThroughput, you get defaults, and per AWS documentation that will use on-demand.  So for 
+    *  on-demand let's skip defining provisioned throughput entirely.
+    *  
+    *  When default settings are used, values for provisioned throughput are not set. 
+    *  Instead, the billing mode for the table is set to on-demand.
+    *  
+    *  Example of a create table with provisioned throughput:
+    *  
+    *  coursesTable.createTable(r -> r.provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                    .globalSecondaryIndices(
+                        EnhancedGlobalSecondaryIndex.builder()
+                                                    .indexName("gsi_OldCourseID")
+                                                    .projection(p -> p.projectionType(ProjectionType.ALL))
+                                                    .provisionedThroughput(DynamoUtil.DEFAULT_PROVISIONED_THROUGHPUT)
+                                                    .build()));
+    */
+	
+	//public static final Long READ_CAPACITY = 3L;
+	//public static final Long WRITE_CAPACITY = 3L;
+	//public static final ProvisionedThroughput DEFAULT_PROVISIONED_THROUGHPUT =
+	//            ProvisionedThroughput.builder().readCapacityUnits(READ_CAPACITY).writeCapacityUnits(WRITE_CAPACITY).build();
 	    
 	public static DynamoClients getDynamoClients() throws Exception
 	{
@@ -45,21 +69,23 @@ public class DynamoUtil
         {
         	logger.info("We are operating in LOCAL env - connecting to DynamoDBLocal");
         	
-        	System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
+        	//System.setProperty("sqlite4java.library.path", "C:\\Paul\\DynamoDB\\DynamoDBLocal_lib");
+        	System.setProperty("aws.region", "us-east-1");
+        	
             String uri = "http://localhost:" + AWS_DYNAMODB_LOCAL_PORT;
             
             // Create an instance of DynamoDB Local that runs over HTTP
-            final String[] localArgs = {"-port", AWS_DYNAMODB_LOCAL_PORT, "-sharedDb", "-dbPath", "C:/Paul/DynamoDB"};
+            final String[] localArgs = {"-inMemory", "-port", AWS_DYNAMODB_LOCAL_PORT};
             logger.info("Starting DynamoDB Local...");
             
             server = ServerRunner.createServerFromCommandLineArgs(localArgs);
             server.start();
-            
+               
             //  Create a client that will connect to DynamoDB Local
             ddbClient =  DynamoDbClient.builder()
             		.endpointOverride(URI.create(uri))
-                    .region(Region.of(AWS_REGION))
-                    .credentialsProvider(ProfileCredentialsProvider.create("default"))
+            		.credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+            		.region(Region.of(AWS_REGION))
                     .build();
         }
         else
@@ -68,7 +94,6 @@ public class DynamoUtil
         	
         	ddbClient =  DynamoDbClient.builder()
                     .region(Region.of(AWS_REGION))
-                    .credentialsProvider(ProfileCredentialsProvider.create("default"))
                     .build();
         } 
 		

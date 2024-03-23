@@ -1,7 +1,5 @@
 package com.pas.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -12,7 +10,6 @@ public class DynamoGroup
 	private Integer oldGroupID;
 	private String groupName;
 	
-	@DynamoDBAttribute(attributeName = "GroupID")
 	@DynamoDbPartitionKey //primary key
 	public String getGroupID() {
 		return groupID;
@@ -22,7 +19,6 @@ public class DynamoGroup
 		this.groupID = groupID;
 	}
 
-	@DynamoDBAttribute(attributeName = "OldGroupID")
 	public Integer getOldGroupID() {
 		return oldGroupID;
 	}
@@ -31,7 +27,6 @@ public class DynamoGroup
 		this.oldGroupID = oldGroupID;
 	}
 
-	@DynamoDBAttribute(attributeName = "GroupName")
 	public String getGroupName() {
 		return groupName;
 	}
