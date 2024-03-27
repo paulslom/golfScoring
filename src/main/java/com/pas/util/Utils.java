@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -151,6 +152,46 @@ public class Utils
 		return returnScore;
 	}
 	
+	public static Date getGameDateTimeUsingTeeTimeString(Date gameDate, String teeTimesString) 
+	{
+		if (teeTimesString == null)
+		{
+			return gameDate;
+		}
+		
+		StringTokenizer st = new StringTokenizer(teeTimesString, " ");
+		String teeTimeStr = "";	     
+	 	while (st.hasMoreTokens()) 
+	 	{	 			
+	 		teeTimeStr = st.nextToken();
+	 		break;
+	 	}
+		Date returnDate = new Date();
+		
+		if (teeTimeStr != null && teeTimeStr.trim().length() > 0)
+		{
+			Calendar calendar = Calendar.getInstance(); 
+	        calendar.setTime(gameDate); 
+	   
+	        try
+	        {
+	        	String hour = "";
+		        String minute = "";
+		        
+		        StringTokenizer stTime = new StringTokenizer(teeTimeStr, ":");
+		       	hour = stTime.nextToken();
+			 	minute = stTime.nextToken();
+	        	calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(hour)); 
+	        	calendar.add(Calendar.MINUTE, Integer.parseInt(minute)); 
+	        }
+	        catch (Exception e) //ignore if we can't set hour and minute
+	        {	        	
+	        }
+	        
+	        returnDate = calendar.getTime(); 
+		}
+		return returnDate;
+	}
 	public static int front9Score(Round round)
 	{
 		int front9 = 0;

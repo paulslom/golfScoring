@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.ApplicationScope;
 
+import com.pas.beans.Player.PlayerComparatorByLastName;
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
 import com.pas.dao.GameDAO;
@@ -1150,6 +1151,14 @@ public class GolfMain implements Serializable
 	{
 		return playerDAO.getFullPlayerList();
 	}
+	
+	public List<Player> getActivePlayerList() 
+	{
+		List<Player> sortedList = new ArrayList<>(playerDAO.getActivePlayerList());
+	    sortedList.sort(new PlayerComparatorByLastName());
+	    
+	    return sortedList;
+	}
 
 	public Map<String, Player> getFullPlayersMapByPlayerID() 
 	{
@@ -1244,9 +1253,9 @@ public class GolfMain implements Serializable
 		GolfMain.recommendedGameNote = recommendedGameNote;
 	}
 
-	public String addGame(Game game) throws Exception 
+	public String addGame(Game game, String teeTimesString) throws Exception 
 	{
-		return gameDAO.addGame(game);
+		return gameDAO.addGame(game, teeTimesString);
 	}
 
 	public void deleteGame(String gameID) throws Exception 

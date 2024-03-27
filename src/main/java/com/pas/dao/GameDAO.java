@@ -69,8 +69,11 @@ public class GameDAO implements Serializable
 	   }	   
 	}
 		
-	public String addGame(Game game) throws Exception
+	public String addGame(Game game, String teeTimesString) throws Exception
 	{
+		Date gameDate = Utils.getGameDateTimeUsingTeeTimeString(game.getGameDate(), teeTimesString);
+		game.setGameDate(gameDate);	
+		
 		DynamoGame dynamoGame = dynamoUpsert(game);	
 		game.setGameID(dynamoGame.getGameID());
 		
@@ -118,8 +121,10 @@ public class GameDAO implements Serializable
 			dynamoGame.setGameID(game.getGameID());
 		}
 		
-		dynamoGame.setOldGameID(game.getOldGameID());		
+		dynamoGame.setOldGameID(game.getOldGameID());
+		
 		dynamoGame.setGameDate(DateToStringConverter.convertDateToDynamoStringFormat(game.getGameDate()));
+		
 		dynamoGame.setCourseID(game.getCourseID());
 		dynamoGame.setFieldSize(game.getFieldSize());
 		dynamoGame.setTotalPlayers(game.getTotalPlayers());
@@ -141,6 +146,8 @@ public class GameDAO implements Serializable
 				
 		return dynamoGame;
 	}
+
+	
 
 	public void readGamesFromDB(Group defaultGroup) throws Exception 
     {

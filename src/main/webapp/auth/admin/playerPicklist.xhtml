@@ -17,9 +17,7 @@
  	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
 			
 		   <h:form id="playerPicklistForm">
-		   		
-		   		<h:inputHidden id="hiddenSelectedGame" value="#{pc_Game.selectedGame}" />
-    
+		 
 		   		<h3>Player PickList</h3>
 		   		
 		   		<table>
@@ -36,11 +34,9 @@
 	             
 		               <td class="text">
 						
-					      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
-					         <p:ajax listener="#{pc_Player.valueChangeGame}" event="change" 
-					         	update="playerPicklistForm"/>
-					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
+					      <p:selectOneMenu id="gameList" value="#{pc_Game.gameID}" required="true"  hideNoSelectionOption="true">
+					         <p:ajax listener="#{pc_Player.valueChangeGamePlayerPicklist}" update="playerPicklistForm playersPicklistForm"/>
+					 		 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 						  </p:selectOneMenu>
 						
 					   </td>
@@ -58,7 +54,7 @@
 					<tr>   	
 					   
 					    <td class="textLabel" colspan="4">
-							<p:outputLabel id="label3" value=" Players Selected so far: #{pc_Player.pickListTargetPlayersSelected}"/>
+							<p:outputLabel id="label3" value=" Players Selected so far: #{pc_Player.totalSelectedPlayers}"/>
 					   </td>					       
 					   
 				    </tr>
@@ -75,20 +71,14 @@
 			</h:form>
 			
 			<h:form id="playersPicklistForm">				
+								 
+				<p:messages id="facesMessagesID" showDetail="false">
+				</p:messages> 	
 				
-				<p:pickList value="#{pc_Player.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
-					itemValue="#{player}" showSourceControls="true" showTargetControls="true">
-					
-					<f:facet name="sourceCaption">Available</f:facet>
-			        <f:facet name="targetCaption">Playing</f:facet>
-			 
-			        <p:ajax event="transfer" listener="#{pc_Player.onTransfer}" update="playerPicklistForm playersPicklistForm" />
-			           
-					<p:column style="width:100%">
-						#{player.fullName}
-					</p:column>
-					
-				</p:pickList>				
+				<p:selectManyCheckbox id="playersCheckboxID" converter="playerConverter" value="#{pc_Player.selectedPlayersList}" layout="responsive">
+            		<f:selectItems value="#{pc_GolfMain.activePlayerList}" var="item" itemLabel="#{item.fullName}" itemValue="#{item.playerID}"/>
+            		<p:ajax listener="#{pc_Player.valueChangePickedPlayer}" update="playerPicklistForm"/>
+        		</p:selectManyCheckbox>							
 				 
 				<p:commandButton id="saveAndStayButtonID"
 	                value="#{bundle.saveAndStay}"
@@ -100,10 +90,7 @@
 	                value="#{bundle.proceedToTeeTimes}"
 	                action="#{pc_Player.proceedToTeeTimes}"
 					update="playersPicklistForm">
-				</p:commandButton> 
-								 
-				<p:messages id="facesMessagesID" showDetail="false">
-				</p:messages> 					
+				</p:commandButton> 								
 							
 		   </h:form> 
 

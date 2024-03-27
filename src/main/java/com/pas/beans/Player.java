@@ -56,13 +56,9 @@ public class Player implements Serializable
 	private Player selectedPlayer;
 	
 	private boolean disablePlayersDialogButton = true;
-	private List<Player> selectedPlayers = new ArrayList<Player>();
+	private List<Object> selectedPlayersList = new ArrayList<>();
 	private List<Round> roundsForGame = new ArrayList<Round>();	
 		
-	private DualListModel<Player> playersPickList = new DualListModel<Player>();
-	private List<Player> playersPickListSource = new ArrayList<Player>();
-	private List<Player> playersPickListTarget = new ArrayList<Player>();
-	
 	private DualListModel<Player> gameTeeTimeList1 = new DualListModel<Player>();
 	private DualListModel<Player> gameTeeTimeList2 = new DualListModel<Player>();
 	private DualListModel<Player> gameTeeTimeList3 = new DualListModel<Player>();
@@ -108,54 +104,35 @@ public class Player implements Serializable
 	}
 	
 	public void onLoadPlayerPickList() 
-	{			
-		loadSelectedPlayers(golfmain.getFullGameList().get(0));		
-		
-		setPlayerPickLists(golfmain.getFullGameList().get(0));			
+	{
+		try
+		{
+			selectedGame = golfmain.getFullGameList().get(0);
+			loadSelectedPlayers(selectedGame);
+		}
+		catch (Exception e)
+		{
+			logger.error("onLoadPlayerPickList failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"onLoadPlayerPickList failed: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 	}
 	
 	public void onLoadTeeTimePickList() 
 	{
-		loadSelectedPlayers(golfmain.getFullGameList().get(0));
-		this.setTeeTimeList(golfmain.getTeeTimesByGame(golfmain.getFullGameList().get(0)));		
-		
-		showTeeTimePicklist();
+		try
+		{
+			loadSelectedPlayers(golfmain.getFullGameList().get(0));
+			this.setTeeTimeList(golfmain.getTeeTimesByGame(golfmain.getFullGameList().get(0)));			
+			showTeeTimePicklist();
+		}
+		catch (Exception e)
+		{
+			logger.error("onLoadTeeTimePickList failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"onLoadTeeTimePickList: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 	}
-	
-	public void setPlayerPickLists(Game game) 
-	{
-		if (playersPickListSource != null)
-		{
-			playersPickListSource.clear();
-		}
-		
-		if (playersPickListTarget != null)
-		{
-			playersPickListTarget.clear();
-		}
-		Map<String, Player> selectedMap = new HashMap<>();
-		
-		for (int i = 0; i < this.getSelectedPlayers().size(); i++) 
-		{
-			playersPickListTarget.add(this.getSelectedPlayers().get(i));
-			selectedMap.put(this.getSelectedPlayers().get(i).getPlayerID(), this.getSelectedPlayers().get(i));
-		}
-		
-		for (int i = 0; i < golfmain.getFullPlayerList().size(); i++) 
-		{
-			Player tempPlayer = golfmain.getFullPlayerList().get(i);
-			if (!selectedMap.containsKey(tempPlayer.getPlayerID()))
-			{
-				playersPickListSource.add(golfmain.getFullPlayerList().get(i));
-			}
-		}
-		
-		Collections.sort(playersPickListSource, new PlayerComparatorByLastName());
-		Collections.sort(playersPickListTarget, new PlayerComparatorByLastName());
-		
-		this.setPlayersPickList(new DualListModel<Player>(playersPickListSource, playersPickListTarget));	
-	}
-
 	
 	public String proceedToGameHandicaps() throws IOException
 	{
@@ -168,79 +145,94 @@ public class Player implements Serializable
 		return "";
 	}
 	
-	public String proceedToTeeTimes() throws IOException
+	public String proceedToTeeTimes()
 	{
 		logger.info("User is done selecting players for game, proceed to tee times");
 		
-		saveAndStayPickList();
-		
-		onLoadTeeTimePickList();
-		
-		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/teeTimePickList.xhtml");
-		
+		try
+		{
+			saveAndStayPickList();		
+			onLoadTeeTimePickList();		
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/teeTimePickList.xhtml");
+		}
+		catch (Exception e)
+		{
+			logger.error("proceedToTeeTimes failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"proceed to tee times failed: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
 		return "";
 	}	
 	
-	public void valueChangeGame(AjaxBehaviorEvent event) 
+	public void valueChangeGamePlayerPicklist(AjaxBehaviorEvent event) 
 	{
 		logger.info("User picked a game on select players for game form");
-			
-		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		Game selectedOption = (Game)selectonemenu.getValue();
-		this.setSelectedGame(selectedOption);
 		
-		if (selectedOption != null)
+		try
 		{
-			loadSelectedPlayers(selectedOption);
+			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 			
-			setPlayerPickLists(selectedOption);
+			String gameID = (String)selectonemenu.getValue();
 			
-			this.setTeeTimeList(golfmain.getTeeTimesByGame(selectedOption));		
+			if (gameID != null)
+			{
+				selectedGame = golfmain.getGameByGameID(gameID);
+				loadSelectedPlayers(selectedGame);
+					
+				this.setRoundsForGame(golfmain.getRoundsForGame(selectedGame));
+			}
+		}
+		catch (Exception e)
+		{
+			logger.error("valueChangeGamePlayerPicklist failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"valueChangeGamePlayerPicklist failed: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
+						
+	}
+	
+	public void valueChangeGamePlayerTeeTimes(AjaxBehaviorEvent event) 
+	{
+		logger.info("User picked a game on select players for game form");
+		
+		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
+		
+		String gameID = (String)selectonemenu.getValue();
+		
+		if (gameID != null)
+		{
+			Game selectedGame = golfmain.getGameByGameID(gameID);
 			
-			this.setRoundsForGame(golfmain.getRoundsForGame(selectedOption));
+			this.setTeeTimeList(golfmain.getTeeTimesByGame(selectedGame));		
+			
+			this.setRoundsForGame(golfmain.getRoundsForGame(selectedGame));
 			
 			showTeeTimePicklist();
 		}
 						
 	}
-	private String loadSelectedPlayers(Game game) 
+	
+	public void valueChangePickedPlayer(AjaxBehaviorEvent event) 
+	{
+		logger.info("User checked/unchecked a player checkbox on select players for game form. We now have " + this.getTotalSelectedPlayers() + " total players selected");
+	}
+	
+	private String loadSelectedPlayers(Game game) throws Exception
 	{
 		logger.info("load of gameSelectPlayers; loading those already selected");
 		
-		this.getSelectedPlayers().clear();
-			
+		this.getSelectedPlayersList().clear();
+		
 		roundsForGame = golfmain.getRoundsForGame(game);
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
 			Round round = roundsForGame.get(i);
 			Player player = golfmain.getPlayerByPlayerID(round.getPlayerID());
-			round.setPlayer(player);
-			player.setTeamNumber(round.getTeamNumber());
-			player.setTeeTime(round.getTeeTime());
-			if (round.getRoundHandicap() != null)
-			{
-				player.setHandicap(round.getRoundHandicap());
-			}
-			this.getSelectedPlayers().add(player);
-			
-			for (int j = 0; j < golfmain.getFullPlayerList().size(); j++) 
-			{
-				Player fullPlayer = golfmain.getFullPlayerList().get(j);
-				if (fullPlayer.getPlayerID().equalsIgnoreCase(round.getPlayerID()))
-				{
-					fullPlayer.setTeamNumber(round.getTeamNumber());
-					fullPlayer.setTeeTime(round.getTeeTime());
-					if (round.getRoundHandicap() != null)
-					{
-						fullPlayer.setHandicap(round.getRoundHandicap());
-					}
-					golfmain.getFullPlayerList().set(j, fullPlayer);
-					break;
-				}
-			}
+			this.getSelectedPlayersList().add(player.getPlayerID());
 		}
-		
+				
+		//Collections.sort(this.getSelectedPlayersList());
+				
 		if (roundsForGame.size() > 0)
 		{
 			golfmain.setDisableProceedToEnterScores(false);					
@@ -376,65 +368,57 @@ public class Player implements Serializable
 		
 	}
 
-	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap, Game selectedGame)
+	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap, Game selectedGame) throws Exception
 	{
-		try
+		if (selectedGame != null)
 		{
-			if (selectedGame != null)
+			for (int i = 0; i < this.getSelectedPlayersList().size(); i++) 
 			{
-				for (int i = 0; i < this.getSelectedPlayers().size(); i++) 
+				Player tempPlayer = (Player) this.getSelectedPlayersList().get(i);
+				
+				Round newRound = new Round(golfmain, selectedGame);
+				newRound.setGameID(selectedGame.getGameID());
+				newRound.setPlayerID(tempPlayer.getPlayerID());
+				newRound.setPlayer(tempPlayer);
+				newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
+				newRound.setTeamNumber(tempPlayer.getTeamNumber());
+				if (tempPlayer.getTeeTime() != null)
 				{
-					Player tempPlayer = this.getSelectedPlayers().get(i);
+					newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
+					newRound.setTeeTime(tempPlayer.getTeeTime());
+				}
+				newRound.setRoundHandicap(tempPlayer.getHandicap());
+				
+				newRound.setSignupDateTime(new Date());
+				
+				if (roundSignupDateTimesMap != null)
+				{
+					Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
 					
-					Round newRound = new Round(golfmain, selectedGame);
-					newRound.setGameID(selectedGame.getSelectedGame().getGameID());
-					newRound.setPlayerID(tempPlayer.getPlayerID());
-					newRound.setPlayer(tempPlayer);
-					newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
-					newRound.setTeamNumber(tempPlayer.getTeamNumber());
-					if (tempPlayer.getTeeTime() != null)
+					if (tempDate != null)
 					{
-						newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
-						newRound.setTeeTime(tempPlayer.getTeeTime());
+						newRound.setSignupDateTime(tempDate);
 					}
-					newRound.setRoundHandicap(tempPlayer.getHandicap());
+				}
+				
+				if (roundTeeSelectionsMap != null)
+				{
+					String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
 					
-					newRound.setSignupDateTime(new Date());
-					
-					if (roundSignupDateTimesMap != null)
+					if (courseTeeID == null)
 					{
-						Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
-						
-						if (tempDate != null)
-						{
-							newRound.setSignupDateTime(tempDate);
-						}
+						newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), selectedGame.getCourseID()));
 					}
-					
-					if (roundTeeSelectionsMap != null)
+					else
 					{
-						String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
-						
-						if (courseTeeID == null)
-						{
-							newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), selectedGame.getCourseID()));
-						}
-						else
-						{
-							newRound.setCourseTeeID(courseTeeID);
-						}
-					}		
-					
-					golfmain.addRound(newRound);		
-				} 
-			}
+						newRound.setCourseTeeID(courseTeeID);
+					}
+				}		
+				
+				golfmain.addRound(newRound);		
+			} 
 		}
-		catch (Exception e)
-		{
-			logger.error("Exception in saveRounds: " +e.getMessage(),e);
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in saveRounds: " + e.getMessage(),null);
-	        FacesContext.getCurrentInstance().addMessage(null, msg);    
-		}	
+		
 	}
 	
 	public String saveAndStayTeeTimesPickList()
@@ -522,7 +506,7 @@ public class Player implements Serializable
 		return "";
 	}
 	
-	public String saveAndStayPickList()
+	public String saveAndStayPickList() throws Exception
 	{
 		logger.info("saving info from player picklist screen");
 		
@@ -538,14 +522,7 @@ public class Player implements Serializable
 			roundSignupDateTimesMap = preserveSignupDateTimes(selectedGame);
 			roundTeeSelectionsMap = preserveTeeSelections(selectedGame);
 			golfmain.deleteRoundsFromDB(selectedGame.getGameID());
-			
-			this.getSelectedPlayers().clear();
-			
-			for (int i = 0; i < this.getPlayersPickList().getTarget().size(); i++) 
-			{
-				this.getSelectedPlayers().add(this.getPlayersPickList().getTarget().get(i));
-			}		
-			
+						
 			saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, selectedGame);
 			
 			loadSelectedPlayers(selectedGame); //this resets roundsforgame.  If they deleted a player then we need this list reset
@@ -830,20 +807,29 @@ public class Player implements Serializable
 	{
 		logger.info("User clicked proceed from player selection screen; saving new player round records and sending them to enter scores");
 		
-		//clear out first for this
-		Map<String,Date> roundSignupDateTimesMap = null;
-		
-		//we want to preserve the tee selections here
-		Map<String, String> roundTeeSelectionsMap = null;				
-		
-		if (selectedGame != null)
+		try
 		{
-			roundSignupDateTimesMap = preserveSignupDateTimes(selectedGame);
-			roundTeeSelectionsMap = preserveTeeSelections(selectedGame);
-			golfmain.deleteRoundsFromDB(selectedGame.getGameID());
+			//clear out first for this
+			Map<String,Date> roundSignupDateTimesMap = null;
+			
+			//we want to preserve the tee selections here
+			Map<String, String> roundTeeSelectionsMap = null;				
+			
+			if (selectedGame != null)
+			{
+				roundSignupDateTimesMap = preserveSignupDateTimes(selectedGame);
+				roundTeeSelectionsMap = preserveTeeSelections(selectedGame);
+				golfmain.deleteRoundsFromDB(selectedGame.getGameID());
+			}
+					
+			saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, selectedGame);		
 		}
-				
-		saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, selectedGame);
+		catch (Exception e)
+		{
+			logger.error("Exception in proceedToEnterScores: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in proceedToEnterScores: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}	
 		
 		return "success";
 	}
@@ -1380,23 +1366,7 @@ public class Player implements Serializable
 		
 	}
 
-	public void onTransfer(TransferEvent event) 
-	{
-        StringBuilder builder = new StringBuilder();
-        for(Object item : event.getItems()) 
-        {
-            builder.append(((Player) item).getFullName()).append("<br />");
-        }
-         
-        FacesMessage msg = new FacesMessage();
-        msg.setSeverity(FacesMessage.SEVERITY_INFO);
-        msg.setSummary("Items Transferred");
-        msg.setDetail(builder.toString());
-         
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }  
-     
-    public void onSelect(SelectEvent<Player> event) 
+	public void onSelect(SelectEvent<Player> event) 
     {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().getFullName()));
@@ -1511,14 +1481,6 @@ public class Player implements Serializable
 		this.disablePlayersDialogButton = disablePlayersDialogButton;
 	}
 
-	public List<Player> getSelectedPlayers() {
-		return selectedPlayers;
-	}
-
-	public void setSelectedPlayers(List<Player> selectedPlayers) {
-		this.selectedPlayers = selectedPlayers;
-	}
-
 	public List<Round> getRoundsForGame() {
 		return roundsForGame;
 	}
@@ -1531,27 +1493,13 @@ public class Player implements Serializable
 	{
 		int tempInt = 0;
 		
-		if (this.getSelectedPlayers() != null && this.getSelectedPlayers().size() > 0)
+		if (this.getSelectedPlayersList() != null && this.getSelectedPlayersList().size() > 0)
 		{
-			tempInt = this.getSelectedPlayers().size();
+			tempInt = this.getSelectedPlayersList().size();
 		}
 		return tempInt;
 	}
 	
-	public int getPickListTargetPlayersSelected() 
-	{
-		int tempInt = 0;
-		
-		if (this.getPlayersPickList() != null 
-		&& this.getPlayersPickList().getTarget() != null 		
-		&& this.getPlayersPickList().getTarget().size() > 0)
-		{
-			tempInt = this.getPlayersPickList().getTarget().size();
-		}
-	
-		return tempInt;
-	}
-
 	public boolean isDisablePickTeams() {
 		return disablePickTeams;
 	}
@@ -1576,30 +1524,6 @@ public class Player implements Serializable
 		this.teeTimeList = teeTimeList;
 	}
 
-	public DualListModel<Player> getPlayersPickList() {
-		return playersPickList;
-	}
-
-	public void setPlayersPickList(DualListModel<Player> playersPickList) {
-		this.playersPickList = playersPickList;
-	}
-
-	public List<Player> getPlayersPickListSource() {
-		return playersPickListSource;
-	}
-
-	public void setPlayersPickListSource(List<Player> playersPickListSource) {
-		this.playersPickListSource = playersPickListSource;
-	}
-
-	public List<Player> getPlayersPickListTarget() {
-		return playersPickListTarget;
-	}
-
-	public void setPlayersPickListTarget(List<Player> playersPickListTarget) {
-		this.playersPickListTarget = playersPickListTarget;
-	}
-	
 	public boolean isShowGameTeeTimeList3() {
 		return showGameTeeTimeList3;
 	}
@@ -1857,6 +1781,14 @@ public class Player implements Serializable
 
 	public void setSelectedGame(Game selectedGame) {
 		this.selectedGame = selectedGame;
+	}
+
+	public List<Object> getSelectedPlayersList() {
+		return selectedPlayersList;
+	}
+
+	public void setSelectedPlayersList(List<Object> selectedPlayersList) {
+		this.selectedPlayersList = selectedPlayersList;
 	}
 
 

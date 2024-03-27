@@ -32,7 +32,8 @@ public class PlayerDAO implements Serializable
 	
 	private Map<String,Player> fullPlayersMapByPlayerID = new HashMap<>(); 
 	private Map<String,Player> fullPlayersMapByUserName = new HashMap<String, Player>(); 
-	private List<Player> fullPlayerList = new ArrayList<Player>();	
+	private List<Player> fullPlayerList = new ArrayList<>();
+	private List<Player> activePlayerList = new ArrayList<>();
 	
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoPlayer> playersTable;
@@ -117,7 +118,12 @@ public class PlayerDAO implements Serializable
             
 			Player player = convertDynamoPlayerToPlayer(dynamoPlayer);
 						
-            this.getFullPlayerList().add(player);			
+            this.getFullPlayerList().add(player);
+            
+            if (player.isActive())
+            {
+            	this.getActivePlayerList().add(player);
+            }
         }
 		
 		logger.info("LoggedDBOperation: function-inquiry; table:player; rows:" + this.getFullPlayerList().size());
@@ -144,7 +150,13 @@ public class PlayerDAO implements Serializable
 		else if (function.equalsIgnoreCase("add"))
 		{
 			this.getFullPlayersMapByPlayerID().put(player.getPlayerID(), player);	
-			this.getFullPlayersMapByUserName().put(player.getUsername(), player);			
+			this.getFullPlayersMapByUserName().put(player.getUsername(), player);
+			
+			if (player.isActive())
+	        {
+	           	this.getActivePlayerList().add(player);
+	        }
+			
 		}
 		else if (function.equalsIgnoreCase("update"))
 		{
@@ -159,6 +171,14 @@ public class PlayerDAO implements Serializable
 		this.setFullPlayerList(new ArrayList<>(values));
 		
 		Collections.sort(this.getFullPlayerList(), new Comparator<Player>() 
+		{
+		   public int compare(Player o1, Player o2) 
+		   {
+		      return o1.getLastName().compareTo(o2.getLastName());
+		   }
+		});
+		
+		Collections.sort(this.getActivePlayerList(), new Comparator<Player>() 
 		{
 		   public int compare(Player o1, Player o2) 
 		   {
@@ -209,6 +229,14 @@ public class PlayerDAO implements Serializable
 		player.setUsername(dynamoPlayer.getUsername());
 		
 		return player;
+	}
+
+	public List<Player> getActivePlayerList() {
+		return activePlayerList;
+	}
+
+	public void setActivePlayerList(List<Player> activePlayerList) {
+		this.activePlayerList = activePlayerList;
 	}
 	
 

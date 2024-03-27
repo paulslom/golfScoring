@@ -10,19 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
-import jakarta.faces.convert.EnumConverter;
-import jakarta.faces.convert.FacesConverter;
 
 import com.pas.beans.GolfMain;
 import com.pas.beans.Player;
 
-@FacesConverter(value="playerConverter")
-public class PlayerConverter extends EnumConverter
+public class PlayerConverter implements Converter<Object>
 {
 	Map<String,Player> playersMap = new HashMap<>();
 	
 	@Autowired private final GolfMain golfmain;
+	
+	public PlayerConverter() 
+	{
+		this.golfmain = new GolfMain();		
+	}
 	
 	public PlayerConverter(GolfMain golfmain) 
 	{
@@ -37,9 +40,9 @@ public class PlayerConverter extends EnumConverter
 	        return "";
 	    }
 
-	    if (modelValue instanceof Integer) 
+	    if (modelValue instanceof String) 
 	    {
-	        return String.valueOf(((Integer) modelValue));
+	        return (String)modelValue;
 	    } 
 	    else if (modelValue instanceof Player) 
 	    {

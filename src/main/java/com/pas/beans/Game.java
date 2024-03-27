@@ -124,7 +124,7 @@ public class Game implements Serializable
 	
 	public Game(GolfMain golfmain) 
 	{
-		logger.info("In Game constructor.  hash code is this: " + this.hashCode());
+		//logger.info("In Game constructor.  hash code is this: " + this.hashCode());
 		this.golfmain = golfmain;
 	}
 	
@@ -208,7 +208,7 @@ public class Game implements Serializable
 	
 	public String saveGame()
 	{
-		logger.info(getTempUserName() + " user clicked Save Player from maintain player dialog");	
+		logger.info(getTempUserName() + " user clicked Save Game from maintain game dialog");	
 		
 		try
 		{
@@ -217,13 +217,23 @@ public class Game implements Serializable
 				logger.info(getTempUserName() + " clicked Save Game from maintain game dialog, from an add");
 				golfmain.assignCourseToGame(this);
 				this.setGameID(null); //should not have a game id on an add
-				String newGameID = golfmain.addGame(this);
+				String newGameID = golfmain.addGame(this, teeTimesString);
 				golfmain.addTeeTimes(newGameID, teeTimesString, this.getGameDate(), this.getCourseName());
 				logger.info(getTempUserName() + " after add Game");
 			}
 			else if (operation.equalsIgnoreCase("Update"))
 			{
-				logger.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");			
+				logger.info(getTempUserName() + " user clicked Save Game from maintain game dialog; from an update");
+				
+				List<TeeTime> teeTimeList = golfmain.getTeeTimesByGame(this);
+				if (teeTimeList != null && teeTimeList.size() > 0)
+				{
+					TeeTime tt = teeTimeList.get(0);
+					String teeTimeStr = tt.getTeeTimeString();
+					Date gameDate = Utils.getGameDateTimeUsingTeeTimeString(this.getGameDate(), teeTimeStr);
+					this.setGameDate(gameDate);	
+				}
+				
 				golfmain.updateGame(this);
 				logger.info(getTempUserName() + " after update Game");
 			}

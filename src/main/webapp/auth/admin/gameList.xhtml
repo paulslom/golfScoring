@@ -33,7 +33,7 @@
 			  </p:column>
 			  
 			  <p:column style="width:10%" headerText="Date" sortBy="#{game.gameDate}">												
-				  <h:outputText value="#{game.gameDate}">
+				  <h:outputText value="#{game.gameDateDisplay}">
 				     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
 				  </h:outputText>														
 			  </p:column>
