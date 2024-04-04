@@ -311,7 +311,8 @@ public class Player implements Serializable
 				if (this.isResetPassword())
 				{
 					GolfUser gu = golfmain.getGolfUser(this.getUsername());
-					golfmain.resetPassword(gu); //default their password to their username
+					gu.setPassword(gu.getUserName()); //default their password to their username
+					golfmain.updateUser(this.getUsername(), gu.getPassword(), role);
 				}
 				if (!this.getOldRole().equalsIgnoreCase(this.getRole()))
 				{

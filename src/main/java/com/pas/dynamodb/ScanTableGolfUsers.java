@@ -61,7 +61,7 @@ public class ScanTableGolfUsers
             while (results.hasNext()) 
             {
                 GolfUser rec = results.next();
-                System.out.println("ID = " + rec.getUserId() + " .. user name = " + rec.getUserName() 
+                System.out.println(" .. user name = " + rec.getUserName() 
                     + " .. password = " + rec.getPassword() + ".. user role = " + rec.getUserRole());
             }
         } 

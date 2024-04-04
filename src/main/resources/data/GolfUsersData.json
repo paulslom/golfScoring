@@ -1,840 +1,700 @@
 [
 {
-	"userId": "1",
 	"userName": "abower",
 	"password": "$2a$10$ooBTBqiJwUDcbdWasxn7vO8emHTERIBr8ypY51Y2IsmIEzM/BWJlS",
 	"userRole": "USER"
 },
 {
-	"userId": "2",
 	"userName": "afuquay",
 	"password": "$2a$10$MZDYqqL8fVwjZTTeMeDwoeKjXPfKKyycK.xM92Uj487Hq8mEQ1niq",
 	"userRole": "USER"
 },
 {
-	"userId": "3",
 	"userName": "aminor",
 	"password": "$2a$10$LMLfmk8rUif5em66lfz/E.OTN99yePaQmXneU8yEFCAvs5krSqb2m",
 	"userRole": "USER"
 },
 {
-	"userId": "4",
 	"userName": "amoss",
 	"password": "$2a$10$gB9aMwxRGKWi9ZJMTeIb0ez.i4pXx1XAF9pVM2TKRpbep1l2K3.c6",
 	"userRole": "USER"
 },
 {
-	"userId": "5",
 	"userName": "aphipps",
 	"password": "$2a$10$3R6ONlTzRmaD1GCLnO3SKuxUu1gxlOby9RuKHosn10Nwx8q5cDWXC",
 	"userRole": "USER"
 },
 {
-	"userId": "6",
 	"userName": "arandall",
 	"password": "$2a$10$XoK0JdGf2um./ClyhXSLQ.NaCL605B/kIb4uMuD/w5HP2RN/x6piS",
 	"userRole": "USER"
 },
 {
-	"userId": "7",
 	"userName": "bbean",
 	"password": "$2a$10$/CPqQSz.xr.9qjvurhd9fen6GT6ViNUQCVzJNATi1r1ucU7eiK1BG",
 	"userRole": "USER"
 },
 {
-	"userId": "8",
 	"userName": "bbuxton",
 	"password": "$2a$10$vUz0.tPHx72x/.i1ItMO2eOpPZ/BxcTXxbz039Ic4G0lUsCcb1dfm",
 	"userRole": "USER"
 },
 {
-	"userId": "9",
 	"userName": "bcrockett",
 	"password": "$2a$10$kEKf4u8yq2nKbohDdymaVOXdXbzCEUN86HMVldSD4DDowufU/KY4O",
 	"userRole": "USER"
 },
 {
-	"userId": "10",
 	"userName": "bforman",
 	"password": "$2a$10$fz8Wt/hO8njQVnlHcN3B6ukVSAb2hl4ETg//7WHHgZdsQTRJd6wz.",
 	"userRole": "USER"
 },
 {
-	"userId": "11",
 	"userName": "bgraham",
 	"password": "$2a$10$sLulmns465AV73DTbKoZnuJVGxeT6bQAxl5ggP7wtcN4Tmj1iDze.",
 	"userRole": "USER"
 },
 {
-	"userId": "12",
 	"userName": "bgreenway",
 	"password": "$2a$10$VnNtF1W.SiCMac1lzbTzEewM/IsSyKY0LL9uLaPo1f6ehdVu0GGzW",
 	"userRole": "USER"
 },
 {
-	"userId": "13",
 	"userName": "bjarrett",
 	"password": "$2a$10$Jgdt8D5AfIbGuZ5R78a0g.3cQ79.7.9t2a6ZCEF2WK9XFjjXbfR/m",
 	"userRole": "USER"
 },
 {
-	"userId": "14",
 	"userName": "blambeth",
 	"password": "$2a$10$fHe3wDVKUAeezuxRB8AC6uMAdeTKuq3ustqIdlGTKXYheGpzcZEu.",
 	"userRole": "USER"
 },
 {
-	"userId": "15",
 	"userName": "bmiles",
 	"password": "$2a$10$T.KVPyxNN0hDOYr3r/D0W.jdlSjYOdFBNoKZHaaPAWg8yvKvYAAgq",
 	"userRole": "USER"
 },
 {
-	"userId": "16",
 	"userName": "boelder",
 	"password": "$2a$10$lJkAtbsNum7oraxOZqh3uenHE6jPdbwc0RzLVj3gGn4qnorkKElCq",
 	"userRole": "USER"
 },
 {
-	"userId": "17",
 	"userName": "bpinkleton",
 	"password": "$2a$10$hMJZwAEQbzbGg14hyDTvOO048Xi7WFXwwesyF2z3kdedVWdPpedx.",
 	"userRole": "USER"
 },
 {
-	"userId": "18",
 	"userName": "brelder",
 	"password": "$2a$10$ZEPe6tdytj81TLZ2Uo7lmeUYxKBtAgieIi7lYr/Y7oYzF4UqFZZkS",
 	"userRole": "USER"
 },
 {
-	"userId": "19",
 	"userName": "brives",
 	"password": "$2a$10$M3uMR.LaVWTEUbe.TOxI7uLmirerbRC.BwyP9xuPah2.KrQTwADi.",
 	"userRole": "USER"
 },
 {
-	"userId": "20",
 	"userName": "brogg",
 	"password": "$2a$10$DZihecix165BORIHE4Uwl.EyQ5FgkgugvZglSSwOKskrwaLkyEme2",
 	"userRole": "USER"
 },
 {
-	"userId": "21",
 	"userName": "brummell",
 	"password": "$2a$10$EPhAt9tRRIub4hKHeoiIlOuHuxsPN2iCLX5tuEdW1Q05ZVgDVZNQe",
 	"userRole": "USER"
 },
 {
-	"userId": "22",
 	"userName": "bschuch",
 	"password": "$2a$10$4cT0W7ZS9Kg.uhWsTuR94O7WQpIhUwbic4Fj8mtijOLa7Vy/VHQ46",
 	"userRole": "USER"
 },
 {
-	"userId": "23",
 	"userName": "bsowers",
 	"password": "$2a$10$6gt9RwnH/Mu2JQ0rEpJ7TuDCOuSK52DWJ04G0yI7rrBqxOWJn1fzq",
 	"userRole": "USER"
 },
 {
-	"userId": "24",
 	"userName": "bsteele",
 	"password": "$2a$10$rgqfsAFBXMYvRohwVWk41ebuH4enj9AYuW./WQyHcz79saLdDqWxi",
 	"userRole": "USER"
 },
 {
-	"userId": "25",
 	"userName": "bvespa",
 	"password": "$2a$10$v2kOn0z7U3yKVtLzB4SJCOGnx8PC4Gyz.OHY1Wqb.EWrXG8Mf7c92",
 	"userRole": "USER"
 },
 {
-	"userId": "26",
 	"userName": "bwilliams",
 	"password": "$2a$10$X1yiiXK6RsXbHWCocaWvq.cGhWZirD1j0UkyQLa6b6qo/Ubs8dsTG",
 	"userRole": "USER"
 },
 {
-	"userId": "27",
 	"userName": "cborocz",
 	"password": "$2a$10$QN.1OfHOmVlGjxdoeeHr/u8NFEeYjhZ135.aEzlLyBQ/biYRAdvk.",
 	"userRole": "USER"
 },
 {
-	"userId": "28",
 	"userName": "cbrown2",
 	"password": "$2a$10$yJl.jZkd50bJmvxR6tVWsusiyn49xJMCgTsqoc108WrhaZ.d4BtTO",
 	"userRole": "USER"
 },
 {
-	"userId": "29",
 	"userName": "ccooper",
 	"password": "$2a$10$jsLlRj4LkREOhItpltY1oeRa9qL/icyGMcohYyOPygyYSlmemXPq6",
 	"userRole": "USER"
 },
 {
-	"userId": "30",
 	"userName": "cfrench",
 	"password": "$2a$10$67PMCKzP9grWk/RdAWSk.OrvG7B/yni8Hika3EiZ3t5YMiY43jJyu",
 	"userRole": "USER"
 },
 {
-	"userId": "31",
 	"userName": "cjmcmasters",
 	"password": "$2a$10$5mrmtgPpkTgcy314eRf61eDNzOUZwqE2xeJTx6MAhxQ4YbfTZ5XAm",
 	"userRole": "USER"
 },
 {
-	"userId": "32",
 	"userName": "cleclerc",
 	"password": "$2a$10$EtMEnyjlaI.kHGjBEq5IB.crKVPQtTV4REVnjmZOcoXDEaEJnXurO",
 	"userRole": "ADMIN"
 },
 {
-	"userId": "33",
 	"userName": "corms",
 	"password": "$2a$10$JRSVhwzZiJfm99rwj/ktpuSV8nGlDmT.69GUYUBlvLofM7QiOpJQu",
 	"userRole": "USER"
 },
 {
-	"userId": "34",
 	"userName": "crandall",
 	"password": "$2a$10$sszKA7TKTvaf77e1ZZJy7erLjmynFng7rocWp6QVSHhQ7oKpVY/Wu",
 	"userRole": "USER"
 },
 {
-	"userId": "35",
 	"userName": "csmith",
 	"password": "$2a$10$IPX9HHjUR.9Op.7ackd1kO9MZzGSJKWsGfCNNUxAdjdYA0K7ntoaO",
 	"userRole": "USER"
 },
 {
-	"userId": "36",
 	"userName": "cstreuli",
 	"password": "$2a$10$RNf.R5J78Ph8153mXLnskOQYagFa0.1boxkcDGxIwaL5frsyBwx66",
 	"userRole": "USER"
 },
 {
-	"userId": "37",
 	"userName": "dbibeau",
 	"password": "$2a$10$2EuZqDeZAWnmvpOASKuWauUiCp/C5ZiMYDjnkr6aMmRGV4HhBANf.",
 	"userRole": "USER"
 },
 {
-	"userId": "38",
 	"userName": "dbingman",
 	"password": "$2a$10$U74jNAW8PguYSBO6xKggFuYG9jdf7/MAUTRgo/A9BZKzhrhUmbfsu",
 	"userRole": "USER"
 },
 {
-	"userId": "39",
 	"userName": "dblasko",
 	"password": "$2a$10$uvTdBnZXsxV8/FCya3rAYOSzs70SeHdQYtNWJCOUcslZ1uXne1SS6",
 	"userRole": "USER"
 },
 {
-	"userId": "40",
 	"userName": "ddempsey",
 	"password": "$2a$10$hqX7QWcSuxCPw49e6FosXuLcJPnYtHLBQmtZzxHbZsS45nlrlBZge",
 	"userRole": "USER"
 },
 {
-	"userId": "41",
 	"userName": "dfennie",
 	"password": "$2a$10$iiHgRF26W6QouUN2QhNi1..gg/4fHIGKFnbAT3niyERgs5rldqdRW",
 	"userRole": "USER"
 },
 {
-	"userId": "42",
 	"userName": "dgamble",
-	"password": "$2a$10$GjnjiaQih5Pxv3exNGb1auNrgoNBPtZEXvcLPCYvK79zdJ9m9CHU.",
+	"password": "$2a$10$U0Gt20lUhTICQWi6kRnra.3U6eyzdjn.Ola5u.5E6APt9ULbfDRMy",
 	"userRole": "USER"
 },
 {
-	"userId": "43",
 	"userName": "dlowe",
 	"password": "$2a$10$8V1sqJlvw1SfhoCvzvwLfe.EPGWhInKaHtmAIBClCAh4btcUhfWr2",
 	"userRole": "USER"
 },
 {
-	"userId": "44",
 	"userName": "dmoore",
 	"password": "$2a$10$RqFiy5s7a.y3w1dSDXzri.SI8kmL0Kgna820NZD/ZgLP/EDRunuky",
 	"userRole": "USER"
 },
 {
-	"userId": "45",
 	"userName": "drubin",
 	"password": "$2a$10$0w/9uOrJtjvO0QHZCBnDAeBcoC2Sv5OoeMrRZ3u8g/Xnlc9pojHWy",
 	"userRole": "USER"
 },
 {
-	"userId": "46",
 	"userName": "dstott",
 	"password": "$2a$10$B9eGGM/uYDZDZF08KscCQ.vd2Avgo.5wuFrKGif9qMwesJsab8egO",
 	"userRole": "USER"
 },
 {
-	"userId": "47",
 	"userName": "dstout",
 	"password": "$2a$10$26KCvMBbhVXWTjEFqGyBpOFo3d7eavMlTqehWqtpjPEGHhsFR.71G",
 	"userRole": "USER"
 },
 {
-	"userId": "48",
 	"userName": "dtester",
 	"password": "$2a$10$wWTB4cSSx20b13//DqtA1.qYdSw7gXQe3gnRPIzgBm5ThyOZiqDFK",
 	"userRole": "USER"
 },
 {
-	"userId": "49",
 	"userName": "dthacker",
 	"password": "$2a$10$0YnqsJJqC3CZwdHI0fPX0.Ne74zvTnmVV2OWIRtyilCg/DcanOOSW",
 	"userRole": "USER"
 },
 {
-	"userId": "50",
 	"userName": "dwilhite",
 	"password": "$2a$10$JZ5RVLBc6E8CIyZm3ydRY.lIVZRBYJRstg4dHBIG3Fpp3zzyJHq/2",
 	"userRole": "USER"
 },
 {
-	"userId": "51",
 	"userName": "ejohnson",
 	"password": "$2a$10$y/hqEsD04nC.KdSDIjWoE.eCXJMXmaY5MewNI9QA9SsELrTOrsEcS",
 	"userRole": "USER"
 },
 {
-	"userId": "52",
 	"userName": "ewaddell",
-	"password": "$2a$10$85sUOmc0Y8wCEkvqLeM5jO6OR2o2sxCs2XufZ/bLuenFYCv.F5qpi",
+	"password": "$2a$12$7VDBtjRiSjVngags/JfEEumKvRb6Gct7kTNUyHzwbsZs22I5MdaVW",
 	"userRole": "USER"
 },
 {
-	"userId": "53",
 	"userName": "fryan",
 	"password": "$2a$10$fjGBfFBEfshH6ydEfKdx1.SZoMLuM/vNHhMtIv9VdaPOpU2CtzKRi",
 	"userRole": "USER"
 },
 {
-	"userId": "54",
 	"userName": "gfennie",
 	"password": "$2a$10$bMuCVQYYjCgQepPC5ZQ1v.ACLEvnbvXmB1Gj943OlgZ22BaX/nD5e",
 	"userRole": "USER"
 },
 {
-	"userId": "55",
 	"userName": "ghoffman",
 	"password": "$2a$10$qAYo4zbTK8KaxB6eBaZH/urlJ/GOeMJnk3FgiIJdmXg7FkV0e0qFy",
 	"userRole": "USER"
 },
 {
-	"userId": "56",
 	"userName": "ghyatt",
 	"password": "$2a$10$jtgnOLJi32orEdeM/pB.JOI90HLeNaNAoW292If1HC34FJeAZ3sp.",
 	"userRole": "USER"
 },
 {
-	"userId": "57",
 	"userName": "gsmith",
 	"password": "$2a$10$/9wmuR8mmw.LsO6zYV0MuODx.uATJ63wOB3hNciOxY2/4nI9Jzl7a",
 	"userRole": "USER"
 },
 {
-	"userId": "59",
+	"userName": "hevatt",
+	"password": "$2a$10$eIJmUbHs5t26kSeutGLH/.aIG7ozaNAK2lzM78vikiNQMenEz8A/S",
+	"userRole": "USER"
+},
+{
 	"userName": "jarnold",
 	"password": "$2a$10$uXsWsehGnMRY069wucUVYehfO/2fIOiiFkgjxutzktT8CfL3BCAI2",
 	"userRole": "USER"
 },
 {
-	"userId": "60",
+	"userName": "jbruce",
+	"password": "$2a$10$MsXq6GO0xLGmRIFCZABk3OVFqVZzEC4iF8uMpQSolFwNw4mI/b4ty",
+	"userRole": "USER"
+},
+{
 	"userName": "jdraper",
 	"password": "$2a$10$CGzzKwn6koYnA.oMGkNMI.lL5YZQrmd8TNxGvPuz/5mMvGgLNyLHW",
 	"userRole": "USER"
 },
 {
-	"userId": "61",
 	"userName": "jelias",
 	"password": "$2a$10$apQkml3AJ9HyRHVWWwuQM.sryAwXxwZLMkFE2c.OKbqEja8rmMgYu",
 	"userRole": "USER"
 },
 {
-	"userId": "62",
 	"userName": "jhall",
 	"password": "$2a$10$G/gNXuhLH6gYORN5oIXhSu8JIq.JgajUyjZdcBq8Zi96Ux/VH/8uW",
 	"userRole": "USER"
 },
 {
-	"userId": "63",
 	"userName": "jkozlowski",
 	"password": "$2a$10$FpjiS4CRVRYfuGddJXkOhe9xV5oJOWw67.gPKkhUmTR6/dr4wUkSO",
 	"userRole": "USER"
 },
 {
-	"userId": "64",
 	"userName": "jmacdowall",
 	"password": "$2a$10$YixbwM0W/jiFiZjwqnSEqOqIgBRM7vxbKTDd1gRQ7yLGRzt1QOr/C",
 	"userRole": "USER"
 },
 {
-	"userId": "65",
 	"userName": "joldis",
 	"password": "$2a$10$654trJ3Urs2M9usJuTvaFOV9yLDFhazjnQVcIEQtd2rYrUXwE/0CG",
 	"userRole": "USER"
 },
 {
-	"userId": "66",
 	"userName": "jpegram",
 	"password": "$2a$10$cX6g2qb0U5QuJesRVE2fbuYeIhw5tkeuHBt8jhpJRp9Br9OObA4eu",
 	"userRole": "USER"
 },
 {
-	"userId": "67",
 	"userName": "jperry",
 	"password": "$2a$10$G3a6vh8NpUssVPwOqX9db.fVqF/O.0bX5Nzs74I7HGlekBs5asleO",
 	"userRole": "USER"
 },
 {
-	"userId": "68",
 	"userName": "jrountree",
 	"password": "$2a$10$X68s9PRa2kU3T3NGBLPH0OYk8DGhjkGuxdI26qZTZ42z9quqSWWIS",
 	"userRole": "USER"
 },
 {
-	"userId": "69",
 	"userName": "jsanches",
 	"password": "$2a$10$EFfOBW/ZMHmLZvOS5vT.FOH6bEY/d9F.kce8kh/.d2qpxtICNMivS",
 	"userRole": "USER"
 },
 {
-	"userId": "70",
 	"userName": "jsloan",
 	"password": "$2a$10$aFFnLuoHNS.xJIHChxz9UO9sYFSqMSa/BaV3XlH3r8/2YIiVHuie6",
 	"userRole": "USER"
 },
 {
-	"userId": "71",
 	"userName": "jslomkowski",
 	"password": "$2a$10$M6BWHwMV1gOqFGn/pp9B0.H5HaeC87zP7KZUisIHwIlSI802X6Xtq",
 	"userRole": "USER"
 },
 {
-	"userId": "72",
 	"userName": "jstone",
 	"password": "$2a$10$duNh5LBqW/JUPIFKfHU3s.iedeF9xphcvch786zoWsVCw23qkv5n2",
 	"userRole": "USER"
 },
 {
-	"userId": "73",
 	"userName": "jstratton",
 	"password": "$2a$10$6qmYbDJH/xKGZKBTqZpuI.pWzOl75nEBkQwwzU/Mdhdl8H8JuSEUW",
 	"userRole": "USER"
 },
 {
-	"userId": "74",
 	"userName": "jthomas",
 	"password": "$2a$10$8yYCBBNSMW6klQpHIjRijuJg9RCXglWm2ax35zPnNQ.wnSrlCmPwa",
 	"userRole": "USER"
 },
 {
-	"userId": "75",
 	"userName": "jtrovato",
 	"password": "$2a$10$rGTRKy9BvyLIz7U1Xz8YpOPmehFWAypDptyZ45wN61HZZLG2lo/.K",
 	"userRole": "USER"
 },
 {
-	"userId": "76",
 	"userName": "jwhitley",
 	"password": "$2a$10$AubDNWn5Xlf/8xg8ToJFqOLhxdehTLPBlV1ygtaOuZQmOJuQko3vG",
 	"userRole": "USER"
 },
 {
-	"userId": "77",
 	"userName": "jwolfe",
-	"password": "$2a$10$1dzfpHs4YdSPS5Tt1QvvEujF2pzeMMJP0UOx3/eHnA3C58Y9PGNT2",
+	"password": "$2a$10$jCt7CDQu/CMe1S0Lj.UdseVslCFHHyC5qr.Qu/0kMdnxWiwtWN81a",
 	"userRole": "USER"
 },
 {
-	"userId": "78",
 	"userName": "jwood",
 	"password": "$2a$10$wea3kFDcsTwZJAlr9o710uaX5GvgCwq2TWfhOMaclyuKhbYkdCORC",
 	"userRole": "USER"
 },
 {
-	"userId": "79",
 	"userName": "kcopeland",
 	"password": "$2a$10$U5jdRCt8BAftlyZY.l6hCe2Tc0Iv4gNn/Iob9VM4az0wZjVY.HJkm",
 	"userRole": "USER"
 },
 {
-	"userId": "80",
 	"userName": "kcrobertson ",
 	"password": "$2a$10$wqkj26RI3.uLJXIQmk2tze9M5ejNKbWvCW3oNazeJrL4NkIcFXtx.",
 	"userRole": "USER"
 },
 {
-	"userId": "81",
 	"userName": "kellyrobertson",
 	"password": "$2a$10$cqEBJgLhfaQSSKWiSBIvuOMYb/1JVwoaW/fBUh0ILMY77n.e8zKPm",
 	"userRole": "USER"
 },
 {
-	"userId": "82",
 	"userName": "kjenkins",
 	"password": "$2a$10$2q3MdiT5P3D3ZSUNYqIhfOAUQgDTPil1aat3/VskGwS2d5zJz4nDe",
 	"userRole": "USER"
 },
 {
-	"userId": "83",
 	"userName": "kkinley",
 	"password": "$2a$10$5h5ABv/jQXwsY.OYuwxnd.64Xt44i6891t5k8wZ1FQRcHeW3SEgrC",
 	"userRole": "USER"
 },
 {
-	"userId": "84",
 	"userName": "kkolls",
 	"password": "$2a$10$3513eVaYFNSABgkDCY7s5OGQUT/k5MxTNh1FNtDghnRVNGdDYWZIa",
 	"userRole": "ADMIN"
 },
 {
-	"userId": "85",
 	"userName": "krobertson",
 	"password": "$2a$10$9YNpz6nbmJHXMS1OWzLit.3My8eAAP06C7wWr0C60aSPSutiMzopi",
 	"userRole": "ADMIN"
 },
 {
-	"userId": "86",
 	"userName": "kshifflett",
 	"password": "$2a$10$irMXCa1.DhvpuSLHCqH0xusvfcbqqd9/WnkWAWMwFhC//qyxPnK8e",
 	"userRole": "USER"
 },
 {
-	"userId": "87",
 	"userName": "lholliday",
 	"password": "$2a$10$Mkt40TJy0SQc2ceqvSWG7eb..v5h6jCn40Fw5NX4NsD7eSQVtc8cu",
 	"userRole": "USER"
 },
 {
-	"userId": "88",
 	"userName": "ljones",
 	"password": "$2a$10$5qNtpfheO9alsgE8csChqu26k46TObceOFlQVEiU9t0k2PQAPTL2W",
 	"userRole": "USER"
 },
 {
-	"userId": "89",
 	"userName": "lross",
 	"password": "$2a$10$iRW/AXr4ehmLMAv8Alq/v./L.p7Th1qh9ARjeowUlc2rYcMEcC1dW",
 	"userRole": "USER"
 },
 {
-	"userId": "90",
 	"userName": "ltate",
 	"password": "$2a$10$NHuaarOpzdpc4Cn2JturieIMyZwIZUOpfLN36/tnu8UZrkhNFiKGK",
 	"userRole": "USER"
 },
 {
-	"userId": "91",
 	"userName": "mbaxter",
 	"password": "$2a$10$.L8OcyYvwGUeMQB32YHtp.badU4PvV0LQu3SrBRMeYX4EMubDzV6u",
 	"userRole": "USER"
 },
 {
-	"userId": "92",
 	"userName": "mchoros",
 	"password": "$2a$10$kJJcbDNyI5IQwuoQKEzRcuobZFQBWvPOG3.M1uiUoKD2tLfZ.Fi/G",
 	"userRole": "USER"
 },
 {
-	"userId": "93",
 	"userName": "mchristley",
 	"password": "$2a$10$0JJWYZ67UKCCcYBuub8Lrur95GyowBEIE1Jkbb/Izz6kqnkrn1.Sy",
 	"userRole": "USER"
 },
 {
-	"userId": "94",
 	"userName": "mmaruschak",
 	"password": "$2a$10$gOFr2U0bJr6Ow2TDJfy.lurNsS/N0vZ31Y3eF1DtYDeJVAuAoOomm",
 	"userRole": "USER"
 },
 {
-	"userId": "95",
 	"userName": "mpowell",
 	"password": "$2a$10$PMjmoi8oBUuCF5qP2Z.wBOC0W2jeu2yI28/JSqInmieIx5JVvzt2O",
 	"userRole": "USER"
 },
 {
-	"userId": "96",
 	"userName": "msanders",
 	"password": "$2a$10$PiZr.aYCAMhxsq2D8HScxONkKvuIvh6noKfD9WSa9m3czszE8Jrnu",
 	"userRole": "USER"
 },
 {
-	"userId": "97",
 	"userName": "mshowfety",
 	"password": "$2a$10$IHEKg/hVSXf/LwulebwJUe20BgAOmVJx56H2c4DccqFM3y9mfC0i2",
 	"userRole": "USER"
 },
 {
-	"userId": "98",
 	"userName": "msither",
 	"password": "$2a$10$bzrekxTdeEEvDPBhRCBuUe3SGK0FQl//jsFfyq9rysLbfB5ufq8uK",
 	"userRole": "USER"
 },
 {
-	"userId": "99",
 	"userName": "mweidl",
 	"password": "$2a$10$xlxRviJPBfbHAztdXD5vou4EIsbETSvQS48hyoXNj30CDCzyknc5y",
 	"userRole": "USER"
 },
 {
-	"userId": "100",
 	"userName": "mwestbrook",
 	"password": "$2a$10$Fk2G4SG4uWU3HyRgegKagu6YXdf1c13zivO3pVWNriTof/1Cyasz2",
 	"userRole": "USER"
 },
 {
-	"userId": "101",
 	"userName": "nmackenzie",
 	"password": "$2a$10$9PZsZj07Zi.uv1R5lh1FX.MPD05Of04f6gobMk7yBpQ1tz4GYw9/S",
 	"userRole": "USER"
 },
 {
-	"userId": "102",
 	"userName": "nmeder",
 	"password": "$2a$10$EWAQwZOb2odqV.q2dizsz.MDbGb88krIz0uLZ.CqbgDA1PKPCF.e6",
 	"userRole": "USER"
 },
 {
-	"userId": "103",
 	"userName": "nsmith",
 	"password": "$2a$10$49xe3ilGTkZG6WqdEk/9de5ap5eibx11aN0Zyxu5XnNusLVM6hHk6",
 	"userRole": "USER"
 },
 {
-	"userId": "104",
 	"userName": "nsparrow",
 	"password": "$2a$10$ouesfJi/wYZAHCWVg3xtt.RnEfTjGVFMR8sRu/kB.G1QEaMo1dVVC",
 	"userRole": "USER"
 },
 {
-	"userId": "105",
 	"userName": "paulslom",
 	"password": "$2a$10$xf0mfKfxPeQomS2spADTZOLOf2XEIrGGNtMbjbsq4.Vs9mLXMZZTO",
 	"userRole": "ADMIN"
 },
 {
-	"userId": "106",
 	"userName": "pdempsey",
 	"password": "$2a$10$COo9gJt/UDVYu65V31gd5u3KpthVjWO4dQQLxrJkv8iowDzz10hGK",
 	"userRole": "USER"
 },
 {
-	"userId": "107",
 	"userName": "pkwiatkowski",
 	"password": "$2a$10$0/7fOGIAdH1XL5yFCZ3LCupe2A8DZQGR8LNAec6aB.02sJJJeCiI6",
 	"userRole": "USER"
 },
 {
-	"userId": "108",
 	"userName": "pmoore",
 	"password": "$2a$10$Uwjzuk9RQKhaa7vKoeG.eeu.5LkZIvTp9.DshqQjcaKaiumQi7mPO",
 	"userRole": "USER"
 },
 {
-	"userId": "109",
 	"userName": "pscott",
 	"password": "$2a$10$usBsGbV6omjLdwJwe1yEFuBEHTkbPZF.86WXxPqVfE1npaQW1RKK.",
 	"userRole": "USER"
 },
 {
-	"userId": "110",
 	"userName": "psutherland",
 	"password": "$2a$10$DNaxA/L.ctd9aT9ZUuKvyO3bGbEdg2ywfKAw0aDA5YgYsvqynJspm",
 	"userRole": "USER"
 },
 {
-	"userId": "111",
 	"userName": "raydelette",
 	"password": "$2a$10$rOJ4tEm2nKrFPPV6F29wkuwrEQNf9FQ/dElDYkwG6xuJicvmE00za",
 	"userRole": "USER"
 },
 {
-	"userId": "140",
 	"userName": "rball",
-	"password": "$2a$10$Pl5QZNsfLDoQNZQA3O1AmO1d88ZBH/XkVFiTrwKdE3nvOFKpuwD1a",
+	"password": "$2a$10$JPsEdB0y.PpPcACexLAu1eGtrqQCe0q5Qo/1XlQUEP6kzVr2D5T/.",
 	"userRole": "USER"
 },
 {
-	"userId": "113",
 	"userName": "rbeebe",
 	"password": "$2a$10$yTxsUDDvJq.7MEddJOpyXOMeSdBh6Ui32ZoL1U0yinlSGF2aNYAki",
 	"userRole": "USER"
 },
 {
-	"userId": "114",
 	"userName": "rcopeland",
 	"password": "$2a$10$7DsQu2Uif9nXfP41l/xN0.UYt.F70CT44Hv2vKDKTWnYyMZNZrFJK",
 	"userRole": "USER"
 },
 {
-	"userId": "115",
 	"userName": "rholliday",
 	"password": "$2a$10$rbnzRRepR8MUt3ON9CoEu.SEAjaFMEx5oDhmsQwhKmmeec4JGHFoe",
 	"userRole": "USER"
 },
 {
-	"userId": "116",
 	"userName": "rlivers",
 	"password": "$2a$10$cEahk6.LPxxe/ro3tCycuOtba3mweEB9JrOiKuFiZJ8rllVL/afai",
 	"userRole": "USER"
 },
 {
-	"userId": "117",
 	"userName": "rmchugh",
 	"password": "$2a$10$kcbqzLZ8IHeOQXNmcYx1Jefc18oEfM8L9bnDnePnlY3V2/2nNjaou",
 	"userRole": "USER"
 },
 {
-	"userId": "118",
 	"userName": "rschmid",
 	"password": "$2a$10$ZXAsQxw/1sNBnSG1d0JUsOu3/0pdZ8Swb8pJ/UHJP8paX87O5PKc2",
 	"userRole": "USER"
 },
 {
-	"userId": "119",
 	"userName": "rtompkins",
 	"password": "$2a$10$4YGEGE/mO1VqWVOjmvu.DeSsNm0DLvRz0uXnqP53SRkKKDt/Wdc2K",
 	"userRole": "USER"
 },
 {
-	"userId": "120",
 	"userName": "scoggin",
 	"password": "$2a$10$lpYwLKGfWtCdj1NZO5Ojz.iq8aomT0TitnrsnE6o16j0j/vcHDiJi",
 	"userRole": "USER"
 },
 {
-	"userId": "121",
 	"userName": "sdouglass",
 	"password": "$2a$10$xA5FQjY75fqD2qt8oa31nedIW76tHuH6JiyjgSBrpW7/MDN5yQyIW",
 	"userRole": "USER"
 },
 {
-	"userId": "122",
 	"userName": "sfoskett",
 	"password": "$2a$10$kMVLMjP9b.z1qn28doMR4Oa6QxK37PCi8EBkwEgrxPyh.wlQKx0fC",
 	"userRole": "USER"
 },
 {
-	"userId": "123",
 	"userName": "shall",
 	"password": "$2a$10$xNf3myCrsU/p7n2nobU1P.LpSJeXXbxIjXYScYQ23dNodVQFoseVu",
 	"userRole": "USER"
 },
 {
-	"userId": "124",
 	"userName": "sjones",
 	"password": "$2a$10$DfWG3/JVWeeHUP7yYV.g8eV6dwUFI8XWvA9pPNT3wWDlVdiU9Yz66",
 	"userRole": "USER"
 },
 {
-	"userId": "125",
 	"userName": "smichael",
 	"password": "$2a$10$2O95y2vmNL1hlo/OuxyGn.D0SEPfa7pYbXPjwi3ZDJi5WuQViXKl.",
 	"userRole": "USER"
 },
 {
-	"userId": "126",
 	"userName": "ssnow",
 	"password": "$2a$10$rb8mdBjpEv8qxymElW7t1uM167.EUSOjvzRCaM/BVO8Vb0flHaq/i",
 	"userRole": "USER"
 },
 {
-	"userId": "127",
 	"userName": "tanton",
 	"password": "$2a$10$DijR9g80qRbpiymE2K/ufuyzmfsBoxp519MXnsV85dV1YKiVIMC6G",
 	"userRole": "USER"
 },
 {
-	"userId": "128",
 	"userName": "tbibey",
 	"password": "$2a$10$uDiC9h4Knm6hForNLhGBb.WPn5mnjWYOiCUvTjBHbJ9wYH5c3SQ4K",
 	"userRole": "USER"
 },
 {
-	"userId": "129",
 	"userName": "tblamer",
 	"password": "$2a$10$ygCqvdtwgbJ3i1Ye832NiOlXW0wWuZLC3nAWmwMhUmAJjB1qDIKWe",
 	"userRole": "USER"
 },
 {
-	"userId": "142",
-	"userName": "tfirst",
-	"password": "$2a$10$VjMTlIyRsYMRtSZeWG0vN.en9JJXlcvzby.6fb/uTlNMecuCZ865S",
-	"userRole": "USER"
-},
-{
-	"userId": "130",
 	"userName": "tfuqua",
 	"password": "$2a$10$2LrmCBNfRtNGD9wfX14Fw.3x8R4cRHoBcLnNX33xCSX8vmZpoXH8a",
 	"userRole": "USER"
 },
 {
-	"userId": "131",
 	"userName": "thaskins",
 	"password": "$2a$10$iiq64kfz6HzNwlwQzNBhdu612SKhIfoQAyntJD7UO7B3SltP3A2Gi",
 	"userRole": "USER"
 },
 {
-	"userId": "132",
 	"userName": "thudson",
 	"password": "$2a$10$fYkzvPCEFRsoCL0KDdxXneXGkykOV8.ZDeIoX485NgDPso0X8OfaS",
 	"userRole": "USER"
 },
 {
-	"userId": "133",
 	"userName": "tolson",
 	"password": "$2a$10$FScgZ853FBAEMdPTNS3OJ.xKP2icUAk5j5PA429fobASuyfw/SXl6",
 	"userRole": "USER"
 },
 {
-	"userId": "134",
 	"userName": "tonyspano",
 	"password": "$2a$10$8Gg5qF5v4c8UBO9Y1tkZA.tYgn/7BTaCXJaOX/4f4HRE5AFeAwAHu",
 	"userRole": "USER"
 },
 {
-	"userId": "135",
 	"userName": "tpalombo",
 	"password": "$2a$10$aYhq.B9fIRdmbt7lfQYUn.kbsXS54/z/asZPF3BdydbkwE/K8lwDC",
 	"userRole": "USER"
 },
 {
-	"userId": "141",
-	"userName": "tplayer",
-	"password": "$2a$10$jpJ1PUYnYvjDymO3nDciOOB6egZTHwZ057qE9oCYhpJT3tTUht4aS",
-	"userRole": "USER"
-},
-{
-	"userId": "136",
 	"userName": "tskivington",
 	"password": "$2a$10$8KfgzMSxKfl6gpbLRj2V9u67N6fFwi6yDwRwdDdg9A97zxvVfDP8S",
 	"userRole": "USER"
 },
 {
-	"userId": "137",
 	"userName": "tsmith",
 	"password": "$2a$10$dg/YfMiM36ohn09qMJFX0eWJsXCCEr5664NEtZsFn4Akp0Jd3QzgW",
 	"userRole": "USER"
 },
 {
-	"userId": "138",
 	"userName": "tstewart",
 	"password": "$2a$10$R3ikdYpJC3s/rvuXzDvJquPFhF8uy2rqi.YgvRP4NeHUYmiN.GxNu",
 	"userRole": "USER"
 },
 {
-	"userId": "139",
 	"userName": "tstreuli",
 	"password": "$2a$10$wKoNAOTBx/l1TG2kYpzg9O4W98rk88smKVbAnM3LeYM5HLsjpohjy",
 	"userRole": "USER"

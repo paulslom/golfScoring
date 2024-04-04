@@ -196,7 +196,7 @@ public class GolfMain implements Serializable
 			if (golfUsersDAO == null || golfUsersDAO.getFullUserMap().isEmpty())
 			{
 				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
-				golfUsersDAO = new GolfUsersDAO(dynamoClients);
+				golfUsersDAO = new GolfUsersDAO(dynamoClients, this);
 				groupDAO = new GroupDAO(dynamoClients, this);
 				groupDAO.readGroupsFromDB();
 				Group defaultGroup = this.getGroupsList().get(0);
@@ -1471,12 +1471,7 @@ public class GolfMain implements Serializable
 		gu.setPassword(password);
 		gu.setUserName(username);
 		gu.setUserRole(userrole);
-		golfUsersDAO.addUser(gu); //default their password to their username		
-	}
-
-	public void resetPassword(GolfUser gu) throws Exception 
-	{
-		golfUsersDAO.resetPassword(gu); //default their password to their username		
+		golfUsersDAO.addUser(gu, username); //default their password to their username		
 	}
 
 	public void updateRole(GolfUser gu) throws Exception 

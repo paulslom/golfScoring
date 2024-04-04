@@ -9,10 +9,12 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pas.beans.GolfMain;
 import com.pas.beans.GolfUser;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.util.Utils;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -32,8 +34,12 @@ public class GolfUsersDAO implements Serializable
 	private static DynamoDbTable<GolfUser> golfUsersTable;
 	private static final String AWS_TABLE_NAME = "golfUsers";
 	
-	public GolfUsersDAO(DynamoClients dynamoClients2) 
+	@Autowired private final GolfMain golfmain;
+	
+	public GolfUsersDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
+	   this.golfmain = golfmain;
+	   
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;
@@ -104,17 +110,28 @@ public class GolfUsersDAO implements Serializable
 		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
 		golfUsersTable.deleteItem(deleteItemEnhancedRequest);
 		
-		logger.info("LoggedDBOperation: function-update; table:users; rows:1");
+		logger.info("LoggedDBOperation: function-delete; table:users; rows:1");
 		
 		GolfUser gu = new GolfUser();
 		gu.setUserName(username);
 		refreshListsAndMaps("delete", gu);	
 	}
 	
-	public void addUser(GolfUser gu) throws Exception
+	public void addUser(GolfUser gu, String pw) throws Exception
 	{
-		String encodedPW=new BCryptPasswordEncoder().encode(gu.getPassword());	
-		gu.setPassword(encodedPW);
+		String encodedPW = "";
+		
+		if (pw == null || pw.trim().length() == 0)
+		{	
+			encodedPW = Utils.getEncryptedPassword(gu.getUserName());
+		}
+		else
+		{
+			encodedPW = Utils.getEncryptedPassword(pw);
+			
+		}
+		
+		gu.setPassword(encodedPW);		
 		
 		PutItemEnhancedRequest<GolfUser> putItemEnhancedRequest = PutItemEnhancedRequest.builder(GolfUser.class).item(gu).build();
 		golfUsersTable.putItem(putItemEnhancedRequest);
@@ -127,7 +144,7 @@ public class GolfUsersDAO implements Serializable
 	public void updateUser(GolfUser gu) throws Exception
 	{
 		deleteUser(gu.getUserName());
-		addUser(gu);		
+		addUser(gu, gu.getPassword());		
 		refreshListsAndMaps("update", gu);	
 	}
 
@@ -147,18 +164,6 @@ public class GolfUsersDAO implements Serializable
 			this.getFullUserMap().put(golfuser.getUserName(), golfuser);		
 		}
 		
-	}
-
-	public void resetPassword(GolfUser gu) throws Exception
-	{
-		String encodedPW=new BCryptPasswordEncoder().encode(gu.getUserName()); //resets to their username
-		gu.setPassword(encodedPW);
-		
-		//logger.debug("encoded password for user " + gu.getUserName() + " is " + encodedPW);
-		
-		updateUser(gu);
-		
-		logger.debug("successfully reset password for user " + gu);			
 	}
 	
 	public void updateRole(GolfUser gu)  throws Exception

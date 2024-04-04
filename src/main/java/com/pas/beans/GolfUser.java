@@ -15,7 +15,6 @@ public class GolfUser implements Serializable
 {
 	private static final long serialVersionUID = 131158039169073163L;
 	
-	private Integer userId;
 	private String userName;
 	private String password;
 	private String userRole;
@@ -51,17 +50,7 @@ public class GolfUser implements Serializable
 	{
 		this.password = password;
 	}
-	
-	public Integer getUserId() 
-	{
-		return userId;
-	}
-	
-	public void setUserId(Integer userId) 
-	{
-		this.userId = userId;
-	}
-	
+		
 	public String getUserRole() 
 	{
 		return userRole;

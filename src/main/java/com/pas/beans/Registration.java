@@ -14,7 +14,6 @@ import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -54,45 +53,16 @@ public class Registration implements Serializable
 		try
 		{
 			String whoIsThis = Utils.getLoggedInUserName();
-			//SecurityController sc = new SecurityController();
-			//String whoIsThis = sc.getCurrentUserName();
-			
-			GolfUser gu = golfmain.getGolfUser(whoIsThis);		
-			String currentEncryptedPW = gu.getPassword();
-			
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			
-			//1) current pw better match
-			
-			if (passwordEncoder.matches(this.getCurrentPassword(), currentEncryptedPW))
+		
+			if (this.getNewPassword().equals(this.getConfirmNewPassword()))
 			{
-				String newPWEncrypted = passwordEncoder.encode(this.getNewPassword());
-				
-				if (newPWEncrypted.equals(currentEncryptedPW))
-				{
-					errorMsg = "Unable to change password.  This password is the same as your old one.  Please change to new one";
-					valid = false;
-				}
-				else
-				{
-					if (this.getNewPassword().equals(this.getConfirmNewPassword()))
-					{
-						golfmain.updateUser(whoIsThis, this.getNewPassword(), "USER");
-					}
-					else
-					{
-						errorMsg = "Unable to change password.  New password and confirm password do not match";
-						valid = false;
-					}
-				}
-				
+				golfmain.updateUser(whoIsThis, this.getNewPassword(), "USER");
 			}
 			else
 			{
-				errorMsg = "Unable to change password.  Current pw does not match your entry.  Contact site admin if you can't remember it";
+				errorMsg = "Unable to change password.  New password and confirm password do not match";
 				valid = false;
-			}
-			
+			}			
 			
 			if (valid)
 			{

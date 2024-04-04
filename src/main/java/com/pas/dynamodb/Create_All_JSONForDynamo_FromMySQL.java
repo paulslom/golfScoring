@@ -677,7 +677,6 @@ public class Create_All_JSONForDynamo_FromMySQL
 				while (rs.next()) 
 				{
 			        GolfUser GolfUser2 = new GolfUser();
-			        GolfUser2.setUserId(rs.getInt("user_id"));
 			        GolfUser2.setUserName(rs.getString("username").toLowerCase());
 			        GolfUser2.setPassword(rs.getString("password"));
 			        GolfUser2.setUserRole(rs.getString("role"));		 
@@ -896,8 +895,6 @@ public class Create_All_JSONForDynamo_FromMySQL
 				bw.write("{");
 				
 				bw.newLine();				
-				bw.write("\t\"userId\": \"" + gu.getUserId() + "\"," );
-				bw.newLine();	
 				bw.write("\t\"userName\": \"" + gu.getUserName() + "\"," );
 				bw.newLine();	
 				bw.write("\t\"password\": \"" + gu.getPassword() + "\"," );

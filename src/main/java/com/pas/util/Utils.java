@@ -46,7 +46,7 @@ public class Utils
 	public static int NET_STYLE_HOLENUM = 22;
 	
 	public static String MY_TIME_ZONE = "America/New_York";
-	
+		
 	public static String getLastYearsLastDayDate() 
 	{
 	    Calendar prevYear = Calendar.getInstance();
@@ -664,12 +664,6 @@ public class Utils
        	return ds;
 	}
 	
-	public static void main(String[] args) 
-	{
-		String encoded=new BCryptPasswordEncoder().encode("user1");
-		System.out.println(encoded);
-	}
-
 	public static ArrayList<String> setEmailFullRecipientList(List<Player> fullPlayerList) 
 	{
 		ArrayList<String> emailRecipients = new ArrayList<String>();
@@ -742,6 +736,13 @@ public class Utils
 		}
 		*/		
 		return isLocal;
+	}
+	
+	public static String getEncryptedPassword(String unencryptedPassword)
+	{
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encryptedPW = passwordEncoder.encode(unencryptedPassword);
+		return encryptedPW;
 	}
 	
 		
