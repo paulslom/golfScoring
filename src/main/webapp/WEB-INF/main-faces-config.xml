@@ -21,6 +21,11 @@
 	<converter>
 	    <converter-id>playerConverter</converter-id>
 	    <converter-class>com.pas.util.PlayerConverter</converter-class>
-	</converter>			
+	</converter>
+	
+	<converter>
+	    <converter-id>gameConverter</converter-id>
+	    <converter-class>com.pas.util.GameConverter</converter-class>
+	</converter>				
 	
 </faces-config>

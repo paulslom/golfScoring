@@ -12,7 +12,6 @@ import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Course;
 import com.pas.beans.Game;
@@ -41,12 +40,8 @@ public class DailyEmailJob implements Runnable
 	
 	private static Group defaultGroup;
 	
-	@Autowired private final GolfMain golfmain;
-	
-	public DailyEmailJob(GolfMain golfmain) throws Exception 
+	public DailyEmailJob() throws Exception 
 	{
-		this.golfmain = golfmain;
-		
 		dynamoClients = DynamoUtil.getDynamoClients();
 		
 		GroupDAO groupDAO = new GroupDAO(dynamoClients, new GolfMain());
@@ -112,7 +107,7 @@ public class DailyEmailJob implements Runnable
 
 	private String getTeeTimes(Game inputGame) throws Exception 
 	{
-		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients, golfmain);
+		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients, new GolfMain());
 		teeTimeDAO.readTeeTimesFromDB(defaultGroup);
 		List<TeeTime> teeTimeList = teeTimeDAO.getTeeTimesByGame(inputGame);
 		
@@ -131,7 +126,7 @@ public class DailyEmailJob implements Runnable
 
 	private ArrayList<String> establishEmailRecipients(Game inputGame) 
 	{
-		PlayerDAO playerDAO = new PlayerDAO(dynamoClients, golfmain);
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients, new GolfMain());
 		playerDAO.readPlayersFromDB();
 		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerDAO.getFullPlayerList());		
 		
@@ -197,7 +192,7 @@ public class DailyEmailJob implements Runnable
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
 				
-		RoundDAO roundDAO = new RoundDAO(dynamoClients, golfmain, inputGame);
+		RoundDAO roundDAO = new RoundDAO(dynamoClients, new GolfMain(), inputGame);
 		roundDAO.readAllRoundsFromDB();
 		List<Round> roundList = roundDAO.getRoundsForGame(inputGame);
 		

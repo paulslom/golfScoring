@@ -1,8 +1,14 @@
 package com.pas.spring;
 
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +16,9 @@ import org.jboss.weld.environment.servlet.EnhancedListener;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 
+import com.pas.util.DailyEmailJob;
 import com.pas.util.FileDataLoader;
+import com.pas.util.Utils;
 import com.sun.faces.config.FacesInitializer;
 
 import jakarta.servlet.ServletContainerInitializer;
@@ -21,6 +29,8 @@ public class MyWebAppInitializer implements ServletContextInitializer
 {
 	private static Logger logger = LogManager.getLogger(MyWebAppInitializer.class);	
 	
+	private ScheduledExecutorService scheduler;
+	 
 	@Override
     public void onStartup(ServletContext sc) 
 	{                
@@ -72,6 +82,22 @@ public class MyWebAppInitializer implements ServletContextInitializer
                 logger.info("Successfully loaded dynamo db database.");
             }
             
+            logger.info("Setting up Daily Email Job to run at 8 am in the east");
+            
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+            long scDelay = Utils.getDailyEmailTime();
+            try 
+            {
+    			scheduler.scheduleAtFixedRate(new DailyEmailJob(), scDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
+    			logger.info("Daily email job set to run every day at 8 am ET");
+    		}
+            catch (Exception e) 
+            {
+    			logger.error("unable to create scheduler for DailyEmailJob " + e.getMessage(), e);
+    		}    
+            
+            logger.info("completed Setting up Daily Email Job to run at 8 am in the east");
+            
         } 
         catch (final Exception ex) 
         {
@@ -79,4 +105,5 @@ public class MyWebAppInitializer implements ServletContextInitializer
         }
        
     }
+	
 }

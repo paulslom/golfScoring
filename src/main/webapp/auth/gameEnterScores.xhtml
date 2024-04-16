@@ -32,12 +32,12 @@
              
 	               <td class="text">
 					
-				      <p:selectOneMenu id="gameList" value="#{pc_Round.game}" required="true"  hideNoSelectionOption="true">
-				         <p:ajax listener="#{pc_Round.valueChangeGame}" event="change" 
+				 	  <p:selectOneMenu id="gameList" value="#{pc_Game.gameID}" required="true"  hideNoSelectionOption="true">
+					      <p:ajax listener="#{pc_Round.valueChangeGame}" event="change" 
 				         	update="gameForm:label1 gameForm:label2 scoresForm"/>
 				      	 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
-					
+										
 				   </td>
 				   
 				   <td class="textLabel">

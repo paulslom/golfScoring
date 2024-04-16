@@ -3,7 +3,6 @@ package com.pas.beans;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -456,16 +455,29 @@ public class Game implements Serializable
 	{
 		logger.info(getTempUserName() + " picked a game");
 		
-		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		Game selectedOption = (Game)selectonemenu.getValue();
-		
-		if (selectedOption != null)
+		try
 		{
-			this.setSelectedGame(selectedOption);
-			this.setShowPlayerSelectionPanel(true);
+			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
+			
+			String gameID = (String)selectonemenu.getValue();
+			
+			if (gameID != null)
+			{
+				selectedGame = golfmain.getGameByGameID(gameID);
+				if (selectedGame != null)
+				{
+					this.setSelectedGame(selectedGame);
+					this.setShowPlayerSelectionPanel(true);
+				}
+			}
 		}
-						
+		catch (Exception e)
+		{
+			logger.error("valueChangeGame failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"valueChangeGame failed: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}		
+								
 	}
 	
 	public void valueChangeCourse(AjaxBehaviorEvent event) 
@@ -1114,7 +1126,87 @@ public class Game implements Serializable
 			for (int i = 0; i < playerScores.size(); i++) 
 			{
 				Round round = playerScores.get(i);
-				Score score = round.getRoundbyHoleScores().get(holeNumber-1); //since index is zero-based use holeNumber - 1
+				Score score = new Score();
+				switch (holeNumber) 
+				{
+					case 1:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole1Score(), course, round);
+						score.setScore(round.getHole1Score());									
+						break;					
+					case 2:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole2Score(), course, round);
+						score.setScore(round.getHole2Score());								
+						break;					
+					case 3:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole3Score(), course, round);
+						score.setScore(round.getHole3Score());
+						break;					
+					case 4:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole4Score(), course, round);
+						score.setScore(round.getHole4Score());
+						break;					
+					case 5:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole5Score(), course, round);
+						score.setScore(round.getHole5Score());
+						break;					
+					case 6:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole6Score(), course, round);
+						score.setScore(round.getHole6Score());
+						break;
+					case 7:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole7Score(), course, round);
+						score.setScore(round.getHole7Score());
+						break;					
+					case 8:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole8Score(), course, round);
+						score.setScore(round.getHole8Score());
+						break;					
+					case 9:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole9Score(), course, round);
+						score.setScore(round.getHole9Score());
+						break;
+						
+					//back 9
+					case 10:
+						round = Utils.setDisplayScore(holeNumber, round.getHole10Score(), course, round);
+						score.setScore(round.getHole10Score());
+						break;					
+					case 11:
+						round = Utils.setDisplayScore(holeNumber, round.getHole11Score(), course, round);
+						score.setScore(round.getHole11Score());
+						break;					
+					case 12:
+						round = Utils.setDisplayScore(holeNumber, round.getHole12Score(), course, round);
+						score.setScore(round.getHole12Score());
+						break;					
+					case 13:
+						round = Utils.setDisplayScore(holeNumber, round.getHole13Score(), course, round);
+						score.setScore(round.getHole13Score());
+						break;					
+					case 14:
+						round = Utils.setDisplayScore(holeNumber, round.getHole14Score(), course, round);
+						score.setScore(round.getHole14Score());
+						break;					
+					case 15:	
+						round = Utils.setDisplayScore(holeNumber, round.getHole15Score(), course, round);
+						score.setScore(round.getHole15Score());
+						break;					
+					case 16:
+						round = Utils.setDisplayScore(holeNumber, round.getHole16Score(), course, round);
+						score.setScore(round.getHole16Score());
+						break;					
+					case 17:
+						round = Utils.setDisplayScore(holeNumber, round.getHole17Score(), course, round);
+						score.setScore(round.getHole17Score());
+						break;					
+					case 18:
+						round = Utils.setDisplayScore(holeNumber, round.getHole18Score(), course, round);
+						score.setScore(round.getHole18Score());
+						break;
+						
+					default:
+						break;
+				}
 				holeScoreMap.put(score.getScore(), round.getPlayer());
 				holeScoreList.add(score.getScore());
 			}
@@ -1134,9 +1226,9 @@ public class Game implements Serializable
 			
 			//now we know the lowest score and who has it; now it's just a matter of does anyone else have it..
 			int scoreCount = 0;
-			for (int i = 0; i < holeScoreList.size(); i++) 
+			for (int j = 0; j < holeScoreList.size(); j++) 
 			{
-				int scoreInt = holeScoreList.get(i);
+				int scoreInt = holeScoreList.get(j);
 				if (scoreInt == lowestScore)
 				{
 					scoreCount++;
@@ -1166,7 +1258,7 @@ public class Game implements Serializable
 		
 		if (totalSkins > 0)
 		{
-			BigDecimal skinValue = skinsPot.divide(new BigDecimal(totalSkins), new MathContext(100));
+			BigDecimal skinValue = skinsPot.divide(new BigDecimal(totalSkins), 2, RoundingMode.HALF_UP);
 			
 			logger.info(getTempUserName() + " Skins won: " + totalSkins + " at " + skinValue + " each");
 			

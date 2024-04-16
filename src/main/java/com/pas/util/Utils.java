@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -133,6 +136,7 @@ public class Utils
 		}
 		return recommendedTeams;
 	}
+	
 	public static int getTeamScoreOnHole(List<Round> roundsList, int holeNumber, int ballNumber)
 	{
 		//get a list of scores for this hole
@@ -140,7 +144,82 @@ public class Utils
 		for (int i = 0; i < roundsList.size(); i++) 
 		{
 			Round round = roundsList.get(i);
-			Score score = round.getRoundbyHoleScores().get(holeNumber-1); //since index is zero-based use holeNumber - 1
+			
+			Score score = new Score();
+			
+			if (holeNumber == 1 && round.getHole1Score() != null)
+			{
+				score.setScore(round.getHole1Score());
+			}
+			else if (holeNumber == 2 && round.getHole2Score() != null)
+			{
+				score.setScore(round.getHole2Score());
+			}
+			else if (holeNumber == 3 && round.getHole3Score() != null)
+			{
+				score.setScore(round.getHole3Score());
+			}
+			else if (holeNumber == 4 && round.getHole4Score() != null)
+			{
+				score.setScore(round.getHole4Score());
+			}
+			else if (holeNumber == 5 && round.getHole5Score() != null)
+			{
+				score.setScore(round.getHole5Score());
+			}
+			else if (holeNumber == 6 && round.getHole6Score() != null)
+			{
+				score.setScore(round.getHole6Score());
+			}
+			else if (holeNumber == 7 && round.getHole7Score() != null)
+			{
+				score.setScore(round.getHole7Score());
+			}
+			else if (holeNumber == 8 && round.getHole8Score() != null)
+			{
+				score.setScore(round.getHole8Score());
+			}
+			else if (holeNumber == 9 && round.getHole9Score() != null)
+			{
+				score.setScore(round.getHole9Score());
+			}
+			else if (holeNumber == 10 && round.getHole10Score() != null)
+			{
+				score.setScore(round.getHole10Score());
+			}
+			else if (holeNumber == 11 && round.getHole11Score() != null)
+			{
+				score.setScore(round.getHole11Score());
+			}
+			else if (holeNumber == 12 && round.getHole12Score() != null)
+			{
+				score.setScore(round.getHole12Score());
+			}
+			else if (holeNumber == 13 && round.getHole13Score() != null)
+			{
+				score.setScore(round.getHole13Score());
+			}
+			else if (holeNumber == 14 && round.getHole14Score() != null)
+			{
+				score.setScore(round.getHole14Score());
+			}
+			else if (holeNumber == 15 && round.getHole15Score() != null)
+			{
+				score.setScore(round.getHole15Score());
+			}
+			else if (holeNumber == 16 && round.getHole16Score() != null)
+			{
+				score.setScore(round.getHole16Score());
+			}
+			else if (holeNumber == 17 && round.getHole17Score() != null)
+			{
+				score.setScore(round.getHole17Score());
+			}
+			else if (holeNumber == 18 && round.getHole18Score() != null)
+			{
+				score.setScore(round.getHole18Score());
+			}
+			
 			holeScoreList.add(score.getScore());
 		}
 		
@@ -743,6 +822,29 @@ public class Utils
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encryptedPW = passwordEncoder.encode(unencryptedPassword);
 		return encryptedPW;
+	}
+	
+	public static long getDailyEmailTime() 
+    {
+    	int hour = 8;
+    	int minute = 0;
+    	int second = 0;
+    	
+    	//int hour = 19;
+    	//int minute = 42;
+    	//int second = 0;
+    	
+    	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));
+    	ZonedDateTime nextRun = now.withHour(hour).withMinute(minute).withSecond(second);
+    	
+    	if(now.compareTo(nextRun) > 0)
+    	{
+    		nextRun = nextRun.plusDays(1);
+    	}
+
+    	Duration duration = Duration.between(now, nextRun);
+    	long initialDelay = duration.getSeconds();
+		return initialDelay;
 	}
 	
 		
