@@ -24,7 +24,7 @@ public class DateToStringConverter
     {
     	String returnString = "";
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    	sdf.setTimeZone(TimeZone.getTimeZone("EST"));
+    	sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		returnString = sdf.format(inputDate);
     	return returnString;
     }

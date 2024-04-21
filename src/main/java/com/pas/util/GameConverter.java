@@ -46,7 +46,7 @@ public class GameConverter implements Converter<Object>
 	    {
 	        return (String)modelValue;
 	    } 
-	    else if (modelValue instanceof Player) 
+	    else if (modelValue instanceof Game) 
 	    {
 	    	Game tempGame = (Game)modelValue;
 	        return String.valueOf(tempGame.getGameID());

@@ -1,7 +1,10 @@
 package com.pas.util;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -800,6 +804,25 @@ public class Utils
 		
 		return courseHandicap;
 	}
+	
+	public static Boolean isRunningInsideDocker() 
+	{
+        try (Stream < String > stream = Files.lines(Paths.get("/proc/1/cgroup"))) 
+        {
+        	boolean inDocker = stream.anyMatch(line -> line.contains("/docker")); 
+        	boolean inAWSECS = stream.anyMatch(line -> line.contains("/ecs")); 
+        	
+        	logger.info("Am I in docker container? " + inDocker);
+        	logger.info("Am I in Amazon AWS ECS container? " + inAWSECS);
+        	
+            return inDocker || inAWSECS;
+        } 
+        catch (IOException e) 
+        {
+        	logger.info("Am I in docker container? NO");
+            return false;
+        }
+    }
 	
 	public static boolean isLocalEnv()
 	{

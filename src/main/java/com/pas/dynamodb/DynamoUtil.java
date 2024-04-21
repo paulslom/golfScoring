@@ -65,7 +65,7 @@ public class DynamoUtil
 		DynamoDbEnhancedClient dynamoDbEnhancedClient;
 		DynamoDbClient ddbClient;
 
-		if (Utils.isLocalEnv())
+		if (!Utils.isRunningInsideDocker())
         {
         	logger.info("We are operating in LOCAL env - connecting to DynamoDBLocal");
         	
@@ -111,7 +111,7 @@ public class DynamoUtil
 	
 	public static void stopDynamoServer()
 	{
-		if (Utils.isLocalEnv())
+		if (!Utils.isRunningInsideDocker())
         {
         	logger.info("We are operating in LOCAL env - STOPPING dynamoDB local server");
         	try 

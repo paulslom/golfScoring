@@ -39,8 +39,8 @@ public class FileDataLoader
     {
         if (!loadData) 
         {
-            logger.info("Load data property is set to false.");
-            return true;
+            logger.info("Load data property is set to false.  Not loading dynamo tables from json files");
+            return false;
         }
         
         DynamoClients dynamoClients = DynamoUtil.getDynamoClients();

@@ -151,7 +151,7 @@ public class GameDAO implements Serializable
 
 	public void readGamesFromDB(Group defaultGroup) throws Exception 
     {
-		logger.info("entering readGamesFromDB.  golfmain = " + golfmain);
+		logger.info("entering readGamesFromDB");
 		
 		Map<String, Course> coursesMap = new HashMap<>();
 		if (golfmain == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
@@ -167,6 +167,9 @@ public class GameDAO implements Serializable
 		}
 		
 		String oneMonthAgo = Utils.getOneMonthAgoDate();
+		
+		logger.info("looking for games newer than: " + oneMonthAgo);
+		
 		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(oneMonthAgo));
 		
 		ScanEnhancedRequest request = ScanEnhancedRequest.builder()
@@ -179,8 +182,11 @@ public class GameDAO implements Serializable
 		
 		Iterator<DynamoGame> results = gamesTable.scan(request).items().iterator();
 	  	
+		int gameCount = 0;
 		while (results.hasNext()) 
         {
+			gameCount++;
+			logger.info("iterating game " + gameCount);
 			DynamoGame dynamoGame = results.next();
           	
 			Game game = new Game(golfmain);
