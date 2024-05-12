@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
-import com.pas.util.Utils;
+//import com.pas.util.Utils;
 
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -27,6 +27,9 @@ public class DynamoUtil
 	private static DynamoDBProxyServer server;
 	
 	private static DynamoClients dynamoClients = null;	
+	
+	//private static final boolean runningOnAWS = false;
+    private static final boolean runningOnAWS = true;
 
 	/*
 	The maximum number of strongly consistent reads and writes consumed per second before DynamoDB returns a ThrottlingException.
@@ -65,7 +68,7 @@ public class DynamoUtil
 		DynamoDbEnhancedClient dynamoDbEnhancedClient;
 		DynamoDbClient ddbClient;
 
-		if (!Utils.isRunningInsideDocker())
+		if (!runningOnAWS)
         {
         	logger.info("We are operating in LOCAL env - connecting to DynamoDBLocal");
         	
@@ -111,7 +114,7 @@ public class DynamoUtil
 	
 	public static void stopDynamoServer()
 	{
-		if (!Utils.isRunningInsideDocker())
+		if (!runningOnAWS)
         {
         	logger.info("We are operating in LOCAL env - STOPPING dynamoDB local server");
         	try 

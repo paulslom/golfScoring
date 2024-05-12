@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -22,6 +23,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named("pc_TeeTime")
+@Component
 public class TeeTime implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -64,14 +66,10 @@ public class TeeTime implements Serializable
 		this.setCourseName(courseName);
 	}
 
+	@Autowired
 	public TeeTime(GolfMain golfmain) 
 	{
 		this.golfmain = golfmain;
-	}
-
-	public TeeTime() 
-	{
-		this.golfmain = new GolfMain();		
 	}
 	
 	public String selectRowAjax(SelectEvent<TeeTime> event)

@@ -21,8 +21,8 @@ import com.pas.dynamodb.DynamoUtil;
 public class FileDataLoader 
 {
 	private static Logger logger = LogManager.getLogger(FileDataLoader.class);
-    //private static final boolean loadData = false;
-    private static final boolean loadData = true;
+    private static final boolean loadData = false; // false when on AWS.
+    //private static final boolean loadData = true;
     
     private static String GOLFUSERS_JSONFILE = "/data/GolfUsersData.json";
 	private static String COURSES_JSONFILE = "/data/CoursesData.json";

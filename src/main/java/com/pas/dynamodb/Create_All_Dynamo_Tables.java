@@ -30,16 +30,16 @@ public class Create_All_Dynamo_Tables
          {
     		 DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
     
-    		 doTable(dynamoClients, GOLFUSERS_JSONFILE);
-    		 doTable(dynamoClients, GOLFGROUPS_JSONFILE);
-    		 doTable(dynamoClients, COURSES_JSONFILE);
-    		 doTable(dynamoClients, GOLFCOURSETEES_JSONFILE);
-    		 doTable(dynamoClients, GAMES_JSONFILE);
-    		 doTable(dynamoClients, TEETIMES_JSONFILE);
-    		 doTable(dynamoClients, PLAYERS_JSONFILE);
-    		 doTable(dynamoClients, PLAYERTEES_JSONFILE);
-    		 doTable(dynamoClients, PLAYERMONEY_JSONFILE);
-    		 doTable(dynamoClients, ROUNDS_JSONFILE);
+    		 //doTable(dynamoClients, GOLFUSERS_JSONFILE);
+    		 //doTable(dynamoClients, GOLFGROUPS_JSONFILE);
+    		 //doTable(dynamoClients, COURSES_JSONFILE);
+    		 //doTable(dynamoClients, GOLFCOURSETEES_JSONFILE);
+    		 //doTable(dynamoClients, GAMES_JSONFILE);
+    		 //doTable(dynamoClients, TEETIMES_JSONFILE);
+    		 //doTable(dynamoClients, PLAYERS_JSONFILE);
+    		 //doTable(dynamoClients, PLAYERTEES_JSONFILE);
+    		 //doTable(dynamoClients, PLAYERMONEY_JSONFILE);
+    		 //doTable(dynamoClients, ROUNDS_JSONFILE);
 	       	
 	    	 DynamoUtil.stopDynamoServer();
 	    	

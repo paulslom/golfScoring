@@ -89,12 +89,7 @@ public class CreateTableDynamoDB_GolfUsers
         
         try
         {
-	        golfUsersTable.createTable(builder -> builder
-	                .provisionedThroughput(b -> b
-	                        .readCapacityUnits(Long.valueOf(5))
-	                        .writeCapacityUnits(Long.valueOf(5))
-	                        .build())
-	        );
+	        golfUsersTable.createTable(builder -> builder.build());
         }
         catch (ResourceInUseException riue)
         {

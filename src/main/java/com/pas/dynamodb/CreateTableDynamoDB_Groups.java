@@ -96,12 +96,7 @@ public class CreateTableDynamoDB_Groups
         
         try
         {
-	        groupsTable.createTable(builder -> builder
-	                .provisionedThroughput(b -> b
-	                        .readCapacityUnits(Long.valueOf(5))
-	                        .writeCapacityUnits(Long.valueOf(5))
-	                        .build())
-	        );
+	        groupsTable.createTable(builder -> builder.build());
 	        
         }
         catch (ResourceInUseException riue)

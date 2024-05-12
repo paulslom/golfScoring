@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.GolfMain;
 import com.pas.beans.GolfUser;
@@ -34,12 +33,8 @@ public class GolfUsersDAO implements Serializable
 	private static DynamoDbTable<GolfUser> golfUsersTable;
 	private static final String AWS_TABLE_NAME = "golfUsers";
 	
-	@Autowired private final GolfMain golfmain;
-	
 	public GolfUsersDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
-	   this.golfmain = golfmain;
-	   
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;

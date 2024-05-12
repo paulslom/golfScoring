@@ -5,34 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pas.beans.Game;
+import com.pas.beans.GolfMain;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
-import jakarta.faces.convert.FacesConverter;
-
-import com.pas.beans.Game;
-import com.pas.beans.GolfMain;
-import com.pas.beans.Player;
 
 public class GameConverter implements Converter<Object>
 {
 	Map<String,Game> gamesMap = new HashMap<>();	
-	
-	@Autowired private final GolfMain golfmain;
-	
-	public GameConverter() 
-	{
-		this.golfmain = new GolfMain();		
-	}
-	
-	public GameConverter(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-	}
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 

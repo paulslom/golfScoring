@@ -2,7 +2,7 @@ services:
   golfscoring-web:
     build: .
     container_name: golfscoringContainer
-    image: golfscoring-docker:324
+    image: golfscoring-docker:328
     environment:
       SERVER_PORT: 9090
     cpus: 1.5

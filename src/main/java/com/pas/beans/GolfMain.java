@@ -218,6 +218,11 @@ public class GolfMain implements Serializable
 		}		
 	}
 
+	//use this from DailyEmailJob so as to not run anything like at app startup
+	public GolfMain(String tempString)
+	{		
+	}
+	
 	private void loadRoundList(DynamoClients dynamoClients) throws Exception
 	{
 		roundDAO = new RoundDAO(dynamoClients, this, null);
