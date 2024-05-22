@@ -48,7 +48,7 @@ public class SecurityConfig
         .authorizeHttpRequests(auth -> auth
         	.requestMatchers(
                 mvcMatcherBuilder.pattern("/resources/**"),
-                mvcMatcherBuilder.pattern("/health/**"),
+                mvcMatcherBuilder.pattern("/actuator/**"),
                 mvcMatcherBuilder.pattern("/jakarta.faces.resource/**"),
                 mvcMatcherBuilder.pattern("/register.xhtml"),
                 mvcMatcherBuilder.pattern("/index.html"))

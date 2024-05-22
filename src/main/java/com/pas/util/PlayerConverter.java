@@ -24,7 +24,7 @@ public class PlayerConverter implements Converter<Object>
 	
 	public PlayerConverter() 
 	{
-		this.golfmain = new GolfMain();		
+		this.golfmain = new GolfMain("ignore");		
 	}
 	
 	public PlayerConverter(GolfMain golfmain) 

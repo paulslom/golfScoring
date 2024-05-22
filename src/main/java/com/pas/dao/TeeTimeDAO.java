@@ -95,7 +95,7 @@ public class TeeTimeDAO implements Serializable
 		Iterator<DynamoTeeTime> results = teeTimesTable.scan().items().iterator();
 	  	
 		Map<String, Game> fullGameMap = new HashMap<>();
-		if (golfmain == null)
+		if (golfmain == null  || golfmain.getGameDAO() == null)
 		{
 			//if golfmain jsf bean unavailable... so just redo the gamedao read
 			GameDAO gameDAO = new GameDAO(dynamoClients, golfmain);		

@@ -13,6 +13,7 @@ import org.jboss.weld.environment.servlet.EnhancedListener;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 
+import com.pas.beans.GolfMain;
 import com.pas.util.DailyEmailJob;
 import com.pas.util.FileDataLoader;
 import com.pas.util.Utils;
@@ -94,6 +95,11 @@ public class MyWebAppInitializer implements ServletContextInitializer
     		}    
             
             logger.info("completed Setting up Daily Email Job to run at 8 am in the east");
+            
+            //Now load GolfMain
+            //GolfMain gm = new GolfMain();
+            
+            logger.info("GolfMain loaded at spring startup");
             
         } 
         catch (final Exception ex) 

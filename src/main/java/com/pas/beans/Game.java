@@ -50,7 +50,8 @@ public class Game implements Serializable
 	
 	private static String NEWLINE = "<br/>";	
 	
-	private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";
+	//private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";
+	private static String WEBSITE_URL = "http://golfscoring-alb-9090-2079436394.us-east-1.elb.amazonaws.com";
 	
 	private boolean courseSelected = false;
 	private boolean disableShowScores = true;

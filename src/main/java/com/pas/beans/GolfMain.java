@@ -1551,5 +1551,93 @@ public class GolfMain implements Serializable
 	{
 		this.loggedInPlayerEmail = loggedInPlayerEmail;
 	}
+
+	public ArrayList<String> getEmailRecipients() {
+		return emailRecipients;
+	}
+
+	public void setEmailRecipients(ArrayList<String> emailRecipients) {
+		this.emailRecipients = emailRecipients;
+	}
+
+	public GameDAO getGameDAO() {
+		return gameDAO;
+	}
+
+	public void setGameDAO(GameDAO gameDAO) {
+		this.gameDAO = gameDAO;
+	}
+
+	public GolfUsersDAO getGolfUsersDAO() {
+		return golfUsersDAO;
+	}
+
+	public void setGolfUsersDAO(GolfUsersDAO golfUsersDAO) {
+		this.golfUsersDAO = golfUsersDAO;
+	}
+
+	public RoundDAO getRoundDAO() {
+		return roundDAO;
+	}
+
+	public void setRoundDAO(RoundDAO roundDAO) {
+		this.roundDAO = roundDAO;
+	}
+
+	public TeeTimeDAO getTeeTimeDAO() {
+		return teeTimeDAO;
+	}
+
+	public void setTeeTimeDAO(TeeTimeDAO teeTimeDAO) {
+		this.teeTimeDAO = teeTimeDAO;
+	}
+
+	public CourseDAO getCourseDAO() {
+		return courseDAO;
+	}
+
+	public void setCourseDAO(CourseDAO courseDAO) {
+		this.courseDAO = courseDAO;
+	}
+
+	public CourseTeeDAO getCourseTeeDAO() {
+		return courseTeeDAO;
+	}
+
+	public void setCourseTeeDAO(CourseTeeDAO courseTeeDAO) {
+		this.courseTeeDAO = courseTeeDAO;
+	}
+
+	public PlayerDAO getPlayerDAO() {
+		return playerDAO;
+	}
+
+	public void setPlayerDAO(PlayerDAO playerDAO) {
+		this.playerDAO = playerDAO;
+	}
+
+	public PlayerMoneyDAO getPlayerMoneyDAO() {
+		return playerMoneyDAO;
+	}
+
+	public void setPlayerMoneyDAO(PlayerMoneyDAO playerMoneyDAO) {
+		this.playerMoneyDAO = playerMoneyDAO;
+	}
+
+	public PlayerTeePreferenceDAO getPlayerTeePreferencesDAO() {
+		return playerTeePreferencesDAO;
+	}
+
+	public void setPlayerTeePreferencesDAO(PlayerTeePreferenceDAO playerTeePreferencesDAO) {
+		this.playerTeePreferencesDAO = playerTeePreferencesDAO;
+	}
+
+	public GroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+
+	public void setGroupDAO(GroupDAO groupDAO) {
+		this.groupDAO = groupDAO;
+	}
 		
 }

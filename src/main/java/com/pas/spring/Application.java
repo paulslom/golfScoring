@@ -18,4 +18,5 @@ public class Application extends SpringBootServletInitializer
 		SpringApplication.run(new Class[] { Application.class, MyWebAppInitializer.class }, args);
 		logger.info("Spring boot application started");
 	}
+	
 }

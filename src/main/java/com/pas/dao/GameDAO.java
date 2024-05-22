@@ -154,7 +154,7 @@ public class GameDAO implements Serializable
 		logger.info("entering readGamesFromDB");
 		
 		Map<String, Course> coursesMap = new HashMap<>();
-		if (golfmain == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
+		if (golfmain == null || golfmain.getCourseDAO() == null) //if golfmain jsf bean unavailable... so just redo the gamedao read
 		{
 			DynamoClients dynamoClients = DynamoUtil.getDynamoClients();				
 			CourseDAO courseDAO = new CourseDAO(dynamoClients);		
