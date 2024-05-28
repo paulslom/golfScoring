@@ -5,19 +5,6 @@
               xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd"
               version="4.0">
 
-    <name>MainFacesConfig</name>
-    
-    <ordering>
-	  <after>
-	     <name>primefaces</name>
-	     <others />
-	  </after>
-	</ordering>  	
-	   		
-	<application>       
-  		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>  
-	</application>
-	
 	<converter>
 	    <converter-id>playerConverter</converter-id>
 	    <converter-class>com.pas.util.PlayerConverter</converter-class>

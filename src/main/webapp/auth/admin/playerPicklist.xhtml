@@ -42,11 +42,11 @@
 					   </td>
 					   
 					   <td class="textLabel">
-							<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+							<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Player.selectedGame.totalPlayers}"/>
 					   </td>
 					   
 					   <td class="textLabel">
-							<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+							<p:outputLabel id="label2" value="#{pc_Player.selectedGame.courseName}"/>
 					   </td>
 					   
 					</tr>
@@ -54,7 +54,7 @@
 					<tr>   	
 					   
 					    <td class="textLabel" colspan="4">
-							<p:outputLabel id="label3" value=" Players Selected so far: #{pc_Player.totalSelectedPlayers}"/>
+							<p:outputLabel id="label3" value="Players Selected so far: #{pc_Player.pickListTargetPlayersSelected}"/>
 					   </td>					       
 					   
 				    </tr>
@@ -74,11 +74,23 @@
 								 
 				<p:messages id="facesMessagesID" showDetail="false">
 				</p:messages> 	
+						
+				<p:pickList value="#{pc_Player.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
+					itemValue="#{player}" converter="playerConverter" showSourceControls="true" showTargetControls="true">
+					
+					<f:facet name="sourceCaption">Available</f:facet>
+			        <f:facet name="targetCaption">Playing</f:facet>
+			    		
+			    	<p:ajax event="select" update="playerPicklistForm:label3"/>
+			        <p:ajax event="transfer" update="playerPicklistForm:label3" />
+			        <p:ajax event="unselect" update="playerPicklistForm:label3"/>
+			     			
+					<p:column style="width:100%">
+						#{player.fullName}
+					</p:column>
+					
+				</p:pickList>				
 				
-				<p:selectManyCheckbox id="playersCheckboxID" converter="playerConverter" value="#{pc_Player.selectedPlayersList}" layout="responsive">
-            		<f:selectItems value="#{pc_GolfMain.activePlayerList}" var="item" itemLabel="#{item.fullName}" itemValue="#{item.playerID}"/>
-            		<p:ajax listener="#{pc_Player.valueChangePickedPlayer}" update="playerPicklistForm"/>
-        		</p:selectManyCheckbox>							
 				 
 				<p:commandButton id="saveAndStayButtonID"
 	                value="#{bundle.saveAndStay}"

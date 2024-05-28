@@ -5,8 +5,8 @@
   
   <groupId>com.pas</groupId>
   <artifactId>golfScoring</artifactId>
-  <packaging>war</packaging>
-  <version>3.0.30</version>
+  <packaging>jar</packaging>
+  <version>3.0.33</version>
   
   <name>golfScoring Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -133,7 +133,7 @@
 	<dependency>
 		<groupId>org.primefaces</groupId>
     	<artifactId>primefaces</artifactId>
-    	<version>13.0.3</version>
+    	<version>14.0.0</version>
     	<classifier>jakarta</classifier>
 	</dependency>
 		

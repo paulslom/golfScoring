@@ -13,6 +13,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.convert.FacesConverter;
 
 public class GameConverter implements Converter<Object>
 {

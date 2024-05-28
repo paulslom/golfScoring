@@ -504,9 +504,16 @@ public class Game implements Serializable
 		
 		try
 		{
-			Round newRound = new Round(golfmain, game1);
-			
 			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
+			
+			if (playerIsAlreadySignedUp(game1, tempPlayer)) //should not happen but for some reason has been
+			{
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Player is already signed up for this game",null);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				return "";
+			}
+			
+			Round newRound = new Round(golfmain, game1);			
 			
 			newRound.setGameID(game1.getGameID());
 			newRound.setPlayerID(tempPlayer.getPlayerID());
@@ -557,6 +564,28 @@ public class Game implements Serializable
 		return "";
 	}
 	
+	private boolean playerIsAlreadySignedUp(Game game1, Player tempPlayer) 
+	{
+		boolean playerIsSignedUpAlready = false;
+		
+		List<Round> roundList = golfmain.getRoundsForGame(game1);
+		
+		for (int i = 0; i < roundList.size(); i++) 
+		{
+			Round rd = roundList.get(i);
+			if (rd != null 
+			&& rd.getPlayerID() != null 
+			&& tempPlayer != null 
+			&& tempPlayer.getPlayerID() != null
+			&& rd.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+			{
+				playerIsSignedUpAlready = true;
+				break;
+			}
+		}
+		return playerIsSignedUpAlready;
+	}
+
 	public String withdraw(Game game1)
 	{
 		logger.info(getTempUserName() + " clicked withdraw button");
@@ -3313,7 +3342,9 @@ public class Game implements Serializable
 		this.availableGameList = availableGameList;
 	}
 
-	public boolean isRenderSignUp() {
+	public boolean isRenderSignUp() 
+	{
+		//return true; // set to true if you want to test the "isPlayerAlreadySignedUp" method
 		return renderSignUp;
 	}
 

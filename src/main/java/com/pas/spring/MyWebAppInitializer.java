@@ -13,7 +13,6 @@ import org.jboss.weld.environment.servlet.EnhancedListener;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 
-import com.pas.beans.GolfMain;
 import com.pas.util.DailyEmailJob;
 import com.pas.util.FileDataLoader;
 import com.pas.util.Utils;
@@ -21,6 +20,7 @@ import com.sun.faces.config.FacesInitializer;
 
 import jakarta.servlet.ServletContainerInitializer;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 
 @Configuration
 public class MyWebAppInitializer implements ServletContextInitializer 
@@ -56,6 +56,9 @@ public class MyWebAppInitializer implements ServletContextInitializer
             sc.setInitParameter("jakarta.faces.CONFIG_FILES", "/WEB-INF/main-faces-config.xml");
             sc.setInitParameter("jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE", "true");
             sc.setInitParameter("primefaces.UPLOADER", "commons");
+            
+            ServletRegistration.Dynamic elResolverInitializer = sc.addServlet("elResolverInit", new ELResolverInitializerServlet());
+            elResolverInitializer.setLoadOnStartup(2);
             
             //only one class is necessary here, not sure why they are not ALL needed but they are not.
             Set<Class<?>> jsfAnnotatedClasses = new HashSet<>();
@@ -95,11 +98,6 @@ public class MyWebAppInitializer implements ServletContextInitializer
     		}    
             
             logger.info("completed Setting up Daily Email Job to run at 8 am in the east");
-            
-            //Now load GolfMain
-            //GolfMain gm = new GolfMain();
-            
-            logger.info("GolfMain loaded at spring startup");
             
         } 
         catch (final Exception ex) 

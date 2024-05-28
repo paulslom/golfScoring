@@ -1,35 +1,40 @@
 package com.pas.util;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pas.beans.GolfMain;
+import com.pas.beans.Player;
+import com.pas.dao.PlayerDAO;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoUtil;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
-
-import com.pas.beans.GolfMain;
-import com.pas.beans.Player;
+import jakarta.faces.convert.FacesConverter;
 
 public class PlayerConverter implements Converter<Object>
 {
 	Map<String,Player> playersMap = new HashMap<>();
-	
-	@Autowired private final GolfMain golfmain;
-	
+		
 	public PlayerConverter() 
 	{
-		this.golfmain = new GolfMain("ignore");		
-	}
-	
-	public PlayerConverter(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
+		DynamoClients dynamoClients;
+		try 
+		{
+			dynamoClients = DynamoUtil.getDynamoClients();
+			PlayerDAO playerDAO = new PlayerDAO(dynamoClients, new GolfMain("ignore"));
+			playerDAO.readPlayersFromDB();
+			playersMap = playerDAO.getFullPlayersMapByPlayerID();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}		
+		
 	}
 	
 	@Override
@@ -65,13 +70,7 @@ public class PlayerConverter implements Converter<Object>
 
 	    try 
 	    {
-	    	if (playersMap.isEmpty())
-	    	{
-	        	List<Player> fullPlayerList = golfmain.getFullPlayerList();
-	        	playersMap = fullPlayerList.stream().collect(Collectors.toMap(Player::getPlayerID, ply -> ply));	   
-	    	}
-			
-			Player returnPlayer = playersMap.get(submittedValue);
+	    	Player returnPlayer = playersMap.get(submittedValue);
 	        return returnPlayer;
 	    } 
 	    catch (NumberFormatException e) 

@@ -81,7 +81,6 @@ public class GolfMain implements Serializable
 	
 	private boolean disableProceedToSelectGame = true;
 	private boolean disableProceedToSelectPlayers = true;
-	private boolean disableProceedToEnterScores = true;
 	private boolean disableDeleteSelectedPlayerRound = true;
 	
 	private String groupEmailMessage = "";
@@ -108,6 +107,8 @@ public class GolfMain implements Serializable
 	private static String recommendedPlayTheBallMethod; //up everywhere; Down everywhere but up in bunkers; up in fairway, down in rough
 	private static String recommendedGameNote; 
 	
+	private final double id = Math.random();
+	
 	private static String NEWLINE = "<br/>";	
 	
 	private GameDAO gameDAO;
@@ -124,7 +125,8 @@ public class GolfMain implements Serializable
 	public GolfMain() 
 	{
 		logger.info("Entering GolfMain constructor.  Should only be here ONE time with Spring singleton pattern implemented");	
-		       
+		logger.info("GolfMain id is: " + this.getId());
+		
 		final int MIN_PLAYERS = 4;
 		final int MIN_BALLS = 1;
 		final int MIN_TEAMS = 1;
@@ -994,14 +996,6 @@ public class GolfMain implements Serializable
 		this.disableProceedToSelectPlayers = disableProceedToSelectPlayers;
 	}
 
-	public boolean isDisableProceedToEnterScores() {
-		return disableProceedToEnterScores;
-	}
-
-	public void setDisableProceedToEnterScores(boolean disableProceedToEnterScores) {
-		this.disableProceedToEnterScores = disableProceedToEnterScores;
-	}
-
 	public boolean isDisableDeleteSelectedPlayerRound() {
 		return disableDeleteSelectedPlayerRound;
 	}
@@ -1638,6 +1632,10 @@ public class GolfMain implements Serializable
 
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
+	}
+
+	public double getId() {
+		return id;
 	}
 		
 }
