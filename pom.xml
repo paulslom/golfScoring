@@ -6,7 +6,7 @@
   <groupId>com.pas</groupId>
   <artifactId>golfScoring</artifactId>
   <packaging>jar</packaging>
-  <version>3.0.33</version>
+  <version>3.0.34</version>
   
   <name>golfScoring Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -191,7 +191,7 @@
   <build>
 	  
     <finalName>golfScoring</finalName>
-      
+     
     <plugins>
 		
        <plugin>
@@ -229,6 +229,20 @@
        </plugin>
 		
     </plugins>
+    
+     <resources>
+	      <resource>
+	          <directory>src/main/webapp</directory>
+	          <targetPath>META-INF/resources</targetPath>
+	          <includes>
+	               <include>**/**</include>
+	          </includes>
+	          <filtering>false</filtering>
+	      </resource>
+	      <resource>
+	            <directory>src/main/resources</directory>
+	      </resource>
+   </resources>
     
    </build>
   

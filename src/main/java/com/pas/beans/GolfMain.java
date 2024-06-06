@@ -247,6 +247,11 @@ public class GolfMain implements Serializable
 			
 			Game game = fullGameMap.get(round.getGameID());
 			
+			if (game == null) //should not happen but safeguard
+			{
+				continue;
+			}
+			
 			Course course = game.getCourse();
 			
 			Player player = this.getFullPlayersMapByPlayerID().get(round.getPlayerID());

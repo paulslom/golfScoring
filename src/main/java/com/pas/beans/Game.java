@@ -50,8 +50,8 @@ public class Game implements Serializable
 	
 	private static String NEWLINE = "<br/>";	
 	
-	//private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";
-	private static String WEBSITE_URL = "http://golfscoring-alb-9090-2079436394.us-east-1.elb.amazonaws.com";
+	private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";
+	//private static String WEBSITE_URL = "http://golfscoring-alb-9090-2079436394.us-east-1.elb.amazonaws.com";
 	
 	private boolean courseSelected = false;
 	private boolean disableShowScores = true;
@@ -460,7 +460,17 @@ public class Game implements Serializable
 		{
 			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 			
-			String gameID = (String)selectonemenu.getValue();
+			String gameID = "";
+			
+			if (selectonemenu.getValue() instanceof String)
+			{
+				gameID = (String)selectonemenu.getValue();
+			}
+			else if (selectonemenu.getValue() instanceof Game)
+			{
+				Game tempGame = (Game)selectonemenu.getValue();
+				gameID = tempGame.getGameID();
+			}
 			
 			if (gameID != null)
 			{
