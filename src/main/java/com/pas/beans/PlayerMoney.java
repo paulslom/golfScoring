@@ -11,9 +11,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
 @Named("pc_PlayerMoney")
+@SessionScoped
 public class PlayerMoney implements Serializable 
 {
 	private static final long serialVersionUID = 1L;

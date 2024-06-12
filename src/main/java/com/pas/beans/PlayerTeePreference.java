@@ -8,9 +8,11 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
 @Named("pc_PlayerTeePreference")
+@SessionScoped
 public class PlayerTeePreference implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;

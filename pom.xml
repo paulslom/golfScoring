@@ -5,8 +5,8 @@
   
   <groupId>com.pas</groupId>
   <artifactId>golfScoring</artifactId>
-  <packaging>jar</packaging>
-  <version>3.0.34</version>
+  <packaging>war</packaging>
+  <version>3.0.35</version>
   
   <name>golfScoring Maven Webapp</name>
   <url>http://maven.apache.org</url>

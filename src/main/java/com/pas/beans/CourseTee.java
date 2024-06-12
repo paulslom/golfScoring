@@ -10,10 +10,12 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 
 @Named("pc_CourseTee")
+@SessionScoped
 public class CourseTee implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;

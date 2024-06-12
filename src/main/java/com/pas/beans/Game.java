@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIColumn;
 import jakarta.faces.component.UIComponent;
@@ -40,6 +41,7 @@ import jakarta.inject.Named;
 
 @Named("pc_Game")
 @Component
+@SessionScoped
 public class Game implements Serializable
 {
 	private static final long serialVersionUID = 1L;

@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
 @Named("pc_Course")
+@SessionScoped
 public class Course implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;

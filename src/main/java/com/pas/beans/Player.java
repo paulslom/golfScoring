@@ -23,6 +23,7 @@ import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -30,6 +31,7 @@ import jakarta.inject.Named;
 
 @Named("pc_Player")
 @Component
+@SessionScoped
 public class Player implements Serializable
 {	
 	private static final long serialVersionUID = 4089402354585236177L;

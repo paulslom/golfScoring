@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -29,6 +30,7 @@ import com.pas.util.Utils;
 
 @Named("pc_Round")
 @Component
+@SessionScoped
 public class Round implements Serializable 
 {
 	private static final long serialVersionUID = 1L;

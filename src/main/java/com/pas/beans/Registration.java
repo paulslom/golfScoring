@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
@@ -19,6 +20,7 @@ import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
 @Named("pc_Registration")
+@SessionScoped
 public class Registration implements Serializable
 {
 	private String firstName;

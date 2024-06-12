@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -24,6 +25,7 @@ import jakarta.inject.Named;
 
 @Named("pc_TeeTime")
 @Component
+@SessionScoped
 public class TeeTime implements Serializable
 {
 	private static final long serialVersionUID = 1L;

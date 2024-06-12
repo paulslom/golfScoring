@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named("pc_Group")
+@SessionScoped
 public class Group implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
