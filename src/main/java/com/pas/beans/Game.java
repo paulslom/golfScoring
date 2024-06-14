@@ -52,8 +52,8 @@ public class Game implements Serializable
 	
 	private static String NEWLINE = "<br/>";	
 	
-	private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";
-	//private static String WEBSITE_URL = "http://golfscoring-alb-9090-2079436394.us-east-1.elb.amazonaws.com";
+	//private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";  //original RDS DB one
+	private static String WEBSITE_URL = "http://golfscoring-springboot-env.eba-bir4zg4h.us-east-1.elasticbeanstalk.com"; //SpringBoot-DynamoDB-JDK17
 	
 	private boolean courseSelected = false;
 	private boolean disableShowScores = true;
