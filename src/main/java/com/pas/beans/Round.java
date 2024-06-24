@@ -534,17 +534,30 @@ public class Round implements Serializable
 	{
 		try
 		{
+			int totalPlayersForGame = game.getSelectedGame().getTotalPlayers();
+			int totalRoundsForGame = 0;
+			
 			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 			{
+				totalRoundsForGame++;
+				
 				Round rd = this.getRoundsForGame().get(i);
 				golfmain.updateRoundTeamNumber(game.getSelectedGame(), rd.getPlayerID(), rd.getTeamNumber());			
 			}
 			
-			FacesContext context = FacesContext.getCurrentInstance();
+			FacesContext context = FacesContext.getCurrentInstance();		
 		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Teams Saved", "Teams saved"));	 
+		    
+			if (totalRoundsForGame > totalPlayersForGame)
+			{
+				String msg = "saveAndStayPickTeams: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+				throw new Exception(msg);
+			}				
+			
 		}
 		catch (Exception e) 
 		{
+			logger.error(e.getMessage(), e);
 			FacesContext context = FacesContext.getCurrentInstance();
 		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}	
@@ -565,8 +578,13 @@ public class Round implements Serializable
 	{
 		try
 		{
+			int totalPlayersForGame = game.getSelectedGame().getTotalPlayers();
+			int totalRoundsForGame = 0;
+			
 			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
 			{
+				totalRoundsForGame++;
+				
 				Round rd = this.getRoundsForGame().get(i);
 				Player player = rd.getPlayer();
 				golfmain.updatePlayer(player);
@@ -577,13 +595,20 @@ public class Round implements Serializable
 				golfmain.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);			
 			}
 			
-			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
-			
-			FacesContext context = FacesContext.getCurrentInstance();
+			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));			
+			FacesContext context = FacesContext.getCurrentInstance();			
 		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
+		    
+		    if (totalRoundsForGame > totalPlayersForGame)
+			{
+				String msg = "updateGameHandicaps: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+				throw new Exception(msg);
+			}				
+			
 		}
 		catch (Exception e) 
 		{
+			logger.error(e.getMessage(), e);
 			FacesContext context = FacesContext.getCurrentInstance();
 		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}		

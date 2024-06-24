@@ -105,6 +105,7 @@ public class ScanTableGames
                 		+ "  gameDate = " + rec.getGameDate() + " .. fieldSize = " + rec.getFieldSize()
                 		+ "  totalPlayers = " + rec.getTotalPlayers() + " .. totalTeams = " + rec.getTotalTeams()
                 		+ "  skinsPot = " + rec.getSkinsPot() + " .. teamPot = " + rec.getTeamPot()
+                		+ "  gameFee = " + rec.getGameFee() 
                 		+ "  betAmount = " + rec.getBetAmount() + " .. howManyBalls = " + rec.getHowManyBalls()
                 		+ "  purseAmount = " + rec.getPurseAmount() + " .. eachBallWorth = " + rec.getEachBallWorth()
                 		+ "  individualNetPrize = " + rec.getIndividualNetPrize() + " .. playTheBallMethod = " + rec.getPlayTheBallMethod()

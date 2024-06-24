@@ -86,6 +86,12 @@
 				  </h:outputText>   														
 			  </p:column>
 			  
+			  <p:column style="width:7%" headerText="Game Fee" sortBy="#{game.gameFee}">												
+				  <h:outputText value="#{game.gameFee}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
 			  <p:column style="width:7%" headerText="Purse Amt" sortBy="#{game.purseAmount}">												
 				  <h:outputText value="#{game.purseAmount}">
 				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
@@ -190,9 +196,9 @@
 							<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
 							<p:ajax event="valueChange" listener="#{pc_Game.valueChgFieldSize}" 
 							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID 
-							   		   gameDialogForm:totalPlayersID gameDialogForm:teamPotID gameDialogForm:skinsPotID
+							   		   gameDialogForm:totalPlayersID gameDialogForm:teamPotID gameDialogForm:gameFeeID gameDialogForm:skinsPotID
 							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID 
-							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
+							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID  " />
 						</p:selectOneMenu>									
 		             </td>
 		             
@@ -220,7 +226,7 @@
 		                <p:selectOneMenu id="totalPlayersID" value="#{pc_Game.totalPlayers}" required="true">
 							<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
 							<p:ajax event="valueChange" listener="#{pc_Game.valueChgTotalPlayersUpdate}" 
-							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID gameDialogForm:teamPotID gameDialogForm:skinsPotID
+							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID gameDialogForm:gameFeeID gameDialogForm:teamPotID gameDialogForm:skinsPotID
 							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
 						</p:selectOneMenu>						
 		             </td>
@@ -288,6 +294,17 @@
 					 
 		             <td colspan="2" class="text">
 		                <p:inputText id="skinsPotID" size="8" value="#{pc_Game.skinsPot}" required="true"/>                	
+		             </td>	            
+		             
+	              </tr>
+	              
+	               <tr>
+					 <td class="textLabelMiddle">
+						<p:outputLabel for="gameFeeID" value="#{bundle.gameFee}"/>
+					 </td>	
+					 
+		             <td colspan="2" class="text">
+		                <p:inputText id="gameFeeID" size="8" value="#{pc_Game.gameFee}" required="true"/>                	
 		             </td>	            
 		             
 	              </tr>
@@ -374,7 +391,7 @@
 						   <p:commandButton 
 							   value="#{bundle.ok}" 
 							   action="#{pc_Game.saveGame}"	
-							   update="gameForm"															   
+							   update="gameForm:gamesTableID"															   
 							   oncomplete="PF('maintainGamesDialog').hide();">
 						   </p:commandButton> 
 						   

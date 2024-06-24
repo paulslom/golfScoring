@@ -75,6 +75,12 @@
 				  </h:outputText>   														
 			  </p:column>
 			  
+			  <p:column style="width:7%" headerText="Skins Pot" sortBy="#{game.gameFee}">												
+				  <h:outputText value="#{game.gameFee}">
+				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+				  </h:outputText>   														
+			  </p:column>
+			  
 			  <p:column style="width:7%" headerText="Purse Amt" sortBy="#{game.purseAmount}">												
 				  <h:outputText value="#{game.purseAmount}">
 				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />

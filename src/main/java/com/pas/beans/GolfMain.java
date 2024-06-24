@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.ApplicationScope;
 
 import com.pas.beans.Player.PlayerComparatorByLastName;
 import com.pas.dao.CourseDAO;
@@ -104,6 +103,7 @@ public class GolfMain implements Serializable
 	private BigDecimal recommendedSkinsPot;
 	private BigDecimal recommendedSuggestedSkinsPot;
 	private BigDecimal recommendedTeamPot;
+	private BigDecimal recommendedGameFee;
 	private String recommendedTeeTimesString;
 	private static String recommendedPlayTheBallMethod; //up everywhere; Down everywhere but up in bunkers; up in fairway, down in rough
 	private static String recommendedGameNote; 
@@ -540,7 +540,8 @@ public class GolfMain implements Serializable
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(40);
-				recommendedTeamPot = new BigDecimal(40);;
+				recommendedTeamPot = new BigDecimal(40);
+				recommendedGameFee = new BigDecimal(0.00);
 				recommendedTeeTimesString = "9:30";
 				
 				break;	
@@ -569,6 +570,7 @@ public class GolfMain implements Serializable
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(60);
 				recommendedTeamPot = new BigDecimal(60);;
+				recommendedGameFee = new BigDecimal(0.00);
 				recommendedTeeTimesString = "9:30 9:40";
 				
 				break;	
@@ -583,6 +585,7 @@ public class GolfMain implements Serializable
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(58);
 				recommendedTeamPot = new BigDecimal(60);;
+				recommendedGameFee = new BigDecimal(0.00);
 				recommendedTeeTimesString = "9:30 9:40";
 				
 				break;	
@@ -595,8 +598,9 @@ public class GolfMain implements Serializable
 				recommendedEachBallWorth = new BigDecimal(40);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(80);
-				recommendedTeamPot = new BigDecimal(80);;
+				recommendedSkinsPot = new BigDecimal(70);
+				recommendedTeamPot = new BigDecimal(80);
+				recommendedGameFee = new BigDecimal(10.00);
 				recommendedTeeTimesString = "9:30 9:40";
 				break;
 				
@@ -604,11 +608,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(180);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 2;
-				recommendedEachBallWorth = new BigDecimal(50);
+				recommendedEachBallWorth = new BigDecimal(45);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(80);
-				recommendedTeamPot = new BigDecimal(100);;
+				recommendedSkinsPot = new BigDecimal(78);
+				recommendedTeamPot = new BigDecimal(90);
+				recommendedGameFee = new BigDecimal(12.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50";
 				break;
 				
@@ -616,24 +621,26 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(200);
 				recommendedTotalTeams = 2;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(40);
+				recommendedEachBallWorth = new BigDecimal(35);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(80);
-				recommendedTeamPot = new BigDecimal(120);;
+				recommendedTeamPot = new BigDecimal(105);
+				recommendedGameFee = new BigDecimal(15.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50";
 				break;
 				
 			case 11:  //skins only 11th player
 				
-				recommendedPurseAmount = new BigDecimal(208);
+				recommendedPurseAmount = new BigDecimal(210);
 				recommendedTotalTeams = 2;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(40);
+				recommendedEachBallWorth = new BigDecimal(35);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(88);
-				recommendedTeamPot = new BigDecimal(120);;
+				recommendedSkinsPot = new BigDecimal(90);
+				recommendedTeamPot = new BigDecimal(105);
+				recommendedGameFee = new BigDecimal(15.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50";
 				break;
 				
@@ -642,24 +649,26 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(240);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 2;
-				recommendedEachBallWorth = new BigDecimal(64);
+				recommendedEachBallWorth = new BigDecimal(56);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(112);
-				recommendedTeamPot = new BigDecimal(128);;
+				recommendedTeamPot = new BigDecimal(112);
+				recommendedGameFee = new BigDecimal(16.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50";
 				break;
 				
 			case 13: //skins only 13th player
 				
-				recommendedPurseAmount = new BigDecimal(248);
+				recommendedPurseAmount = new BigDecimal(250);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 2;
 				recommendedEachBallWorth = new BigDecimal(64);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(120);
-				recommendedTeamPot = new BigDecimal(128);;
+				recommendedSkinsPot = new BigDecimal(106);
+				recommendedTeamPot = new BigDecimal(128);
+				recommendedGameFee = new BigDecimal(16.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
 				break;
 				
@@ -668,11 +677,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(280);
 				recommendedTotalTeams = 2;
 				recommendedHowManyBalls = 4;
-				recommendedEachBallWorth = new BigDecimal(42);
+				recommendedEachBallWorth = new BigDecimal(35);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(112);
-				recommendedTeamPot = new BigDecimal(168);;
+				recommendedSkinsPot = new BigDecimal(124);
+				recommendedTeamPot = new BigDecimal(140);
+				recommendedGameFee = new BigDecimal(16.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
 				break;
 				
@@ -681,11 +691,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(300);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(60);
+				recommendedEachBallWorth = new BigDecimal(55);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(120);
-				recommendedTeamPot = new BigDecimal(180);;
+				recommendedSkinsPot = new BigDecimal(107);
+				recommendedTeamPot = new BigDecimal(165);
+				recommendedGameFee = new BigDecimal(18.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
 				break;
 				
@@ -694,24 +705,26 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(320);
 				recommendedTotalTeams = 4;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(60);
+				recommendedEachBallWorth = new BigDecimal(50);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(140);
-				recommendedTeamPot = new BigDecimal(180);;
+				recommendedSkinsPot = new BigDecimal(150);
+				recommendedTeamPot = new BigDecimal(150);
+				recommendedGameFee = new BigDecimal(20.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
 				break;	
 
 			case 17: //skins only 17th player
 				
-				recommendedPurseAmount = new BigDecimal(328);
+				recommendedPurseAmount = new BigDecimal(330);
 				recommendedTotalTeams = 4;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(60);
+				recommendedEachBallWorth = new BigDecimal(55);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(148);
-				recommendedTeamPot = new BigDecimal(180);;
+				recommendedSkinsPot = new BigDecimal(145);
+				recommendedTeamPot = new BigDecimal(165);
+				recommendedGameFee = new BigDecimal(20.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -724,7 +737,8 @@ public class GolfMain implements Serializable
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(150);
-				recommendedTeamPot = new BigDecimal(210);;
+				recommendedTeamPot = new BigDecimal(210);
+				recommendedGameFee = new BigDecimal(22.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -737,7 +751,8 @@ public class GolfMain implements Serializable
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(158);
-				recommendedTeamPot = new BigDecimal(210);;
+				recommendedTeamPot = new BigDecimal(210);
+				recommendedGameFee = new BigDecimal(22.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -746,11 +761,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(400);
 				recommendedTotalTeams = 5;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(80);
+				recommendedEachBallWorth = new BigDecimal(75);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(160);
-				recommendedTeamPot = new BigDecimal(240);;
+				recommendedSkinsPot = new BigDecimal(150);
+				recommendedTeamPot = new BigDecimal(225);
+				recommendedGameFee = new BigDecimal(25.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 			
@@ -759,11 +775,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(420);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 4;
-				recommendedEachBallWorth = new BigDecimal(63);
+				recommendedEachBallWorth = new BigDecimal(58);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(168);
-				recommendedTeamPot = new BigDecimal(252);;
+				recommendedSkinsPot = new BigDecimal(163);
+				recommendedTeamPot = new BigDecimal(232);
+				recommendedGameFee = new BigDecimal(25.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -771,11 +788,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(428);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 4;
-				recommendedEachBallWorth = new BigDecimal(63);
+				recommendedEachBallWorth = new BigDecimal(58);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(176);
-				recommendedTeamPot = new BigDecimal(252);;
+				recommendedSkinsPot = new BigDecimal(171);
+				recommendedTeamPot = new BigDecimal(232);
+				recommendedGameFee = new BigDecimal(25.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -784,11 +802,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(436);
 				recommendedTotalTeams = 3;
 				recommendedHowManyBalls = 4;
-				recommendedEachBallWorth = new BigDecimal(63);
+				recommendedEachBallWorth = new BigDecimal(58);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(184);
-				recommendedTeamPot = new BigDecimal(252);;
+				recommendedSkinsPot = new BigDecimal(174);
+				recommendedTeamPot = new BigDecimal(232);
+				recommendedGameFee = new BigDecimal(30.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -796,11 +815,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(480);
 				recommendedTotalTeams = 6;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(100);
+				recommendedEachBallWorth = new BigDecimal(90);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(180);
-				recommendedTeamPot = new BigDecimal(300);;
+				recommendedTeamPot = new BigDecimal(270);
+				recommendedGameFee = new BigDecimal(30.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
 				break;
 				
@@ -808,11 +828,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(490);
 				recommendedTotalTeams = 6;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(100);
+				recommendedEachBallWorth = new BigDecimal(90);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(190);
-				recommendedTeamPot = new BigDecimal(300);;
+				recommendedTeamPot = new BigDecimal(270);
+				recommendedGameFee = new BigDecimal(30.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20";
 				break;
 				
@@ -820,11 +841,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(500);
 				recommendedTotalTeams = 6;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(100);
+				recommendedEachBallWorth = new BigDecimal(90);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(200);
-				recommendedTeamPot = new BigDecimal(300);;
+				recommendedTeamPot = new BigDecimal(270);
+				recommendedGameFee = new BigDecimal(30.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20";
 				break;	
 	
@@ -836,7 +858,8 @@ public class GolfMain implements Serializable
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(180);
-				recommendedTeamPot = new BigDecimal(360);;
+				recommendedTeamPot = new BigDecimal(360);
+				recommendedGameFee = new BigDecimal(32.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20";
 				break;				
 					
@@ -844,11 +867,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(560);
 				recommendedTotalTeams = 7;
 				recommendedHowManyBalls = 4;
-				recommendedEachBallWorth = new BigDecimal(80);
+				recommendedEachBallWorth = new BigDecimal(70);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(240);
-				recommendedTeamPot = new BigDecimal(320);;
+				recommendedSkinsPot = new BigDecimal(248);
+				recommendedTeamPot = new BigDecimal(280);
+				recommendedGameFee = new BigDecimal(32.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20";
 				break;	
 			
@@ -856,11 +880,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(570);
 				recommendedTotalTeams = 7;
 				recommendedHowManyBalls = 4;
-				recommendedEachBallWorth = new BigDecimal(80);
+				recommendedEachBallWorth = new BigDecimal(75);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(250);
-				recommendedTeamPot = new BigDecimal(320);;
+				recommendedSkinsPot = new BigDecimal(235);
+				recommendedTeamPot = new BigDecimal(300);
+				recommendedGameFee = new BigDecimal(35.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20 10:30";
 				break;				
 			
@@ -868,11 +893,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(600);
 				recommendedTotalTeams = 6;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(120);
+				recommendedEachBallWorth = new BigDecimal(110);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(240);
-				recommendedTeamPot = new BigDecimal(360);;
+				recommendedSkinsPot = new BigDecimal(235);
+				recommendedTeamPot = new BigDecimal(330);
+				recommendedGameFee = new BigDecimal(35.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20 10:30";
 				break;
 				
@@ -880,11 +906,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(610);
 				recommendedTotalTeams = 6;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(120);
+				recommendedEachBallWorth = new BigDecimal(110);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(250);
-				recommendedTeamPot = new BigDecimal(360);;
+				recommendedSkinsPot = new BigDecimal(245);
+				recommendedTeamPot = new BigDecimal(330);
+				recommendedGameFee = new BigDecimal(35.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20 10:30";
 				break;
 				
@@ -892,11 +919,12 @@ public class GolfMain implements Serializable
 				recommendedPurseAmount = new BigDecimal(640);
 				recommendedTotalTeams = 8;
 				recommendedHowManyBalls = 3;
-				recommendedEachBallWorth = new BigDecimal(130);
+				recommendedEachBallWorth = new BigDecimal(120);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
-				recommendedSkinsPot = new BigDecimal(250);
-				recommendedTeamPot = new BigDecimal(390);;
+				recommendedSkinsPot = new BigDecimal(245);
+				recommendedTeamPot = new BigDecimal(360);
+				recommendedGameFee = new BigDecimal(35.00);
 				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10 10:20 10:30";
 				break;
 				
@@ -1642,6 +1670,14 @@ public class GolfMain implements Serializable
 
 	public double getId() {
 		return id;
+	}
+
+	public BigDecimal getRecommendedGameFee() {
+		return recommendedGameFee;
+	}
+
+	public void setRecommendedGameFee(BigDecimal recommendedGameFee) {
+		this.recommendedGameFee = recommendedGameFee;
 	}
 		
 }

@@ -25,10 +25,11 @@ public class DynamoGame
 	private BigDecimal eachBallWorth;
 	private BigDecimal individualGrossPrize = new BigDecimal(0.00);
 	private BigDecimal individualNetPrize = new BigDecimal(0.00);
+	private BigDecimal gameFee = new BigDecimal(0.00);
 	private String playTheBallMethod; //up everywhere; down everywhere; up in fairway, down in rough	
 	private boolean gameClosedForSignups = false;	
-	private String gameNoteForEmail;
-	
+	private String gameNoteForEmail;	
+
 	@DynamoDbPartitionKey //primary key
 	public String getGameID() {
 		return gameID;
@@ -182,5 +183,14 @@ public class DynamoGame
 
 	public void setOldCourseID(int oldCourseID) {
 		this.oldCourseID = oldCourseID;
+	}
+	
+
+	public BigDecimal getGameFee() {
+		return gameFee;
+	}
+
+	public void setGameFee(BigDecimal gameFee) {
+		this.gameFee = gameFee;
 	}
 }

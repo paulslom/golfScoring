@@ -403,52 +403,73 @@ public class Player implements Serializable
 	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap, Game selectedGame) throws Exception
 	{
 		if (selectedGame != null)
-		{			
-			for (int i = 0; i < this.getPlayersPickList().getTarget().size(); i++) 
+		{
+			try
 			{
-				Player tempPlayer = (Player) this.getPlayersPickList().getTarget().get(i);
+				int totalPlayersForGame = selectedGame.getTotalPlayers();
+				int totalRoundsForGame = 0;
 				
-				Round newRound = new Round(golfmain, selectedGame);
-				newRound.setGameID(selectedGame.getGameID());
-				newRound.setPlayerID(tempPlayer.getPlayerID());
-				newRound.setPlayer(tempPlayer);
-				newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
-				newRound.setTeamNumber(tempPlayer.getTeamNumber());
-				if (tempPlayer.getTeeTime() != null)
+				for (int i = 0; i < this.getPlayersPickList().getTarget().size(); i++) 
 				{
-					newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
-					newRound.setTeeTime(tempPlayer.getTeeTime());
-				}
-				newRound.setRoundHandicap(tempPlayer.getHandicap());
-				
-				newRound.setSignupDateTime(new Date());
-				
-				if (roundSignupDateTimesMap != null)
-				{
-					Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
+					Player tempPlayer = (Player) this.getPlayersPickList().getTarget().get(i);
 					
-					if (tempDate != null)
-					{
-						newRound.setSignupDateTime(tempDate);
-					}
-				}
-				
-				if (roundTeeSelectionsMap != null)
-				{
-					String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
+					Round newRound = new Round(golfmain, selectedGame);
+					totalRoundsForGame++;
 					
-					if (courseTeeID == null)
+					newRound.setGameID(selectedGame.getGameID());
+					newRound.setPlayerID(tempPlayer.getPlayerID());
+					newRound.setPlayer(tempPlayer);
+					newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
+					newRound.setTeamNumber(tempPlayer.getTeamNumber());
+					if (tempPlayer.getTeeTime() != null)
 					{
-						newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), selectedGame.getCourseID()));
+						newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
+						newRound.setTeeTime(tempPlayer.getTeeTime());
 					}
-					else
+					newRound.setRoundHandicap(tempPlayer.getHandicap());
+					
+					newRound.setSignupDateTime(new Date());
+					
+					if (roundSignupDateTimesMap != null)
 					{
-						newRound.setCourseTeeID(courseTeeID);
+						Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
+						
+						if (tempDate != null)
+						{
+							newRound.setSignupDateTime(tempDate);
+						}
 					}
-				}		
+					
+					if (roundTeeSelectionsMap != null)
+					{
+						String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
+						
+						if (courseTeeID == null)
+						{
+							newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), selectedGame.getCourseID()));
+						}
+						else
+						{
+							newRound.setCourseTeeID(courseTeeID);
+						}
+					}		
+					
+					golfmain.addRound(newRound);		
+				}				
 				
-				golfmain.addRound(newRound);		
-			} 
+				if (totalRoundsForGame > totalPlayersForGame)
+				{
+					String msg = "Player:saveRounds: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+					throw new Exception(msg);					
+				}
+			}
+			catch (Exception e)
+			{
+				logger.error(e.getMessage(), e);
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			}
+			
 		}
 		
 	}
@@ -513,14 +534,24 @@ public class Player implements Serializable
 							break;
 					}
 					
+					int totalPlayersForGame = selectedGame.getTotalPlayers();
+					int totalRoundsForGame = 0;
+					
 					for (int j = 0; j < tempPlayerList.size(); j++) 
 					{
+						totalRoundsForGame++;
 						String playerID = tempPlayerList.get(j).getPlayerID();
 						String gameID = selectedGame.getGameID();
 						Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
 						rd.setTeeTimeID(teeTime.getTeeTimeID());
 						rd.setTeeTime(teeTime);
 						golfmain.updateRound(rd);
+					}
+					
+					if (totalRoundsForGame > totalPlayersForGame)
+					{
+						String msg = "Player:saveAndStayTeeTimesPickList: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+						throw new Exception(msg);					
 					}
 					
 				}

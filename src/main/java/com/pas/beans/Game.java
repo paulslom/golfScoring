@@ -82,6 +82,8 @@ public class Game implements Serializable
 	private BigDecimal skinsPot;
 	private BigDecimal suggestedSkinsPot;
 	private BigDecimal teamPot;
+	private BigDecimal gameFee;
+	
 	private String teeTimesString;
 	private boolean renderSignUp = false;
 	private boolean renderWithdraw = false;
@@ -115,6 +117,7 @@ public class Game implements Serializable
 	private List<Round> playerScores = new ArrayList<Round>();
 	private List<SkinWinnings> skinWinningsList = new ArrayList<SkinWinnings>();
 	private List<Round> teamResultsList = new ArrayList<Round>();
+	private List<String> teamSummaryList = new ArrayList<>();
 	private List<Game> availableGameList = new ArrayList<Game>();
 	private List<Game> futureGamesList = new ArrayList<>();	
 	private List<PlayerMoney> playerMoneyForSelectedGameList = new ArrayList<PlayerMoney>();
@@ -166,6 +169,7 @@ public class Game implements Serializable
 			this.setFieldSize(16);
 			this.setTotalPlayers(16);
 			this.setTotalTeams(4);
+			this.setGameFee(new BigDecimal(20.0));
 		}
 		catch (Exception e)
 		{
@@ -194,6 +198,7 @@ public class Game implements Serializable
 			this.setPurseAmount(this.getSelectedGame().getPurseAmount());
 			this.setSkinsPot(this.getSelectedGame().getSkinsPot());
 			this.setTeamPot(this.getSelectedGame().getTeamPot());
+			this.setGameFee(this.getSelectedGame().getGameFee());
 			this.setFieldSize(this.getSelectedGame().getFieldSize());
 			this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
 			this.setPlayTheBallMethod(this.getSelectedGame().getPlayTheBallMethod());
@@ -448,6 +453,7 @@ public class Game implements Serializable
 		this.setIndividualNetPrize(golfmain.getRecommendedIndividualNetPrize());
 		this.setSkinsPot(golfmain.getRecommendedSkinsPot());
 		this.setTeamPot(golfmain.getRecommendedTeamPot());
+		this.setGameFee(golfmain.getRecommendedGameFee());
 		this.setTeeTimesString(golfmain.getRecommendedTeeTimesString());
 		this.setPlayTheBallMethod(GolfMain.getRecommendedPlayTheBallMethod());
 		this.setGameNoteForEmail(GolfMain.getRecommendedGameNote());
@@ -730,6 +736,7 @@ public class Game implements Serializable
 			this.setPurseAmount(this.getSelectedGame().getPurseAmount());
 			this.setSkinsPot(this.getSelectedGame().getSkinsPot());
 			this.setTeamPot(this.getSelectedGame().getTeamPot());
+			this.setGameFee(this.getSelectedGame().getGameFee());
 			this.setTotalPlayers(this.getSelectedGame().getTotalPlayers());
 			this.setTotalTeams(this.getSelectedGame().getTotalTeams());		
 			
@@ -1003,7 +1010,7 @@ public class Game implements Serializable
 					continue; // just re-loop if this player is on another team
 				}
 				
-				teamName = teamName + player.getFirstName() + " ";
+				teamName = teamName + player.getFirstName() + " " + player.getLastName() + " ";
 				teamRoundsList.add(round);
 				
 				if (teamRoundsList.size() == totalMembersPerTeam)
@@ -1055,11 +1062,38 @@ public class Game implements Serializable
 				tempRound = Utils.setDisplayScore(Utils.BACK9_STYLE_HOLENUM, tempRound.getBack9Total(), course, tempRound);
 				tempRound = Utils.setDisplayScore(Utils.TOTAL_STYLE_HOLENUM, tempRound.getFront9Total() + tempRound.getBack9Total(), course, tempRound);
 				
-				this.getTeamResultsList().add(tempRound);
-				
-			}			
+				this.getTeamResultsList().add(tempRound);				
+			}		
 			
 		}
+		
+		Round tempRound = this.getTeamResultsList().get(0);
+		String teamSummaryTeamName = tempRound.getPlayer().getFirstName();
+		StringBuffer sb = new StringBuffer();
+		sb.append(teamSummaryTeamName);
+		sb.append(" ********* ");
+		
+		for (int i = 0; i < this.getTeamResultsList().size(); i++)
+		{
+			Round r = this.getTeamResultsList().get(i);
+			Player tempPlayer = r.getPlayer();
+
+			if (!teamSummaryTeamName.equalsIgnoreCase(tempPlayer.getFirstName()))
+			{
+				this.getTeamSummaryList().add(sb.toString());			
+				sb.setLength(0);
+				teamSummaryTeamName = tempPlayer.getFirstName();
+				sb.append(teamSummaryTeamName);
+				sb.append(" ********* ");
+			}			
+			
+			sb.append(tempPlayer.getLastName());
+			sb.append(" ");
+			sb.append(r.getTotalToPar());	
+			sb.append(" ********* ");
+		}
+		
+		this.getTeamSummaryList().add(sb.toString());	
 		
 		calcTeamIndividualWinnings();
 				
@@ -2905,6 +2939,7 @@ public class Game implements Serializable
 		sb.append("Team Ball Value: " + currencyFmt.format(gm.getEachBallWorth()) + NEWLINE);
 		sb.append("Team Pot: " + currencyFmt.format(gm.getTeamPot()) + NEWLINE);
 		sb.append("Skins Pot: " + currencyFmt.format(gm.getSkinsPot()) + NEWLINE);
+		sb.append("Game Fee: " + currencyFmt.format(gm.getGameFee()) + NEWLINE);
 		sb.append("Indiv Gross: " + currencyFmt.format(gm.getIndividualGrossPrize()) + NEWLINE);
 		sb.append("Indiv Net: " + currencyFmt.format(gm.getIndividualNetPrize()) + NEWLINE);
 		
@@ -3510,6 +3545,22 @@ public class Game implements Serializable
 
 	public void setOldCourseID(int oldCourseID) {
 		this.oldCourseID = oldCourseID;
+	}
+
+	public BigDecimal getGameFee() {
+		return gameFee;
+	}
+
+	public void setGameFee(BigDecimal gameFee) {
+		this.gameFee = gameFee;
+	}
+
+	public List<String> getTeamSummaryList() {
+		return teamSummaryList;
+	}
+
+	public void setTeamSummaryList(List<String> teamSummaryList) {
+		this.teamSummaryList = teamSummaryList;
 	}
 	
 }

@@ -89,6 +89,13 @@
 		             </td>
 		             
 		             <td class="textLabel">
+						<p:outputLabel value="#{bundle.gameFee} "/>&#xA0;
+					    <p:outputLabel value="#{pc_Game.selectedGame.gameFee}">
+		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
+		                </p:outputLabel>                	
+		             </td>
+		             		             
+		             <td class="textLabel">
 						<p:outputLabel value="#{bundle.indivGrossPrize}"/>&#xA0;
 					    <p:outputLabel value="#{pc_Game.selectedGame.individualGrossPrize}">
 		                	<f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="0" />
@@ -275,6 +282,37 @@
 					</td>	  	
 				</tr>			 						 
 		
+				<tr>
+					<td>
+						<BR/>
+					</td>
+				</tr>
+				
+				<tr valign="top">
+					<td width="100%" colspan="8" style="border: solid 1px #000000">
+	
+					    <p:dataTable id="teamSummaryID" value="#{pc_Game.teamSummaryList}"  
+					         var="tt" scrollable="true" scrollHeight="400" style="font-size:12px;">								
+	 						
+					      <f:facet name="header">
+	      					  <h:outputText value="#{bundle.teamResults}"/>
+	 					  </f:facet>
+	 						
+	 					  <p:column style="width:100%">												
+							  <h:outputText value="#{tt}"/>														
+						  </p:column>
+						 												   
+					   </p:dataTable>  
+								
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<BR/>
+					</td>
+				</tr>
+				
 				<tr valign="top">
 					<td width="100%" colspan="8" style="border: solid 1px #000000">
 	
@@ -392,6 +430,12 @@
 					</td>
 				</tr>
 				
+				<tr>
+					<td>
+						<BR/>
+					</td>
+				</tr>
+				
 				<tr valign="top">
 					<td width="100%" colspan="8" style="border: solid 1px #000000">
 	
@@ -417,6 +461,12 @@
 												   
 					   </p:dataTable>  
 								
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<BR/>
 					</td>
 				</tr>
 				

@@ -140,6 +140,7 @@ public class GameDAO implements Serializable
 		dynamoGame.setPlayTheBallMethod(game.getPlayTheBallMethod());
 		dynamoGame.setGameClosedForSignups(game.isGameClosedForSignups());
 		dynamoGame.setGameNoteForEmail(game.getGameNoteForEmail());
+		dynamoGame.setGameFee(game.getGameFee());
 		
 		PutItemEnhancedRequest<DynamoGame> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoGame.class).item(dynamoGame).build();
 		gamesTable.putItem(putItemEnhancedRequest);
@@ -213,6 +214,7 @@ public class GameDAO implements Serializable
 			game.setTotalTeams(dynamoGame.getTotalTeams());
 			game.setSkinsPot(dynamoGame.getSkinsPot());
 			game.setTeamPot(dynamoGame.getTeamPot());
+			game.setGameFee(dynamoGame.getGameFee());
 			game.setBetAmount(dynamoGame.getBetAmount());
 			game.setHowManyBalls(dynamoGame.getHowManyBalls());
 			game.setPurseAmount(dynamoGame.getPurseAmount());
@@ -404,6 +406,7 @@ public class GameDAO implements Serializable
 			gm.setPurseAmount(inputgame.getPurseAmount());
 			gm.setSkinsPot(inputgame.getSkinsPot());
 			gm.setTeamPot(inputgame.getTeamPot());
+			gm.setGameFee(inputgame.getGameFee());
 			gm.setFieldSize(inputgame.getFieldSize());
 			gm.setTotalPlayers(inputgame.getTotalPlayers());
 			gm.setTotalTeams(inputgame.getTotalTeams());

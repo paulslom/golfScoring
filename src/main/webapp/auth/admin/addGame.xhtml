@@ -68,7 +68,7 @@
 							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID 
 							   		   gameDialogForm:totalPlayersID gameDialogForm:teamPotID gameDialogForm:skinsPotID
 							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID
-							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
+							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID gameDialogForm:gameFeeID " />
 					</p:selectOneMenu>			            			
 	             </td>
 	             
@@ -96,7 +96,7 @@
 	                <p:selectOneMenu id="totalPlayersID" value="#{pc_Game.totalPlayers}" required="true">
 						<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
 						<p:ajax event="valueChange" listener="#{pc_Game.valueChgTotalPlayersAdd}" 
-						   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID gameDialogForm:teamPotID gameDialogForm:skinsPotID
+						   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID gameDialogForm:teamPotID  gameDialogForm:gameFeeID gameDialogForm:skinsPotID
 						           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
 					</p:selectOneMenu>						
 	             </td>
@@ -188,6 +188,18 @@
 				 
 	             <td colspan="2" class="text">
 	                <p:inputText id="individualNetID" size="8" value="#{pc_Game.individualNetPrize}" required="true"/>
+	             </td> 
+	             
+	          </tr>
+	          
+	          <tr>
+	             
+	             <td class="textLabelMiddle">
+					<p:outputLabel for="gameFeeID" value="#{bundle.gameFee}"/>
+				 </td>	
+				 
+	             <td colspan="2" class="text">
+	                <p:inputText id="gameFeeID" size="8" value="#{pc_Game.gameFee}" required="true"/>
 	             </td> 
 	             
 	          </tr>

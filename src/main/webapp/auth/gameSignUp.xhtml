@@ -28,7 +28,7 @@
 			  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowSignup}" 
 			       update="gameSignUpForm:whoIsSignedUpID" ></p:ajax>
 					
-			  <p:column style="width:15%" id="tblGameID" headerText="Game ID" sortBy="#{game.gameID}">												
+			  <p:column style="width:10%" id="tblGameID" headerText="Game ID" sortBy="#{game.gameID}">												
 				  <h:outputText value="#{game.gameID}"/>														
 			  </p:column>
 			  
@@ -54,7 +54,7 @@
 				  <p:commandButton value="Sign up" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" action="#{pc_Game.signUp(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>
 			  </p:column>
 				
-			  <p:column style="width:25%" headerText="Tee" styleClass="centeredColumnContent">												
+			  <p:column style="width:30%" headerText="Tee" styleClass="centeredColumnContent">												
 				  <p:selectOneRadio id="teeColorID" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" value="#{game.courseTeeID}">
                        <f:selectItems value="#{game.teeSelections}"/>
 	              </p:selectOneRadio>
