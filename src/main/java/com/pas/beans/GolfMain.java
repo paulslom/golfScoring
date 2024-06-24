@@ -228,8 +228,15 @@ public class GolfMain implements Serializable
 	
 	private void loadRoundList(DynamoClients dynamoClients) throws Exception
 	{
+		List<String> gameIDList = new ArrayList<>();
+		
+		for (int i = 0; i < gameDAO.getFullGameList().size(); i++) 
+		{
+			Game game = gameDAO.getFullGameList().get(i);
+			gameIDList.add(game.getGameID());
+		}
 		roundDAO = new RoundDAO(dynamoClients, this, null);
-		roundDAO.readAllRoundsFromDB();
+		roundDAO.readAllRoundsFromDB(gameIDList);
 		logger.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
 		
 		Map<String,Round> tempMap = new HashMap<>();

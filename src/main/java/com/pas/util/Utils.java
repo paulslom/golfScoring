@@ -853,8 +853,8 @@ public class Utils
     	int minute = 0;
     	int second = 0;
     	
-    	//int hour = 16;
-    	//int minute = 52;
+    	//int hour = 8;
+    	//int minute = 20;
     	//int second = 0;
     	
     	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));

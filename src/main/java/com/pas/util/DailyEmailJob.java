@@ -185,15 +185,26 @@ public class DailyEmailJob implements Runnable
 		return tempList;
 	}
 	
-	private String getGameParticipants(Game inputGame) 
+	private String getGameParticipants(Game inputGame)  throws Exception 
 	{
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append("Current list of players for this game:");
 		sb.append(NEWLINE);
-				
+		
+		GameDAO gameDAO = new GameDAO(dynamoClients, new GolfMain("ignore"));		
+		gameDAO.readGamesFromDB(defaultGroup);
+		List<Game> gameList = gameDAO.getFullGameList();
+		
+		List<String> gameIDList = new ArrayList<>();
+		
+		for (int i = 0; i < gameList.size(); i++) 
+		{
+			Game game = gameDAO.getFullGameList().get(i);
+			gameIDList.add(game.getGameID());
+		}
 		RoundDAO roundDAO = new RoundDAO(dynamoClients, new GolfMain("ignore"), inputGame);
-		roundDAO.readAllRoundsFromDB();
+		roundDAO.readAllRoundsFromDB(gameIDList);
 		List<Round> roundList = roundDAO.getRoundsForGame(inputGame);
 		
 		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");

@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -31,14 +30,17 @@ import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoRound;
 import com.pas.util.Utils;
 
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
-import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
 public class RoundDAO implements Serializable
 {
@@ -94,73 +96,89 @@ public class RoundDAO implements Serializable
 		return participantsList;
     }
 	
-	public void readAllRoundsFromDB()
+	public void readAllRoundsFromDB(List<String> gameIDList)
     {
-		String oneMonthAgo = Utils.getOneMonthAgoDate();
-		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(oneMonthAgo));
+		DynamoDbIndex<DynamoRound> gsi = roundsTable.index("gsi_GameID");
 		
-		ScanEnhancedRequest request = ScanEnhancedRequest.builder()
-                .consistentRead(true)
-                .filterExpression(Expression.builder()
-                        .expression("signupDateTime >= :min_value")
-                        .expressionValues(av)
-                        .build())
-                .build();
+		for (int j = 0; j < gameIDList.size(); j++) 
+		{
+			Key key = Key.builder().partitionValue(gameIDList.get(j)).build();
+	    	QueryConditional qc = QueryConditional.keyEqualTo(key);
+	    	
+	    	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+	                .queryConditional(qc)
+	                .build();
+	    	SdkIterable<Page<DynamoRound>> rdsByGameID = gsi.query(qer);
+	    	     
+	    	PageIterable<DynamoRound> pages = PageIterable.create(rdsByGameID);
+	    	
+	    	List<DynamoRound> dtList = pages.items().stream().toList();
+	    	
+	    	if (dtList != null && dtList.size() > 0)
+	    	{
+	    		for (int i = 0; i < dtList.size(); i++) 
+	    		{
+	    			DynamoRound dynamoRound = dtList.get(i);
+		        	
+					Round round = new Round(golfmain, game);
+	
+					round.setRoundID(dynamoRound.getRoundID());
+					round.setGameID(dynamoRound.getGameID());
+					round.setPlayerID(dynamoRound.getPlayerID());
+					round.setTeamNumber(dynamoRound.getTeamNumber());
+					round.setTeeTimeID(dynamoRound.getTeeTimeID());
+					round.setPlayerName(dynamoRound.getPlayerName());
+					round.setRoundHandicap(dynamoRound.getRoundHandicap());
+					round.setPlayerHandicapIndex(dynamoRound.getPlayerHandicapIndex());
+					round.setCourseTeeID(dynamoRound.getCourseTeeID());
+					round.setCourseTeeColor(dynamoRound.getCourseTeeColor());
+					round.setRoundHandicapDifferential(dynamoRound.getRoundHandicapDifferential());
+					
+					String signupdatetime = dynamoRound.getSignupDateTime();
+					DateToStringConverter dtsc = new DateToStringConverter();
+					Date sdate = dtsc.unconvert(signupdatetime);
+					round.setSignupDateTime(sdate);
+					
+					round.setHole1Score(dynamoRound.getHole1Score());
+					round.setHole2Score(dynamoRound.getHole2Score());
+					round.setHole3Score(dynamoRound.getHole3Score());
+					round.setHole4Score(dynamoRound.getHole4Score());
+					round.setHole5Score(dynamoRound.getHole5Score());
+					round.setHole6Score(dynamoRound.getHole6Score());
+					round.setHole7Score(dynamoRound.getHole7Score());
+					round.setHole8Score(dynamoRound.getHole8Score());
+					round.setHole9Score(dynamoRound.getHole9Score());
+					round.setFront9Total(dynamoRound.getFront9Total());
+					round.setHole10Score(dynamoRound.getHole10Score());
+					round.setHole11Score(dynamoRound.getHole11Score());
+					round.setHole12Score(dynamoRound.getHole12Score());
+					round.setHole13Score(dynamoRound.getHole13Score());
+					round.setHole14Score(dynamoRound.getHole14Score());
+					round.setHole15Score(dynamoRound.getHole15Score());
+					round.setHole16Score(dynamoRound.getHole16Score());
+					round.setHole17Score(dynamoRound.getHole17Score());
+					round.setHole18Score(dynamoRound.getHole18Score());
+					round.setBack9Total(dynamoRound.getBack9Total());
+					round.setTotalScore(dynamoRound.getTotalScore());
+					round.setTotalToPar(dynamoRound.getTotalToPar());
+					round.setNetScore(dynamoRound.getNetScore());
+					
+					round.setRoundbyHoleScores(setHoleScoresList(round));
+					
+		            this.getFullRoundsList().add(round);			
+		        }	
+	    	}
+		}
 		
-		Iterator<DynamoRound> results = roundsTable.scan(request).items().iterator();
-	  	
-		while (results.hasNext()) 
-        {
-			DynamoRound dynamoRound = results.next();
-          	
-			Round round = new Round(golfmain, game);
-
-			round.setRoundID(dynamoRound.getRoundID());
-			round.setGameID(dynamoRound.getGameID());
-			round.setPlayerID(dynamoRound.getPlayerID());
-			round.setTeamNumber(dynamoRound.getTeamNumber());
-			round.setTeeTimeID(dynamoRound.getTeeTimeID());
-			round.setPlayerName(dynamoRound.getPlayerName());
-			round.setRoundHandicap(dynamoRound.getRoundHandicap());
-			round.setPlayerHandicapIndex(dynamoRound.getPlayerHandicapIndex());
-			round.setCourseTeeID(dynamoRound.getCourseTeeID());
-			round.setCourseTeeColor(dynamoRound.getCourseTeeColor());
-			round.setRoundHandicapDifferential(dynamoRound.getRoundHandicapDifferential());
+		//For debugging purposes only - keep commented out unless debugging
+		/*
+		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		{
+			Round rd = this.getFullRoundsList().get(i);
 			
-			String signupdatetime = dynamoRound.getSignupDateTime();
-			DateToStringConverter dtsc = new DateToStringConverter();
-			Date sdate = dtsc.unconvert(signupdatetime);
-			round.setSignupDateTime(sdate);
-			
-			round.setHole1Score(dynamoRound.getHole1Score());
-			round.setHole2Score(dynamoRound.getHole2Score());
-			round.setHole3Score(dynamoRound.getHole3Score());
-			round.setHole4Score(dynamoRound.getHole4Score());
-			round.setHole5Score(dynamoRound.getHole5Score());
-			round.setHole6Score(dynamoRound.getHole6Score());
-			round.setHole7Score(dynamoRound.getHole7Score());
-			round.setHole8Score(dynamoRound.getHole8Score());
-			round.setHole9Score(dynamoRound.getHole9Score());
-			round.setFront9Total(dynamoRound.getFront9Total());
-			round.setHole10Score(dynamoRound.getHole10Score());
-			round.setHole11Score(dynamoRound.getHole11Score());
-			round.setHole12Score(dynamoRound.getHole12Score());
-			round.setHole13Score(dynamoRound.getHole13Score());
-			round.setHole14Score(dynamoRound.getHole14Score());
-			round.setHole15Score(dynamoRound.getHole15Score());
-			round.setHole16Score(dynamoRound.getHole16Score());
-			round.setHole17Score(dynamoRound.getHole17Score());
-			round.setHole18Score(dynamoRound.getHole18Score());
-			round.setBack9Total(dynamoRound.getBack9Total());
-			round.setTotalScore(dynamoRound.getTotalScore());
-			round.setTotalToPar(dynamoRound.getTotalToPar());
-			round.setNetScore(dynamoRound.getNetScore());
-			
-			round.setRoundbyHoleScores(setHoleScoresList(round));
-			
-            this.getFullRoundsList().add(round);			
-        }	
-		
+			logger.info("Player: " + rd.getPlayerName() + " signup date time: " + rd.getSignupDateTime());
+		}
+		*/
 		logger.info("LoggedDBOperation: function-inquiry; table:round; rows:" + this.getFullRoundsList().size());
 		
 		this.setFullRoundsMap(this.getFullRoundsList().stream().collect(Collectors.toMap(Round::getRoundID, rd -> rd)));		
