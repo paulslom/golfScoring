@@ -298,23 +298,14 @@ public class Game implements Serializable
 		
 		this.getPlayersSignedUpList().clear();
 		
-		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
-		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
-		signupSDF.setTimeZone(etTimeZone);
-		
+			
 		List<Round> roundList = golfmain.getRoundsForGame(item);
 		
 		for (int i = 0; i < roundList.size(); i++) 
 		{
-			Round rd = roundList.get(i);
-			if (rd.getSignupDateTime() == null)
-			{
-				this.getPlayersSignedUpList().add(rd.getPlayerName());
-			}
-			else
-			{
-				this.getPlayersSignedUpList().add(rd.getPlayerName() + " (signed up: " + signupSDF.format(rd.getSignupDateTime()) + ")");
-			}
+			Round rd = roundList.get(i);			
+			String signupLine = getSignupLine(rd);			
+			this.getPlayersSignedUpList().add(signupLine);
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -334,6 +325,31 @@ public class Game implements Serializable
 	}
 	
 		
+	private String getSignupLine(Round rd) 
+	{
+		StringBuffer signupString = new StringBuffer();
+		
+		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
+		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
+		signupSDF.setTimeZone(etTimeZone);
+
+		signupString.append(rd.getPlayerName());
+		
+		String teeColorSelection = rd.getCourseTeeColor();
+		
+		if (teeColorSelection != null && teeColorSelection.trim().length() > 0)
+		{
+			signupString.append(" (" + teeColorSelection + " tees) ");
+		}
+		
+		if (rd.getSignupDateTime() != null)
+		{
+			signupString.append(" (signed up: " + signupSDF.format(rd.getSignupDateTime()) + ")");
+		}
+		
+		return signupString.toString();
+	}
+
 	public String selectRowSignup(SelectEvent<Game> event)
 	{
 		logger.info(getTempUserName() + " clicked on a row in Game list on game signup screen");
