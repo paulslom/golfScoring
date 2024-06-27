@@ -296,15 +296,14 @@ public class Game implements Serializable
 	{
 		this.setSelectedGame(item);
 		
-		this.getPlayersSignedUpList().clear();
-		
+		this.getPlayersSignedUpList().clear();		
 			
 		List<Round> roundList = golfmain.getRoundsForGame(item);
 		
 		for (int i = 0; i < roundList.size(); i++) 
 		{
 			Round rd = roundList.get(i);			
-			String signupLine = getSignupLine(rd);			
+			String signupLine = Utils.getSignupLine(rd);			
 			this.getPlayersSignedUpList().add(signupLine);
 		}
 		
@@ -322,33 +321,7 @@ public class Game implements Serializable
 		}		
 	
 		this.setWhoIsSignedUpMessage(sb.toString());	
-	}
-	
-		
-	private String getSignupLine(Round rd) 
-	{
-		StringBuffer signupString = new StringBuffer();
-		
-		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
-		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
-		signupSDF.setTimeZone(etTimeZone);
-
-		signupString.append(rd.getPlayerName());
-		
-		String teeColorSelection = rd.getCourseTeeColor();
-		
-		if (teeColorSelection != null && teeColorSelection.trim().length() > 0)
-		{
-			signupString.append(" (" + teeColorSelection + " tees) ");
-		}
-		
-		if (rd.getSignupDateTime() != null)
-		{
-			signupString.append(" (signed up: " + signupSDF.format(rd.getSignupDateTime()) + ")");
-		}
-		
-		return signupString.toString();
-	}
+	}	
 
 	public String selectRowSignup(SelectEvent<Game> event)
 	{
@@ -571,6 +544,7 @@ public class Game implements Serializable
 			}
 			else
 			{
+				newRound.setCourseTeeColor(getCourseTeeColor(game1.getCourseTeeID()));
 				golfmain.addRound(newRound);
 				
 				this.getAvailableGameList().clear();
@@ -3507,6 +3481,18 @@ public class Game implements Serializable
 		return courseTeeColor;
 	}
 
+	public String getCourseTeeColor(String courseTeeID) 
+	{
+		String tempColor = "";
+		if (courseTeeID != null && !courseTeeID.equalsIgnoreCase("0"))
+		{			
+			Map<String,CourseTee> ctMap = golfmain.getCourseTeesMap();
+			CourseTee ct = ctMap.get(courseTeeID);
+			tempColor = ct.getTeeColor();
+		}
+		return tempColor;
+	}
+	
 	public void setCourseTeeColor(String courseTeeColor) {
 		this.courseTeeColor = courseTeeColor;
 	}

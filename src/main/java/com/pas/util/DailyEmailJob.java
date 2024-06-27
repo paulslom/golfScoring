@@ -216,9 +216,7 @@ public class DailyEmailJob implements Runnable
 		for (int i = 0; i < roundList.size(); i++) 
 		{
 			Round rd = roundList.get(i);
-			String signupDateTime = signupSDF.format(rd.getSignupDateTime());
-			String playerName = rd.getPlayerName();
-			roundPlayers.add(playerName + " (signed up: " + signupDateTime + ")");
+			roundPlayers.add(Utils.getSignupLine(rd));
 		}
 				
 		for (int i = 0; i < roundPlayers.size(); i++) 

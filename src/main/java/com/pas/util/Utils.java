@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
@@ -853,8 +854,8 @@ public class Utils
     	int minute = 0;
     	int second = 0;
     	
-    	//int hour = 8;
-    	//int minute = 20;
+    	//int hour = 20;
+    	//int minute = 50;
     	//int second = 0;
     	
     	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));
@@ -868,6 +869,31 @@ public class Utils
     	Duration duration = Duration.between(now, nextRun);
     	long initialDelay = duration.getSeconds();
 		return initialDelay;
+	}
+	
+	public static String getSignupLine(Round rd) 
+	{
+		StringBuffer signupString = new StringBuffer();
+		
+		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
+		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
+		signupSDF.setTimeZone(etTimeZone);
+
+		signupString.append(rd.getPlayerName());
+		
+		String teeColorSelection = rd.getCourseTeeColor();
+		
+		if (teeColorSelection != null && teeColorSelection.trim().length() > 0)
+		{
+			signupString.append(" (" + teeColorSelection + " tees) ");
+		}
+		
+		if (rd.getSignupDateTime() != null)
+		{
+			signupString.append(" (signed up: " + signupSDF.format(rd.getSignupDateTime()) + ")");
+		}
+		
+		return signupString.toString();
 	}
 	
 		

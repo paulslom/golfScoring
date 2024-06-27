@@ -89,8 +89,8 @@ public class RoundDAO implements Serializable
 		for (int i = 0; i < roundList.size(); i++) 
 		{
 			Round rd = roundList.get(i);
-			String signupDateTime = signupSDF.format(rd.getSignupDateTime());
-			participantsList.add(rd.getPlayerName() + " (signed up: " + signupDateTime + ")");
+			String signupLine = Utils.getSignupLine(rd);			
+			participantsList.add(signupLine);
 		}
 		
 		return participantsList;
