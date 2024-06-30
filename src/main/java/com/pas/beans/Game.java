@@ -430,7 +430,7 @@ public class Game implements Serializable
 	
 	public void selectTotalPlayers(Integer totalPlayers) throws Exception 
 	{		
-		logger.debug(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
+		logger.info(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
 		
 		golfmain.setRecommendations(totalPlayers);
 		

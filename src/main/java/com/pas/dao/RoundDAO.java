@@ -184,6 +184,36 @@ public class RoundDAO implements Serializable
 		this.setFullRoundsMap(this.getFullRoundsList().stream().collect(Collectors.toMap(Round::getRoundID, rd -> rd)));		
     }
 	
+	public List<String> getRoundIDsForGame(String gameID)
+	{
+		List<String> roundIDsByGameList = new ArrayList<>();
+	
+		DynamoDbIndex<DynamoRound> gsi = roundsTable.index("gsi_GameID");
+		Key key = Key.builder().partitionValue(gameID).build();
+	    QueryConditional qc = QueryConditional.keyEqualTo(key);
+	    	
+	    QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+	         .queryConditional(qc)
+	         .build();
+	    SdkIterable<Page<DynamoRound>> rdsByGameID = gsi.query(qer);
+	    	     
+	    PageIterable<DynamoRound> pages = PageIterable.create(rdsByGameID);
+	    	
+	    List<DynamoRound> dtList = pages.items().stream().toList();
+	    	
+	    if (dtList != null && dtList.size() > 0)
+	    {
+	    	for (int i = 0; i < dtList.size(); i++) 
+	    	{
+	    		DynamoRound dynamoRound = dtList.get(i);
+		        	
+	    		roundIDsByGameList.add(dynamoRound.getRoundID());
+	    	}
+	    }
+	    
+	    return roundIDsByGameList;
+	}
+	
 	public List<Round> getRoundsForGame(Game selectedGame)
     {
 		List<Round> roundsByGameList = new ArrayList<>();
@@ -283,15 +313,13 @@ public class RoundDAO implements Serializable
 	
 	public void deleteRoundsFromDB(String gameID)
     {
-		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
+		List<String> roundsToDelete = getRoundIDsForGame(gameID);
+		
+		for (int i = 0; i < roundsToDelete.size(); i++) 
 		{
-			Round rd = this.getFullRoundsList().get(i);
-			
-			if (rd.getGameID().equalsIgnoreCase(gameID))
-			{
-				deleteRoundFromDB(rd.getRoundID());
-				this.getFullRoundsMap().remove(rd.getRoundID());
-			}
+			String roundID = roundsToDelete.get(i);
+			deleteRoundFromDB(roundID);
+			this.getFullRoundsMap().remove(roundID);			
 		}
 		
 		refreshListsAndMaps("special", null);	
@@ -306,13 +334,22 @@ public class RoundDAO implements Serializable
 		if (round.getRoundID() == null)
 		{
 			dynamoRound.setRoundID(UUID.randomUUID().toString());
-			dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(new Date()));
+			if (round.getSignupDateTime() == null)
+			{
+				dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(new Date()));
+			}
+			else //existing round - always update signup date/time to what they had
+			{
+				dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(round.getSignupDateTime()));
+			}
 		}
-		else
+		else //existing round - always update signup date/time to what they had
 		{
 			dynamoRound.setRoundID(round.getRoundID());
 			dynamoRound.setSignupDateTime(DateToStringConverter.convertDateToDynamoStringFormat(round.getSignupDateTime()));
 		}
+		
+		dynamoRound.setRoundCreatedDateTime(DateToStringConverter.convertDateToDynamoStringFormat(new Date()));
 		
 		dynamoRound.setGameID(round.getGameID());
 		dynamoRound.setPlayerID(round.getPlayerID());

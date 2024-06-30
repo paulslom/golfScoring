@@ -26,6 +26,7 @@ public class DynamoRound
 	private String courseTeeColor;
 	private BigDecimal roundHandicapDifferential;
 	private String signupDateTime;	
+	private String roundCreatedDateTime;
 	private Integer hole1Score;
 	private Integer hole2Score;
 	private Integer hole3Score;
@@ -292,6 +293,12 @@ public class DynamoRound
 	}
 	public void setNetScore(BigDecimal netScore) {
 		this.netScore = netScore;
+	}
+	public String getRoundCreatedDateTime() {
+		return roundCreatedDateTime;
+	}
+	public void setRoundCreatedDateTime(String roundCreatedDateTime) {
+		this.roundCreatedDateTime = roundCreatedDateTime;
 	}	
 
 	

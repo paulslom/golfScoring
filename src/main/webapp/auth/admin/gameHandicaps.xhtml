@@ -28,7 +28,7 @@
              
 	               <td class="text">
 					
-				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" required="true"  hideNoSelectionOption="true">
+				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="gameConverter" required="true"  hideNoSelectionOption="true">
 				         <p:ajax listener="#{pc_Round.valueChangeGameHandicaps}" event="change" 
 				         	update="handicapsGameForm:label1 handicapsGameForm:label2 handicapsPlayerForm"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />

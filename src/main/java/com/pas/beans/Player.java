@@ -428,7 +428,7 @@ public class Player implements Serializable
 					}
 					newRound.setRoundHandicap(tempPlayer.getHandicap());
 					
-					newRound.setSignupDateTime(new Date());
+					newRound.setSignupDateTime(null); //let upsert call determine whether to use existing value or new date time stamp there
 					
 					if (roundSignupDateTimesMap != null)
 					{

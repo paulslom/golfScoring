@@ -195,7 +195,7 @@
 		                <p:selectOneMenu id="fieldSizeID" value="#{pc_Game.fieldSize}" required="true">
 							<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
 							<p:ajax event="valueChange" listener="#{pc_Game.valueChgFieldSize}" 
-							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID 
+							   update="gameForm:gamesTableID gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID 
 							   		   gameDialogForm:totalPlayersID gameDialogForm:teamPotID gameDialogForm:gameFeeID gameDialogForm:skinsPotID
 							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID 
 							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID  " />
