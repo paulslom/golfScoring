@@ -208,7 +208,7 @@ public class Player implements Serializable
 	
 	public void valueChangeGamePlayerPicklist(AjaxBehaviorEvent event) 
 	{
-		logger.info("User picked a game on select players for game form");
+		logger.info("User picked a game");
 		
 		try
 		{
@@ -245,6 +245,8 @@ public class Player implements Serializable
 		if (gameID != null)
 		{
 			Game selectedGame = golfmain.getGameByGameID(gameID);
+			
+			this.setSelectedGame(selectedGame);
 			
 			this.setTeeTimeList(golfmain.getTeeTimesByGame(selectedGame));		
 			
@@ -480,8 +482,15 @@ public class Player implements Serializable
 		
 		try
 		{			
-			if (selectedGame != null)
+			if (selectedGame == null)
 			{
+				throw new Exception("no game selected - selected game null");
+			}
+			else
+			{				
+				int totalPlayersForGame = selectedGame.getTotalPlayers();
+				int totalRoundsForGame = 0;
+			
 				for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 				{
 					TeeTime teeTime = this.getTeeTimeList().get(i);
@@ -533,9 +542,6 @@ public class Player implements Serializable
 						default:
 							break;
 					}
-					
-					int totalPlayersForGame = selectedGame.getTotalPlayers();
-					int totalRoundsForGame = 0;
 					
 					for (int j = 0; j < tempPlayerList.size(); j++) 
 					{

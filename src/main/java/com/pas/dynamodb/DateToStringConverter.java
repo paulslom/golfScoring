@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.pas.util.Utils;
+
 public class DateToStringConverter
 {
     public Date unconvert(String s) 
@@ -16,7 +18,7 @@ public class DateToStringConverter
     	
     	DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH);
     	LocalDateTime ldt = LocalDateTime.parse(s, inputFormatter);
-    	Date returnDate = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+    	Date returnDate = Date.from(ldt.atZone(ZoneId.of(Utils.MY_TIME_ZONE)).toInstant());
         return returnDate;
     }
     
@@ -24,7 +26,7 @@ public class DateToStringConverter
     {
     	String returnString = "";
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    	sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+    	sdf.setTimeZone(TimeZone.getTimeZone(Utils.MY_TIME_ZONE));
 		returnString = sdf.format(inputDate);
     	return returnString;
     }

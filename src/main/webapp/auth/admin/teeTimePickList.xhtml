@@ -256,12 +256,14 @@
 				       
 					        <p:commandButton id="saveAndStayButtonID"
 				                value="#{bundle.saveAndStay}"
-				                action="#{pc_Player.saveAndStayTeeTimesPickList}">
+				                action="#{pc_Player.saveAndStayTeeTimesPickList}"
+				                update="teeTimesPicklistForm">
 							</p:commandButton> 	
 							
 							<p:commandButton id="proceedToGameHandicapsButtonID"
 				                value="#{bundle.proceedToGameHandicaps}"
-				                action="#{pc_Player.proceedToGameHandicaps}">
+				                action="#{pc_Player.proceedToGameHandicaps}"
+				                update="teeTimesPicklistForm">
 							</p:commandButton> 												
 							
 				       </td>

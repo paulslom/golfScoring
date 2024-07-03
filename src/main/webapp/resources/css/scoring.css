@@ -2149,10 +2149,23 @@ body.wait, body.wait *{
 	position:relative;	
 }
 
+.ui-picklist .ui-picklist-list::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+    background-color: transparent;
+}
+
+.ui-picklist .ui-picklist-list::-webkit-scrollbar-thumb {
+    border: 1px solid white;
+    background: #888;
+}
 .ui-picklist .ui-picklist-list {
     width: 550px;
 }
 
+.ui-picklist-list .ui-picklist-list {
+  padding-right: 15px !important;
+}
 td.centeredColumnContent{
     text-align: center;
 }
