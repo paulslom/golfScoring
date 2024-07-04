@@ -112,9 +112,12 @@ public class SAMailUtility
 
 			Transport.send(message);
 			
+			String logMessage = "Email successfully sent to " + ccArrayList.size() + " recipients: " + ccArrayList;
+			logger.info(logMessage);
+			
 			if (useJSF)
 		    {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Email successfully sent to " + ccArrayList.size() + " recipients: " + ccArrayList, null);
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, logMessage, null);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 		    }
 		} 		

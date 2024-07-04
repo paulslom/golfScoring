@@ -102,7 +102,7 @@ public class DailyEmailJob implements Runnable
 		logger.info("email recipients successfully established");
 		
 		SAMailUtility.sendEmail(subjectLine, inputGame.getFutureGameEmailMessage(), emailRecipients, false); //last false parameter means do not use jsf
-		logger.info("email successfully sent");
+		
 	}
 
 	private String getTeeTimes(Game inputGame) throws Exception 

@@ -2513,12 +2513,14 @@ public class Game implements Serializable
 		sb.append(NEWLINE);
 		sb.append("select * from that screen click the appropriate button for the game you are interested in.");			
 		
-		this.setFutureGameEmailMessage(sb.toString());
-		
+		this.setFutureGameEmailMessage(sb.toString());		
+			
 		if (useJSFBean) //will be true if called from UI; false if from dailyemailjob
 		{
 			establishEmailRecipientsForFutureGame();
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"This email will go to:" + emailRecipients,null);
+			String logMessage = "This future game email will go to " + emailRecipients.size() + " recipients: " + emailRecipients;
+			logger.info(logMessage);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,logMessage,null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 
