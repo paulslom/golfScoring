@@ -62,6 +62,8 @@ public class Game implements Serializable
 	private boolean showPregameEmail = false;
 	private boolean showPostgameEmail = false;
 	
+	private static boolean meetInGrillRoomAfterRound = true;
+	
 	private String gameID;
 	private int oldGameID;
 	private String courseID;
@@ -736,7 +738,10 @@ public class Game implements Serializable
 			golfmain.deletePlayerMoneyFromDB(this.getGameID());
 			this.getTeamResultsList().clear();
 			
-			addEntryFees();
+			if (!meetInGrillRoomAfterRound)
+			{
+				addEntryFees();
+			}			
 			
 			calculateSkins();
 			calculateTeams();	
@@ -1491,7 +1496,14 @@ public class Game implements Serializable
 			sb.append(NEWLINE);		
 		}
 		
-		sb.append("<H3>Venmo Totals</H3>");
+		if (!meetInGrillRoomAfterRound)
+		{
+			sb.append("<H3>Venmo Totals  (Assumes no one paid in 20)</H3>");
+		}
+		else
+		{
+			sb.append("<H3>Individual Totals  (Assumes everyone paid in 20)</H3>");
+		}
 		
 		sb.append(NEWLINE);		
 		
@@ -2947,7 +2959,7 @@ public class Game implements Serializable
 		
 		sb.append(NEWLINE);
 		
-		sb.append("Gold tee players move back a tee box if necessary to stay within 1 tee box of whites. " + NEWLINE);
+		//sb.append("Gold tee players move back a tee box if necessary to stay within 1 tee box of whites. " + NEWLINE);
 		sb.append("All scores and settling of bets must happen manually in the Pro Shop grill after the round. " + NEWLINE);
 		sb.append("If you are unable to stay after the round for whatever reason, please arrange with someone to settle up your entry fee and how you want any winnings to be paid. " + NEWLINE);
 		//sb.append("In a pinch we could still use the website and venmo but that MUST BE PRE-ORGANIZED WITH A SITE ADMIN like Paul Slomkowski");
