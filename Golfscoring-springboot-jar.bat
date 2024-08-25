@@ -1,1 +1,1 @@
-java -jar /Paul/GitHub/golfScoring/target/golfScoring.jar com.pas.spring.Application 
+java -jar /Paul/GitHub/golfScoring/target/golfScoring.war com.pas.spring.Application 

@@ -55,6 +55,7 @@ public class MyWebAppInitializer implements ServletContextInitializer
             sc.setInitParameter("jakarta.faces.FACELETS_VIEW_MAPPINGS", "*.xhtml");
             sc.setInitParameter("jakarta.faces.CONFIG_FILES", "/WEB-INF/main-faces-config.xml");
             sc.setInitParameter("jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE", "true");
+            sc.setInitParameter("primefaces.THEME", "cupertino");
             sc.setInitParameter("primefaces.UPLOADER", "commons");
             
             ServletRegistration.Dynamic elResolverInitializer = sc.addServlet("elResolverInit", new ELResolverInitializerServlet());
