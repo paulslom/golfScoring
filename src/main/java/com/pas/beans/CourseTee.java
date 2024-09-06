@@ -3,6 +3,7 @@ package com.pas.beans;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +171,14 @@ public class CourseTee implements Serializable
 			return getTeeSelectionsMap().get(courseID);
 		}
 		return null;
+	}
+	
+	public static class CourseTeeComparator implements Comparator<CourseTee> 
+	{
+		public int compare(CourseTee courseTee1, CourseTee courseTee2)
+		{
+			return courseTee1.getCourseRating().compareTo(courseTee2.getCourseRating());
+		}		
 	}
 	
 	public String getCourseTeeID() {

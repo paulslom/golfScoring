@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,7 @@ import com.pas.dynamodb.DynamoCourseTee;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
  
 public class CourseTeeDAO implements Serializable
 {
@@ -78,6 +80,39 @@ public class CourseTeeDAO implements Serializable
 		return this.getCourseTeesList();
     }
 	
+	public void addCourseTee(CourseTee courseTee) throws Exception 
+	{
+		DynamoCourseTee dynamoCourseTee = dynamoUpsert(courseTee);	
+		
+		logger.info("Added a new courseTee");
+	}
+	
+	private DynamoCourseTee dynamoUpsert(CourseTee courseTee) throws Exception 
+	{
+		DynamoCourseTee dynamoCourseTee = new DynamoCourseTee();
+        
+		if (courseTee.getCourseTeeID() == null)
+		{
+			dynamoCourseTee.setCourseTeeID(UUID.randomUUID().toString());
+		}
+		else
+		{
+			dynamoCourseTee.setCourseTeeID(courseTee.getCourseTeeID());
+		}
+		
+		dynamoCourseTee.setCourseID(courseTee.getCourseID());
+		dynamoCourseTee.setTeeColor(courseTee.getTeeColor());
+		dynamoCourseTee.setCourseRating(courseTee.getCourseRating());
+		dynamoCourseTee.setCoursePar(courseTee.getCoursePar());
+		dynamoCourseTee.setSlopeRating(courseTee.getSlopeRating());
+		dynamoCourseTee.setTotalYardage(courseTee.getTotalYardage());		
+		
+		PutItemEnhancedRequest<DynamoCourseTee> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoCourseTee.class).item(dynamoCourseTee).build();
+		courseTeesTable.putItem(putItemEnhancedRequest);
+				
+		return dynamoCourseTee;
+	}
+	
 	public Map<String, CourseTee> getCourseTeesMap() 
 	{
 		return courseTeesMap;
@@ -95,6 +130,8 @@ public class CourseTeeDAO implements Serializable
 	public void setCourseTeesList(List<CourseTee> courseTeesList) {
 		this.courseTeesList = courseTeesList;
 	}
+
+	
 
 	
 }

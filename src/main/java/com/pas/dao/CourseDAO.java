@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +20,7 @@ import com.pas.dynamodb.DynamoCourse;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
  
 public class CourseDAO implements Serializable
 {
@@ -178,6 +180,59 @@ public class CourseDAO implements Serializable
 		
 		coursesMap = this.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
     }
+	
+	public String addCourse(Course course) throws Exception
+	{
+		DynamoCourse dynamoCourse = dynamoUpsert(course);	
+		course.setCourseID(dynamoCourse.getCourseID());
+		
+		logger.info("Added a new course");
+		
+		return course.getCourseID();
+	}
+	
+	private DynamoCourse dynamoUpsert(Course course) throws Exception 
+	{
+		DynamoCourse dynamoCourse = new DynamoCourse();
+        
+		if (course.getCourseID() == null)
+		{
+			dynamoCourse.setCourseID(UUID.randomUUID().toString());
+		}
+		else
+		{
+			dynamoCourse.setCourseID(course.getCourseID());
+		}
+		
+		dynamoCourse.setCourseName(course.getCourseName());
+		dynamoCourse.setFront9Par(course.getFront9Par());
+		dynamoCourse.setBack9Par(course.getBack9Par());
+		dynamoCourse.setCoursePar(course.getCoursePar());
+		dynamoCourse.setGroupID("e5cfe1cc-d16a-4ca3-9ea5-9ff2fe4b675f"); //hard coded bryan park group
+		dynamoCourse.setHole1Par(course.getHolesList().get(0).getPar());
+		dynamoCourse.setHole2Par(course.getHolesList().get(1).getPar());
+		dynamoCourse.setHole3Par(course.getHolesList().get(2).getPar());
+		dynamoCourse.setHole4Par(course.getHolesList().get(3).getPar());
+		dynamoCourse.setHole5Par(course.getHolesList().get(4).getPar());
+		dynamoCourse.setHole6Par(course.getHolesList().get(5).getPar());
+		dynamoCourse.setHole7Par(course.getHolesList().get(6).getPar());
+		dynamoCourse.setHole8Par(course.getHolesList().get(7).getPar());
+		dynamoCourse.setHole9Par(course.getHolesList().get(8).getPar());
+		dynamoCourse.setHole10Par(course.getHolesList().get(9).getPar());
+		dynamoCourse.setHole11Par(course.getHolesList().get(10).getPar());
+		dynamoCourse.setHole12Par(course.getHolesList().get(11).getPar());
+		dynamoCourse.setHole13Par(course.getHolesList().get(12).getPar());
+		dynamoCourse.setHole14Par(course.getHolesList().get(13).getPar());
+		dynamoCourse.setHole15Par(course.getHolesList().get(14).getPar());
+		dynamoCourse.setHole16Par(course.getHolesList().get(15).getPar());
+		dynamoCourse.setHole17Par(course.getHolesList().get(16).getPar());
+		dynamoCourse.setHole18Par(course.getHolesList().get(17).getPar());
+		
+		PutItemEnhancedRequest<DynamoCourse> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoCourse.class).item(dynamoCourse).build();
+		coursesTable.putItem(putItemEnhancedRequest);
+				
+		return dynamoCourse;
+	}
 	
 	public Map<String, Course> getCoursesMap() 
 	{

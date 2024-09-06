@@ -490,19 +490,30 @@ public class GolfMain implements Serializable
 		
 		List<SelectItem> courseTeeSelections = new ArrayList<>();
 		
-		for (int i = 0; i < getCourseTees().size(); i++) 
+		List<CourseTee> sortedCourseTees = new ArrayList<>(getCourseTees());
+		Collections.sort(sortedCourseTees, new CourseTeeComparator());
+		
+		for (int i = 0; i < sortedCourseTees.size(); i++) 
 		{
-			CourseTee courseTee = getCourseTees().get(i);
+			CourseTee courseTee = sortedCourseTees.get(i);
 			if (courseTee.getCourseID().equalsIgnoreCase(inGame.getCourseID()))
 			{
 				SelectItem selItem = new SelectItem();
-				selItem.setLabel(courseTee.getTeeColor());
+				selItem.setLabel(courseTee.getTeeColor() + " (" + courseTee.getTotalYardage() + " yds)");
 				selItem.setValue(courseTee.getCourseTeeID());
 				courseTeeSelections.add(selItem);
 			}
 		}
 		
 		inGame.setTeeSelections(courseTeeSelections);
+	}
+	
+	public static class CourseTeeComparator implements Comparator<CourseTee> 
+	{
+		public int compare(CourseTee courseTee1, CourseTee courseTee2)
+		{
+			return courseTee1.getCourseRating().compareTo(courseTee2.getCourseRating());
+		}		
 	}
 	
 	public void onLoadEmailGroup() 

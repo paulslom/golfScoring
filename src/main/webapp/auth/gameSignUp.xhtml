@@ -38,7 +38,7 @@
 				  </h:outputText>														
 			  </p:column>
 			  
-			  <p:column style="width:15%" headerText="Course" sortBy="#{game.courseName}">												
+			  <p:column style="width:10%" headerText="Course" sortBy="#{game.courseName}">												
 				  <h:outputText value="#{game.courseName}"/>														
 			  </p:column>
 			  
@@ -50,25 +50,21 @@
 				  <h:outputText value="#{game.spotsAvailable}"/>														
 			  </p:column>		 
 			 
-			  <p:column style="width:10%" id="signUpID" headerText="Sign Up">												
+			  <p:column style="width:5%" id="signUpID" headerText="Sign Up">												
 				  <p:commandButton value="Sign up" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" action="#{pc_Game.signUp(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>
+			  </p:column>				
+				 
+			  <p:column style="width:5%" id="wdID" headerText="Withdraw">												
+				  <p:commandButton value="Withdraw" rendered="#{game.renderWithdraw}" action="#{pc_Game.withdraw(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>	
 			  </p:column>
-				
-			  <p:column style="width:30%" headerText="Tee" styleClass="centeredColumnContent">												
+			  
+			  <p:column style="width:50%" headerText="Tee" styleClass="centeredColumnContent">												
 				  <p:selectOneRadio id="teeColorID" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" value="#{game.courseTeeID}">
                        <f:selectItems value="#{game.teeSelections}"/>
 	              </p:selectOneRadio>
 	              <h:outputText rendered="#{!game.renderSignUp}" value="see below for your tee color"/>														
-  			  </p:column>
-  			  
-			  <p:column style="width:10%" id="wdID" headerText="Withdraw">												
-				  <p:commandButton value="Withdraw" rendered="#{game.renderWithdraw}" action="#{pc_Game.withdraw(game)}" update="gameSignUpForm:gamesTableID gameSignUpForm:facesMessagesID gameSignUpForm:whoIsSignedUpID"/>	
-			  </p:column>
+  			  </p:column>  			 
 			  
-			  <p:column style="width:5%" id="closedID" headerText="Closed">												
-				  <h:outputText value="#{bundle.gameClosedOnSignupScreen}" rendered="#{game.gameClosedForSignups}"/>	
-			  </p:column>
- 
 		  </p:dataTable>
 			 	
 	      <p:messages id="facesMessagesID" showDetail="false">
