@@ -241,6 +241,8 @@ public class GameDAO implements Serializable
 	
 	public List<Game> getAvailableGames(String playerID) 
     {
+		logger.info("entering getAvailableGames for player id: " + playerID);
+		
 		List<Game> gameList = new ArrayList<>();
 		
 		Calendar todayMidnight = new GregorianCalendar();
@@ -278,7 +280,9 @@ public class GameDAO implements Serializable
 				gm.setRenderSignUp(false);
 				gm.setRenderWithdraw(true);
 				gm.setCourseTeeID(rd.getCourseTeeID());
-			}			
+			}
+			
+			logger.info("in getAvailableGames, game id: " + gm.getGameID() + " game date: " + gm.getGameDateDisplay() + " player id: " + playerID + " renderSignup: " + gm.isRenderSignUp());
 			
 		} 
     	
@@ -332,38 +336,7 @@ public class GameDAO implements Serializable
 		
     	return gameList;
 	}
-	
-	public List<Game> getAvailableGamesByPlayerID(int playerID) 
-    {
-		List<Game> gameList = new ArrayList<>();
 		
-		Calendar todayMidnight = new GregorianCalendar();
-		todayMidnight.set(Calendar.HOUR_OF_DAY, 0);
-		todayMidnight.set(Calendar.MINUTE, 0);
-		todayMidnight.set(Calendar.SECOND, 0);
-		todayMidnight.set(Calendar.MILLISECOND, 0);
-		
-		for (int i = 0; i < this.getFullGameList().size(); i++) 
-		{
-			Game availableGame = this.getFullGameList().get(i);
-			if (availableGame.getGameDate().after(todayMidnight.getTime()))
-			{
-				gameList.add(availableGame);
-				//this is not enough though - need to know if the player is a part of the game.
-			}
-		}
-			
-		Collections.sort(gameList, new Comparator<Game>() 
-		{
-		   public int compare(Game o1, Game o2) 
-		   {
-		      return o1.getGameDate().compareTo(o2.getGameDate());
-		   }
-		});
-		
-    	return gameList;
-	}
-	
 	public Game getGameByGameID(String gameID) 
     {
 		Map<String, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
