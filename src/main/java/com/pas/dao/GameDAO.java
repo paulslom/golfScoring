@@ -274,6 +274,7 @@ public class GameDAO implements Serializable
 				gm.setRenderSignUp(true);
 				gm.setRenderWithdraw(false);
 				gm.setCourseTeeID(getTeePreference(playerID, gm.getCourseID()));
+				golfmain.assignCourseToGame(gm);
 			}
 			else
 			{

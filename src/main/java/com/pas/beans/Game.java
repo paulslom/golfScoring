@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import java.util.TreeMap;
 
 import org.apache.logging.log4j.LogManager;
@@ -87,7 +86,7 @@ public class Game implements Serializable
 	private BigDecimal gameFee;
 	
 	private String teeTimesString;
-	private boolean renderSignUp = false;
+	private boolean renderSignUp = true;
 	private boolean renderWithdraw = false;
 	private boolean gameClosedForSignups = false;
 	private String playTheBallMethod; //up everywhere; down everywhere; up in fairway, down in rough
@@ -135,6 +134,10 @@ public class Game implements Serializable
 		this.golfmain = golfmain;
 	}
 	
+	public String toString()
+	{
+		return "Game Date: " + this.getGameDateDisplay() + " Game ID: " + this.getGameID();
+	}
 	public void onLoadGameList() 
 	{
 		logger.info(getTempUserName() + " In onLoadGameList Game.java");
@@ -144,7 +147,7 @@ public class Game implements Serializable
 	{
 		operation = "Add";		
 		saveGame();
-		emailAdminsAboutGameAddition(this);
+		//emailAdminsAboutGameAddition(this);
 		
 		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/gameList.xhtml");
 		
