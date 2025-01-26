@@ -14,19 +14,20 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
-import jakarta.faces.convert.FacesConverter;
+import jakarta.inject.Inject;
 
 public class PlayerConverter implements Converter<Object>
 {
 	Map<String,Player> playersMap = new HashMap<>();
-		
+	
+	@Inject GolfMain golfmain;
 	public PlayerConverter() 
 	{
 		DynamoClients dynamoClients;
 		try 
 		{
 			dynamoClients = DynamoUtil.getDynamoClients();
-			PlayerDAO playerDAO = new PlayerDAO(dynamoClients, new GolfMain("ignore"));
+			PlayerDAO playerDAO = new PlayerDAO(dynamoClients);
 			playerDAO.readPlayersFromDB();
 			playersMap = playerDAO.getFullPlayersMapByPlayerID();
 		} 

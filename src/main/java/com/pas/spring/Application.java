@@ -13,7 +13,7 @@ public class Application extends SpringBootServletInitializer
 	private static Logger logger = LogManager.getLogger(Application.class);	
 	public static void main(String[] args) 
 	{
-		logger.info("about to kick off Spring boot application");
+		logger.info("about to kick off golf scoring Spring boot application");
 		System.setProperty(org.apache.tomcat.util.scan.Constants.SKIP_JARS_PROPERTY,"*.jar");
 		SpringApplication.run(new Class[] { Application.class, MyWebAppInitializer.class }, args);
 		logger.info("Spring boot application started");

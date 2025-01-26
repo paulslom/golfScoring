@@ -82,7 +82,7 @@ public class CourseTeeDAO implements Serializable
 	
 	public void addCourseTee(CourseTee courseTee) throws Exception 
 	{
-		DynamoCourseTee dynamoCourseTee = dynamoUpsert(courseTee);	
+		dynamoUpsert(courseTee);	
 		
 		logger.info("Added a new courseTee");
 	}

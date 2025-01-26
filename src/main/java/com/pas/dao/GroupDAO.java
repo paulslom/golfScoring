@@ -10,12 +10,13 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.GolfMain;
 import com.pas.beans.Group;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGroup;
+
+import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
@@ -31,12 +32,10 @@ public class GroupDAO implements Serializable
 	private static DynamoDbTable<DynamoGroup> groupsTable;
 	private static final String AWS_TABLE_NAME = "groups";
 	
-	@Autowired private final GolfMain golfmain;
+	@Inject GolfMain golfmain;
 	
-	public GroupDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
+	public GroupDAO(DynamoClients dynamoClients2) 
 	{
-		this.golfmain = golfmain;
-		
 		dynamoClients = dynamoClients2;
 		
 		try 

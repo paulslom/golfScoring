@@ -1,0 +1,19 @@
+# src/main/resources/application.yml
+
+server:
+  servlet:
+    context-path: /golfScoring
+    register-default-servlet: true
+  tomcat:
+    relaxed-query-chars: "|,{,},[,]"
+  port: 5000
+  ssl:
+    key-store: ${KEYSTORE_LOCATION}/TomcatJava17.jks
+    key-store-password: ${KEYSTORE_PASS}
+    enabled: true
+    
+logging:
+  level:
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss, America/New_York} [%t] %-5level %logger{36}:%L - %msg%n"

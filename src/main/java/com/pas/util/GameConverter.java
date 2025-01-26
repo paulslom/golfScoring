@@ -13,11 +13,13 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
-import jakarta.faces.convert.FacesConverter;
+import jakarta.inject.Inject;
 
 public class GameConverter implements Converter<Object>
 {
 	Map<String,Game> gamesMap = new HashMap<>();	
+	
+	@Inject GolfMain golfmain;
 	
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
@@ -54,8 +56,7 @@ public class GameConverter implements Converter<Object>
 	    {
 	    	if (gamesMap.isEmpty())
 	    	{
-	    		GolfMain golfmain = BeanUtilJSF.getBean("pc_GolfMain");		
-	        	List<Game> fullGameList = golfmain.getFullGameList();
+	    		List<Game> fullGameList = golfmain.getFullGameList();
 	        	gamesMap = fullGameList.stream().collect(Collectors.toMap(Game::getGameID, gm -> gm));	   
 	    	}
 			

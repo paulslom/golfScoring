@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -25,6 +24,7 @@ import com.pas.beans.TeeTime;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoTeeTime;
 
+import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -44,14 +44,10 @@ public class TeeTimeDAO implements Serializable
 	private static DynamoDbTable<DynamoTeeTime> teeTimesTable;
 	private static final String AWS_TABLE_NAME = "teetimes";
 	
-	@Autowired private final GolfMain golfmain;
-	//@Autowired private final Game game;
+	@Inject GolfMain golfmain;
 	
-	public TeeTimeDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
+	public TeeTimeDAO(DynamoClients dynamoClients2) 
 	{
-		this.golfmain = golfmain;
-		//this.game = game;
-		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;

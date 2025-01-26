@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.GolfMain;
 import com.pas.beans.Player;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayer;
 
+import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
@@ -39,12 +39,10 @@ public class PlayerDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayer> playersTable;
 	private static final String AWS_TABLE_NAME = "players";
 	
-	@Autowired private final GolfMain golfmain;
+	@Inject GolfMain golfmain;
 	
-	public PlayerDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
+	public PlayerDAO(DynamoClients dynamoClients2) 
 	{
-		this.golfmain = golfmain;
-		
 	   try 
 	   {
 	       dynamoClients = dynamoClients2;

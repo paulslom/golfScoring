@@ -9,14 +9,12 @@ import com.pas.beans.CourseTee;
 import com.pas.beans.Hole;
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
-import com.pas.dao.PlayerTeePreferenceDAO;
 
 @Component
 public class AddCourseAndTees
 {	 
 	private static CourseDAO courseDAO;
 	private static CourseTeeDAO courseTeeDAO;
-	private static PlayerTeePreferenceDAO playerTeePreferencesDAO;
 	
 	/* How to use this:
 	 * 

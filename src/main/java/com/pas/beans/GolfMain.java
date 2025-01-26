@@ -200,7 +200,7 @@ public class GolfMain implements Serializable
 			{
 				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
 				golfUsersDAO = new GolfUsersDAO(dynamoClients, this);
-				groupDAO = new GroupDAO(dynamoClients, this);
+				groupDAO = new GroupDAO(dynamoClients);
 				groupDAO.readGroupsFromDB();
 				Group defaultGroup = this.getGroupsList().get(0);
 				this.setDefaultGroup(defaultGroup);
@@ -376,7 +376,7 @@ public class GolfMain implements Serializable
 	public void loadTeeTimeList(DynamoClients dynamoClients, Group defaultGroup) throws Exception
 	{
 		logger.info("entering loadTeeTimeList");
-		teeTimeDAO = new TeeTimeDAO(dynamoClients, this);
+		teeTimeDAO = new TeeTimeDAO(dynamoClients);
 		teeTimeDAO.readTeeTimesFromDB(defaultGroup);			
 		logger.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
 	}
@@ -411,7 +411,7 @@ public class GolfMain implements Serializable
 	public void loadFullPlayerList(DynamoClients dynamoClients) throws Exception 
 	{
 		logger.info("entering loadFullPlayerList");
-		playerDAO = new PlayerDAO(dynamoClients, this);
+		playerDAO = new PlayerDAO(dynamoClients);
 		playerDAO.readPlayersFromDB();			
 		golfUsersDAO.readAllUsersFromDB();
 						

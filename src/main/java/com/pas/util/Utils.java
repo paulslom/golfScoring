@@ -29,7 +29,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+//import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pas.beans.Course;
 import com.pas.beans.CourseTee;
 import com.pas.beans.Player;
@@ -715,6 +715,7 @@ public class Utils
 	    return currentGolfUser == null ? null : currentGolfUser.toLowerCase().trim();
 	}
 	
+	/*
 	public static MysqlDataSource getDatasourceProperties()
 	{
 		MysqlDataSource ds = null;
@@ -747,6 +748,7 @@ public class Utils
        	
        	return ds;
 	}
+	*/
 	
 	public static ArrayList<String> setEmailFullRecipientList(List<Player> fullPlayerList) 
 	{
@@ -854,8 +856,8 @@ public class Utils
     	int minute = 0;
     	int second = 0;
     	
-    	//int hour = 20;
-    	//int minute = 50;
+    	//int hour = 19;
+    	//int minute = 12;
     	//int second = 0;
     	
     	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));

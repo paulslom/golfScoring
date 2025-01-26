@@ -44,7 +44,7 @@ public class DailyEmailJob implements Runnable
 	{
 		dynamoClients = DynamoUtil.getDynamoClients();
 		
-		GroupDAO groupDAO = new GroupDAO(dynamoClients, new GolfMain("ignore"));
+		GroupDAO groupDAO = new GroupDAO(dynamoClients);
 		groupDAO.readGroupsFromDB();
 		defaultGroup = groupDAO.getGroupsList().get(0);
 	}
@@ -107,7 +107,7 @@ public class DailyEmailJob implements Runnable
 
 	private String getTeeTimes(Game inputGame) throws Exception 
 	{
-		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients, new GolfMain("ignore"));
+		TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients);
 		teeTimeDAO.readTeeTimesFromDB(defaultGroup);
 		List<TeeTime> teeTimeList = teeTimeDAO.getTeeTimesByGame(inputGame);
 		
@@ -126,7 +126,7 @@ public class DailyEmailJob implements Runnable
 
 	private ArrayList<String> establishEmailRecipients(Game inputGame) 
 	{
-		PlayerDAO playerDAO = new PlayerDAO(dynamoClients, new GolfMain("ignore"));
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);
 		playerDAO.readPlayersFromDB();
 		ArrayList<String> emailRecips = Utils.setEmailFullRecipientList(playerDAO.getFullPlayerList());		
 		

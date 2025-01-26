@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,9 @@ import jakarta.servlet.http.HttpSession;
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler
 { 
 	private static Logger logger = LogManager.getLogger(MyAuthenticationSuccessHandler.class);
+	
+	@Autowired
+    private SpringBean springBean;
 	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 
@@ -46,7 +50,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             }
         }       
         
-        String whereTo = "/auth/main.xhtml";
+        String whereTo = springBean.getContextRoot() + "/auth/main.xhtml";
         logger.info("redirecting to: " + whereTo);
 		response.sendRedirect(whereTo);
         

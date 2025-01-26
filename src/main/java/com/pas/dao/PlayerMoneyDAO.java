@@ -100,7 +100,7 @@ public class PlayerMoneyDAO implements Serializable
 		Iterator<DynamoPlayerMoney> results = playerMoneyTable.scan().items().iterator();
 		
 		//since this full read is only done at app startup, we can't use golfmain's jsf bean to get it... so just redo the playerdao read
-		PlayerDAO playerDAO = new PlayerDAO(dynamoClients, golfmain);		
+		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);		
 		playerDAO.readPlayersFromDB();
 		Map<String,Player> fullPlayersMapByPlayerID = playerDAO.getFullPlayersMapByPlayerID();
 		
