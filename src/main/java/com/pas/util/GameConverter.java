@@ -1,24 +1,21 @@
 package com.pas.util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
+import com.pas.dynamodb.DynamoGame;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
+@Named("pc_GameConverter")
+@SessionScoped
 public class GameConverter implements Converter<Object>
 {
-	Map<String,Game> gamesMap = new HashMap<>();	
-	
 	@Inject GolfMain golfmain;
 	
 	@Override
@@ -33,9 +30,9 @@ public class GameConverter implements Converter<Object>
 	    {
 	        return (String)modelValue;
 	    } 
-	    else if (modelValue instanceof Game) 
+	    else if (modelValue instanceof DynamoGame) 
 	    {
-	    	Game tempGame = (Game)modelValue;
+	    	DynamoGame tempGame = (DynamoGame)modelValue;
 	        return String.valueOf(tempGame.getGameID());
 	    } 
 	    else 
@@ -54,13 +51,7 @@ public class GameConverter implements Converter<Object>
 
 	    try 
 	    {
-	    	if (gamesMap.isEmpty())
-	    	{
-	    		List<Game> fullGameList = golfmain.getFullGameList();
-	        	gamesMap = fullGameList.stream().collect(Collectors.toMap(Game::getGameID, gm -> gm));	   
-	    	}
-			
-			return gamesMap.get(submittedValue);
+	    	return golfmain.getFullGamesMap().get(submittedValue);
 	    } 
 	    catch (NumberFormatException e) 
 	    {

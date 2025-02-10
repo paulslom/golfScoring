@@ -7,7 +7,7 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     
     <f:metadata>
-	    <f:viewAction action="#{pc_Round.onLoadGameEnterScores}" />
+	    <f:viewAction action="#{pc_GolfMain.onLoadGameEnterScores}" />
 	</f:metadata> 
 	
     <ui:define name="content">
@@ -32,10 +32,10 @@
              
 	               <td class="text">
 					
-				 	  <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="gameConverter" required="true"  hideNoSelectionOption="true">
-					      <p:ajax listener="#{pc_Round.valueChangeGame}" event="change" 
+				 	  <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="#{pc_GameConverter}" required="true"  hideNoSelectionOption="true">
+					      <p:ajax listener="#{pc_GolfMain.valueChangeGame}" event="change" 
 				         	update="gameForm:label1 gameForm:label2 scoresForm"/>
-				      	 <f:selectItems value="#{pc_Round.availableGamesList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
+				      	 <f:selectItems value="#{pc_GolfMain.availableGamesList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
 					  </p:selectOneMenu>
 					 										
 				   </td>
@@ -62,16 +62,16 @@
 		
 		<h:form id="scoresForm">
 		
-			<p:dataTable id="roundsTableID" value="#{pc_Round.syncGameRoundList}"
+			<p:dataTable id="roundsTableID" value="#{pc_GolfMain.syncGameRoundList}"
 		          var="rd" scrollable="true" scrollHeight="350" sortBy="#{rd.teeTime.playGroupNumber}"
-		          selection="#{pc_Round.selectedRound}" rowKey="#{rd.roundID}" rowIndexVar="index"
+		          selection="#{pc_GolfMain.selectedRound}" rowKey="#{rd.roundID}" rowIndexVar="index"
 		          selectionMode="single" style="font-size:10px;">							
 					
 		          <f:facet name="header">
 	   				  <h:outputText value="Rounds for Game"/>
 				  </f:facet>
 					
-				  <p:ajax event="rowSelect" listener="#{pc_Round.selectRowAjax}" update="scoresForm:deleteSelectedButtonID scoresForm:fixScoreButtonID"></p:ajax>
+				  <p:ajax event="rowSelect" listener="#{pc_GolfMain.selectRowAjax}" update="scoresForm:deleteSelectedButtonID scoresForm:fixScoreButtonID"></p:ajax>
 				  		
 				  <p:column style="width:10%" headerText="Name" sortBy="#{rd.playerName}">												
 					  <h:outputText value="#{rd.playerName}"/>														
@@ -195,29 +195,29 @@
 		          rendered="#{sessionScope.currentUserisAdmin}"
                   value="#{bundle.deleteSelectedPlayerRound}"
                   disabled="#{pc_GolfMain.disableDeleteSelectedPlayerRound}"
-                  action="#{pc_Round.deleteSelectedPlayerRound}"
+                  action="#{pc_GolfMain.deleteSelectedPlayerRound}"
                   update="scoresForm">
 		    </p:commandButton> 
 		    
 		    <p:commandButton id="updateScoresButtonID"
                   value="#{bundle.updateScores}"
-                  action="#{pc_Round.updateAllRounds}"
+                  action="#{pc_GolfMain.updateAllRounds}"
                   update="scoresForm">
 		    </p:commandButton> 
 		    
 		    <p:commandButton id="runGameButtonID"
                   value="#{bundle.runGameNavigate}"
                   rendered="#{sessionScope.currentUserisAdmin}"
-                  disabled="#{pc_Round.disableRunGameNavigate}"
-                  action="#{pc_Round.runGameNavigate}"
+                  disabled="#{pc_GolfMain.disableRunGameNavigate}"
+                  action="#{pc_GolfMain.runGameNavigate}"
                   update="facesMessagesID">
 		    </p:commandButton>
 		    
 		    <p:commandButton id="fixScoreButtonID"
                 value="#{bundle.fixScore}"
-                action="#{pc_Round.clearFixedScore}"
+                action="#{pc_GolfMain.clearFixedScore}"
                 update="fixScoreDialogID"
-                disabled="#{pc_Round.disableFixScore}"
+                disabled="#{pc_GolfMain.disableFixScore}"
           		oncomplete="PF('fixScoreDialog').show();">
 			</p:commandButton>	 
 		   	
@@ -243,7 +243,7 @@
 				  		
 		  			 <td class="textLabel" colspan="3">
 						<p:outputLabel value="#{bundle.player}"/>&#xA0;
-						<p:outputLabel value="#{pc_Round.selectedRound.playerName}"/>
+						<p:outputLabel value="#{pc_GolfMain.selectedRound.playerName}"/>
 					 </td>	
 				
 		          </tr>
@@ -256,7 +256,7 @@
 					 
 		             <td colspan="2" class="text">
 		             
-		                 <p:selectOneMenu id="rdHoleID" value="#{pc_Round.fixHole}" required="true"  hideNoSelectionOption="true">
+		                 <p:selectOneMenu id="rdHoleID" value="#{pc_GolfMain.fixHole}" required="true"  hideNoSelectionOption="true">
 					        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
 							<f:selectItems value="#{pc_GolfMain.holeSelections}"/>		
 						 </p:selectOneMenu>
@@ -273,7 +273,7 @@
 					 
 		             <td colspan="2" class="text">
 		             
-		                 <p:selectOneMenu id="fixScoreIndividualID" value="#{pc_Round.correctedScore}" required="true"  hideNoSelectionOption="true">
+		                 <p:selectOneMenu id="fixScoreIndividualID" value="#{pc_GolfMain.correctedScore}" required="true"  hideNoSelectionOption="true">
 					        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
 							<f:selectItems value="#{pc_GolfMain.scoreSelections}"/>		
 						 </p:selectOneMenu>
@@ -287,7 +287,7 @@
 						
 						   <p:commandButton 
 							   value="#{bundle.ok}" 
-							   action="#{pc_Round.saveFixedScore}"																   
+							   action="#{pc_GolfMain.saveFixedScore}"																   
 							   oncomplete="PF('fixScoreDialog').hide();">
 						   </p:commandButton> 
 						   

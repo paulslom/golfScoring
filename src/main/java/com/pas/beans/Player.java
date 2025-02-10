@@ -1,6 +1,5 @@
 package com.pas.beans;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,17 +19,20 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
+import com.pas.dynamodb.DynamoCourseTee;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoPlayer;
+import com.pas.util.Utils;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named("pc_Player")
-@Component
 @SessionScoped
 public class Player implements Serializable
 {	
@@ -46,10 +48,7 @@ public class Player implements Serializable
 	private String firstName;
 	private String lastName;
 	private String fullName;
-	private int teamNumber;
 	private BigDecimal handicap;
-	private int grossScore;
-	private BigDecimal netScore;
 	private String emailAddress;
 	private boolean active;
 	
@@ -58,21 +57,20 @@ public class Player implements Serializable
 	private Player selectedPlayer;
 	
 	private boolean disablePlayersDialogButton = true;
-	private List<Player> selectedPlayersList = new ArrayList<>();
-	private List<Round> roundsForGame = new ArrayList<Round>();	
+	private List<DynamoPlayer> selectedPlayersList = new ArrayList<>();
+		
+	private DualListModel<DynamoPlayer> playersPickList = new DualListModel<>();
+	private List<DynamoPlayer> playersPickListSource = new ArrayList<>();
+	private List<DynamoPlayer> playersPickListTarget = new ArrayList<>();
 	
-	private DualListModel<Player> playersPickList = new DualListModel<Player>();
-	private List<Player> playersPickListSource = new ArrayList<Player>();
-	private List<Player> playersPickListTarget = new ArrayList<Player>();
-	
-	private DualListModel<Player> gameTeeTimeList1 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList2 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList3 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList4 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList5 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList6 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList7 = new DualListModel<Player>();
-	private DualListModel<Player> gameTeeTimeList8 = new DualListModel<Player>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList1 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList2 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList3 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList4 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList5 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList6 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList7 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList8 = new DualListModel<>();
 	
 	private boolean showGameTeeTimeList3 = false;
 	private boolean showGameTeeTimeList4 = false;
@@ -95,27 +93,20 @@ public class Player implements Serializable
 	private boolean disablePickTeams = true;
 	
 	private TeeTime teeTime;
-	private Game selectedGame;
 	
 	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
 	
 	private String operation = "";
 	
-	@Autowired private final GolfMain golfmain;
-	
-	public Player(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-		//logger.info("Player constructor called");
-	}
-	
+	@Inject GolfMain golfmain;
+	@Inject Game game;
+
 	public void onLoadPlayerPickList() 
 	{
 		try
 		{
-			selectedGame = golfmain.getFullGameList().get(0);
-			loadSelectedPlayers(selectedGame);
-			setPlayerPickLists(selectedGame);			
+			loadSelectedPlayers(game.getSelectedGame());
+			setPlayerPickLists(game.getSelectedGame());			
 
 		}
 		catch (Exception e)
@@ -142,7 +133,7 @@ public class Player implements Serializable
 		}
 	}
 	
-	public void setPlayerPickLists(Game game) 
+	public void setPlayerPickLists(DynamoGame dynamoGame) 
 	{
 		if (playersPickListSource != null)
 		{
@@ -153,7 +144,7 @@ public class Player implements Serializable
 		{
 			playersPickListTarget.clear();
 		}
-		Map<String, Player> selectedMap = new HashMap<>();
+		Map<String, DynamoPlayer> selectedMap = new HashMap<>();
 		
 		for (int i = 0; i < this.getSelectedPlayersList().size(); i++) 
 		{
@@ -163,7 +154,7 @@ public class Player implements Serializable
 		
 		for (int i = 0; i < golfmain.getFullPlayerList().size(); i++) 
 		{
-			Player tempPlayer = golfmain.getFullPlayerList().get(i);
+			DynamoPlayer tempPlayer = golfmain.getFullPlayerList().get(i);
 			if (!selectedMap.containsKey(tempPlayer.getPlayerID()))
 			{
 				playersPickListSource.add(golfmain.getFullPlayerList().get(i));
@@ -173,18 +164,16 @@ public class Player implements Serializable
 		Collections.sort(playersPickListSource, new PlayerComparatorByLastName());
 		Collections.sort(playersPickListTarget, new PlayerComparatorByLastName());
 		
-		this.setPlayersPickList(new DualListModel<Player>(playersPickListSource, playersPickListTarget));	
+		this.setPlayersPickList(new DualListModel<DynamoPlayer>(playersPickListSource, playersPickListTarget));	
 	}
 
-	public String proceedToGameHandicaps() throws IOException
+	public String proceedToGameHandicaps()
 	{
 		logger.info("User is done with tee times for game, proceed to enter player handicaps specific to this game");
 		
 		saveAndStayTeeTimesPickList();
-		
-		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/gameHandicaps.xhtml");
-		
-		return "";
+
+		return "/auth/admin/gameHandicaps.xhtml";
 	}
 	
 	public String proceedToTeeTimes()
@@ -195,15 +184,15 @@ public class Player implements Serializable
 		{
 			saveAndStayPickList();		
 			onLoadTeeTimePickList();		
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/teeTimePickList.xhtml");
 		}
 		catch (Exception e)
 		{
 			logger.error("proceedToTeeTimes failed: " + e.getMessage(), e);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"proceed to tee times failed: " + e.getMessage(),null);
-	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+			return "";
 		}
-		return "";
+		return "/auth/admin/teeTimePickList.xhtml";
 	}	
 	
 	public void valueChangeGamePlayerPicklist(AjaxBehaviorEvent event) 
@@ -218,11 +207,9 @@ public class Player implements Serializable
 			
 			if (gameID != null)
 			{
-				selectedGame = golfmain.getGameByGameID(gameID);
-				loadSelectedPlayers(selectedGame);
-				setPlayerPickLists(selectedGame);
-					
-				this.setRoundsForGame(golfmain.getRoundsForGame(selectedGame));
+				game.setSelectedGame(golfmain.getGameByGameID(gameID));
+				loadSelectedPlayers(game.getSelectedGame());
+				setPlayerPickLists(game.getSelectedGame());
 			}
 		}
 		catch (Exception e)
@@ -244,30 +231,24 @@ public class Player implements Serializable
 		
 		if (gameID != null)
 		{
-			Game selectedGame = golfmain.getGameByGameID(gameID);
-			
-			this.setSelectedGame(selectedGame);
-			
-			this.setTeeTimeList(golfmain.getTeeTimesByGame(selectedGame));		
-			
-			this.setRoundsForGame(golfmain.getRoundsForGame(selectedGame));
-			
+			game.setSelectedGame(golfmain.getGameByGameID(gameID));			
+			this.setTeeTimeList(golfmain.getTeeTimesByGame(game.getSelectedGame()));						
 			showTeeTimePicklist();
 		}
 						
 	}
 		
-	private String loadSelectedPlayers(Game game) throws Exception
+	private String loadSelectedPlayers(DynamoGame dynamoGame) throws Exception
 	{
 		logger.info("load of gameSelectPlayers; loading those already selected");
 		
 		this.getSelectedPlayersList().clear();
 		
-		roundsForGame = golfmain.getRoundsForGame(game);
+		List<Round> roundsForGame = game.getRoundsForGame().get(dynamoGame.getGameID());
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
 			Round round = roundsForGame.get(i);
-			Player player = golfmain.getPlayerByPlayerID(round.getPlayerID());
+			DynamoPlayer player = golfmain.getPlayerByPlayerID(round.getPlayerID());
 			this.getSelectedPlayersList().add(player);
 		}
 				
@@ -309,7 +290,7 @@ public class Player implements Serializable
 				logger.info("user clicked Save Player from maintain player dialog, from an add");	
 				
 				//first need to make sure the chosen userid does not already exist in the system.
-				Player existingPlayer = golfmain.getPlayerByUserName(this.getUsername());
+				DynamoPlayer existingPlayer = golfmain.getPlayerByUserName(this.getUsername());
 				
 				if (existingPlayer == null)
 				{
@@ -335,7 +316,7 @@ public class Player implements Serializable
 			else if (operation.equalsIgnoreCase("Update"))
 			{
 				logger.info("user clicked Save Player from maintain player dialog; from an update");			
-				golfmain.updatePlayer(this);
+				golfmain.updatePlayer(Utils.convertPlayerToDynamoPlayer(this));
 				
 				if (!this.getOldUsername().equalsIgnoreCase(this.getUsername()))
 				{
@@ -376,25 +357,25 @@ public class Player implements Serializable
 	{
 		String teePreference = this.getTeePreference();
 		
-		List<CourseTee> courseTees = golfmain.getCourseTeesList(); 			
-		List<Course> courses = golfmain.getCourseSelections();
+		List<DynamoCourseTee> courseTees = golfmain.getCourseTeesList();
+		List<Course> courses = golfmain.getCoursesList();
 		
 		for (int j = 0; j < courses.size(); j++) 
 		{
 			Course course = courses.get(j);
-			PlayerTeePreference ptp = new PlayerTeePreference(golfmain);
-			ptp.setPlayerID(newPlayerID);
-			ptp.setCourseID(course.getCourseID());
-			ptp.setPlayerFullName(this.getFirstName() + " " +this.getLastName());
+			PlayerTeePreference playerTeePreference = new PlayerTeePreference();
+			playerTeePreference.setPlayerID(newPlayerID);
+			playerTeePreference.setCourseID(course.getCourseID());
+			playerTeePreference.setPlayerFullName(this.getFirstName() + " " +this.getLastName());
 			for (int k = 0; k < courseTees.size(); k++) 
 			{
-				CourseTee courseTee = courseTees.get(k);
+				DynamoCourseTee courseTee = courseTees.get(k);
 				
 				if (courseTee.getCourseID().equalsIgnoreCase(course.getCourseID())
 				&&  courseTee.getTeeColor().equalsIgnoreCase(teePreference))
 				{
-					ptp.setCourseTeeID(courseTee.getCourseTeeID());
-					golfmain.addPlayerTeePreference(ptp);	
+					playerTeePreference.setCourseTeeID(courseTee.getCourseTeeID());
+					golfmain.addPlayerTeePreference(playerTeePreference);
 					break;
 				}
 			}
@@ -402,61 +383,54 @@ public class Player implements Serializable
 		
 	}
 
-	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap, Game selectedGame) throws Exception
+	private void saveRounds(Map<String, Date> roundSignupDateTimesMap, Map<String, String> roundTeeSelectionsMap, DynamoGame dynamoGame) throws Exception
 	{
-		if (selectedGame != null)
+		if (dynamoGame != null)
 		{
 			try
 			{
-				int totalPlayersForGame = selectedGame.getTotalPlayers();
+				int totalPlayersForGame = dynamoGame.getTotalPlayers();
 				int totalRoundsForGame = 0;
 				
 				for (int i = 0; i < this.getPlayersPickList().getTarget().size(); i++) 
 				{
-					Player tempPlayer = (Player) this.getPlayersPickList().getTarget().get(i);
+					DynamoPlayer tempPlayer = (DynamoPlayer) this.getPlayersPickList().getTarget().get(i);
 					
-					Round newRound = new Round(golfmain, selectedGame);
 					totalRoundsForGame++;
 					
-					newRound.setGameID(selectedGame.getGameID());
-					newRound.setPlayerID(tempPlayer.getPlayerID());
-					newRound.setPlayer(tempPlayer);
-					newRound.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());
-					newRound.setTeamNumber(tempPlayer.getTeamNumber());
-					if (tempPlayer.getTeeTime() != null)
-					{
-						newRound.setTeeTimeID(tempPlayer.getTeeTime().getTeeTimeID());
-						newRound.setTeeTime(tempPlayer.getTeeTime());
-					}
-					newRound.setRoundHandicap(tempPlayer.getHandicap());
-					
-					newRound.setSignupDateTime(null); //let upsert call determine whether to use existing value or new date time stamp there
+					Round round = new Round();
+					round.setGameID(dynamoGame.getGameID());
+					round.setPlayerID(tempPlayer.getPlayerID());
+					round.setPlayer(tempPlayer);
+					round.setPlayerName(tempPlayer.getFirstName() + " " + tempPlayer.getLastName());					
+					round.setRoundHandicap(tempPlayer.getHandicap());					
+					round.setSignupDateTime(null); //let upsert call determine whether to use existing value or new date time stamp there
 					
 					if (roundSignupDateTimesMap != null)
 					{
-						Date tempDate = roundSignupDateTimesMap.get(newRound.getPlayerID());
+						Date tempDate = roundSignupDateTimesMap.get(round.getPlayerID());
 						
 						if (tempDate != null)
 						{
-							newRound.setSignupDateTime(tempDate);
+							round.setSignupDateTime(tempDate);
 						}
 					}
 					
 					if (roundTeeSelectionsMap != null)
 					{
-						String courseTeeID = roundTeeSelectionsMap.get(newRound.getPlayerID());
+						String courseTeeID = roundTeeSelectionsMap.get(round.getPlayerID());
 						
 						if (courseTeeID == null)
 						{
-							newRound.setCourseTeeID(golfmain.getTeePreference(newRound.getPlayerID(), selectedGame.getCourseID()));
+							round.setCourseTeeID(golfmain.getTeePreference(round.getPlayerID(), dynamoGame.getCourseID()));
 						}
 						else
 						{
-							newRound.setCourseTeeID(courseTeeID);
+							round.setCourseTeeID(courseTeeID);
 						}
 					}		
 					
-					golfmain.addRound(newRound);		
+					golfmain.addRound(round);
 				}				
 				
 				if (totalRoundsForGame > totalPlayersForGame)
@@ -482,20 +456,20 @@ public class Player implements Serializable
 		
 		try
 		{			
-			if (selectedGame == null)
+			if (game.getSelectedGame() == null)
 			{
 				throw new Exception("no game selected - selected game null");
 			}
 			else
 			{				
-				int totalPlayersForGame = selectedGame.getTotalPlayers();
+				int totalPlayersForGame = game.getSelectedGame().getTotalPlayers();
 				int totalRoundsForGame = 0;
 			
 				for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 				{
 					TeeTime teeTime = this.getTeeTimeList().get(i);
 					
-					List<Player> tempPlayerList = new ArrayList<Player>();
+					List<DynamoPlayer> tempPlayerList = new ArrayList<>();
 					
 					switch (i) 
 					{
@@ -547,7 +521,7 @@ public class Player implements Serializable
 					{
 						totalRoundsForGame++;
 						String playerID = tempPlayerList.get(j).getPlayerID();
-						String gameID = selectedGame.getGameID();
+						String gameID = game.getSelectedGame().getGameID();
 						Round rd = golfmain.getRoundByGameandPlayer(gameID, playerID);
 						rd.setTeeTimeID(teeTime.getTeeTimeID());
 						rd.setTeeTime(teeTime);
@@ -586,27 +560,27 @@ public class Player implements Serializable
 		//we want to preserve the tee selections here
 		Map<String, String> roundTeeSelectionsMap = null;
 		
-		if (selectedGame != null)
+		if (game.getSelectedGame() != null)
 		{
-			roundSignupDateTimesMap = preserveSignupDateTimes(selectedGame);
-			roundTeeSelectionsMap = preserveTeeSelections(selectedGame);
-			golfmain.deleteRoundsFromDB(selectedGame.getGameID());
+			roundSignupDateTimesMap = preserveSignupDateTimes(game.getSelectedGame());
+			roundTeeSelectionsMap = preserveTeeSelections(game.getSelectedGame());
+			golfmain.deleteRoundsFromDB(game.getSelectedGame().getGameID());
 						
-			saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, selectedGame);
+			saveRounds(roundSignupDateTimesMap, roundTeeSelectionsMap, game.getSelectedGame());
 			
-			loadSelectedPlayers(selectedGame); //this resets roundsforgame.  If they deleted a player then we need this list reset
+			loadSelectedPlayers(game.getSelectedGame()); //this resets roundsforgame.  If they deleted a player then we need this list reset
 
 		}		
 			
 		return "";
 	}
 	
-	private Map<String, Date> preserveSignupDateTimes(Game selectedGame) 
+	private Map<String, Date> preserveSignupDateTimes(DynamoGame dynamoGame) 
 	{
 		Map<String,Date> roundSignupDateTimesMap = new HashMap<>();
 			
 		//get all the rounds for this game first.		
-		List<Round> roundsForGame = golfmain.getRoundsForGame(selectedGame);
+		List<Round> roundsForGame = golfmain.getRoundsForGame(dynamoGame);
 		
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
@@ -617,12 +591,12 @@ public class Player implements Serializable
 		return roundSignupDateTimesMap;
 	}
 	
-	private Map<String, String> preserveTeeSelections(Game selectedGame) 
+	private Map<String, String> preserveTeeSelections(DynamoGame dynamoGame) 
 	{
 		Map<String, String> roundTeeSelectionsMap = new HashMap<>();
 		
 		//get all the rounds for this game first.		
-		List<Round> roundsForGame = golfmain.getRoundsForGame(selectedGame);
+		List<Round> roundsForGame = golfmain.getRoundsForGame(dynamoGame);
 		
 		for (int i = 0; i < roundsForGame.size(); i++) 
 		{
@@ -641,9 +615,9 @@ public class Player implements Serializable
 		}		
 	}	
 	
-	public static class PlayerComparatorByLastName implements Comparator<Player> 
+	public static class PlayerComparatorByLastName implements Comparator<DynamoPlayer> 
 	{
-		public int compare(Player player1, Player player2)
+		public int compare(DynamoPlayer player1, DynamoPlayer player2)
 		{
 			return player1.getLastName().compareTo(player2.getLastName());
 		}		
@@ -660,10 +634,12 @@ public class Player implements Serializable
 		setShowGameTeeTimeList7(false);
 		setShowGameTeeTimeList8(false);
 		
-		Map<String,Player> sourcePlayerMap = new HashMap<>();
-		for (int j = 0; j < this.getRoundsForGame().size(); j++) 
+		Map<String,DynamoPlayer> sourcePlayerMap = new HashMap<>();
+		List<Round> roundsForGameList = game.getRoundsForGame().get(game.getSelectedGame().getGameID());
+		
+		for (int j = 0; j < roundsForGameList.size(); j++) 
 		{
-			Round rd = this.getRoundsForGame().get(j);
+			Round rd = roundsForGameList.get(j);
 			sourcePlayerMap.put(rd.getPlayer().getPlayerID(), rd.getPlayer());			
 		}
 		
@@ -671,12 +647,12 @@ public class Player implements Serializable
 		{
 			TeeTime teeTime = this.getTeeTimeList().get(i);
 			
-			List<Player> sourcePlayerList = new ArrayList<Player>();
-			List<Player> targetPlayerList = new ArrayList<Player>();
+			List<DynamoPlayer> sourcePlayerList = new ArrayList<>();
+			List<DynamoPlayer> targetPlayerList = new ArrayList<>();
 			
-			for (int j = 0; j < this.getRoundsForGame().size(); j++) 
+			for (int j = 0; j < roundsForGameList.size(); j++) 
 			{
-				Round rd = this.getRoundsForGame().get(j);
+				Round rd = roundsForGameList.get(j);
 				
 				if (rd.getTeeTimeID() != null && rd.getTeeTimeID().equalsIgnoreCase(teeTime.getTeeTimeID()))
 				{
@@ -696,54 +672,54 @@ public class Player implements Serializable
 			{
 				case 0:
 					
-					this.setGameTeeTimeList1(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList1(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption1(teeTime.getTeeTimeString());
 					break;
 					
 				case 1:
 					
-					this.setGameTeeTimeList2(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList2(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption2(teeTime.getTeeTimeString());
 					break;	
 					
 				case 2:
 					
-					this.setGameTeeTimeList3(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList3(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption3(teeTime.getTeeTimeString());
 					setShowGameTeeTimeList3(true);
 					break;	
 					
 				case 3:
 					
-					this.setGameTeeTimeList4(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList4(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption4(teeTime.getTeeTimeString());
 					setShowGameTeeTimeList4(true);
 					break;	
 					
 				case 4:
 	
-					this.setGameTeeTimeList5(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList5(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption5(teeTime.getTeeTimeString());
 					setShowGameTeeTimeList5(true);
 					break;
 					
 				case 5:
 					
-					this.setGameTeeTimeList6(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList6(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption6(teeTime.getTeeTimeString());
 					setShowGameTeeTimeList6(true);
 					break;	
 					
 				case 6:
 					
-					this.setGameTeeTimeList7(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList7(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption7(teeTime.getTeeTimeString());
 					setShowGameTeeTimeList7(true);
 					break;	
 					
 				case 7:
 					
-					this.setGameTeeTimeList8(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+					this.setGameTeeTimeList8(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 					setGameTeeTimeListCaption8(teeTime.getTeeTimeString());
 					setShowGameTeeTimeList8(true);
 					break;	
@@ -755,12 +731,12 @@ public class Player implements Serializable
 		} 
 		
 		//Once we're done with this loop, anything in sourcePlayerMap is not assigned a tee time yet.  Put them in any list where there's not 4 players.
-		for (Entry<String, Player> entry : sourcePlayerMap.entrySet()) 
+		for (Entry<String, DynamoPlayer> entry : sourcePlayerMap.entrySet()) 
 		{
-			List<Player> sourcePlayerList = new ArrayList<Player>();
-			List<Player> targetPlayerList = new ArrayList<Player>();
+			List<DynamoPlayer> sourcePlayerList = new ArrayList<>();
+			List<DynamoPlayer> targetPlayerList = new ArrayList<>();
 		
-	        Player ply = entry.getValue();
+			DynamoPlayer ply = entry.getValue();
 	        for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 			{
 	        	switch (i) 
@@ -773,7 +749,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList1(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList1(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}
 						
 						break;
@@ -786,7 +762,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList2(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList2(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}				
 						break;	
 						
@@ -798,7 +774,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList3(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList3(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}
 						break;	
 						
@@ -810,7 +786,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList4(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList4(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}			
 						break;	
 						
@@ -822,7 +798,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList5(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList5(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}
 						break;
 						
@@ -834,7 +810,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList6(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList6(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}
 						break;	
 						
@@ -846,7 +822,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList7(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList7(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}
 						break;	
 						
@@ -858,7 +834,7 @@ public class Player implements Serializable
 						if (targetPlayerList != null && targetPlayerList.size() < 4)
 						{
 							sourcePlayerList.add(ply);
-							this.setGameTeeTimeList8(new DualListModel<Player>(sourcePlayerList, targetPlayerList));
+							this.setGameTeeTimeList8(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
 						}
 						break;	
 		
@@ -926,11 +902,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime1(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -949,11 +925,11 @@ public class Player implements Serializable
 
 	public void onTransferTeeTime2(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -969,11 +945,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime3(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -989,11 +965,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime4(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -1009,11 +985,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime5(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -1029,11 +1005,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime6(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -1049,11 +1025,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime7(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -1069,11 +1045,11 @@ public class Player implements Serializable
 	
 	public void onTransferTeeTime8(TransferEvent event) 
 	{
-		List<Player> playersMoved = new ArrayList<Player>();
+		List<DynamoPlayer> playersMoved = new ArrayList<>();
 		
 		for(Object item : event.getItems()) 
         {
-            playersMoved.add((Player) item);
+            playersMoved.add((DynamoPlayer) item);
         }
         
         //need to remove these from the other lists now
@@ -1087,11 +1063,11 @@ public class Player implements Serializable
     	}          
     }  
 	
-	private void addPlayersToTeeTimePickLists(List<Player> playersMoved, int leaveThisListAlone) 
+	private void addPlayersToTeeTimePickLists(List<DynamoPlayer> playersMoved, int leaveThisListAlone) 
 	{
 		for (int k = 0; k < playersMoved.size(); k++)
 		{
-			Player playerMoved = playersMoved.get(k);
+			DynamoPlayer playerMoved = playersMoved.get(k);
 			
 			for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 			{
@@ -1105,7 +1081,7 @@ public class Player implements Serializable
 					{
 						case 0:
 							
-							List<Player> sourceList0 = this.getGameTeeTimeList1().getSource();
+							List<DynamoPlayer> sourceList0 = this.getGameTeeTimeList1().getSource();
 							
 							if (this.getGameTeeTimeList1().getTarget() != null 
 							&&  this.getGameTeeTimeList1().getTarget().size() < 4)
@@ -1117,7 +1093,7 @@ public class Player implements Serializable
 							
 						case 1:
 							
-							List<Player> sourceList1 = this.getGameTeeTimeList2().getSource();
+							List<DynamoPlayer> sourceList1 = this.getGameTeeTimeList2().getSource();
 							if (this.getGameTeeTimeList2().getTarget() != null 
 							&&  this.getGameTeeTimeList2().getTarget().size() < 4)
 							{
@@ -1128,7 +1104,7 @@ public class Player implements Serializable
 							
 						case 2:
 							
-							List<Player> sourceList2 = this.getGameTeeTimeList3().getSource();
+							List<DynamoPlayer> sourceList2 = this.getGameTeeTimeList3().getSource();
 							if (this.getGameTeeTimeList3().getTarget() != null 
 							&&  this.getGameTeeTimeList3().getTarget().size() < 4)
 							{
@@ -1139,7 +1115,7 @@ public class Player implements Serializable
 							
 						case 3:
 							
-							List<Player> sourceList3 = this.getGameTeeTimeList4().getSource();
+							List<DynamoPlayer> sourceList3 = this.getGameTeeTimeList4().getSource();
 							if (this.getGameTeeTimeList4().getTarget() != null 
 							&&  this.getGameTeeTimeList4().getTarget().size() < 4)
 							{
@@ -1150,7 +1126,7 @@ public class Player implements Serializable
 							
 						case 4:
 			
-							List<Player> sourceList4 = this.getGameTeeTimeList5().getSource();
+							List<DynamoPlayer> sourceList4 = this.getGameTeeTimeList5().getSource();
 							if (this.getGameTeeTimeList5().getTarget() != null 
 							&&  this.getGameTeeTimeList5().getTarget().size() < 4)
 							{
@@ -1161,7 +1137,7 @@ public class Player implements Serializable
 							
 						case 5:
 							
-							List<Player> sourceList5 = this.getGameTeeTimeList6().getSource();
+							List<DynamoPlayer> sourceList5 = this.getGameTeeTimeList6().getSource();
 							if (this.getGameTeeTimeList6().getTarget() != null 
 							&&  this.getGameTeeTimeList6().getTarget().size() < 4)
 							{
@@ -1172,7 +1148,7 @@ public class Player implements Serializable
 							
 						case 6:
 							
-							List<Player> sourceList6 = this.getGameTeeTimeList7().getSource();
+							List<DynamoPlayer> sourceList6 = this.getGameTeeTimeList7().getSource();
 							if (this.getGameTeeTimeList7().getTarget() != null 
 							&&  this.getGameTeeTimeList7().getTarget().size() < 4)
 							{
@@ -1183,7 +1159,7 @@ public class Player implements Serializable
 							
 						case 7:
 							
-							List<Player> sourceList7 = this.getGameTeeTimeList8().getSource();
+							List<DynamoPlayer> sourceList7 = this.getGameTeeTimeList8().getSource();
 							if (this.getGameTeeTimeList8().getTarget() != null 
 							&&  this.getGameTeeTimeList8().getTarget().size() < 4)
 							{
@@ -1203,11 +1179,11 @@ public class Player implements Serializable
 		
 	}
 
-	private void removePlayersFromTeeTimePickLists(List<Player> playersMoved, int leaveThisListAlone) 
+	private void removePlayersFromTeeTimePickLists(List<DynamoPlayer> playersMoved, int leaveThisListAlone) 
 	{
 		for (int k = 0; k < playersMoved.size(); k++)
 		{
-			Player playerMoved = playersMoved.get(k);
+			DynamoPlayer playerMoved = playersMoved.get(k);
 			
 			for (int i = 0; i < this.getTeeTimeList().size(); i++) 
 			{
@@ -1221,20 +1197,20 @@ public class Player implements Serializable
 					{
 						case 0:
 							
-							List<Player> sourceList0 = this.getGameTeeTimeList1().getSource();
+							List<DynamoPlayer> sourceList0 = this.getGameTeeTimeList1().getSource();
 							for (int j = 0; j < sourceList0.size(); j++) 
 							{
-								Player tempPlayer = sourceList0.get(j);
+								DynamoPlayer tempPlayer = sourceList0.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList0.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList0 = this.getGameTeeTimeList1().getTarget();
+							List<DynamoPlayer> targetList0 = this.getGameTeeTimeList1().getTarget();
 							for (int j = 0; j < targetList0.size(); j++) 
 							{
-								Player tempPlayer = targetList0.get(j);
+								DynamoPlayer tempPlayer = targetList0.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList0.remove(j);
@@ -1246,20 +1222,20 @@ public class Player implements Serializable
 							
 						case 1:
 							
-							List<Player> sourceList1 = this.getGameTeeTimeList2().getSource();
+							List<DynamoPlayer> sourceList1 = this.getGameTeeTimeList2().getSource();
 							for (int j = 0; j < sourceList1.size(); j++) 
 							{
-								Player tempPlayer = sourceList1.get(j);
+								DynamoPlayer tempPlayer = sourceList1.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList1.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList1 = this.getGameTeeTimeList2().getTarget();
+							List<DynamoPlayer> targetList1 = this.getGameTeeTimeList2().getTarget();
 							for (int j = 0; j < targetList1.size(); j++) 
 							{
-								Player tempPlayer = targetList1.get(j);
+								DynamoPlayer tempPlayer = targetList1.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList1.remove(j);
@@ -1270,20 +1246,20 @@ public class Player implements Serializable
 							
 						case 2:
 							
-							List<Player> sourceList2 = this.getGameTeeTimeList3().getSource();
+							List<DynamoPlayer> sourceList2 = this.getGameTeeTimeList3().getSource();
 							for (int j = 0; j < sourceList2.size(); j++) 
 							{
-								Player tempPlayer = sourceList2.get(j);
+								DynamoPlayer tempPlayer = sourceList2.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList2.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList2 = this.getGameTeeTimeList3().getTarget();
+							List<DynamoPlayer> targetList2 = this.getGameTeeTimeList3().getTarget();
 							for (int j = 0; j < targetList2.size(); j++) 
 							{
-								Player tempPlayer = targetList2.get(j);
+								DynamoPlayer tempPlayer = targetList2.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList2.remove(j);
@@ -1294,20 +1270,20 @@ public class Player implements Serializable
 							
 						case 3:
 							
-							List<Player> sourceList3 = this.getGameTeeTimeList4().getSource();
+							List<DynamoPlayer> sourceList3 = this.getGameTeeTimeList4().getSource();
 							for (int j = 0; j < sourceList3.size(); j++) 
 							{
-								Player tempPlayer = sourceList3.get(j);
+								DynamoPlayer tempPlayer = sourceList3.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList3.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList3 = this.getGameTeeTimeList4().getTarget();
+							List<DynamoPlayer> targetList3 = this.getGameTeeTimeList4().getTarget();
 							for (int j = 0; j < targetList3.size(); j++) 
 							{
-								Player tempPlayer = targetList3.get(j);
+								DynamoPlayer tempPlayer = targetList3.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList3.remove(j);
@@ -1318,20 +1294,20 @@ public class Player implements Serializable
 							
 						case 4:
 			
-							List<Player> sourceList4 = this.getGameTeeTimeList5().getSource();
+							List<DynamoPlayer> sourceList4 = this.getGameTeeTimeList5().getSource();
 							for (int j = 0; j < sourceList4.size(); j++) 
 							{
-								Player tempPlayer = sourceList4.get(j);
+								DynamoPlayer tempPlayer = sourceList4.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList4.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList4 = this.getGameTeeTimeList5().getTarget();
+							List<DynamoPlayer> targetList4 = this.getGameTeeTimeList5().getTarget();
 							for (int j = 0; j < targetList4.size(); j++) 
 							{
-								Player tempPlayer = targetList4.get(j);
+								DynamoPlayer tempPlayer = targetList4.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList4.remove(j);
@@ -1342,20 +1318,20 @@ public class Player implements Serializable
 							
 						case 5:
 							
-							List<Player> sourceList5 = this.getGameTeeTimeList6().getSource();
+							List<DynamoPlayer> sourceList5 = this.getGameTeeTimeList6().getSource();
 							for (int j = 0; j < sourceList5.size(); j++) 
 							{
-								Player tempPlayer = sourceList5.get(j);
+								DynamoPlayer tempPlayer = sourceList5.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList5.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList5 = this.getGameTeeTimeList6().getTarget();
+							List<DynamoPlayer> targetList5 = this.getGameTeeTimeList6().getTarget();
 							for (int j = 0; j < targetList5.size(); j++) 
 							{
-								Player tempPlayer = targetList5.get(j);
+								DynamoPlayer tempPlayer = targetList5.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList5.remove(j);
@@ -1366,20 +1342,20 @@ public class Player implements Serializable
 							
 						case 6:
 							
-							List<Player> sourceList6 = this.getGameTeeTimeList7().getSource();
+							List<DynamoPlayer> sourceList6 = this.getGameTeeTimeList7().getSource();
 							for (int j = 0; j < sourceList6.size(); j++) 
 							{
-								Player tempPlayer = sourceList6.get(j);
+								DynamoPlayer tempPlayer = sourceList6.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList6.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList6 = this.getGameTeeTimeList7().getTarget();
+							List<DynamoPlayer> targetList6 = this.getGameTeeTimeList7().getTarget();
 							for (int j = 0; j < targetList6.size(); j++) 
 							{
-								Player tempPlayer = targetList6.get(j);
+								DynamoPlayer tempPlayer = targetList6.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList6.remove(j);
@@ -1390,20 +1366,20 @@ public class Player implements Serializable
 							
 						case 7:
 							
-							List<Player> sourceList7 = this.getGameTeeTimeList8().getSource();
+							List<DynamoPlayer> sourceList7 = this.getGameTeeTimeList8().getSource();
 							for (int j = 0; j < sourceList7.size(); j++) 
 							{
-								Player tempPlayer = sourceList7.get(j);
+								DynamoPlayer tempPlayer = sourceList7.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									sourceList7.remove(j);
 									break;
 								}
 							}
-							List<Player> targetList7 = this.getGameTeeTimeList8().getTarget();
+							List<DynamoPlayer> targetList7 = this.getGameTeeTimeList8().getTarget();
 							for (int j = 0; j < targetList7.size(); j++) 
 							{
-								Player tempPlayer = targetList7.get(j);
+								DynamoPlayer tempPlayer = targetList7.get(j);
 								if (tempPlayer.getPlayerID().equalsIgnoreCase(playerMoved.getPlayerID()))
 								{
 									targetList7.remove(j);
@@ -1455,30 +1431,13 @@ public class Player implements Serializable
         return Objects.equals(playerID, that);
     }
 	
-	public int getTeamNumber() {
-		return teamNumber;
-	}
-	public void setTeamNumber(int teamNumber) {
-		this.teamNumber = teamNumber;
-	}
 	public BigDecimal getHandicap() {
 		return handicap;
 	}
 	public void setHandicap(BigDecimal handicap) {
 		this.handicap = handicap;
 	}
-	public int getGrossScore() {
-		return grossScore;
-	}
-	public void setGrossScore(int grossScore) {
-		this.grossScore = grossScore;
-	}
-	public BigDecimal getNetScore() {
-		return netScore;
-	}
-	public void setNetScore(BigDecimal netScore) {
-		this.netScore = netScore;
-	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -1536,14 +1495,6 @@ public class Player implements Serializable
 
 	public void setDisablePlayersDialogButton(boolean disablePlayersDialogButton) {
 		this.disablePlayersDialogButton = disablePlayersDialogButton;
-	}
-
-	public List<Round> getRoundsForGame() {
-		return roundsForGame;
-	}
-
-	public void setRoundsForGame(List<Round> roundsForGame) {
-		this.roundsForGame = roundsForGame;
 	}
 
 	public int getTotalSelectedPlayers() 
@@ -1629,69 +1580,7 @@ public class Player implements Serializable
 		this.showGameTeeTimeList8 = showGameTeeTimeList8;
 	}
 
-	public DualListModel<Player> getGameTeeTimeList1() {
-		return gameTeeTimeList1;
-	}
-
-	public void setGameTeeTimeList1(DualListModel<Player> gameTeeTimeList1) {
-		this.gameTeeTimeList1 = gameTeeTimeList1;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList2() {
-		return gameTeeTimeList2;
-	}
-
-	public void setGameTeeTimeList2(DualListModel<Player> gameTeeTimeList2) {
-		this.gameTeeTimeList2 = gameTeeTimeList2;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList3() {
-		return gameTeeTimeList3;
-	}
-
-	public void setGameTeeTimeList3(DualListModel<Player> gameTeeTimeList3) {
-		this.gameTeeTimeList3 = gameTeeTimeList3;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList4() {
-		return gameTeeTimeList4;
-	}
-
-	public void setGameTeeTimeList4(DualListModel<Player> gameTeeTimeList4) {
-		this.gameTeeTimeList4 = gameTeeTimeList4;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList5() {
-		return gameTeeTimeList5;
-	}
-
-	public void setGameTeeTimeList5(DualListModel<Player> gameTeeTimeList5) {
-		this.gameTeeTimeList5 = gameTeeTimeList5;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList6() {
-		return gameTeeTimeList6;
-	}
-
-	public void setGameTeeTimeList6(DualListModel<Player> gameTeeTimeList6) {
-		this.gameTeeTimeList6 = gameTeeTimeList6;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList7() {
-		return gameTeeTimeList7;
-	}
-
-	public void setGameTeeTimeList7(DualListModel<Player> gameTeeTimeList7) {
-		this.gameTeeTimeList7 = gameTeeTimeList7;
-	}
-
-	public DualListModel<Player> getGameTeeTimeList8() {
-		return gameTeeTimeList8;
-	}
-
-	public void setGameTeeTimeList8(DualListModel<Player> gameTeeTimeList8) {
-		this.gameTeeTimeList8 = gameTeeTimeList8;
-	}
+	
 
 	public String getGameTeeTimeListCaption1() {
 		return gameTeeTimeListCaption1;
@@ -1832,35 +1721,99 @@ public class Player implements Serializable
 		this.oldPlayerID = oldPlayerID;
 	}
 
-	public Game getSelectedGame() {
-		return selectedGame;
+	public DualListModel<DynamoPlayer> getGameTeeTimeList1() {
+		return gameTeeTimeList1;
 	}
 
-	public void setSelectedGame(Game selectedGame) {
-		this.selectedGame = selectedGame;
+	public void setGameTeeTimeList1(DualListModel<DynamoPlayer> gameTeeTimeList1) {
+		this.gameTeeTimeList1 = gameTeeTimeList1;
 	}
 
-	public List<Player> getSelectedPlayersList() {
+	public DualListModel<DynamoPlayer> getGameTeeTimeList2() {
+		return gameTeeTimeList2;
+	}
+
+	public void setGameTeeTimeList2(DualListModel<DynamoPlayer> gameTeeTimeList2) {
+		this.gameTeeTimeList2 = gameTeeTimeList2;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList3() {
+		return gameTeeTimeList3;
+	}
+
+	public void setGameTeeTimeList3(DualListModel<DynamoPlayer> gameTeeTimeList3) {
+		this.gameTeeTimeList3 = gameTeeTimeList3;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList4() {
+		return gameTeeTimeList4;
+	}
+
+	public void setGameTeeTimeList4(DualListModel<DynamoPlayer> gameTeeTimeList4) {
+		this.gameTeeTimeList4 = gameTeeTimeList4;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList5() {
+		return gameTeeTimeList5;
+	}
+
+	public void setGameTeeTimeList5(DualListModel<DynamoPlayer> gameTeeTimeList5) {
+		this.gameTeeTimeList5 = gameTeeTimeList5;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList6() {
+		return gameTeeTimeList6;
+	}
+
+	public void setGameTeeTimeList6(DualListModel<DynamoPlayer> gameTeeTimeList6) {
+		this.gameTeeTimeList6 = gameTeeTimeList6;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList7() {
+		return gameTeeTimeList7;
+	}
+
+	public void setGameTeeTimeList7(DualListModel<DynamoPlayer> gameTeeTimeList7) {
+		this.gameTeeTimeList7 = gameTeeTimeList7;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList8() {
+		return gameTeeTimeList8;
+	}
+
+	public void setGameTeeTimeList8(DualListModel<DynamoPlayer> gameTeeTimeList8) {
+		this.gameTeeTimeList8 = gameTeeTimeList8;
+	}
+
+	public List<DynamoPlayer> getSelectedPlayersList() {
 		return selectedPlayersList;
 	}
 
-	public void setSelectedPlayersList(List<Player> selectedPlayersList) {
+	public void setSelectedPlayersList(List<DynamoPlayer> selectedPlayersList) {
 		this.selectedPlayersList = selectedPlayersList;
 	}
 
-	public DualListModel<Player> getPlayersPickList() {
+	public DualListModel<DynamoPlayer> getPlayersPickList() {
 		return playersPickList;
 	}
 
-	public void setPlayersPickList(DualListModel<Player> playersPickList) {
+	public void setPlayersPickList(DualListModel<DynamoPlayer> playersPickList) {
 		this.playersPickList = playersPickList;
 	}
 
-	public List<Player> getPlayersPickListTarget() {
+	public List<DynamoPlayer> getPlayersPickListSource() {
+		return playersPickListSource;
+	}
+
+	public void setPlayersPickListSource(List<DynamoPlayer> playersPickListSource) {
+		this.playersPickListSource = playersPickListSource;
+	}
+
+	public List<DynamoPlayer> getPlayersPickListTarget() {
 		return playersPickListTarget;
 	}
 
-	public void setPlayersPickListTarget(List<Player> playersPickListTarget) {
+	public void setPlayersPickListTarget(List<DynamoPlayer> playersPickListTarget) {
 		this.playersPickListTarget = playersPickListTarget;
 	}
 

@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
-import com.pas.beans.Player;
 import com.pas.beans.PlayerMoney;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoPlayer;
 import com.pas.dynamodb.DynamoPlayerMoney;
 
+import jakarta.inject.Inject;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -46,13 +46,11 @@ public class PlayerMoneyDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayerMoney> playerMoneyTable;
 	private static final String AWS_TABLE_NAME = "playermoney";
 	
-	@Autowired private final GolfMain golfmain;
-	
-	public PlayerMoneyDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
+	@Inject GolfMain golfmain;
+
+	public PlayerMoneyDAO(DynamoClients dynamoClients2)
 	{
-		this.golfmain = golfmain;
-		
-	   try 
+	   try
 	   {
 	       dynamoClients = dynamoClients2;
 	       playerMoneyTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoPlayerMoney.class));
@@ -63,14 +61,14 @@ public class PlayerMoneyDAO implements Serializable
 	   }	   
 	}
 		
-	public List<PlayerMoney> getPlayerMoneyByPlayer(Player player)
+	public List<PlayerMoney> getPlayerMoneyByPlayer(DynamoPlayer dynamoPlayer)
     {
 		List<PlayerMoney> playerMoneyListByPlayer = new ArrayList<>();
 		for (int i = 0; i < playerMoneyList.size(); i++)
 		{
 			PlayerMoney playerMoney = playerMoneyList.get(i);
 			
-			if (playerMoney.getPlayerID().equalsIgnoreCase(player.getPlayerID()))
+			if (playerMoney.getPlayerID().equalsIgnoreCase(dynamoPlayer.getPlayerID()))
 			{
 				playerMoneyListByPlayer.add(playerMoney);
 			}
@@ -79,14 +77,14 @@ public class PlayerMoneyDAO implements Serializable
     	return playerMoneyListByPlayer;
     }
 	
-	public List<PlayerMoney> getPlayerMoneyByGame(Game game)
+	public List<PlayerMoney> getPlayerMoneyByGame(DynamoGame dynamoGame)
     {
 		List<PlayerMoney> playerMoneyListByGame = new ArrayList<>();
 		for (int i = 0; i < playerMoneyList.size(); i++)
 		{
 			PlayerMoney playerMoney = playerMoneyList.get(i);
 			
-			if (playerMoney.getGameID().equalsIgnoreCase(game.getGameID()))
+			if (playerMoney.getGameID().equalsIgnoreCase(dynamoGame.getGameID()))
 			{
 				playerMoneyListByGame.add(playerMoney);
 			}
@@ -102,21 +100,17 @@ public class PlayerMoneyDAO implements Serializable
 		//since this full read is only done at app startup, we can't use golfmain's jsf bean to get it... so just redo the playerdao read
 		PlayerDAO playerDAO = new PlayerDAO(dynamoClients);		
 		playerDAO.readPlayersFromDB();
-		Map<String,Player> fullPlayersMapByPlayerID = playerDAO.getFullPlayersMapByPlayerID();
 		
 		while (results.hasNext()) 
         {
 			DynamoPlayerMoney dynamoPlayerMoney = results.next();
-            
-			PlayerMoney playerMoney = new PlayerMoney(golfmain);
+            PlayerMoney playerMoney = new PlayerMoney();
 			playerMoney.setPlayerMoneyID(dynamoPlayerMoney.getPlayerMoneyID());
 			playerMoney.setPlayerID(dynamoPlayerMoney.getPlayerID());
 			playerMoney.setGameID(dynamoPlayerMoney.getGameID());
 			playerMoney.setDescription(dynamoPlayerMoney.getDescription());
 			playerMoney.setAmount(dynamoPlayerMoney.getAmount());
-			
-        	playerMoney.setPlayer(fullPlayersMapByPlayerID.get(dynamoPlayerMoney.getPlayerID()));
-        	        	
+			        	
             this.getPlayerMoneyList().add(playerMoney);			
         }
 		
@@ -133,7 +127,7 @@ public class PlayerMoneyDAO implements Serializable
 		
 		if (golfmain != null)
 		{
-			Player player = golfmain.getPlayerByPlayerID(dpm.getPlayerID());
+			DynamoPlayer player = golfmain.getPlayerByPlayerID(dpm.getPlayerID());
 			playerMoney.setPlayer(player);
 		}
 			

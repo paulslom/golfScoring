@@ -10,7 +10,6 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.pas.beans.GolfMain;
 import com.pas.beans.GolfUser;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.util.Utils;
@@ -33,7 +32,7 @@ public class GolfUsersDAO implements Serializable
 	private static DynamoDbTable<GolfUser> golfUsersTable;
 	private static final String AWS_TABLE_NAME = "golfUsers";
 	
-	public GolfUsersDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
+	public GolfUsersDAO(DynamoClients dynamoClients2)
 	{
 	   try 
 	   {
@@ -97,6 +96,14 @@ public class GolfUsersDAO implements Serializable
     {	    	
 		GolfUser gu = this.getFullUserMap().get(username);			
     	return gu;
+    }	
+	
+	public GolfUser getGolfUserFromDB(String username)
+    {	    	
+		GolfUser inputGolfUser = new GolfUser();
+		inputGolfUser.setUserName(username);
+		GolfUser retrievedGolfUser = golfUsersTable.getItem(inputGolfUser);		
+		return retrievedGolfUser;
     }	
 	
 	private void deleteUser(String username) throws Exception

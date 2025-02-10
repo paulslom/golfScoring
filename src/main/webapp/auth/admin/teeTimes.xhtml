@@ -12,208 +12,123 @@
 	 	
 	   <h:form id="teeTimesForm">                  
 		
-		   <table>
-		   			
-			  <tr>
-	                  
-	               <td class="textLabel">
-	                  <p:outputLabel value="Game Date"/>
-	               </td>
-             
-	               <td class="text">
-					
-				      <p:selectOneMenu id="gameListID" value="#{pc_TeeTime.gameID}" required="true"  hideNoSelectionOption="true">
-				         <p:ajax listener="#{pc_TeeTime.valueChangeGame}" event="change" 
-				         	update="teeTimesForm:label2 teeTimesForm:teeTimesTableID"/>
-				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>
-					  </p:selectOneMenu>
-					
-				   </td>
-				 
-				   <td class="textLabel">
-						<p:outputLabel id="label2" value="#{pc_TeeTime.courseName}"/>
-				   </td>
-				   
-				</tr>
-				
-				<tr>
-				
-				   <td colspan="4">	
-				   		
-				      <p:dataTable id="teeTimesTableID" value="#{pc_TeeTime.teeTimeList}"
-				          var="teeTime" scrollable="true" scrollHeight="250" 
-				          selectionMode="single" selection="#{pc_TeeTime.selectedTeeTime}" rowKey="#{teeTime.teeTimeID}"
-				          style="font-size:11px;">							
-							
-				          <f:facet name="header">
-			   					<h:outputText value="Tee Times"/>
-						  </f:facet>
-						  
-						  <p:ajax event="rowSelect" listener="#{pc_TeeTime.selectRowAjax}" update="teeTimesForm:deleteButtonID teeTimesForm:updateButtonID" ></p:ajax>
-									
-						  <p:column style="width:10%" headerText="Tee Time ID" sortBy="#{teeTime.teeTimeID}">												
-							  <h:outputText value="#{teeTime.teeTimeID}"/>														
-						  </p:column>
-						  
-						  <p:column style="width:10%" headerText="Game ID" sortBy="#{teeTime.gameID}">												
-							  <h:outputText value="#{teeTime.gameID}"/>														
-						  </p:column>
-						  
-						  <p:column style="width:20%" headerText="Date" sortBy="#{teeTime.gameDate}">												
-							  <h:outputText value="#{teeTime.gameDate}">
-							  	<f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>	
-							  </h:outputText>													
-						  </p:column>
-						  
-						  <p:column style="width:20%" headerText="Course" sortBy="#{teeTime.courseName}">										
-							  <h:outputText value="#{teeTime.courseName}"/>														
-						  </p:column>
-						  
-						  <p:column style="width:20%" headerText="Time" sortBy="#{teeTime.teeTimeString}">												
-							  <h:outputText value="#{teeTime.teeTimeString}"/>														
-						  </p:column>
-						  
-						  <p:column style="width:20%" headerText="Play group num" sortBy="#{teeTime.playGroupNumber}">												
-							  <h:outputText value="#{teeTime.playGroupNumber}"/>														
-						  </p:column>
-						  						 
-					  
-					  </p:dataTable>
-			 	
-				      <p:messages id="facesMessages" showDetail="false">
-				      </p:messages>   
-							        
-		          	  <p:commandButton id="addTeeTimeButtonID"
-		                  value="#{bundle.add}"
-		                  action="#{pc_TeeTime.addTeeTime}"
-						  oncomplete="PF('maintainTeeTimeDialog').show();">
-					  </p:commandButton>
-					
-					  <p:commandButton id="updateButtonID"
-		                  value="#{bundle.updateTeeTime}"
-		                  disabled="#{pc_TeeTime.disableDeleteTeeTime}"
-		                  action="#{pc_TeeTime.updateTeeTime}"
-						  oncomplete="PF('maintainTeeTimeDialog').show();">
-					  </p:commandButton>
-					
-					  <p:commandButton id="deleteButtonID" 
-					  	  value="#{bundle.deleteTeeTime}" 
-					  	  disabled="#{pc_TeeTime.disableDeleteTeeTime}"
-					  	  update="teeTimesForm"	
-		                  action="#{pc_TeeTime.deleteSelectedTeeTime}">
-		                  <p:confirm header="Confirmation" message="Really delete this tee time?" icon="pi pi-exclamation-triangle" />
-					  </p:commandButton>
-					  
-					  <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-					        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-					        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-					  </p:confirmDialog>  
-					  
-				    </td>
-				</tr>    	  
-			</table>
-			
-		</h:form> 	
+		  <p:outputPanel id="teeTimeInquiryPanel" style="display:block" rendered="#{pc_GolfMain.teeTimesRenderInquiry}">	
 	
-		<p:dialog id="maintainTeeTimesDialogID" showEffect="fade" hideEffect="explode" header="TeeTime" 
-			          widgetVar="maintainTeeTimeDialog" position="center center" width="420" height="550">				
-			
-			<p:ajax event="close" update="teeTimesForm:teeTimesTableID" />						
-	    
-			<h:form id="teeTimesDialogForm">				
-				
-				<table id="teeTimemaintainTableID">
-
+		     <table>
+		   			
 				  <tr>
-				  		
-		  			 <td colspan="3" class="textLabel">
-						<p:outputLabel value="Update Tee Time" rendered="#{pc_TeeTime.operation=='Update'}"/>
-					 </td>	
-					 
-		             <td colspan="3" class="text">
-		                <p:outputLabel value="Add Tee Time" rendered="#{pc_TeeTime.operation=='Add'}"/>
-		             </td>
-		             
-		          </tr>
-		          
-				  <tr>
-				  		
-		  			 <td class="textLabel">
-						<p:outputLabel value="#{bundle.id}" rendered="#{pc_TeeTime.operation=='Update'}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:outputLabel value="#{pc_TeeTime.teeTimeID}" rendered="#{pc_TeeTime.operation=='Update'}"/>
-		             </td>
-		             
-		          </tr>         
-		          				  
-		          <tr>
-			          <td class="textLabelMiddle">
-		                <p:outputLabel for="gameList2ID" value="Game"/>
-		              </td>
-		             
-		             <td colspan="2" class="text">
+		                  
+		               <td class="textLabel">
+		                  <p:outputLabel value="Game Date"/>
+		               </td>
+	             
+		               <td class="text">
 						
-					    <p:selectOneMenu id="gameList2ID" value="#{pc_TeeTime.gameID}" required="true"  hideNoSelectionOption="true">
-				            <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						    <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
-					    </p:selectOneMenu>
-						
-					 </td>
+						 <h:outputText value="#{pc_Game.selectedGame.gameDateJava}">
+							 <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>	
+						 </h:outputText>	
+					     					
+					   </td>
+					 
+					   <td class="textLabel">
+							<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+					   </td>
+					   
 				  </tr>
-				  
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="playGroupNumID" value="Play Group Number"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:selectOneMenu id="playGroupNumID" value="#{pc_TeeTime.playGroupNumber}" hideNoSelectionOption="true">
-					         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							 <f:selectItems value="#{pc_GolfMain.playGroupSelections}" var="t" itemLabel="#{t.label}" itemValue="#{t.value}"/>					
-						</p:selectOneMenu>
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="actualTeeTimeID" value="Time"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="actualTeeTimeID" size="8" value="#{pc_TeeTime.teeTimeString}" required="true"/>
-		             </td>
-		             
-		          </tr>		          
-	              	
-				  <tr>
-						<td colspan="3" align="center">
-						
-						   <p:commandButton 
-							   value="#{bundle.ok}" 							   
-							   action="#{pc_TeeTime.saveTeeTime}"	
-							   update="teeTimesForm"												   
-							   oncomplete="PF('maintainTeeTimeDialog').hide();">
-						   </p:commandButton> 
-						   
-						   <p:commandButton value="#{bundle.cancel}"
-						       immediate="true" 										      											     
-							   onclick="PF('maintainTeeTimeDialog').hide();">
-						   </p:commandButton>
-						   
-						</td>
-					</tr>
 					
-				</table>
-				
-			</h:form> 			
-				      
-		</p:dialog>
+				  <tr>
+					
+					   <td colspan="4">	
+					   		
+					      <p:dataTable id="teeTimesTableID" value="#{pc_GolfMain.gameSpecificTeeTimesList}"
+					          var="teeTime" scrollable="true" scrollHeight="250" 
+					          selectionMode="single" selection="#{pc_GolfMain.selectedTeeTime}" rowKey="#{teeTime.teeTimeID}"
+					          style="font-size:11px;">							
+								
+					          <f:facet name="header">
+				   					<h:outputText value="Tee Times"/>
+							  </f:facet>
+							  
+							  <p:ajax event="rowSelect" listener="#{pc_GolfMain.selectTeeTimeRowAjax}" update="teeTimesForm:deleteButtonID teeTimesForm:updateButtonID" ></p:ajax>
+										
+							  <p:column style="width:10%" headerText="Tee Time ID" sortBy="#{teeTime.teeTimeID}">												
+								  <h:outputText value="#{teeTime.teeTimeID}"/>														
+							  </p:column>
+							  
+							  <p:column style="width:10%" headerText="Game ID" sortBy="#{teeTime.gameID}">												
+								  <h:outputText value="#{teeTime.gameID}"/>														
+							  </p:column>
+							  
+							  <p:column style="width:20%" headerText="Date" sortBy="#{teeTime.gameDate}">												
+								  <h:outputText value="#{teeTime.gameDate}">
+								  	<f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>	
+								  </h:outputText>													
+							  </p:column>
+							  
+							  <p:column style="width:20%" headerText="Course" sortBy="#{teeTime.courseName}">										
+								  <h:outputText value="#{teeTime.courseName}"/>														
+							  </p:column>
+							  
+							  <p:column style="width:20%" headerText="Time" sortBy="#{teeTime.teeTimeString}">												
+								  <h:outputText value="#{teeTime.teeTimeString}"/>														
+							  </p:column>
+							  
+							  <p:column style="width:20%" headerText="Play group num" sortBy="#{teeTime.playGroupNumber}">												
+								  <h:outputText value="#{teeTime.playGroupNumber}"/>														
+							  </p:column>
+							  						 
+						  
+						  </p:dataTable>
+				 	
+					      <p:messages id="facesMessages" showDetail="false">
+					      </p:messages>   
+								        
+			          	  <p:commandButton id="addTeeTimeButtonID"
+			                  value="#{bundle.add}"
+			                  action="#{pc_Game.addTeeTimeSetup}"
+							  update="teeTimesForm">
+						  </p:commandButton>
+						
+						  <p:commandButton id="updateButtonID"
+			                  value="#{bundle.updateTeeTime}"
+			                  disabled="#{pc_GolfMain.disableDeleteTeeTime}"
+			                  action="#{pc_Game.updateTeeTimeSetup}"
+							  update="teeTimesForm">
+						  </p:commandButton>
+						
+						  <p:commandButton id="deleteButtonID" 
+						  	  value="#{bundle.deleteTeeTime}" 
+						  	  disabled="#{pc_GolfMain.disableDeleteTeeTime}"
+						  	  update="teeTimesForm"	
+			                  action="#{pc_Game.deleteTeeTime}">
+			                  <p:confirm header="Confirmation" message="Really delete this tee time?" icon="pi pi-exclamation-triangle" />
+						  </p:commandButton>
+						  
+						  <p:commandButton id="returnToGameListID" 
+						  	  value="Return To Game List"
+			                  action="#{pc_GolfMain.returnToGameList}">
+						  </p:commandButton>
+						  
+						  <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+						        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						  </p:confirmDialog>  
+						  
+					   </td>
+					   
+				  </tr>
+				      	  
+			 </table>
+			
+		  </p:outputPanel>
+			
+		  <p:outputPanel id="teeTimeUpdatePanel" style="display:block" rendered="#{pc_GolfMain.teeTimesRenderAddUpdateDelete}">
+						
+			  <ui:include src="/auth/admin/teeTimeAddUpdate.xhtml"/>		
+		       
+		  </p:outputPanel>
+		   
+	   </h:form> 	
 	
 	</ui:define>
 	

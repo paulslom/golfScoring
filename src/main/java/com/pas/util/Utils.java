@@ -31,10 +31,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 //import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pas.beans.Course;
-import com.pas.beans.CourseTee;
 import com.pas.beans.Player;
 import com.pas.beans.Round;
 import com.pas.beans.Score;
+import com.pas.dynamodb.DynamoCourseTee;
+import com.pas.dynamodb.DynamoPlayer;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpSession;
@@ -750,15 +751,15 @@ public class Utils
 	}
 	*/
 	
-	public static ArrayList<String> setEmailFullRecipientList(List<Player> fullPlayerList) 
+	public static ArrayList<String> setEmailFullRecipientList(List<DynamoPlayer> list) 
 	{
 		ArrayList<String> emailRecipients = new ArrayList<String>();
 		
 		String mailTo = genericProps.getString("mailTo");
 		
-		for (int i = 0; i < fullPlayerList.size(); i++) 
+		for (int i = 0; i < list.size(); i++) 
 		{
-			Player player = fullPlayerList.get(i);
+			DynamoPlayer player = list.get(i);
 			String emailAddress = player.getEmailAddress();
 			
 			if (emailAddress == null 
@@ -789,7 +790,7 @@ public class Utils
 	    return formatter.format(date);
 	}
 	
-	public static BigDecimal getCourseHandicap(CourseTee courseTee, BigDecimal handicapIndex) throws Exception
+	public static BigDecimal getCourseHandicap(DynamoCourseTee courseTee, BigDecimal handicapIndex) throws Exception
 	{
 		//From here: http://www.scga.org/pdfs/Course%20Handicap%20Calculation.pdf
 		//Course Handicap = Handicap Index × (Slope Rating ÷ 113) + (Course Rating – Par)
@@ -897,6 +898,36 @@ public class Utils
 		
 		return signupString.toString();
 	}
-	
+
+	public static DynamoPlayer convertPlayerToDynamoPlayer(Player player) 
+	{
+		DynamoPlayer dynamoPlayer = new DynamoPlayer();
+		
+		dynamoPlayer.setPlayerID(player.getPlayerID());
+		dynamoPlayer.setActive(player.isActive());
+		dynamoPlayer.setEmailAddress(player.getEmailAddress());
+		dynamoPlayer.setFirstName(player.getFirstName());
+		dynamoPlayer.setLastName(player.getLastName());
+		dynamoPlayer.setHandicap(player.getHandicap());
+		dynamoPlayer.setUsername(player.getUsername());
+		
+		return dynamoPlayer;
+	}
+
+	public static boolean isWinterMonth() 
+	{
+		boolean isWinterMonth = false;
+		
+		Calendar calendarToday = Calendar.getInstance();
+		
+		int monthNumber  = calendarToday.get(Calendar.MONTH);
+		monthNumber++; //to account for 0 being January
+		if (monthNumber == 1 || monthNumber == 2 || monthNumber == 3 || monthNumber == 11 || monthNumber == 12)
+		{
+			isWinterMonth = true;
+		}
+		
+		return isWinterMonth;
+	}
 		
 }

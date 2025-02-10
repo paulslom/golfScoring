@@ -59,7 +59,7 @@
 			  </p:column>
 			  
 			  <p:column style="width:50%" headerText="Tee" styleClass="centeredColumnContent">												
-				  <p:selectOneRadio id="teeColorID" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" value="#{game.courseTeeID}">
+				  <p:selectOneRadio id="teeColorID" rendered="#{game.renderSignUp and !game.gameClosedForSignups}" value="#{game.selectedCourseTeeID}">
                        <f:selectItems value="#{game.teeSelections}"/>
 	              </p:selectOneRadio>
 	              <h:outputText rendered="#{!game.renderSignUp}" value="see below for your tee color"/>														

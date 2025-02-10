@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.GolfMain;
-import com.pas.beans.Group;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGroup;
 import com.pas.dynamodb.DynamoPlayerTeePreference;
 
+import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
@@ -39,8 +39,8 @@ public class PlayerTeePreferenceDAO implements Serializable
 	private static DynamoDbTable<DynamoPlayerTeePreference> playerTeePreferencesTable;
 	private static final String AWS_TABLE_NAME = "playerteepreferences";
 
-	@Autowired private final GolfMain golfmain;
-	
+	@Inject GolfMain golfmain;
+
 	public PlayerTeePreferenceDAO(DynamoClients dynamoClients2, GolfMain golfmain) 
 	{
 		this.golfmain = golfmain;
@@ -56,7 +56,7 @@ public class PlayerTeePreferenceDAO implements Serializable
 	   }	   
 	}
 
-	public List<PlayerTeePreference> readPlayerTeePreferencesFromDB(Group grp)
+	public List<PlayerTeePreference> readPlayerTeePreferencesFromDB(DynamoGroup grp)
     {
 		Iterator<DynamoPlayerTeePreference> results = playerTeePreferencesTable.scan().items().iterator();
 	  	
@@ -64,8 +64,7 @@ public class PlayerTeePreferenceDAO implements Serializable
         {
 			DynamoPlayerTeePreference dynamoPlayerTeePreference = results.next();
           	
-			PlayerTeePreference playerTeePreference = new PlayerTeePreference(golfmain);
-			
+			PlayerTeePreference playerTeePreference = new PlayerTeePreference();
 			playerTeePreference.setPlayerTeePreferenceID(dynamoPlayerTeePreference.getPlayerTeePreferenceID());
 			playerTeePreference.setPlayerID(dynamoPlayerTeePreference.getPlayerID());
 			playerTeePreference.setPlayerUserName(dynamoPlayerTeePreference.getPlayerUserName());
@@ -87,8 +86,9 @@ public class PlayerTeePreferenceDAO implements Serializable
 	
 	public PlayerTeePreference getPlayerTeePreference(String playerID, String courseID)
     {
-		PlayerTeePreference playerTeePreference = new PlayerTeePreference(golfmain);
-		for (int i = 0; i < this.getPlayerTeePreferencesList().size(); i++) 
+		PlayerTeePreference playerTeePreference = null;
+		
+		for (int i = 0; i < this.getPlayerTeePreferencesList().size(); i++)
 		{
 			playerTeePreference = this.getPlayerTeePreferencesList().get(i);
 			

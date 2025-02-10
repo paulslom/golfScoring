@@ -6,20 +6,16 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.inject.Named;
+import jakarta.inject.Inject;
 
-@Named("pc_Group")
-@SessionScoped
-public class Group implements Serializable 
+public class Group implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -28,15 +24,9 @@ public class Group implements Serializable
 	private String groupID;
 	private Integer oldGroupID;
 	private String groupName;
-	private Group selectedGroup;
-	
-	@Autowired private final GolfMain golfmain;
-	
-	public Group(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-	}
-	
+
+	@Inject GolfMain golfmain;
+
 	public void valueChangeGroup(AjaxBehaviorEvent event) 
 	{
 		logger.info("user selected a golf Group from main page");
@@ -51,7 +41,7 @@ public class Group implements Serializable
 			{
 				logger.info("loading up golf courses");	 
 				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
-				golfmain.loadCourseSelections(dynamoClients);				
+				golfmain.loadCourses(dynamoClients);				
 				golfmain.setDisableProceedToSelectGame(false);			
 			}
 		} 
@@ -80,14 +70,7 @@ public class Group implements Serializable
         final String that = (String) o;
         return Objects.equals(groupID, that);
     }
-	
-	public Group getSelectedGroup() {
-		return selectedGroup;
-	}
-	public void setSelectedGroup(Group selectedGroup) {
-		this.selectedGroup = selectedGroup;
-	}
-	
+
 	public String getGroupName() {
 		return groupName;
 	}

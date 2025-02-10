@@ -33,7 +33,7 @@
 		    </td>	
 	 
             <td class="text">
-              <p:inputText id="firstNameID" size="30" value="#{pc_Registration.firstName}" required="true"/>
+              <p:inputText id="firstNameID" size="30" value="#{pc_GolfMain.firstName}" required="true"/>
             </td>
            
          </tr>
@@ -45,7 +45,7 @@
 	        </td>	
 	 
             <td class="text">
-               <p:inputText id="lastNameID" size="30" value="#{pc_Registration.lastName}" required="true"/>
+               <p:inputText id="lastNameID" size="30" value="#{pc_GolfMain.lastName}" required="true"/>
             </td>
            
          </tr>
@@ -57,7 +57,7 @@
 	         </td>	
 	 
             <td class="text">
-              <p:inputText id="handicapID" size="8" value="#{pc_Registration.handicap}" required="true"/>
+              <p:inputText id="handicapID" size="8" value="#{pc_GolfMain.handicap}" required="true"/>
             </td>
            
          </tr>
@@ -69,7 +69,7 @@
 	         </td>	
 	 
              <td class="text">
-                <p:inputText id="usernameID" size="50" value="#{pc_Registration.username}" required="true"/>
+                <p:inputText id="usernameID" size="50" value="#{pc_GolfMain.username}" required="true"/>
              </td>
            
          </tr>
@@ -81,7 +81,7 @@
 	         </td>	
 	 
              <td class="text">
-                <p:inputText id="emailID" size="50" value="#{pc_Registration.emailAddress}" required="true"/>
+                <p:inputText id="emailID" size="50" value="#{pc_GolfMain.emailAddress}" required="true"/>
              </td>
            
          </tr>
@@ -104,7 +104,7 @@
 		
 		       <p:commandButton 
 			      value="#{bundle.ok}" 
-			      action="#{pc_Registration.emailAdminNewPlayer}"
+			      action="#{pc_GolfMain.emailAdminNewPlayer}"
 			      update="facesMessagesID">
 		       </p:commandButton> 			 
 		   
@@ -115,7 +115,7 @@
 		       <p:commandButton 
 			      value="#{bundle.cancel}" 
 			      immediate="true"
-			      action="#{pc_Registration.cancel}">
+			      action="#{pc_GolfMain.cancel}">
 		       </p:commandButton> 			 
 		   
 		    </td>

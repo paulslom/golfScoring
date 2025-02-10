@@ -19,6 +19,7 @@ import com.pas.beans.GolfMain;
 import com.pas.beans.Player;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoPlayer;
+import com.pas.util.Utils;
 
 import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -30,17 +31,18 @@ public class PlayerDAO implements Serializable
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LogManager.getLogger(PlayerDAO.class);
 	
-	private Map<String,Player> fullPlayersMapByPlayerID = new HashMap<>(); 
-	private Map<String,Player> fullPlayersMapByUserName = new HashMap<String, Player>(); 
-	private List<Player> fullPlayerList = new ArrayList<>();
-	private List<Player> activePlayerList = new ArrayList<>();
+	private Map<String,DynamoPlayer> fullPlayersMapByPlayerID = new HashMap<>(); 
+	private Map<String,DynamoPlayer> fullPlayersMapByUserName = new HashMap<String, DynamoPlayer>(); 
+	private List<DynamoPlayer> fullPlayerList = new ArrayList<>();
+	private List<DynamoPlayer> activePlayerList = new ArrayList<>();
 	
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoPlayer> playersTable;
 	private static final String AWS_TABLE_NAME = "players";
 	
 	@Inject GolfMain golfmain;
-	
+	@Inject Player player;
+
 	public PlayerDAO(DynamoClients dynamoClients2) 
 	{
 	   try 
@@ -56,52 +58,41 @@ public class PlayerDAO implements Serializable
 	
 	public String addPlayer(Player player) throws Exception
 	{
-		DynamoPlayer dynamoPlayer = dynamoUpsert(player);		
+		DynamoPlayer dynamoPlayer = dynamoUpsert(Utils.convertPlayerToDynamoPlayer(player));		
 		 
 		player.setPlayerID(dynamoPlayer.getPlayerID());
 		
 		logger.info("LoggedDBOperation: function-add; table:player; rows:1");
 		
-		refreshListsAndMaps("add", player);	
+		refreshListsAndMaps("add", dynamoPlayer);	
 				
 		logger.info("addPlayer complete");		
 		
 		return dynamoPlayer.getPlayerID(); //this is the key that was just added
 	}
 	
-	private DynamoPlayer dynamoUpsert(Player player) throws Exception 
+	private DynamoPlayer dynamoUpsert(DynamoPlayer player2) throws Exception 
 	{
 		DynamoPlayer dynamoPlayer = new DynamoPlayer();
         
-		if (player.getPlayerID() == null)
+		if (player2.getPlayerID() == null)
 		{
 			dynamoPlayer.setPlayerID(UUID.randomUUID().toString());
 		}
-		else
-		{
-			dynamoPlayer.setPlayerID(player.getPlayerID());
-		}
 				
-		dynamoPlayer.setActive(player.isActive());
-		dynamoPlayer.setEmailAddress(player.getEmailAddress());
-		dynamoPlayer.setFirstName(player.getFirstName());
-		dynamoPlayer.setLastName(player.getLastName());
-		dynamoPlayer.setHandicap(player.getHandicap());
-		dynamoPlayer.setUsername(player.getUsername());
-		
 		PutItemEnhancedRequest<DynamoPlayer> putItemEnhancedRequest = PutItemEnhancedRequest.builder(DynamoPlayer.class).item(dynamoPlayer).build();
 		playersTable.putItem(putItemEnhancedRequest);
 			
 		return dynamoPlayer;
 	}
 
-	public void updatePlayer(Player player)  throws Exception
+	public void updatePlayer(DynamoPlayer player2)  throws Exception
 	{
-		dynamoUpsert(player);		
+		DynamoPlayer dynamoPlayer = dynamoUpsert(player2);		
 			
 		logger.info("LoggedDBOperation: function-update; table:player; rows:1");
 		
-		refreshListsAndMaps("update", player);	
+		refreshListsAndMaps("update", dynamoPlayer);	
 		
 		logger.debug("update player table complete");		
 	}
@@ -113,32 +104,30 @@ public class PlayerDAO implements Serializable
 		while (results.hasNext()) 
         {
 			DynamoPlayer dynamoPlayer = results.next();
+          				
+            this.getFullPlayerList().add(dynamoPlayer);
             
-			Player player = convertDynamoPlayerToPlayer(dynamoPlayer);
-						
-            this.getFullPlayerList().add(player);
-            
-            if (player.isActive())
+            if (dynamoPlayer.isActive())
             {
-            	this.getActivePlayerList().add(player);
+            	this.getActivePlayerList().add(dynamoPlayer);
             }
         }
 		
 		logger.info("LoggedDBOperation: function-inquiry; table:player; rows:" + this.getFullPlayerList().size());
 		
-		this.setFullPlayersMapByPlayerID(this.getFullPlayerList().stream().collect(Collectors.toMap(Player::getPlayerID, ply -> ply)));
-		this.setFullPlayersMapByUserName(this.getFullPlayerList().stream().collect(Collectors.toMap(Player::getUsername, ply -> ply)));	
+		this.setFullPlayersMapByPlayerID(this.getFullPlayerList().stream().collect(Collectors.toMap(DynamoPlayer::getPlayerID, ply -> ply)));
+		this.setFullPlayersMapByUserName(this.getFullPlayerList().stream().collect(Collectors.toMap(DynamoPlayer::getUsername, ply -> ply)));	
 		
-		Collections.sort(this.getFullPlayerList(), new Comparator<Player>() 
+		Collections.sort(this.getFullPlayerList(), new Comparator<DynamoPlayer>() 
 		{
-		   public int compare(Player o1, Player o2) 
+		   public int compare(DynamoPlayer o1, DynamoPlayer o2) 
 		   {
 		      return o1.getLastName().compareTo(o2.getLastName());
 		   }
 		});
 	}
 	
-	private void refreshListsAndMaps(String function, Player player)
+	private void refreshListsAndMaps(String function, DynamoPlayer player)
 	{
 		if (function.equalsIgnoreCase("delete"))
 		{
@@ -165,75 +154,56 @@ public class PlayerDAO implements Serializable
 		}
 		
 		this.getFullPlayerList().clear();
-		Collection<Player> values = this.getFullPlayersMapByUserName().values();
+		Collection<DynamoPlayer> values = this.getFullPlayersMapByUserName().values();
 		this.setFullPlayerList(new ArrayList<>(values));
 		
-		Collections.sort(this.getFullPlayerList(), new Comparator<Player>() 
+		Collections.sort(this.getFullPlayerList(), new Comparator<DynamoPlayer>() 
 		{
-		   public int compare(Player o1, Player o2) 
+		   public int compare(DynamoPlayer o1, DynamoPlayer o2) 
 		   {
 		      return o1.getLastName().compareTo(o2.getLastName());
 		   }
 		});
 		
-		Collections.sort(this.getActivePlayerList(), new Comparator<Player>() 
+		Collections.sort(this.getActivePlayerList(), new Comparator<DynamoPlayer>() 
 		{
-		   public int compare(Player o1, Player o2) 
+		   public int compare(DynamoPlayer o1, DynamoPlayer o2) 
 		   {
 		      return o1.getLastName().compareTo(o2.getLastName());
 		   }
 		});
 		
 	}
-	
-	public List<Player> getFullPlayerList() 
-	{
-		return fullPlayerList;
-	}
 
-	public void setFullPlayerList(List<Player> fullPlayerList) 
-	{
-		this.fullPlayerList = fullPlayerList;
-	}
-
-	public Map<String, Player> getFullPlayersMapByUserName() 
-	{
-		return fullPlayersMapByUserName;
-	}
-
-	public void setFullPlayersMapByUserName(Map<String, Player> fullPlayersMapByUserName) 
-	{
-		this.fullPlayersMapByUserName = fullPlayersMapByUserName;
-	}
-
-	public Map<String, Player> getFullPlayersMapByPlayerID() {
+	public Map<String, DynamoPlayer> getFullPlayersMapByPlayerID() {
 		return fullPlayersMapByPlayerID;
 	}
 
-	public void setFullPlayersMapByPlayerID(Map<String, Player> fullPlayersMapByPlayerID) {
+	public void setFullPlayersMapByPlayerID(Map<String, DynamoPlayer> fullPlayersMapByPlayerID) {
 		this.fullPlayersMapByPlayerID = fullPlayersMapByPlayerID;
 	}
 
-	public Player convertDynamoPlayerToPlayer(DynamoPlayer dynamoPlayer) 
-	{
-		Player player = new Player(golfmain);
-		
-		player.setPlayerID(dynamoPlayer.getPlayerID());
-		player.setActive(dynamoPlayer.isActive());
-		player.setEmailAddress(dynamoPlayer.getEmailAddress());
-		player.setFirstName(dynamoPlayer.getFirstName());
-		player.setLastName(dynamoPlayer.getLastName());
-		player.setHandicap(dynamoPlayer.getHandicap());
-		player.setUsername(dynamoPlayer.getUsername());
-		
-		return player;
+	public Map<String, DynamoPlayer> getFullPlayersMapByUserName() {
+		return fullPlayersMapByUserName;
 	}
 
-	public List<Player> getActivePlayerList() {
+	public void setFullPlayersMapByUserName(Map<String, DynamoPlayer> fullPlayersMapByUserName) {
+		this.fullPlayersMapByUserName = fullPlayersMapByUserName;
+	}
+
+	public List<DynamoPlayer> getFullPlayerList() {
+		return fullPlayerList;
+	}
+
+	public void setFullPlayerList(List<DynamoPlayer> fullPlayerList) {
+		this.fullPlayerList = fullPlayerList;
+	}
+
+	public List<DynamoPlayer> getActivePlayerList() {
 		return activePlayerList;
 	}
 
-	public void setActivePlayerList(List<Player> activePlayerList) {
+	public void setActivePlayerList(List<DynamoPlayer> activePlayerList) {
 		this.activePlayerList = activePlayerList;
 	}
 	

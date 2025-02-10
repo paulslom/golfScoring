@@ -18,7 +18,7 @@
 			
 		   <h:form id="playerPicklistForm">
 		 
-		   		<h3>Player PickList</h3>
+		   		<h3>Player PickList - Use this to add players to a game when they cannot or will not sign up themselves</h3>
 		   		
 		   		<table>
 		   		
@@ -76,7 +76,7 @@
 				</p:messages> 	
 						
 				<p:pickList value="#{pc_Player.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
-					itemValue="#{player}" converter="playerConverter" showSourceControls="true" showTargetControls="true">
+					itemValue="#{player}" converter="#{pc_PlayerConverter}" showSourceControls="true" showTargetControls="true">
 					
 					<f:facet name="sourceCaption">Available</f:facet>
 			        <f:facet name="targetCaption">Playing</f:facet>

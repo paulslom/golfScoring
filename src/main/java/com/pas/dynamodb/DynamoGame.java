@@ -1,8 +1,17 @@
 package com.pas.dynamodb;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import com.pas.beans.Course;
+import com.pas.util.Utils;
+
+import jakarta.faces.model.SelectItem;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
@@ -28,7 +37,19 @@ public class DynamoGame
 	private BigDecimal gameFee = new BigDecimal(0.00);
 	private String playTheBallMethod; //up everywhere; down everywhere; up in fairway, down in rough	
 	private boolean gameClosedForSignups = false;	
-	private String gameNoteForEmail;	
+	private String gameNoteForEmail;
+
+	private boolean renderSignUp = true;
+	private boolean renderWithdraw = false;
+	private List<SelectItem> teeSelections = new ArrayList<>();
+	private Course course;
+	private String courseName;
+	private Date gameDateJava;
+	private Integer spotsAvailable;
+	private String selectedCourseTeeID;
+	private String gameDateDisplay;
+	private BigDecimal suggestedSkinsPot;
+	private String teeTimesString;
 
 	@DynamoDbPartitionKey //primary key
 	public String getGameID() {
@@ -68,15 +89,18 @@ public class DynamoGame
 		return totalPlayers;
 	}
 
-	public void setTotalPlayers(Integer totalPlayers) {
+	public void setTotalPlayers(Integer totalPlayers) 
+	{
 		this.totalPlayers = totalPlayers;
+		this.setTotalTeams(Utils.setRecommendedTeams(totalPlayers));	
 	}
 
 	public Integer getTotalTeams() {
 		return totalTeams;
 	}
 
-	public void setTotalTeams(Integer totalTeams) {
+	public void setTotalTeams(Integer totalTeams) 
+	{
 		this.totalTeams = totalTeams;
 	}
 
@@ -108,24 +132,45 @@ public class DynamoGame
 		return howManyBalls;
 	}
 
-	public void setHowManyBalls(Integer howManyBalls) {
+	public void setHowManyBalls(Integer howManyBalls)
+	{
 		this.howManyBalls = howManyBalls;
+		
+		if (eachBallWorth != null && howManyBalls != null)
+		{
+			setTeamPot(eachBallWorth.multiply(new BigDecimal(howManyBalls)));
+		}
 	}
 
 	public BigDecimal getPurseAmount() {
 		return purseAmount;
 	}
 	
-	public void setPurseAmount(BigDecimal purseAmount) {
+	public void setPurseAmount(BigDecimal purseAmount) 
+	{		
 		this.purseAmount = purseAmount;
+		
+		if (purseAmount != null && purseAmount.compareTo(new BigDecimal(0.0)) == 1)
+		{
+			BigDecimal suggestedSkins = purseAmount.multiply(new BigDecimal(0.375)); // 37.5% for skins
+			
+			int roundedSkins = Utils.roundToNearestMultipleOfTen(suggestedSkins.intValue());  //Round to nearest 10 dollars
+			this.setSuggestedSkinsPot(new BigDecimal(roundedSkins));
+		}
 	}
 
 	public BigDecimal getEachBallWorth() {
 		return eachBallWorth;
 	}
 	
-	public void setEachBallWorth(BigDecimal eachBallWorth) {
+	public void setEachBallWorth(BigDecimal eachBallWorth) 
+	{
 		this.eachBallWorth = eachBallWorth;
+		
+		if (howManyBalls != null)
+		{
+			setTeamPot(eachBallWorth.multiply(new BigDecimal(howManyBalls)));
+		}
 	}
 
 	public BigDecimal getIndividualGrossPrize() {
@@ -192,5 +237,121 @@ public class DynamoGame
 
 	public void setGameFee(BigDecimal gameFee) {
 		this.gameFee = gameFee;
+	}
+
+	@DynamoDbIgnore
+	public Date getGameDateJava()
+	{
+		return gameDateJava;
+	}
+
+	@DynamoDbIgnore
+	public void setGameDateJava(Date gameDateJava)
+	{
+		this.gameDateJava = gameDateJava;
+	}
+
+	@DynamoDbIgnore
+	public String getCourseName() {
+		return courseName;
+	}
+
+	@DynamoDbIgnore
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	@DynamoDbIgnore
+	public List<SelectItem> getTeeSelections() {
+		return teeSelections;
+	}
+
+	@DynamoDbIgnore
+	public void setTeeSelections(List<SelectItem> teeSelections) {
+		this.teeSelections = teeSelections;
+	}
+
+	@DynamoDbIgnore
+	public Integer getSpotsAvailable() {
+		return spotsAvailable;
+	}
+
+	@DynamoDbIgnore
+	public void setSpotsAvailable(Integer spotsAvailable) {
+		this.spotsAvailable = spotsAvailable;
+	}
+
+	@DynamoDbIgnore
+	public boolean isRenderSignUp() {
+		return renderSignUp;
+	}
+
+	@DynamoDbIgnore
+	public void setRenderSignUp(boolean renderSignUp) {
+		this.renderSignUp = renderSignUp;
+	}
+
+	@DynamoDbIgnore
+	public boolean isRenderWithdraw() {
+		return renderWithdraw;
+	}
+
+	@DynamoDbIgnore
+	public void setRenderWithdraw(boolean renderWithdraw) {
+		this.renderWithdraw = renderWithdraw;
+	}
+
+	@DynamoDbIgnore
+	public String getSelectedCourseTeeID() {
+		return selectedCourseTeeID;
+	}
+
+	@DynamoDbIgnore	
+	public void setSelectedCourseTeeID(String selectedCourseTeeID) {
+		this.selectedCourseTeeID = selectedCourseTeeID;
+	}
+
+	@DynamoDbIgnore
+	public String getGameDateDisplay()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		gameDateDisplay = sdf.format(this.getGameDateJava());
+		return gameDateDisplay;
+	}
+
+	@DynamoDbIgnore
+	public void setGameDateDisplay(String gameDateDisplay) 
+	{
+		this.gameDateDisplay = gameDateDisplay;
+	}
+
+	@DynamoDbIgnore
+	public BigDecimal getSuggestedSkinsPot() {
+		return suggestedSkinsPot;
+	}
+
+	@DynamoDbIgnore
+	public void setSuggestedSkinsPot(BigDecimal suggestedSkinsPot) {
+		this.suggestedSkinsPot = suggestedSkinsPot;
+	}
+	
+	@DynamoDbIgnore
+	public String getTeeTimesString() {
+		return teeTimesString;
+	}
+	
+	@DynamoDbIgnore
+	public void setTeeTimesString(String teeTimesString) {
+		this.teeTimesString = teeTimesString;
+	}
+
+	@DynamoDbIgnore
+	public Course getCourse() {
+		return course;
+	}
+
+	@DynamoDbIgnore
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 }

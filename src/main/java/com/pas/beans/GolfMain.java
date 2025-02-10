@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.event.SelectEvent;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import com.pas.beans.Player.PlayerComparatorByLastName;
 import com.pas.dao.CourseDAO;
@@ -32,18 +32,23 @@ import com.pas.dao.PlayerTeePreferenceDAO;
 import com.pas.dao.RoundDAO;
 import com.pas.dao.TeeTimeDAO;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoCourseTee;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoGroup;
+import com.pas.dynamodb.DynamoPlayer;
 import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 
 @Named("pc_GolfMain")
-@Component
 @SessionScoped
 public class GolfMain implements Serializable
 {
@@ -86,11 +91,26 @@ public class GolfMain implements Serializable
 	private String groupEmailMessage = "";
 	private String groupEmailDisclaimer = "";  
 	private String groupEmailSender;
+
+	private Group selectedGroup;
+	
+	private TeeTime selectedTeeTime;
+	private boolean disableDeleteTeeTime = true;
+	private String teeTimeOperation = "";
+	private boolean teeTimesRenderInquiry = true;
+	private boolean teeTimesRenderAddUpdateDelete = false;
+	private List<TeeTime> gameSpecificTeeTimesList = new ArrayList<>();
+	
+	private Course selectedCourse;
+	private String courseOperation;
+	private boolean courseRenderInputFields = true;
+	private boolean courseRenderInquiry = true;
+	private boolean courseRenderAddUpdateDelete = false;
 	
 	private String loggedInPlayerName;
 	private String loggedInPlayerEmail;
 
-	private Group defaultGroup = null;
+	private DynamoGroup defaultGroup = null;
 	
 	private ArrayList<String> emailRecipients = new ArrayList<String>();
 	
@@ -123,7 +143,8 @@ public class GolfMain implements Serializable
 	private PlayerTeePreferenceDAO playerTeePreferencesDAO;
 	private GroupDAO groupDAO;
 	
-	public GolfMain() 
+	@PostConstruct
+	public void init()
 	{
 		logger.info("Entering GolfMain constructor.  Should only be here ONE time with Spring singleton pattern implemented");	
 		logger.info("GolfMain id is: " + this.getId());
@@ -199,13 +220,13 @@ public class GolfMain implements Serializable
 			if (golfUsersDAO == null || golfUsersDAO.getFullUserMap().isEmpty())
 			{
 				DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
-				golfUsersDAO = new GolfUsersDAO(dynamoClients, this);
+				golfUsersDAO = new GolfUsersDAO(dynamoClients);
 				groupDAO = new GroupDAO(dynamoClients);
 				groupDAO.readGroupsFromDB();
-				Group defaultGroup = this.getGroupsList().get(0);
+				DynamoGroup defaultGroup = this.getGroupsList().get(0);
 				this.setDefaultGroup(defaultGroup);
 				
-				loadCourseSelections(dynamoClients);
+				loadCourses(dynamoClients);
 				loadCourseTees(dynamoClients);
 				loadFullGameList(dynamoClients, defaultGroup);
 				loadTeeTimeList(dynamoClients, defaultGroup);
@@ -221,50 +242,45 @@ public class GolfMain implements Serializable
 		}		
 	}
 
-	//use this from DailyEmailJob so as to not run anything like at app startup
-	public GolfMain(String tempString)
-	{		
-	}
-	
 	private void loadRoundList(DynamoClients dynamoClients) throws Exception
 	{
 		List<String> gameIDList = new ArrayList<>();
 		
 		for (int i = 0; i < gameDAO.getFullGameList().size(); i++) 
 		{
-			Game game = gameDAO.getFullGameList().get(i);
+			DynamoGame game = gameDAO.getFullGameList().get(i);
 			gameIDList.add(game.getGameID());
 		}
-		roundDAO = new RoundDAO(dynamoClients, this, null);
+		roundDAO = new RoundDAO(dynamoClients);
 		roundDAO.readAllRoundsFromDB(gameIDList);
 		logger.info("Rounds read in. List size = " + this.getFullRoundsList().size());	
 		
 		Map<String,Round> tempMap = new HashMap<>();
 		
-		Map<String, Game> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
+		Map<String, DynamoGame> fullGameMap = this.getFullGameList().stream().collect(Collectors.toMap(DynamoGame::getGameID, game -> game));
 		
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
 			Round round = this.getFullRoundsList().get(i);
 				
-			CourseTee ct = getCourseTeesMap().get(round.getCourseTeeID());
+			DynamoCourseTee ct = getCourseTeesMap().get(round.getCourseTeeID());
 			if (ct != null)
 		    {
 				round.setCourseTeeColor(ct.getTeeColor());	    
 		    }	    
 			
-			Game game = fullGameMap.get(round.getGameID());
+			DynamoGame dynamoGame = fullGameMap.get(round.getGameID());
 			
-			if (game == null) //should not happen but safeguard
+			if (dynamoGame == null) //should not happen but safeguard
 			{
 				continue;
 			}
 			
-			Course course = game.getCourse();
+			Course course = courseDAO.getCoursesMap().get(dynamoGame.getCourseID());
 			
-			Player player = this.getFullPlayersMapByPlayerID().get(round.getPlayerID());
+			DynamoPlayer player = this.getFullPlayersMapByPlayerID().get(round.getPlayerID());
 			
-			TeeTime teeTime = this.getTeeTimesMap().get(round.getTeeTimeID());
+			TeeTime teeTime = this.getFullTeeTimesMap().get(round.getTeeTimeID());
 			
 			round.setPlayer(player);
 			
@@ -327,64 +343,164 @@ public class GolfMain implements Serializable
 		
 	}
 
-	public void loadCourseSelections(DynamoClients dynamoClients)  throws Exception
+	public void loadCourses(DynamoClients dynamoClients)  throws Exception
 	{
-		logger.info("entering loadCourseSelections");
+		logger.info("entering loadCourses");
 		courseDAO = new CourseDAO(dynamoClients);
 		courseDAO.readCoursesFromDB(this.getDefaultGroup()); //pick the first group by default - Bryan Park.
-		logger.info("Courses read in. List size = " + this.getCourseSelections().size());		
+		logger.info("Courses read in. List size = " + this.getCoursesList().size());		
     }
 	
 	public void loadCourseTees(DynamoClients dynamoClients)  throws Exception
 	{
 		logger.info("entering loadCourseTees");
 		
-		courseTeeDAO = new CourseTeeDAO(dynamoClients, this);
+		courseTeeDAO = new CourseTeeDAO(dynamoClients);
 		courseTeeDAO.readCourseTeesFromDB(this.getDefaultGroup());					
 		logger.info("Course Tees read in. List size = " + this.getCourseTees().size());		
     }
 	
-	public void loadFullGameList(DynamoClients dynamoClients, Group defaultGroup) throws Exception 
+	public void loadFullGameList(DynamoClients dynamoClients, DynamoGroup defaultGroup) throws Exception
 	{
 		logger.info("entering loadFullGameList");
 		
-		gameDAO = new GameDAO(dynamoClients, this);
-		gameDAO.readGamesFromDB(defaultGroup);			
+		gameDAO = new GameDAO(dynamoClients);
+		gameDAO.readGamesFromDB(defaultGroup, courseDAO.getCoursesMap());			
 		logger.info("Full Game list read in. List size = " + this.getFullGameList().size());	
 		
-		Map<String,Game> tempMap = new HashMap<>();
+		Map<String,DynamoGame> tempMap = new HashMap<>();
 		
 		for (int i = 0; i < this.getFullGameList().size(); i++) 
 		{
-			Game game = this.getFullGameList().get(i);
+			DynamoGame game = this.getFullGameList().get(i);
 			assignCourseToGame(game);
 			tempMap.put(game.getGameID(), game);
 		}
 			
-		Collection<Game> values = tempMap.values();
+		Collection<DynamoGame> values = tempMap.values();
 		gameDAO.setFullGameList(new ArrayList<>(values));
 		
-		Collections.sort(this.getFullGameList(), new Comparator<Game>() 
+		Collections.sort(this.getFullGameList(), new Comparator<DynamoGame>() 
 		{
-		   public int compare(Game o1, Game o2) 
+		   public int compare(DynamoGame o1, DynamoGame o2) 
 		   {
 		      return o1.getGameDate().compareTo(o2.getGameDate());
 		   }
 		});
 	}
 	
-	public void loadTeeTimeList(DynamoClients dynamoClients, Group defaultGroup) throws Exception
+	public String returnToGameList()
+	{		
+		return "/auth/admin/gameList.xhtml";
+	}
+	
+	public String selectCourseAcid()
+	{		
+		try 
+        {
+			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		    String acid = ec.getRequestParameterMap().get("operation");
+		    String id = ec.getRequestParameterMap().get("id");
+		    
+		    logger.info("course for add-change-inquire-delete.  Function is: " + acid);
+		    
+		    if (acid.equalsIgnoreCase("Add"))
+		    {
+		    	this.setCourseOperation("Add");
+		    	
+		    	this.setCourseRenderInputFields(true);
+		    	this.setCourseRenderInquiry(false);
+		    	this.setCourseRenderAddUpdateDelete(true);
+		    	
+		    	this.setSelectedCourse(new Course());		    		
+		    }
+		    else if (acid.equalsIgnoreCase("Update"))
+		    {
+		    	this.setCourseOperation("Add");
+		    	
+		    	this.setCourseRenderInputFields(true);
+		    	this.setCourseRenderInquiry(false);
+		    	this.setCourseRenderAddUpdateDelete(true);
+		    	
+		    	Course course = this.getCourseByCourseID(id);
+		    	this.setSelectedCourse(course);
+		    }
+		    else if (acid.equalsIgnoreCase("Delete"))
+		    {
+		    	this.setCourseOperation("Delete");
+		    	
+		    	this.setCourseRenderInputFields(false);
+		    	this.setCourseRenderInquiry(false);
+		    	this.setCourseRenderAddUpdateDelete(true);
+		    	
+		    	Course course = this.getCourseByCourseID(id);
+		    	this.setSelectedCourse(course);
+		    }
+		    else if (acid.equalsIgnoreCase("View"))
+		    {
+		    	this.setCourseOperation("View");
+		    	
+		    	this.setCourseRenderInputFields(false);
+		    	this.setCourseRenderInquiry(false);
+		    	this.setCourseRenderAddUpdateDelete(true);
+		    	
+		    	Course course = this.getCourseByCourseID(id);
+		    	this.setSelectedCourse(course);
+		    }
+		    					    
+        } 
+        catch (Exception e) 
+        {
+        	logger.error("selectCourseAcid errored: " + e.getMessage(), e);
+			FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
+		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
+        }
+		
+		return "";
+		
+	}	
+	
+	private Course getCourseByCourseID(String id2) 
+	{
+		return courseDAO.getCourseByCourseID(id2);
+	}
+
+	public String selectCourseAjax(SelectEvent<Course> event)
+	{
+		logger.info(getTempUserName() + " clicked on a row in Course list");
+		
+		Course item = event.getObject();
+		this.setSelectedCourse(item);
+				
+		setCourseOperation("Update");
+		
+		return "";
+	}	
+		
+	public String selectTeeTimeRowAjax(SelectEvent<TeeTime> event)
+	{
+		logger.info(getTempUserName() + " User clicked on a row in Tee Time list");
+		
+		TeeTime item = event.getObject();
+		
+		setSelectedTeeTime(item);
+		setDisableDeleteTeeTime(false); //if they've picked one, then they can delete it
+				
+		return "";
+	}	
+	
+	public void loadTeeTimeList(DynamoClients dynamoClients, DynamoGroup defaultGroup) throws Exception
 	{
 		logger.info("entering loadTeeTimeList");
 		teeTimeDAO = new TeeTimeDAO(dynamoClients);
-		teeTimeDAO.readTeeTimesFromDB(defaultGroup);			
-		logger.info("Tee Times read in. List size = " + this.getTeeTimeList().size());			
+		teeTimeDAO.readTeeTimesFromDB(defaultGroup, gameDAO.getFullGamesMap());			
+		logger.info("Tee Times read in. List size = " + this.getFullTeeTimesList().size());			
 	}
 	
 	public void loadPlayerMoneyList(DynamoClients dynamoClients)  throws Exception
 	{
 		logger.info("entering loadPlayerMoneyList");
-		playerMoneyDAO = new PlayerMoneyDAO(dynamoClients, this);
+		playerMoneyDAO = new PlayerMoneyDAO(dynamoClients);
 		playerMoneyDAO.readPlayerMoneyFromDB();	
 		
 		Map<String,PlayerMoney> tempMap = new HashMap<>();
@@ -392,8 +508,8 @@ public class GolfMain implements Serializable
 		for (int i = 0; i < playerMoneyDAO.getPlayerMoneyList().size(); i++) 
 		{
 			PlayerMoney pm = playerMoneyDAO.getPlayerMoneyList().get(i);			
-			Game game = gameDAO.getGameByGameID(pm.getGameID());
-			Player player = getFullPlayersMapByPlayerID().get(pm.getPlayerID());	
+			DynamoGame game = gameDAO.getGameByGameID(pm.getGameID());
+			DynamoPlayer player = getFullPlayersMapByPlayerID().get(pm.getPlayerID());	
 			pm.setGame(game);
 			pm.setPlayer(player);
 			tempMap.put(pm.getPlayerMoneyID(), pm);
@@ -419,7 +535,7 @@ public class GolfMain implements Serializable
 		
 		for (int i = 0; i < this.getFullPlayerList().size(); i++) 
 		{
-			Player tempPlayer = this.getFullPlayerList().get(i);			
+			DynamoPlayer tempPlayer = this.getFullPlayerList().get(i);			
 			
 			//get the role for this player
 			GolfUser gu = golfUsersMap.get(tempPlayer.getUsername());
@@ -450,9 +566,9 @@ public class GolfMain implements Serializable
 		for (int i = 0; i < playerTeePreferencesDAO.getPlayerTeePreferencesList().size(); i++) 
 		{
 			PlayerTeePreference ptp = playerTeePreferencesDAO.getPlayerTeePreferencesList().get(i);
-			CourseTee ct = getCourseTeesMap().get(ptp.getCourseTeeID());
+			DynamoCourseTee ct = getCourseTeesMap().get(ptp.getCourseTeeID());
 	       	Course cs = getCoursesMap().get(ptp.getCourseID());
-	   		Player player = getFullPlayersMapByPlayerID().get(ptp.getPlayerID());
+	   		DynamoPlayer player = getFullPlayersMapByPlayerID().get(ptp.getPlayerID());
 	   		
 	   		if (player == null)
 	   		{
@@ -483,20 +599,20 @@ public class GolfMain implements Serializable
 		logger.info("Player Tee Preferences read in. List size = " + this.getFullPlayerTeePreferencesList().size());		
 	}
 
-	public void assignCourseToGame(Game inGame)
+	public void assignCourseToGame(DynamoGame dynamoGame)
 	{
-		inGame.setCourse(getCoursesMap().get(inGame.getCourseID()));
-		inGame.setCourseName(inGame.getCourse().getCourseName());
+		Course course = courseDAO.getCoursesMap().get(dynamoGame.getCourseID());
+		dynamoGame.setCourseName(course.getCourseName());
 		
 		List<SelectItem> courseTeeSelections = new ArrayList<>();
 		
-		List<CourseTee> sortedCourseTees = new ArrayList<>(getCourseTees());
+		List<DynamoCourseTee> sortedCourseTees = new ArrayList<>(getCourseTees());
 		Collections.sort(sortedCourseTees, new CourseTeeComparator());
 		
 		for (int i = 0; i < sortedCourseTees.size(); i++) 
 		{
-			CourseTee courseTee = sortedCourseTees.get(i);
-			if (courseTee.getCourseID().equalsIgnoreCase(inGame.getCourseID()))
+			DynamoCourseTee courseTee = sortedCourseTees.get(i);
+			if (courseTee.getCourseID().equalsIgnoreCase(dynamoGame.getCourseID()))
 			{
 				SelectItem selItem = new SelectItem();
 				selItem.setLabel(courseTee.getTeeColor() + " (" + courseTee.getTotalYardage() + " yds)");
@@ -505,12 +621,12 @@ public class GolfMain implements Serializable
 			}
 		}
 		
-		inGame.setTeeSelections(courseTeeSelections);
+		dynamoGame.setTeeSelections(courseTeeSelections);
 	}
 	
-	public static class CourseTeeComparator implements Comparator<CourseTee> 
+	public static class CourseTeeComparator implements Comparator<DynamoCourseTee>
 	{
-		public int compare(CourseTee courseTee1, CourseTee courseTee2)
+		public int compare(DynamoCourseTee courseTee1, DynamoCourseTee courseTee2)
 		{
 			return courseTee1.getCourseRating().compareTo(courseTee2.getCourseRating());
 		}		
@@ -524,13 +640,11 @@ public class GolfMain implements Serializable
 		groupEmailSender = getTempUserName();
 	}		
 	
-	public List<TeeTime> getGameSpecificTeeTimes(Game game)
+	public void setGameSpecificTeeTimeList(DynamoGame game)
 	{
-		List<TeeTime> gameTeeTimes = this.getTeeTimeList().stream()
+		List<TeeTime> gameTeeTimes = this.getFullTeeTimesList().stream()
 			.filter(p -> p.getGameID().equalsIgnoreCase(game.getGameID()))
-			.collect(Collectors.mapping(
-				      p -> new TeeTime(p.getTeeTimeID(), p.getGameID(), p.getPlayGroupNumber(), p.getTeeTimeString(), p.getGameDate(), p.getCourseName(), this),
-				      Collectors.toList()));
+			.collect(Collectors.mapping(p -> p, Collectors.toList()));
 		
 		Collections.sort(gameTeeTimes, new Comparator<TeeTime>() 
 		{
@@ -542,11 +656,11 @@ public class GolfMain implements Serializable
 		   }
 		});		
 		
-		return gameTeeTimes;	
+		this.setGameSpecificTeeTimesList(gameTeeTimes);
 	}
 		
 	public void setRecommendations(Integer inputPlayers)
-	{
+	{		
 		switch (inputPlayers) 
 		{
 			case 4:
@@ -560,7 +674,15 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(40);
 				recommendedTeamPot = new BigDecimal(40);
 				recommendedGameFee = new BigDecimal(0.00);
-				recommendedTeeTimesString = "9:30";
+				
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30";
+				}
 				
 				break;	
 		
@@ -574,7 +696,15 @@ public class GolfMain implements Serializable
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(50);
 				recommendedTeamPot = new BigDecimal(50);;
-				recommendedTeeTimesString = "9:30 9:40";
+				
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40";
+				}
 					
 				break;	
 		
@@ -589,7 +719,15 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(60);
 				recommendedTeamPot = new BigDecimal(60);;
 				recommendedGameFee = new BigDecimal(0.00);
-				recommendedTeeTimesString = "9:30 9:40";
+				
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40";
+				}
 				
 				break;	
 			
@@ -604,7 +742,15 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(58);
 				recommendedTeamPot = new BigDecimal(60);;
 				recommendedGameFee = new BigDecimal(0.00);
-				recommendedTeeTimesString = "9:30 9:40";
+				
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40";
+				}
 				
 				break;	
 				
@@ -619,7 +765,15 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(70);
 				recommendedTeamPot = new BigDecimal(80);
 				recommendedGameFee = new BigDecimal(10.00);
-				recommendedTeeTimesString = "9:30 9:40";
+				
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40";
+				}
 				break;
 				
 			case 9:
@@ -632,7 +786,15 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(78);
 				recommendedTeamPot = new BigDecimal(90);
 				recommendedGameFee = new BigDecimal(12.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50";
+				
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50";
+				}
 				break;
 				
 			case 10:
@@ -641,11 +803,18 @@ public class GolfMain implements Serializable
 				recommendedHowManyBalls = 3;
 				recommendedEachBallWorth = new BigDecimal(35);
 				recommendedIndividualGrossPrize = new BigDecimal(0.00);
-				recommendedIndividualNetPrize = new BigDecimal(0.00);
+				recommendedIndividualNetPrize = new BigDecimal("0.00");
 				recommendedSkinsPot = new BigDecimal(80);
 				recommendedTeamPot = new BigDecimal(105);
-				recommendedGameFee = new BigDecimal(15.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50";
+				recommendedGameFee = new BigDecimal("15.00");
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50";
+				}
 				break;
 				
 			case 11:  //skins only 11th player
@@ -654,12 +823,19 @@ public class GolfMain implements Serializable
 				recommendedTotalTeams = 2;
 				recommendedHowManyBalls = 3;
 				recommendedEachBallWorth = new BigDecimal(35);
-				recommendedIndividualGrossPrize = new BigDecimal(0.00);
+				recommendedIndividualGrossPrize = new BigDecimal("0.00");
 				recommendedIndividualNetPrize = new BigDecimal(0.00);
 				recommendedSkinsPot = new BigDecimal(90);
 				recommendedTeamPot = new BigDecimal(105);
 				recommendedGameFee = new BigDecimal(15.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50";
+				}
 				break;
 				
 			case 12:
@@ -673,7 +849,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(112);
 				recommendedTeamPot = new BigDecimal(112);
 				recommendedGameFee = new BigDecimal(16.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50";
+				}
 				break;
 				
 			case 13: //skins only 13th player
@@ -687,7 +870,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(106);
 				recommendedTeamPot = new BigDecimal(128);
 				recommendedGameFee = new BigDecimal(16.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				}
 				break;
 				
 			case 14:
@@ -701,7 +891,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(124);
 				recommendedTeamPot = new BigDecimal(140);
 				recommendedGameFee = new BigDecimal(16.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				}
 				break;
 				
 			case 15:
@@ -715,7 +912,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(107);
 				recommendedTeamPot = new BigDecimal(165);
 				recommendedGameFee = new BigDecimal(18.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				}
 				break;
 				
 			case 16:
@@ -729,7 +933,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(150);
 				recommendedTeamPot = new BigDecimal(150);
 				recommendedGameFee = new BigDecimal(20.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00";
+				}
 				break;	
 
 			case 17: //skins only 17th player
@@ -743,7 +954,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(145);
 				recommendedTeamPot = new BigDecimal(165);
 				recommendedGameFee = new BigDecimal(20.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30 10:40";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				}
 				break;
 				
 			case 18:
@@ -757,7 +975,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(150);
 				recommendedTeamPot = new BigDecimal(210);
 				recommendedGameFee = new BigDecimal(22.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30 10:40";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				}
 				break;
 				
 			case 19: //skins only 19th player
@@ -771,7 +996,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(158);
 				recommendedTeamPot = new BigDecimal(210);
 				recommendedGameFee = new BigDecimal(22.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30 10:40";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				}
 				break;
 				
 			case 20:
@@ -785,7 +1017,14 @@ public class GolfMain implements Serializable
 				recommendedSkinsPot = new BigDecimal(150);
 				recommendedTeamPot = new BigDecimal(225);
 				recommendedGameFee = new BigDecimal(25.00);
-				recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				if (Utils.isWinterMonth())
+				{
+					recommendedTeeTimesString = "10:00 10:10 10:20 10:30 10:40";
+				}
+				else
+				{
+					recommendedTeeTimesString = "9:30 9:40 9:50 10:00 10:10";
+				}
 				break;
 			
 			case 21:
@@ -967,7 +1206,7 @@ public class GolfMain implements Serializable
 			emailRecipients.clear();
 		}
 		
-		List<Player> fullPlayerList = this.getFullPlayerList();
+		List<DynamoPlayer> fullPlayerList = this.getFullPlayerList();
 			
 		String senderName = getLoggedInPlayerName();
 		String senderReplyEmail = getLoggedInPlayerEmail();
@@ -1001,6 +1240,7 @@ public class GolfMain implements Serializable
 		
 		return "";
 	}
+	
  	public String proceedToSelectGame() 
 	{
 		logger.info("User clicked proceed from Main screen; sending them to game list/add screen");
@@ -1183,40 +1423,45 @@ public class GolfMain implements Serializable
 		this.playGroupSelections = playGroupSelections;
 	}
 
-	public List<TeeTime> getTeeTimeList()
+	public List<TeeTime> getFullTeeTimesList()
 	{
-		return teeTimeDAO.getTeeTimeList();
+		return teeTimeDAO.getFullTeeTimesList();
 	}
 
-	public List<Game> getFullGameList() 
+	public Map<String, DynamoGame> getFullGamesMap()
+	{
+		return gameDAO.getFullGamesMap();
+	}
+
+	public List<DynamoGame> getFullGameList()
 	{
 		return gameDAO.getFullGameList();
 	}
 	
-	public List<Course> getCourseSelections() 
+	public List<Course> getCoursesList() 
 	{
-		return courseDAO.getCourseSelections();
+		return courseDAO.getCoursesList();
 	}
 
-	public List<Player> getFullPlayerList() 
+	public List<DynamoPlayer> getFullPlayerList() 
 	{
 		return playerDAO.getFullPlayerList();
 	}
 	
-	public List<Player> getActivePlayerList() 
+	public List<DynamoPlayer> getActivePlayerList() 
 	{
-		List<Player> sortedList = new ArrayList<>(playerDAO.getActivePlayerList());
+		List<DynamoPlayer> sortedList = new ArrayList<>(playerDAO.getActivePlayerList());
 	    sortedList.sort(new PlayerComparatorByLastName());
 	    
 	    return sortedList;
 	}
 
-	public Map<String, Player> getFullPlayersMapByPlayerID() 
+	public Map<String, DynamoPlayer> getFullPlayersMapByPlayerID() 
 	{
 		return playerDAO.getFullPlayersMapByPlayerID();
 	}
 
-	public Map<String, Player> getFullPlayersMapByUserName() 
+	public Map<String, DynamoPlayer> getFullPlayersMapByUserName() 
 	{
 		return playerDAO.getFullPlayersMapByUserName();
 	}
@@ -1226,17 +1471,17 @@ public class GolfMain implements Serializable
 		return courseDAO.getCoursesMap();
 	}
 
-	public Map<String, TeeTime> getTeeTimesMap()
+	public Map<String, TeeTime> getFullTeeTimesMap()
 	{
-		return teeTimeDAO.getTeeTimesMap();
+		return teeTimeDAO.getFullTeeTimesMap();
 	}
 	
-	public Map<String, CourseTee> getCourseTeesMap() 
+	public Map<String, DynamoCourseTee> getCourseTeesMap()
 	{
 		return courseTeeDAO.getCourseTeesMap();
 	}
 
-	public List<CourseTee> getCourseTees() 
+	public List<DynamoCourseTee> getCourseTees()
 	{
 		return courseTeeDAO.getCourseTeesList();
 	}
@@ -1304,9 +1549,9 @@ public class GolfMain implements Serializable
 		GolfMain.recommendedGameNote = recommendedGameNote;
 	}
 
-	public String addGame(Game game, String teeTimesString) throws Exception 
+	public String addGame(DynamoGame dynamoGame) throws Exception 
 	{
-		return gameDAO.addGame(game, teeTimesString);
+		return gameDAO.addGame(dynamoGame);
 	}
 
 	public void deleteGame(String gameID) throws Exception 
@@ -1314,17 +1559,17 @@ public class GolfMain implements Serializable
 		gameDAO.deleteGame(gameID);		
 	}
 
-	public void updateGame(Game game) throws Exception 
+	public void updateGame(DynamoGame game) throws Exception 
 	{
 		gameDAO.updateGame(game);		
 	}
 
-	public List<Game> getFutureGames() 
+	public List<DynamoGame> getFutureGames() 
 	{
 		return gameDAO.getFutureGames();
 	}
 
-	public List<Game> getAvailableGamesByPlayerID(String playerID) 
+	public List<DynamoGame> getAvailableGamesByPlayerID(String playerID) 
 	{
 		return gameDAO.getAvailableGames(playerID);
 	}
@@ -1334,17 +1579,17 @@ public class GolfMain implements Serializable
 		return gameDAO.getTeePreference(playerID, courseID);
 	}
 
-	public Game getGameByGameID(String gameID) 
+	public DynamoGame getGameByGameID(String gameID) 
 	{
 		return gameDAO.getGameByGameID(gameID);
 	}
 	
-	public Player getPlayerByPlayerID(String playerID)
+	public DynamoPlayer getPlayerByPlayerID(String playerID)
 	{
 		return playerDAO.getFullPlayersMapByPlayerID().get(playerID);
 	}
 	
-	public Player getPlayerByUserName(String username)
+	public DynamoPlayer getPlayerByUserName(String username)
 	{
 		return playerDAO.getFullPlayersMapByUserName().get(username);
 	}
@@ -1354,14 +1599,14 @@ public class GolfMain implements Serializable
 		return playerDAO.addPlayer(player);
 	}
 	
-	public void updatePlayer(Player player)  throws Exception 
+	public void updatePlayer(DynamoPlayer player)  throws Exception 
 	{
 		playerDAO.updatePlayer(player);
 	}
 	
-	public List<Round> getRoundsForGame(Game game) 
+	public List<Round> getRoundsForGame(DynamoGame dynamoGame) 
 	{
-		return roundDAO.getRoundsForGame(game);
+		return roundDAO.getRoundsForGame(dynamoGame);
 	}
 	
 	public String addRound(Round round) throws Exception 
@@ -1389,24 +1634,24 @@ public class GolfMain implements Serializable
 		return roundDAO.getRoundByGameandPlayer(gameID, playerID);
 	}
 
-	public List<String> getGameParticipantsFromDB(Game selectedGame) 
+	public List<String> getGameParticipantsFromDB(DynamoGame selectedGame) 
 	{
-		return roundDAO.getGameParticipantsFromDB(selectedGame);
+		return roundDAO.getGameParticipantsFromDB();
 	}
 
-	public Integer countRoundsForGameFromDB(Game gm) 
+	public Integer countRoundsForGameFromDB(DynamoGame gm) 
 	{
 		return roundDAO.countRoundsForGameFromDB(gm);
 	}
 
-	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal newRoundHandicap) throws Exception 
+	public void updateRoundHandicap(DynamoGame dynamoGame, String playerID, BigDecimal newRoundHandicap) throws Exception 
 	{
-		roundDAO.updateRoundHandicap(selectedGame, playerID, newRoundHandicap);		
+		roundDAO.updateRoundHandicap(dynamoGame, playerID, newRoundHandicap);		
 	}
 
-	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) throws Exception 
+	public void updateRoundTeamNumber(DynamoGame dynamoGame, String playerID, int teamNumber) throws Exception 
 	{
-		roundDAO.updateRoundTeamNumber(selectedGame, playerID, teamNumber);		
+		roundDAO.updateRoundTeamNumber(dynamoGame, playerID, teamNumber);		
 	}
 
 	public void addPlayerTeePreference(PlayerTeePreference ptp) throws Exception 
@@ -1424,12 +1669,12 @@ public class GolfMain implements Serializable
 		return playerTeePreferencesDAO.getPlayerTeePreference(playerID, courseID);
 	}
 
-	public List<CourseTee> getCourseTeesList()
+	public List<DynamoCourseTee> getCourseTeesList()
 	{
 		return courseTeeDAO.getCourseTeesList();
 	}
 
-	public List<TeeTime> getTeeTimesByGame(Game selectedGame) 
+	public List<TeeTime> getTeeTimesByGame(DynamoGame selectedGame) 
 	{
 		return teeTimeDAO.getTeeTimesByGame(selectedGame);
 	}
@@ -1437,16 +1682,6 @@ public class GolfMain implements Serializable
 	public void deleteTeeTimeFromDB(String string) 
 	{
 		teeTimeDAO.deleteTeeTimeFromDB(string);		
-	}
-
-	public void addTeeTime(TeeTime teeTime) throws Exception 
-	{
-		teeTimeDAO.addTeeTime(teeTime);		
-	}
-
-	public void updateTeeTime(TeeTime teeTime) throws Exception 
-	{
-		teeTimeDAO.updateTeeTime(teeTime);		
 	}
 
 	public void addTeeTimes(String newGameID, String teeTimesString, Date gameDate, String courseName) throws Exception 
@@ -1464,9 +1699,9 @@ public class GolfMain implements Serializable
 		playerMoneyDAO.deletePlayerMoneyFromDB(gameID);		
 	}
 
-	public List<PlayerMoney> getPlayerMoneyByGame(Game selectedGame) 
+	public List<PlayerMoney> getPlayerMoneyByGame(DynamoGame dynamoGame) 
 	{
-		return playerMoneyDAO.getPlayerMoneyByGame(selectedGame);
+		return playerMoneyDAO.getPlayerMoneyByGame(dynamoGame);
 	}
 
 	public void addPlayerMoney(PlayerMoney pm) throws Exception 
@@ -1474,9 +1709,9 @@ public class GolfMain implements Serializable
 		playerMoneyDAO.addPlayerMoney(pm);		
 	}
 
-	public List<PlayerMoney> getPlayerMoneyByPlayer(Player player) 
+	public List<PlayerMoney> getPlayerMoneyByPlayer(DynamoPlayer dynamoPlayer) 
 	{
-		return playerMoneyDAO.getPlayerMoneyByPlayer(player);
+		return playerMoneyDAO.getPlayerMoneyByPlayer(dynamoPlayer);
 	}
 	
 	public List<PlayerMoney> getPlayerMoneyList()
@@ -1484,16 +1719,16 @@ public class GolfMain implements Serializable
 		return playerMoneyDAO.getPlayerMoneyList();
 	}
 	
-	public List<Group> getGroupsList()
+	public List<DynamoGroup> getGroupsList()
 	{
 		return groupDAO.getGroupsList();
 	}
 
-	public Group getDefaultGroup() {
+	public DynamoGroup getDefaultGroup() {
 		return defaultGroup;
 	}
 
-	public void setDefaultGroup(Group defaultGroup) {
+	public void setDefaultGroup(DynamoGroup defaultGroup) {
 		this.defaultGroup = defaultGroup;
 	}
 
@@ -1540,7 +1775,7 @@ public class GolfMain implements Serializable
 		
 		if (gu != null && gu.getUserName() != null)
 		{
-			Player tempPlayer = getFullPlayersMapByUserName().get(gu.getUserName());			
+			DynamoPlayer tempPlayer = getFullPlayersMapByUserName().get(gu.getUserName());			
 			if (tempPlayer != null)
 			{
 				this.setLoggedInPlayerName(tempPlayer.getFullName());
@@ -1573,7 +1808,7 @@ public class GolfMain implements Serializable
 			
 		if (gu != null && gu.getUserName() != null)
 		{
-			Player tempPlayer = getFullPlayersMapByUserName().get(gu.getUserName());			
+			DynamoPlayer tempPlayer = getFullPlayersMapByUserName().get(gu.getUserName());			
 			if (tempPlayer != null)
 			{
 				this.setLoggedInPlayerEmail(tempPlayer.getEmailAddress());
@@ -1592,7 +1827,7 @@ public class GolfMain implements Serializable
 		
 		return loggedInPlayerEmail;
 	}
-
+	
 	public void setLoggedInPlayerEmail(String loggedInPlayerEmail) 
 	{
 		this.loggedInPlayerEmail = loggedInPlayerEmail;
@@ -1697,5 +1932,107 @@ public class GolfMain implements Serializable
 	public void setRecommendedGameFee(BigDecimal recommendedGameFee) {
 		this.recommendedGameFee = recommendedGameFee;
 	}
-		
+
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
+	public Course getSelectedCourse() {
+		return selectedCourse;
+	}
+
+	public void setSelectedCourse(Course selectedCourse) {
+		this.selectedCourse = selectedCourse;
+	}
+
+	public String getCourseOperation() {
+		return courseOperation;
+	}
+
+	public void setCourseOperation(String courseOperation) {
+		this.courseOperation = courseOperation;
+	}
+
+	public String getPlayersCourseCourseID() 
+	{
+		return courseDAO.getPlayersCourseCourseID();
+	}
+
+	public boolean isCourseRenderInputFields() {
+		return courseRenderInputFields;
+	}
+
+	public void setCourseRenderInputFields(boolean courseRenderInputFields) {
+		this.courseRenderInputFields = courseRenderInputFields;
+	}
+
+	public boolean isCourseRenderInquiry() {
+		return courseRenderInquiry;
+	}
+
+	public void setCourseRenderInquiry(boolean courseRenderInquiry) {
+		this.courseRenderInquiry = courseRenderInquiry;
+	}
+
+	public boolean isCourseRenderAddUpdateDelete() {
+		return courseRenderAddUpdateDelete;
+	}
+
+	public void setCourseRenderAddUpdateDelete(boolean courseRenderAddUpdateDelete) {
+		this.courseRenderAddUpdateDelete = courseRenderAddUpdateDelete;
+	}
+
+	public TeeTime getSelectedTeeTime() {
+		return selectedTeeTime;
+	}
+
+	public void setSelectedTeeTime(TeeTime selectedTeeTime) {
+		this.selectedTeeTime = selectedTeeTime;
+	}
+
+	public boolean isDisableDeleteTeeTime() {
+		return disableDeleteTeeTime;
+	}
+
+	public void setDisableDeleteTeeTime(boolean disableDeleteTeeTime) {
+		this.disableDeleteTeeTime = disableDeleteTeeTime;
+	}
+
+	public String getTeeTimeOperation() {
+		return teeTimeOperation;
+	}
+
+	public void setTeeTimeOperation(String teeTimeOperation) {
+		this.teeTimeOperation = teeTimeOperation;
+	}
+
+	public List<TeeTime> getGameSpecificTeeTimesList() {
+		return gameSpecificTeeTimesList;
+	}
+
+	public void setGameSpecificTeeTimesList(List<TeeTime> gameSpecificTeeTimesList) {
+		this.gameSpecificTeeTimesList = gameSpecificTeeTimesList;
+	}
+
+	public boolean isTeeTimesRenderInquiry() {
+		return teeTimesRenderInquiry;
+	}
+
+	public void setTeeTimesRenderInquiry(boolean teeTimesRenderInquiry) {
+		this.teeTimesRenderInquiry = teeTimesRenderInquiry;
+	}
+
+	public boolean isTeeTimesRenderAddUpdateDelete() {
+		return teeTimesRenderAddUpdateDelete;
+	}
+
+	public void setTeeTimesRenderAddUpdateDelete(boolean teeTimesRenderAddUpdateDelete) {
+		this.teeTimesRenderAddUpdateDelete = teeTimesRenderAddUpdateDelete;
+	}
+
+	
 }

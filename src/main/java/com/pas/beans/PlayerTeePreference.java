@@ -6,13 +6,11 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.SelectEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
+import com.pas.dynamodb.DynamoCourseTee;
 
-@Named("pc_PlayerTeePreference")
-@SessionScoped
+import jakarta.inject.Inject;
+
 public class PlayerTeePreference implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
@@ -35,13 +33,8 @@ public class PlayerTeePreference implements Serializable
 	
 	private PlayerTeePreference selectedPlayerTeePreference;
 	
-	@Autowired private final GolfMain golfmain;
-	
-	public PlayerTeePreference(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-	}
-	
+	@Inject GolfMain golfmain;
+
 	public String selectRowAjax(SelectEvent<PlayerTeePreference> event)
 	{
 		logger.info("User clicked on a row in Player Tee Preference list");
@@ -73,7 +66,7 @@ public class PlayerTeePreference implements Serializable
 		
 		for (int i = 0; i < golfmain.getCourseTeesList().size(); i++) 
 		{
-			CourseTee courseTee = golfmain.getCourseTeesList().get(i);
+			DynamoCourseTee courseTee = golfmain.getCourseTeesList().get(i);
 			
 			if (courseTee.getCourseID().equalsIgnoreCase(this.getCourseID()))
 			{

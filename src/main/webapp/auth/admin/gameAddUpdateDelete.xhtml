@@ -1,0 +1,344 @@
+<ui:composition 
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+ 		 
+  	<table id="gamemaintainTableID">
+      
+         <tr>	  		
+ 			 <td colspan="3" class="textLabel">
+				<p:outputLabel value="#{pc_Game.operation} Game"/>
+			 </td>		             
+         </tr>
+         
+         <tr>
+			<td colspan="3" align="center">
+			
+			   <p:commandButton 
+				   value="Update" 
+				   action="#{pc_Game.updateGame}"
+				   rendered="#{pc_Game.operation=='Update'}"	
+				   update="gameForm">
+			   </p:commandButton> 
+			   
+			   <p:commandButton 
+				   value="Add" 
+				   action="#{pc_Game.addGame}"
+				   rendered="#{pc_Game.operation=='Add'}"	
+				   update="gameForm">
+			   </p:commandButton> 
+			   
+			   <p:commandButton 
+				   value="Delete" 
+				   action="#{pc_Game.deleteGame}"
+				   rendered="#{pc_Game.operation=='Delete'}"	
+				   update="gameForm">
+				   <p:confirm header="Confirmation" message="Really completely delete this game??" icon="pi pi-exclamation-triangle" />
+			   </p:commandButton> 
+			   
+			   <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			   </p:confirmDialog>  
+				
+			   <p:commandButton value="#{bundle.ok}"
+			       action="#{pc_Game.cancelViewAddUpdateDeleteGame}"
+			       rendered="#{pc_Game.operation=='View'}"
+				   update="gameForm">
+			   </p:commandButton>  
+			     
+			   <p:commandButton value="#{bundle.cancel}"
+			       action="#{pc_Game.cancelViewAddUpdateDeleteGame}"
+			       rendered="#{pc_Game.operation!='View'}"
+			       immediate="true"
+				   update="gameForm">
+			   </p:commandButton>
+			   
+			</td>
+		</tr>
+         
+	    <tr>
+	  		
+ 		    <td class="textLabel">
+			   <p:outputLabel value="#{bundle.id}"	/>
+		    </td>	
+		 
+            <td colspan="2" class="text">
+               <p:outputLabel value="#{pc_Game.selectedGame.gameID}"/>
+            </td>
+            
+         </tr>
+     
+         <tr>
+	  		
+ 			<td class="textLabelMiddle">
+			    <p:outputLabel for="gameDateID" value="Game Date"/>
+		    </td>	
+		 
+            <td  colspan="2" class="text">
+               <p:calendar id="gameDateID" 
+       	        size="23"
+       	        required="true"
+       	        rendered="#{pc_Game.renderInputFields}"
+       	        readonlyInput="false" 
+       	        value="#{pc_Game.selectedGame.gameDateJava}"
+       			mode="popup" showOn="both" pattern="MM/dd/yyyy" yearRange="c-120:c">						        									            			
+       	    </p:calendar>
+       	    <p:outputLabel value="#{pc_Game.selectedGame.gameDateJava}" rendered="#{!pc_Game.renderInputFields}"/>
+            </td>
+            
+         </tr>
+         
+         <tr>
+          <td class="textLabelMiddle">
+               <p:outputLabel for="courseListID" value="#{bundle.course}"/>
+             </td>
+            
+            <td colspan="2" class="text">
+			
+		    <p:selectOneMenu id="courseListID" value="#{pc_Game.selectedGame.courseID}" required="true"  hideNoSelectionOption="true" rendered="#{pc_Game.renderInputFields}">
+		        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+				<f:selectItems value="#{pc_GolfMain.coursesList}" var="c" itemLabel="#{c.courseName}" itemValue="#{c.courseID}"/>					
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="#{pc_Game.selectedGame.courseID}" rendered="#{!pc_Game.renderInputFields}"/>
+			
+		 </td>
+	  </tr>
+	  
+	   <tr>
+  		
+ 			 <td class="textLabelMiddle">
+			<p:outputLabel for="fieldSizeID" value="Field Size"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+              
+               <p:selectOneMenu id="fieldSizeID" value="#{pc_Game.selectedGame.fieldSize}" required="true" rendered="#{pc_Game.renderInputFields}">
+				<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
+				<p:ajax event="valueChange" listener="#{pc_Game.valueChgFieldSize}" 
+				   update="gameForm:gamesTableID gameForm:totalTeamsID gameForm:howManyBallsID gameForm:teamBallValueID 
+				   		   gameForm:totalPlayersID gameForm:teamPotID gameForm:gameFeeID gameForm:skinsPotID
+				           gameForm:individualGrossID gameForm:individualNetID gameForm:purseID 
+				           gameForm:gameNoteID gameForm:playBallMethodID gameForm:teeTimesID  " />
+			</p:selectOneMenu>	
+			
+			<p:outputLabel value="#{pc_Game.selectedGame.fieldSize}" rendered="#{!pc_Game.renderInputFields}"/>								
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabelMiddle">
+			<p:outputLabel for="betAmtID" value="Bet Amount"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               <p:inputText id="betAmtID" size="8" value="#{pc_Game.selectedGame.betAmount}" required="true" rendered="#{pc_Game.renderInputFields}"/>
+               <p:outputLabel value="#{pc_Game.selectedGame.betAmount}" rendered="#{!pc_Game.renderInputFields}"/>		
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabelMiddle">
+			<p:outputLabel for="totalPlayersID" value="Total Players"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+            
+               <p:selectOneMenu id="totalPlayersID" value="#{pc_Game.selectedGame.totalPlayers}" required="true" rendered="#{pc_Game.renderInputFields}">
+				<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
+				<p:ajax event="valueChange" listener="#{pc_Game.valueChgTotalPlayersUpdate}" 
+				   update="gameForm:totalTeamsID gameForm:howManyBallsID gameForm:teamBallValueID gameForm:gameFeeID gameForm:teamPotID gameForm:skinsPotID
+				           gameForm:individualGrossID gameForm:individualNetID gameForm:purseID gameForm:gameNoteID gameForm:playBallMethodID gameForm:teeTimesID " />
+			</p:selectOneMenu>	
+			
+			<p:outputLabel value="#{pc_Game.selectedGame.totalPlayers}" rendered="#{!pc_Game.renderInputFields}"/>		
+								
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabelMiddle">
+			<p:outputLabel for="totalTeamsID" value="Total Teams"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               
+               <p:selectOneMenu id="totalTeamsID" value="#{pc_Game.selectedGame.totalTeams}" required="true" rendered="#{pc_Game.renderInputFields}">
+				<f:selectItems value="#{pc_GolfMain.totalTeamsSelections}"/>
+				<p:ajax event="valueChange" update="gameForm:purseID" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="#{pc_Game.selectedGame.totalTeams}" rendered="#{!pc_Game.renderInputFields}"/>		
+			
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabelMiddle">
+			<p:outputLabel for="howManyBallsID" value="How Many Balls"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+            
+               <p:selectOneMenu id="howManyBallsID" value="#{pc_Game.selectedGame.howManyBalls}" required="true" rendered="#{pc_Game.renderInputFields}">
+				<f:selectItems value="#{pc_GolfMain.howManyBallsSelections}"/>
+				<p:ajax event="valueChange" update="gameForm:teamPotID" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="#{pc_Game.selectedGame.howManyBalls}" rendered="#{!pc_Game.renderInputFields}"/>		
+			
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabelMiddle">
+				<p:outputLabel for="teamBallValueID" value="Each Ball Worth"/>
+			 </td>	
+		 
+            <td colspan="2" class="text">
+               
+               <p:inputText id="teamBallValueID" size="8" value="#{pc_Game.selectedGame.eachBallWorth}" required="true" rendered="#{pc_Game.renderInputFields}">
+                   <p:ajax event="valueChange" update="gameForm:teamPotID"/> 
+               </p:inputText>  
+               
+               <p:outputLabel value="#{pc_Game.selectedGame.eachBallWorth}" rendered="#{!pc_Game.renderInputFields}"/>		
+                      
+            </td>
+            
+         </tr>
+         
+         <tr>
+         <td class="textLabelMiddle">
+			<p:outputLabel for="teamPotID" value="#{bundle.teamPot}"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               <p:inputText id="teamPotID" size="8" value="#{pc_Game.selectedGame.teamPot}" required="true" rendered="#{pc_Game.renderInputFields}"/> 
+               <p:outputLabel value="#{pc_Game.selectedGame.teamPot}" rendered="#{!pc_Game.renderInputFields}"/>		
+            </td>				 
+      	  </tr>
+      	  
+      	  <tr>
+		 <td class="textLabelMiddle">
+			<p:outputLabel for="skinsPotID" value="#{bundle.skinsPot}"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               <p:inputText id="skinsPotID" size="8" value="#{pc_Game.selectedGame.skinsPot}" required="true" rendered="#{pc_Game.renderInputFields}"/> 
+               <p:outputLabel value="#{pc_Game.selectedGame.skinsPot}" rendered="#{!pc_Game.renderInputFields}"/>		               	
+            </td>	            
+            
+            </tr>
+            
+             <tr>
+		 <td class="textLabelMiddle">
+			<p:outputLabel for="gameFeeID" value="#{bundle.gameFee}"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               <p:inputText id="gameFeeID" size="8" value="#{pc_Game.selectedGame.gameFee}" required="true" rendered="#{pc_Game.renderInputFields}"/>
+               <p:outputLabel value="#{pc_Game.selectedGame.gameFee}" rendered="#{!pc_Game.renderInputFields}"/>		                	
+            </td>	            
+            
+            </tr>
+            
+            <tr>
+           
+            <td class="textLabelMiddle">
+			<p:outputLabel for="individualGrossID" value="#{bundle.indivGrossPrize}"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               <p:inputText id="individualGrossID" size="8" value="#{pc_Game.selectedGame.individualGrossPrize}" required="true" rendered="#{pc_Game.renderInputFields}"/>
+               <p:outputLabel value="#{pc_Game.selectedGame.individualGrossPrize}" rendered="#{!pc_Game.renderInputFields}"/>		
+            </td> 
+            
+            </tr>
+            
+            <tr>
+            
+            <td class="textLabelMiddle">
+			<p:outputLabel for="individualNetID" value="#{bundle.indivNetPrize}"/>
+		 </td>	
+		 
+            <td colspan="2" class="text">
+               <p:inputText id="individualNetID" size="8" value="#{pc_Game.selectedGame.individualNetPrize}" required="true" rendered="#{pc_Game.renderInputFields}"/>
+               <p:outputLabel value="#{pc_Game.selectedGame.individualNetPrize}" rendered="#{!pc_Game.renderInputFields}"/>		
+            </td> 
+            
+            </tr>
+            
+            <tr>
+             <td class="textLabelMiddle">
+			  <p:outputLabel  for="purseID" value="#{bundle.PurseAmount}"/>
+		  </td>	
+		 
+             <td colspan="2" class="text">
+                 <p:inputText id="purseID" size="8" value="#{pc_Game.selectedGame.purseAmount}" required="true" rendered="#{pc_Game.renderInputFields}"/>
+                 <p:outputLabel value="#{pc_Game.selectedGame.purseAmount}" rendered="#{!pc_Game.renderInputFields}"/>		     
+             </td>
+            </tr> 
+            
+            <tr>
+             <td class="textLabelMiddle">
+			  <p:outputLabel  for="gameNoteID" value="#{bundle.gameNote}"/>
+		  </td>	
+		 
+             <td colspan="2" class="text">
+                 <p:inputText id="gameNoteID" size="40" maxLength="45" value="#{pc_Game.selectedGame.gameNoteForEmail}" rendered="#{pc_Game.renderInputFields}"/> 
+                 <p:outputLabel value="#{pc_Game.selectedGame.gameNoteForEmail}" rendered="#{!pc_Game.renderInputFields}"/>		    
+             </td>
+            </tr>                 
+
+            <tr>
+             <td class="textLabelMiddle">
+			  <p:outputLabel  for="playBallMethodID" value="#{bundle.playBallMethod}"/>
+		  </td>	
+		 
+             <td colspan="2" class="text">
+                 <p:inputText id="playBallMethodID" size="30" value="#{pc_Game.selectedGame.playTheBallMethod}" required="true" rendered="#{pc_Game.renderInputFields}"/>
+                 <p:outputLabel value="#{pc_Game.selectedGame.playTheBallMethod}" rendered="#{!pc_Game.renderInputFields}"/>		     
+             </td>
+            </tr> 
+            
+            <tr>
+             <td class="textLabelMiddle">
+			  <p:outputLabel  for="teeTimesID" value="#{bundle.teeTimes}" rendered="#{pc_Game.operation=='Add'}"/>
+		  </td>	
+		 
+             <td colspan="2" class="text">
+                 <p:inputText id="teeTimesID" size="20" value="#{pc_Game.selectedGame.teeTimesString}"  rendered="#{pc_Game.operation=='Add'}" required="true"/>     
+             </td>
+            </tr> 
+            
+            <tr>
+	  		
+ 			 <td class="text" colspan="2">
+ 			 
+ 			 	<p:selectBooleanCheckbox
+ 			 	    rendered="#{pc_Game.renderInputFields}"
+					value="#{pc_Game.gameClosedForSignups}">
+				</p:selectBooleanCheckbox>
+				
+				<p:outputLabel value="#{bundle.gameClosed}"/>
+			 </td>	
+		
+         </tr> 
+		
+	</table>
+		
+</ui:composition>	

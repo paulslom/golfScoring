@@ -16,13 +16,10 @@
            	
 			<p:submenu label="Game">
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="List" url="#{request.contextPath}/auth/admin/gameList.xhtml"/>
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Add Game" url="#{request.contextPath}/auth/admin/addGame.xhtml"/>				
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Select Players for Game" url="#{request.contextPath}/auth/admin/playerPicklist.xhtml"/>
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Select Player tee times" url="#{request.contextPath}/auth/admin/teeTimePickList.xhtml"/>
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Player Game Handicaps" url="#{request.contextPath}/auth/admin/gameHandicaps.xhtml"/>				
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Pick Teams" url="#{request.contextPath}/auth/admin/pickTeams.xhtml"/>				
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Run Game" url="#{request.contextPath}/auth/admin/runGame.xhtml"/>	
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Delete Game" url="#{request.contextPath}/auth/admin/deleteGame.xhtml"/>	
+				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Pick Teams" url="#{request.contextPath}/auth/admin/pickTeams.xhtml"/>	
 				<p:menuitem value="Sign Up for Game" url="#{request.contextPath}/auth/gameSignUp.xhtml"/>											
 			</p:submenu>
 			
@@ -32,12 +29,8 @@
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Tee Prefs" url="#{request.contextPath}/auth/admin/playerTeePrefs.xhtml"/>
 			</p:submenu>
 			
-			<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Tee Times" url="#{request.contextPath}/auth/admin/teeTimes.xhtml"/>
-			
-			<p:submenu label="Scores">
-				<p:menuitem value="Enter scores for Game" url="#{request.contextPath}/auth/gameEnterScores.xhtml"/>	
-			</p:submenu>
-			
+			<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Courses" url="#{request.contextPath}/auth/admin/courseList.xhtml"/>
+						
 			<p:submenu label="Email">
 			    <p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Future Game" url="#{request.contextPath}/auth/admin/emailFutureGames.xhtml"/>
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Pre-Game" url="#{request.contextPath}/auth/admin/emailPreGame.xhtml"/>
@@ -46,12 +39,8 @@
 				<p:menuitem value="Entire Group" url="#{request.contextPath}/auth/emailEntireGroup.xhtml"/>	
 			</p:submenu>
 			
-			<p:submenu label="Profile">
-				<p:menuitem value="Change Password" url="#{request.contextPath}/auth/changePassword.xhtml"/>
-				<p:menuitem value="Playing Partner Preferences" url="#{request.contextPath}/auth/playingPartnerPrefs.xhtml"/>	
-				<p:menuitem value="Tee Time preferences" url="#{request.contextPath}/auth/teeTimePrefs.xhtml"/>	
-			</p:submenu>
-			    
+			<p:menuitem value="Change Password" url="#{request.contextPath}/auth/changePassword.xhtml"/>
+				    
 			<f:facet name="options">
 			   <p:outputLabel value="Logged in user: #{pc_GolfMain.signedOnUserName}"/>&#xA0;&#xA0;
 			   <h:outputLink value="#{request.contextPath}/logout.xhtml">Sign Out</h:outputLink>			   

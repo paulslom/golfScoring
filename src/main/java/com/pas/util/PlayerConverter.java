@@ -1,43 +1,23 @@
 package com.pas.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.pas.beans.GolfMain;
 import com.pas.beans.Player;
-import com.pas.dao.PlayerDAO;
-import com.pas.dynamodb.DynamoClients;
-import com.pas.dynamodb.DynamoUtil;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
+@Named("pc_PlayerConverter")
+@SessionScoped
 public class PlayerConverter implements Converter<Object>
 {
-	Map<String,Player> playersMap = new HashMap<>();
-	
 	@Inject GolfMain golfmain;
-	public PlayerConverter() 
-	{
-		DynamoClients dynamoClients;
-		try 
-		{
-			dynamoClients = DynamoUtil.getDynamoClients();
-			PlayerDAO playerDAO = new PlayerDAO(dynamoClients);
-			playerDAO.readPlayersFromDB();
-			playersMap = playerDAO.getFullPlayersMapByPlayerID();
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}		
-		
-	}
-	
+
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object modelValue) 
 	{
@@ -50,10 +30,9 @@ public class PlayerConverter implements Converter<Object>
 	    {
 	        return (String)modelValue;
 	    } 
-	    else if (modelValue instanceof Player) 
+	    else if (modelValue instanceof Player tempPlayer)
 	    {
-	    	Player tempPlayer = (Player)modelValue;
-	        return String.valueOf(tempPlayer.getPlayerID());
+            return String.valueOf(tempPlayer.getPlayerID());
 	    } 
 	    else 
 	    {
@@ -71,8 +50,7 @@ public class PlayerConverter implements Converter<Object>
 
 	    try 
 	    {
-	    	Player returnPlayer = playersMap.get(submittedValue);
-	        return returnPlayer;
+            return golfmain.getFullPlayersMapByPlayerID().get(submittedValue);
 	    } 
 	    catch (NumberFormatException e) 
 	    {

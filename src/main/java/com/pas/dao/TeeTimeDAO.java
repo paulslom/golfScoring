@@ -17,11 +17,12 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
-import com.pas.beans.Group;
 import com.pas.beans.TeeTime;
+import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoGroup;
 import com.pas.dynamodb.DynamoTeeTime;
 
 import jakarta.inject.Inject;
@@ -37,8 +38,8 @@ public class TeeTimeDAO implements Serializable
 
 	private static Logger logger = LogManager.getLogger(TeeTimeDAO.class);
 		
-	private Map<String,TeeTime> teeTimesMap = new HashMap<>();
-	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();	
+	private Map<String,TeeTime> fullTeeTimesMap = new HashMap<>();
+	private List<TeeTime> fullTeeTimesList = new ArrayList<TeeTime>();	
 
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoTeeTime> teeTimesTable;
@@ -59,13 +60,13 @@ public class TeeTimeDAO implements Serializable
 	   }	   
 	}
 	
-	public List<TeeTime> getTeeTimesByGame(Game game)
+	public List<TeeTime> getTeeTimesByGame(DynamoGame game)
     {
 		List<TeeTime> ttList = new ArrayList<>();
 		
-		for (int i = 0; i < this.getTeeTimeList().size(); i++)
+		for (int i = 0; i < this.getFullTeeTimesList().size(); i++)
 		{
-			TeeTime teeTime = this.getTeeTimeList().get(i);
+			TeeTime teeTime = this.getFullTeeTimesList().get(i);
 			if (teeTime.getGameID().equalsIgnoreCase(game.getGameID()))
 			{
 				ttList.add(teeTime);
@@ -86,51 +87,51 @@ public class TeeTimeDAO implements Serializable
     	return ttList;
     }
 	
-	public void readTeeTimesFromDB(Group defaultGroup) throws Exception
+	public void readTeeTimesFromDB(DynamoGroup defaultGroup, Map<String, DynamoGame> fullGameMap) throws Exception
     {
 		Iterator<DynamoTeeTime> results = teeTimesTable.scan().items().iterator();
-	  	
-		Map<String, Game> fullGameMap = new HashMap<>();
-		if (golfmain == null  || golfmain.getGameDAO() == null)
-		{
-			//if golfmain jsf bean unavailable... so just redo the gamedao read
-			GameDAO gameDAO = new GameDAO(dynamoClients, golfmain);		
-			gameDAO.readGamesFromDB(defaultGroup);
-			fullGameMap = gameDAO.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
-		}
-		else
-		{
-			fullGameMap = golfmain.getFullGameList().stream().collect(Collectors.toMap(Game::getGameID, game -> game));
-		}
-		
+				
 		while (results.hasNext()) 
         {
 			DynamoTeeTime dynamoTeeTime = results.next();
           	
 			if (fullGameMap != null && fullGameMap.containsKey(dynamoTeeTime.getGameID()))
 			{
-				Game game = fullGameMap.get(dynamoTeeTime.getGameID());
-				
-				TeeTime teeTime = new TeeTime(golfmain);
-				teeTime.setGameDate(game.getGameDate());
+				DynamoGame game = fullGameMap.get(dynamoTeeTime.getGameID());
+				TeeTime teeTime = new TeeTime();
+				teeTime.setGameDate(DateToStringConverter.unconvert(game.getGameDate()));
 				teeTime.setCourseName(game.getCourseName());
 				teeTime.setTeeTimeID(dynamoTeeTime.getTeeTimeID());
 				teeTime.setGameID(dynamoTeeTime.getGameID());	
 				teeTime.setTeeTimeString(dynamoTeeTime.getTeeTimeString());
 				teeTime.setPlayGroupNumber(dynamoTeeTime.getPlayGroupNumber());
 				
-				this.getTeeTimeList().add(teeTime);			
+				this.getFullTeeTimesList().add(teeTime);			
 			}
 	    }		 
 		
-		logger.info("LoggedDBOperation: function-inquiry; table:teetimes; rows:" + teeTimeList.size());
+		Collections.sort(this.getFullTeeTimesList(), new Comparator<TeeTime>() 
+		{
+			public int compare(TeeTime teeTime1, TeeTime teeTime2) 
+			{
+				if (teeTime1.getGameDate().equals(teeTime2.getGameDate()))
+				{
+					return Integer.valueOf(teeTime1.getPlayGroupNumber()).compareTo(Integer.valueOf(teeTime2.getPlayGroupNumber()));					
+				}
+				
+				return teeTime1.getGameDate().compareTo(teeTime2.getGameDate());				
+			}
+						
+		});
 		
-		this.setTeeTimesMap(this.getTeeTimeList().stream().collect(Collectors.toMap(TeeTime::getTeeTimeID, tt -> tt)));    	
+		logger.info("LoggedDBOperation: function-inquiry; table:teetimes; rows:" + this.getFullTeeTimesList().size());
+		
+		this.setFullTeeTimesMap(this.getFullTeeTimesList().stream().collect(Collectors.toMap(TeeTime::getTeeTimeID, tt -> tt)));    	
     }
 	
 	public TeeTime getTeeTimeByTeeTimeID(String teeTimeID)
     {
-		TeeTime teeTime = this.getTeeTimesMap().get(teeTimeID);
+		TeeTime teeTime = this.getFullTeeTimesMap().get(teeTimeID);
 		return teeTime;
     }	
 	
@@ -167,8 +168,8 @@ public class TeeTimeDAO implements Serializable
 	 	{	 			
  			String teeTimeStr = st.nextToken();
  			tokenCount++;
- 				
- 			TeeTime teeTime = new TeeTime(golfmain);
+ 			
+ 			TeeTime teeTime = new TeeTime();	
  			teeTime.setTeeTimeID(new String());
  			teeTime.setGameID(newGameID);
  			teeTime.setPlayGroupNumber(tokenCount);
@@ -182,8 +183,8 @@ public class TeeTimeDAO implements Serializable
  			
  	 		teeTime.setTeeTimeID(dtt.getTeeTimeID());
  			
- 			this.getTeeTimeList().add(teeTime);
- 			this.getTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);
+ 			this.getFullTeeTimesList().add(teeTime);
+ 			this.getFullTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);
  			
  			refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
 	 	}
@@ -219,9 +220,9 @@ public class TeeTimeDAO implements Serializable
 	{
 		//first identify the games we're talking about, so that we can fix up the list and map after the DB interaction.
 		List<String> teeTimeIDs = new ArrayList<>();
-		for (int i = 0; i < this.getTeeTimeList().size(); i++)
+		for (int i = 0; i < this.getFullTeeTimesList().size(); i++)
 		{
-			TeeTime teeTime = this.getTeeTimeList().get(i);
+			TeeTime teeTime = this.getFullTeeTimesList().get(i);
 			if (teeTime.getGameID().equalsIgnoreCase(gameID))
 			{
 				teeTimeIDs.add(teeTime.getTeeTimeID());
@@ -231,7 +232,7 @@ public class TeeTimeDAO implements Serializable
 		
 		for (int i = 0; i < teeTimeIDs.size(); i++) 
 		{
-			this.getTeeTimesMap().remove(teeTimeIDs.get(i));
+			this.getFullTeeTimesMap().remove(teeTimeIDs.get(i));
 		}		
 		
 		refreshListsAndMaps("special", null); //special bypasses add/update/delete and assumes the map is good and then rebuilds the list and sorts
@@ -247,8 +248,7 @@ public class TeeTimeDAO implements Serializable
 		teeTimesTable.deleteItem(deleteItemEnhancedRequest);
 		
 		logger.info("LoggedDBOperation: function-delete; table:teetimes; rows:1");
-		
-		TeeTime teeTime = new TeeTime(golfmain);
+		TeeTime teeTime = new TeeTime();
 		teeTime.setTeeTimeID(teeTimeID);
 		
 		refreshListsAndMaps("delete", teeTime); 		
@@ -260,23 +260,23 @@ public class TeeTimeDAO implements Serializable
 	{
 		if (function.equalsIgnoreCase("delete"))
 		{
-			this.getTeeTimesMap().remove(teeTime.getTeeTimeID());	
+			this.getFullTeeTimesMap().remove(teeTime.getTeeTimeID());	
 		}
 		else if (function.equalsIgnoreCase("add"))
 		{
-			this.getTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);	
+			this.getFullTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);	
 		}
 		else if (function.equalsIgnoreCase("update"))
 		{
-			this.getTeeTimesMap().remove(teeTime.getTeeTimeID());	
-			this.getTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);	
+			this.getFullTeeTimesMap().remove(teeTime.getTeeTimeID());	
+			this.getFullTeeTimesMap().put(teeTime.getTeeTimeID(), teeTime);	
 		}
 		
-		this.getTeeTimeList().clear();
-		Collection<TeeTime> values = this.getTeeTimesMap().values();
-		this.setTeeTimeList(new ArrayList<>(values));
+		this.getFullTeeTimesList().clear();
+		Collection<TeeTime> values = this.getFullTeeTimesMap().values();
+		this.setFullTeeTimesList(new ArrayList<>(values));
 		
-		Collections.sort(this.getTeeTimeList(), new Comparator<TeeTime>() 
+		Collections.sort(this.getFullTeeTimesList(), new Comparator<TeeTime>() 
 		{
 		   public int compare(TeeTime o1, TeeTime o2) 
 		   {
@@ -284,23 +284,22 @@ public class TeeTimeDAO implements Serializable
 		   }
 		});
 		
+	}
+
+	public Map<String, TeeTime> getFullTeeTimesMap() {
+		return fullTeeTimesMap;
+	}
+
+	public void setFullTeeTimesMap(Map<String, TeeTime> fullTeeTimesMap) {
+		this.fullTeeTimesMap = fullTeeTimesMap;
+	}
+
+	public List<TeeTime> getFullTeeTimesList() {
+		return fullTeeTimesList;
+	}
+
+	public void setFullTeeTimesList(List<TeeTime> fullTeeTimesList) {
+		this.fullTeeTimesList = fullTeeTimesList;
 	}	
 	
-	public List<TeeTime> getTeeTimeList() 
-	{
-		return teeTimeList;
 	}
-
-	public void setTeeTimeList(List<TeeTime> teeTimeList) 
-	{
-		this.teeTimeList = teeTimeList;
-	}
-
-	public Map<String, TeeTime> getTeeTimesMap() {
-		return teeTimesMap;
-	}
-
-	public void setTeeTimesMap(Map<String, TeeTime> teeTimesMap) {
-		this.teeTimesMap = teeTimesMap;
-	}	
-}

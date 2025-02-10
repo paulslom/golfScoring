@@ -1,6 +1,5 @@
 package com.pas.beans;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,28 +9,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.model.SelectItem;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
+import com.pas.dynamodb.DynamoCourseTee;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoPlayer;
 import com.pas.util.Utils;
 
-@Named("pc_Round")
-@Component
-@SessionScoped
-public class Round implements Serializable 
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Inject;
+
+public class Round implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LogManager.getLogger(Round.class);
@@ -56,14 +50,11 @@ public class Round implements Serializable
 	private Date signupDateTime;
 	private boolean disableFixScore = true;
 	private TeeTime teeTime;
-	private Player player;
+	private DynamoPlayer player;
 	private List<Score> roundbyHoleScores = new ArrayList<Score>();
 	
-	private List<Round> syncGameRoundList = Collections.synchronizedList(new ArrayList<>());	
+	private List<Round> syncGameRoundList = Collections.synchronizedList(new ArrayList<>());
 		
-	private List<Game> availableGamesList = new ArrayList<Game>();
-	private List<SelectItem> teamNumberList = new ArrayList<SelectItem>();
-	
 	private Round selectedRound;
 	
 	private Integer fixHole;
@@ -141,16 +132,9 @@ public class Round implements Serializable
 	
 	private List<Round> roundsForGame = new ArrayList<Round>();	
 	
-	@Autowired private final GolfMain golfmain;
-	@Autowired private final Game game;
-	
-	public Round(GolfMain golfmain, Game game) 
-	{
-		//logger.info("In Round constructor.  hash code is this: " + this.hashCode());
-		this.golfmain = golfmain;
-		this.game = game;		
-	}
-	
+	@Inject GolfMain golfmain;
+	@Inject Game game;
+
 	public String toString()
 	{
 		return "roundID = " + this.getRoundID() + " player: " + this.getPlayerName() + " handicap: " + this.getRoundHandicap()
@@ -184,61 +168,8 @@ public class Round implements Serializable
 		this.setDisableFixScore(false);
 		
 		return "";
-	}
+	}	
 	
-	public void onLoadGameHandicaps() 
-	{
-		if (game == null || game.getSelectedGame() == null)
-		{
-			game.setSelectedGame(golfmain.getFullGameList().get(0));
-			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
-		}
-		else if (CollectionUtils.isEmpty(this.getRoundsForGame()))
-		{
-			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
-		}				
-	}
-
-	public void onloadPickTeams() 
-	{
-		if (game == null || game.getSelectedGame() == null)
-		{
-			game.setSelectedGame(golfmain.getFullGameList().get(0));
-			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
-		}
-		else if (CollectionUtils.isEmpty(this.getRoundsForGame()))
-		{
-			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
-		}
-		
-		createTeamNumberList(game.getSelectedGame());	
-	}
-	
-	private void createTeamNumberList(Game game) 
-	{
-		this.getTeamNumberList().clear();
-		
-		SelectItem selItem = new SelectItem();
-		selItem.setLabel("--select--");
-		selItem.setValue("0");
-		this.getTeamNumberList().add(selItem);
-		
-		//add team -1 in case this person is skins only!
-		selItem = new SelectItem();
-		selItem.setLabel("Skins Only");
-		selItem.setValue("-1");
-		this.getTeamNumberList().add(selItem);
-			
-		for (int i = 1; i <= game.getTotalTeams(); i++) 
-		{
-			selItem = new SelectItem();
-			selItem.setLabel(String.valueOf(i));
-			selItem.setValue(String.valueOf(i));
-			this.getTeamNumberList().add(selItem);
-		}			
-		
-	}
-
 	public String resetTeams() 
 	{
 		logger.info("User clicked reset teams from player selection screen");
@@ -369,7 +300,7 @@ public class Round implements Serializable
 				for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 				{
 					Round rd = this.getRoundsForGame().get(j);
-					Player tempPlayer = rd.getPlayer();
+					DynamoPlayer tempPlayer = rd.getPlayer();
 					if (aPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						rd.setTeamNumber(i+1);
@@ -382,7 +313,7 @@ public class Round implements Serializable
 				for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 				{
 					Round rd = this.getRoundsForGame().get(j);
-					Player tempPlayer = rd.getPlayer();
+					DynamoPlayer tempPlayer = rd.getPlayer();
 					if (bPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						rd.setTeamNumber(i+1);
@@ -394,7 +325,7 @@ public class Round implements Serializable
 				for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 				{
 					Round rd = this.getRoundsForGame().get(j);
-					Player tempPlayer = rd.getPlayer();
+					DynamoPlayer tempPlayer = rd.getPlayer();
 					if (cPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 					{
 						rd.setTeamNumber(i+1);
@@ -409,7 +340,7 @@ public class Round implements Serializable
 					for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 					{
 						Round rd = this.getRoundsForGame().get(j);
-						Player tempPlayer = rd.getPlayer();
+						DynamoPlayer tempPlayer = rd.getPlayer();
 						if (dPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
@@ -425,7 +356,7 @@ public class Round implements Serializable
 					for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 					{
 						Round rd = this.getRoundsForGame().get(j);
-						Player tempPlayer = rd.getPlayer();
+						DynamoPlayer tempPlayer = rd.getPlayer();
 						if (ePlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
@@ -441,7 +372,7 @@ public class Round implements Serializable
 					for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 					{
 						Round rd = this.getRoundsForGame().get(j);
-						Player tempPlayer = rd.getPlayer();
+						DynamoPlayer tempPlayer = rd.getPlayer();
 						if (fPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
@@ -457,7 +388,7 @@ public class Round implements Serializable
 					for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 					{
 						Round rd = this.getRoundsForGame().get(j);
-						Player tempPlayer = rd.getPlayer();
+						DynamoPlayer tempPlayer = rd.getPlayer();
 						if (gPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
@@ -473,7 +404,7 @@ public class Round implements Serializable
 					for (int j = 0; j < this.getRoundsForGame().size(); j++) 
 					{
 						Round rd = this.getRoundsForGame().get(j);
-						Player tempPlayer = rd.getPlayer();
+						DynamoPlayer tempPlayer = rd.getPlayer();
 						if (hPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
 						{
 							rd.setTeamNumber(i+1);
@@ -502,19 +433,17 @@ public class Round implements Serializable
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 	
-		Game selectedOption = (Game)selectonemenu.getValue();
+		DynamoGame dynamoGame = (DynamoGame)selectonemenu.getValue();
 		
-		if (selectedOption != null)
+		if (dynamoGame != null)
 		{
-			this.setRoundsForGame(golfmain.getRoundsForGame(selectedOption));
-		}
-		
-		createTeamNumberList(selectedOption);
+			this.setRoundsForGame(golfmain.getRoundsForGame(dynamoGame));
+			game.createTeamNumberList(dynamoGame);
+		}	
 		
 	}
-	
 
-	public String proceedToPreGameEmail() throws IOException
+	public String proceedToPreGameEmail()
 	{
 		logger.info("User is done with picking teams for game, proceed to pregame email");
 		
@@ -524,10 +453,8 @@ public class Round implements Serializable
 		{
 			game.onLoadPreGameEmail();
 		}
-		
-		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/emailPreGame.xhtml");
-		
-		return "";
+
+		return "/auth/admin/emailPreGame.xhtml";
 	}
 	
 	public String saveAndStayPickTeams()
@@ -564,55 +491,54 @@ public class Round implements Serializable
 		
 		return "";
 	}
-	public String proceedToPickTeams() throws IOException
+	public String proceedToPickTeams()
 	{
 		logger.info("Game Handicap entry done, proceed to pick teams");
-		updateGameHandicaps();
-		
-		FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/pickTeams.xhtml");
-		
-		return "";
-	}
-	
-	public String updateGameHandicaps()
-	{
+
 		try
 		{
-			int totalPlayersForGame = game.getSelectedGame().getTotalPlayers();
-			int totalRoundsForGame = 0;
-			
-			for (int i = 0; i < this.getRoundsForGame().size(); i++) 
-			{
-				totalRoundsForGame++;
-				
-				Round rd = this.getRoundsForGame().get(i);
-				Player player = rd.getPlayer();
-				golfmain.updatePlayer(player);
-				
-				CourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());			
-				BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
-				
-				golfmain.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);			
-			}
-			
-			this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));			
-			FacesContext context = FacesContext.getCurrentInstance();			
-		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
-		    
-		    if (totalRoundsForGame > totalPlayersForGame)
-			{
-				String msg = "updateGameHandicaps: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
-				throw new Exception(msg);
-			}				
-			
+			updateGameHandicaps();
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 			FacesContext context = FacesContext.getCurrentInstance();
-		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-		}		
-	 
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			return "";
+		}
+
+		return "/auth/admin/pickTeams.xhtml";
+	}
+	
+	public String updateGameHandicaps() throws Exception
+	{
+		int totalPlayersForGame = game.getSelectedGame().getTotalPlayers();
+		int totalRoundsForGame = 0;
+
+		for (int i = 0; i < this.getRoundsForGame().size(); i++)
+		{
+			totalRoundsForGame++;
+
+			Round rd = this.getRoundsForGame().get(i);
+			DynamoPlayer player = rd.getPlayer();
+			golfmain.updatePlayer(player);
+
+			DynamoCourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());
+			BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
+
+			golfmain.updateRoundHandicap(game.getSelectedGame(), player.getPlayerID(), newRoundHandicap);
+		}
+
+		this.setRoundsForGame(golfmain.getRoundsForGame(game.getSelectedGame()));
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
+
+		if (totalRoundsForGame > totalPlayersForGame)
+		{
+			String msg = "updateGameHandicaps: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+			throw new Exception(msg);
+		}
+
 		return "";
 	}
 	
@@ -716,9 +642,11 @@ public class Round implements Serializable
 	{
 		logger.info(getTempUserName() + " in onLoadGameEnterScores");
 		
-		Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
+		DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 	
 		boolean adminUser = Utils.isAdminUser();
+		
+		List<DynamoGame> availableGamesList = new ArrayList<>();
 		
 		if (adminUser)
 		{
@@ -732,7 +660,7 @@ public class Round implements Serializable
 		//let's take the first one
 		if (availableGamesList != null && availableGamesList.size() > 0)
 		{
-			Game aGame = availableGamesList.get(0);			
+			DynamoGame aGame = availableGamesList.get(0);			
 			this.setSyncGameRoundList(golfmain.getRoundsForGame(aGame));
 			setUpGameEnterScores(tempPlayer);		
 		}
@@ -745,7 +673,7 @@ public class Round implements Serializable
 		return "";
 	}
 	
-	private void setUpGameEnterScores(Player tempPlayer) 
+	private void setUpGameEnterScores(DynamoPlayer tempPlayer) 
 	{
 		/*
 		boolean adminUser = Utils.isAdminUser();		
@@ -799,7 +727,7 @@ public class Round implements Serializable
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 			
-		Game selectedOption = (Game)selectonemenu.getValue();
+		DynamoGame selectedOption = (DynamoGame)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
@@ -814,11 +742,11 @@ public class Round implements Serializable
 		
 		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
 		
-		Game selectedOption = (Game)selectonemenu.getValue();
+		DynamoGame selectedOption = (DynamoGame)selectonemenu.getValue();
 		
 		if (selectedOption != null)
 		{
-			Player tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
+			DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
 		
 			this.getSyncGameRoundList().clear();
 			this.setSyncGameRoundList(golfmain.getRoundsForGame(selectedOption));		
@@ -827,16 +755,20 @@ public class Round implements Serializable
 						
 	}
 	
-	public String runGameNavigate() throws IOException
+	public String runGameNavigate()
 	{
 		boolean allScoresEntered = validateScores();
 			
 		if (allScoresEntered)
 		{
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/auth/admin/runGame.xhtml");			
+			return "/auth/admin/runGame.xhtml";
 		}
-		
-		return "";		
+		else
+		{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Not all scores entered",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return "";
+		}
 	}
 	
 	private boolean validateScores() 
@@ -996,7 +928,7 @@ public class Round implements Serializable
 					
 					tempRound.setNetScore((new BigDecimal(tempRound.getTotalScore())).subtract(tempRound.getRoundHandicap()));
 					
-					Game game = golfmain.getGameByGameID(tempRound.getGameID());
+					DynamoGame game = golfmain.getGameByGameID(tempRound.getGameID());
 					Course course = golfmain.getCoursesMap().get(game.getCourseID());
 					int coursePar = course.getCoursePar();
 					int scoreToPar = tempRound.getTotalScore() - coursePar;
@@ -1109,16 +1041,13 @@ public class Round implements Serializable
 		this.roundbyHoleScores = roundbyHoleScores;
 	}
 
-	public Player getPlayer() {
+	public DynamoPlayer getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(DynamoPlayer player) {
 		this.player = player;
 	}
-
-	
-
 	public String getHole1StyleClass() {
 		return hole1StyleClass;
 	}
@@ -1556,14 +1485,6 @@ public class Round implements Serializable
 		this.disableRunGameNavigate = disableRunGameNavigate;
 	}
 
-	public List<Game> getAvailableGamesList() {
-		return availableGamesList;
-	}
-
-	public void setAvailableGamesList(List<Game> availableGamesList) {
-		this.availableGamesList = availableGamesList;
-	}
-
 	public Integer getFixHole() {
 		return fixHole;
 	}
@@ -1793,14 +1714,6 @@ public class Round implements Serializable
 
 	public void setRoundsForGame(List<Round> roundsForGame) {
 		this.roundsForGame = roundsForGame;
-	}
-
-	public List<SelectItem> getTeamNumberList() {
-		return teamNumberList;
-	}
-
-	public void setTeamNumberList(List<SelectItem> teamNumberList) {
-		this.teamNumberList = teamNumberList;
 	}
 
 	public String getRoundID() {

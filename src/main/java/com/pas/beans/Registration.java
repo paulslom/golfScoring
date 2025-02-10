@@ -7,20 +7,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
-@Named("pc_Registration")
-@SessionScoped
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+
 public class Registration implements Serializable
 {
 	private String firstName;
@@ -40,13 +36,8 @@ public class Registration implements Serializable
 
 	private static Logger logger = LogManager.getLogger(Registration.class);	
 	
-	@Autowired private final GolfMain golfmain;
-	
-	public Registration(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-	}
-	
+	@Inject GolfMain golfmain;
+
 	public String changePassword()
 	{
 		boolean valid = true;

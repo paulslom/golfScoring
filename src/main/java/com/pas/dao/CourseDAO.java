@@ -13,10 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pas.beans.Course;
-import com.pas.beans.Group;
 import com.pas.beans.Hole;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoCourse;
+import com.pas.dynamodb.DynamoGroup;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -29,7 +29,7 @@ public class CourseDAO implements Serializable
 	private static Logger logger = LogManager.getLogger(CourseDAO.class);
 	
 	private Map<String,Course> coursesMap = new HashMap<>();
-	private List<Course> courseSelections = new ArrayList<Course>();
+	private List<Course> coursesList = new ArrayList<>();
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoCourse> coursesTable;
 	private static final String AWS_TABLE_NAME = "courses";
@@ -47,7 +47,7 @@ public class CourseDAO implements Serializable
 		   }	   
 	}
 	
-	public void readCoursesFromDB(Group grp)
+	public void readCoursesFromDB(DynamoGroup grp)
     {
 		Iterator<DynamoCourse> results = coursesTable.scan().items().iterator();
 		
@@ -67,118 +67,136 @@ public class CourseDAO implements Serializable
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(1);
 			hole.setPar(dynamoCourse.getHole1Par());
-			course.getHolesList().add(hole);			
+			course.getHolesList().add(hole);
+			course.setHole1Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(2);
 			hole.setPar(dynamoCourse.getHole2Par());
 			course.getHolesList().add(hole);
+			course.setHole2Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(3);
 			hole.setPar(dynamoCourse.getHole3Par());
 			course.getHolesList().add(hole);			
+			course.setHole3Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(4);
 			hole.setPar(dynamoCourse.getHole4Par());
 			course.getHolesList().add(hole);
+			course.setHole4Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(5);
 			hole.setPar(dynamoCourse.getHole5Par());
 			course.getHolesList().add(hole);			
+			course.setHole5Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(6);
 			hole.setPar(dynamoCourse.getHole6Par());
 			course.getHolesList().add(hole);
+			course.setHole6Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(7);
 			hole.setPar(dynamoCourse.getHole7Par());
 			course.getHolesList().add(hole);			
+			course.setHole7Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(8);
 			hole.setPar(dynamoCourse.getHole8Par());
 			course.getHolesList().add(hole);			
+			course.setHole8Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(9);
 			hole.setPar(dynamoCourse.getHole9Par());
 			course.getHolesList().add(hole);
+			course.setHole9Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(10);
 			hole.setPar(dynamoCourse.getHole10Par());
 			course.getHolesList().add(hole);			
+			course.setHole10Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(11);
 			hole.setPar(dynamoCourse.getHole11Par());
 			course.getHolesList().add(hole);
+			course.setHole11Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(12);
 			hole.setPar(dynamoCourse.getHole12Par());
 			course.getHolesList().add(hole);			
+			course.setHole12Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(13);
 			hole.setPar(dynamoCourse.getHole13Par());
 			course.getHolesList().add(hole);
+			course.setHole13Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(14);
 			hole.setPar(dynamoCourse.getHole14Par());
-			course.getHolesList().add(hole);			
+			course.getHolesList().add(hole);
+			course.setHole14Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(15);
 			hole.setPar(dynamoCourse.getHole15Par());
 			course.getHolesList().add(hole);
+			course.setHole15Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(16);
 			hole.setPar(dynamoCourse.getHole16Par());
-			course.getHolesList().add(hole);			
+			course.getHolesList().add(hole);
+			course.setHole16Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(17);
 			hole.setPar(dynamoCourse.getHole17Par());
-			course.getHolesList().add(hole);			
+			course.getHolesList().add(hole);
+			course.setHole17Par(hole.getPar());
 			
 			hole = new Hole();
 			hole.setCourseID(course.getCourseID());
 			hole.setHoleNumber(18);
 			hole.setPar(dynamoCourse.getHole18Par());
 			course.getHolesList().add(hole);
+			course.setHole18Par(hole.getPar());
 			
 			course.setHolesMap(course.getHolesList().stream().collect(Collectors.toMap(listHole->listHole.getHoleNumber(),listHole-> listHole)));
 			
-            this.getCourseSelections().add(course);			
+            this.getCoursesList().add(course);			
         }
 		
-		logger.info("LoggedDBOperation: function-inquiry; table:course; rows:" + this.getCourseSelections().size());
+		logger.info("LoggedDBOperation: function-inquiry; table:course; rows:" + this.getCoursesList().size());
 		
-		coursesMap = this.getCourseSelections().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
+		coursesMap = this.getCoursesList().stream().collect(Collectors.toMap(Course::getCourseID, course -> course));
     }
 	
 	public String addCourse(Course course) throws Exception
@@ -244,11 +262,33 @@ public class CourseDAO implements Serializable
 		this.coursesMap = coursesMap;
 	}
 
-	public List<Course> getCourseSelections() {
-		return courseSelections;
+	public List<Course> getCoursesList() {
+		return coursesList;
 	}
 
-	public void setCourseSelections(List<Course> courseSelections) {
-		this.courseSelections = courseSelections;
+	public void setCoursesList(List<Course> coursesList) {
+		this.coursesList = coursesList;
 	}
+
+	public String getPlayersCourseCourseID() 
+	{
+		String id = "";
+		
+		for (int i = 0; i < this.getCoursesList().size(); i++) 
+		{
+			Course course = this.getCoursesList().get(i);
+			if (course.getCourseName().equalsIgnoreCase("Bryan Park Players"))
+			{
+				id = course.getCourseID();
+				break;
+			}
+		}
+		return id;
+	}
+	
+	public Course getCourseByCourseID(String courseID) 
+	{
+		return this.getCoursesMap().get(courseID);
+	}
+
 }

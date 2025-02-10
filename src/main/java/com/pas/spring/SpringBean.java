@@ -13,8 +13,7 @@ public class SpringBean
 {
 	//private static Logger logger = LogManager.getLogger(SpringBean.class);	
 	
-	@Autowired
-    private ServletContext servletContext;
+	@Autowired private ServletContext servletContext;
 
     @PostConstruct
     public void showIt() 

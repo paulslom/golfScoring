@@ -3,6 +3,7 @@ package com.pas.dynamodb;
 import java.math.BigDecimal;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
@@ -18,6 +19,8 @@ public class DynamoPlayer
 	private String emailAddress;
 	private boolean active;
 
+	private String role;
+	
 	@DynamoDbPartitionKey //primary key
 	public String getPlayerID() {
 		return playerID;
@@ -83,5 +86,20 @@ public class DynamoPlayer
 
 	public void setOldPlayerID(int oldPlayerID) {
 		this.oldPlayerID = oldPlayerID;
+	}
+
+	public String getFullName() 
+	{
+		return firstName + " " + lastName;
+	}
+
+	@DynamoDbIgnore
+	public String getRole() {
+		return role;
+	}
+
+	@DynamoDbIgnore
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

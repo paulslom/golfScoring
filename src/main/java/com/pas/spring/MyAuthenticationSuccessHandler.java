@@ -18,8 +18,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 { 
 	private static Logger logger = LogManager.getLogger(MyAuthenticationSuccessHandler.class);
 	
-	@Autowired
-    private SpringBean springBean;
+	@Autowired SpringBean springBean;
 	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 

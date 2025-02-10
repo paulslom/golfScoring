@@ -12,7 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pas.beans.GolfMain;
-import com.pas.beans.Group;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGroup;
 
@@ -25,8 +24,9 @@ public class GroupDAO implements Serializable
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LogManager.getLogger(GroupDAO.class);
 	
-	private Map<String,Group> groupsMap = new HashMap<>();
-	private List<Group> groupsList = new ArrayList<>();
+	private Map<String,DynamoGroup> groupsMap = new HashMap<>();
+
+	private List<DynamoGroup> groupsList = new ArrayList<>();
 	
 	private static DynamoClients dynamoClients;
 	private static DynamoDbTable<DynamoGroup> groupsTable;
@@ -59,38 +59,33 @@ public class GroupDAO implements Serializable
         {
 			DynamoGroup dynamoGroup = results.next();
             
-			Group group = new Group(golfmain);
-			group.setGroupID(dynamoGroup.getGroupID());
-			group.setGroupName(dynamoGroup.getGroupName());
+
 			
-            this.getGroupsList().add(group);			
+            this.getGroupsList().add(dynamoGroup);
         }
 		
 		logger.info("successfully read groups in readGroupsFromDB");
 		
 		logger.info("LoggedDBOperation: function-inquiry; table:group; rows:" + this.getGroupsList().size());
 		
-		groupsMap = this.getGroupsList().stream().collect(Collectors.toMap(Group::getGroupID, group -> group));	 		
+		groupsMap = this.getGroupsList().stream().collect(Collectors.toMap(DynamoGroup::getGroupID, group -> group));
 	}
 
-	public Map<String, Group> getGroupsMap() 
-	{
-		return groupsMap;
-	}
-
-	public void setGroupsMap(Map<String, Group> groupsMap) 
-	{
-		this.groupsMap = groupsMap;
-	}
-
-	public List<Group> getGroupsList() 
-	{
+	public List<DynamoGroup> getGroupsList() {
 		return groupsList;
 	}
 
-	public void setGroupsList(List<Group> groupsList) 
-	{
+	public void setGroupsList(List<DynamoGroup> groupsList) {
 		this.groupsList = groupsList;
-	}	
+	}
+
+	public Map<String, DynamoGroup> getGroupsMap() {
+		return groupsMap;
+	}
+
+	public void setGroupsMap(Map<String, DynamoGroup> groupsMap) {
+		this.groupsMap = groupsMap;
+	}
+
 
 }

@@ -14,14 +14,14 @@
 	   			       
           <p:dataTable id="playerTeePrefsTableID" value="#{pc_GolfMain.fullPlayerTeePreferencesList}"
 	          var="plyr" scrollable="true" scrollHeight="550" sortyBy="#{plyr.playerFullName}" 
-	          selectionMode="single" selection="#{pc_PlayerTeePreference.selectedPlayerTeePreference}" rowKey="#{plyr.playerTeePreferenceID}"
+	          selectionMode="single" selection="#{pc_GolfMain.selectedPlayerTeePreference}" rowKey="#{plyr.playerTeePreferenceID}"
 	          style="font-size:12px;">							
 				
 	          <f:facet name="header">
    				  <h:outputText value="Player Tee Prefs"/>
 			  </f:facet>
 			  
-			  <p:ajax event="rowSelect" listener="#{pc_PlayerTeePreference.selectRowAjax}"  update="playerTeePrefsForm:maintainPlayerTeeButtonID"/>
+			  <p:ajax event="rowSelect" listener="#{pc_GolfMain.selectRowAjax}"  update="playerTeePrefsForm:maintainPlayerTeeButtonID"/>
 						
 			  <p:column style="width:5%" headerText="ID" sortBy="#{plyr.playerTeePreferenceID}">												
 				  <h:outputText value="#{plyr.playerTeePreferenceID}"/>														
@@ -46,9 +46,9 @@
 				  		        
            <p:commandButton id="maintainPlayerTeeButtonID"
                 value="#{bundle.update}"
-                disabled="#{pc_PlayerTeePreference.disableDialogButton}"
+                disabled="#{pc_GolfMain.disableDialogButton}"
                 update="maintainPlayerTeeDialogID"
-                action="#{pc_PlayerTeePreference.setUpForUpdate}"
+                action="#{pc_GolfMain.setUpForUpdate}"
 				oncomplete="PF('maintainPlayerTeeDialog').show();">
 			</p:commandButton>	
 						
@@ -70,7 +70,7 @@
 					 </td>	
 					 
 		             <td class="text">
-		                <p:outputLabel value="#{pc_PlayerTeePreference.playerFullName}"/>
+		                <p:outputLabel value="#{pc_GolfMain.playerFullName}"/>
 		             </td>
 		             
 		          </tr>
@@ -82,7 +82,7 @@
 					 </td>	
 					 
 		             <td class="text">
-		                <p:outputLabel value="#{pc_PlayerTeePreference.courseName}"/>
+		                <p:outputLabel value="#{pc_GolfMain.courseName}"/>
 		             </td>
 		             
 		          </tr>
@@ -94,7 +94,7 @@
 					 </td>	
 					 
 		             <td class="text">
-		                 <p:selectOneRadio id="teeColorID" value="#{pc_PlayerTeePreference.teeColor}">
+		                 <p:selectOneRadio id="teeColorID" value="#{pc_GolfMain.teeColor}">
                        		<f:selectItem itemLabel="Red" itemValue="Red" />
 							<f:selectItem itemLabel="Gold" itemValue="Gold" />
 							<f:selectItem itemLabel="White" itemValue="White" />
@@ -109,7 +109,7 @@
 						
 						   <p:commandButton 
 							   value="#{bundle.ok}" 
-							   action="#{pc_PlayerTeePreference.updatePrefs}"																   
+							   action="#{pc_GolfMain.updatePrefs}"																   
 							   oncomplete="PF('maintainPlayerTeeDialog').hide();">
 						   </p:commandButton> 
 						   

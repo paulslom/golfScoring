@@ -10,405 +10,195 @@
 	    <f:viewAction action="#{pc_Game.onLoadGameList}" />
 	</f:metadata> 
 	
-    <ui:define name="content">
- 	    
-	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
+    <ui:define name="content">	   
 	 	
 	   <h:form id="gameForm">                  
+			
+		  <p:outputPanel id="gameInquiryPanel" style="display:block" rendered="#{pc_Game.renderInquiry}">	
+		  		
+		      <p:dataTable id="gamesTableID" value="#{pc_GolfMain.fullGameList}"
+		          var="game" scrollable="true" scrollHeight="350"
+		          selectionMode="single" selection="#{pc_Game.selectedGame}" rowKey="#{game.gameID}"
+		          style="font-size:11px;">							
+					
+		          <f:facet name="header">
+	   				  <h:outputText value="Games"/>
+				  </f:facet>
+				  
+				  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowAjax}"/>
+					
+				  <p:column style="width:5%" headerText="View">	
+						  
+				     <p:commandButton id="gameViewId"
+					   	value="View"
+						action="#{pc_Game.selectGameAcid}"
+						update="gameForm">
+						<f:param name="operation" value="View" />
+  						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>			
+				   	 
+                  </p:column>
+                        
+                  <p:column style="width:5%" headerText="Chg">	
+                        		
+				     <p:commandButton id="gameChgId"
+					  	value="Chg"
+						action="#{pc_Game.selectGameAcid}"
+						update="gameForm">
+						<f:param name="operation" value="Update" />
+  						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 	
+                 </p:column>
+                        
+                 <p:column style="width:5%" headerText="Del">	
+                        		
+				   	 <p:commandButton id="gameDelId"
+				  	    value="Del"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="Delete" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>
+                  
+                  <p:column style="width:5%" headerText="Tee Times">	
+                        		
+				   	 <p:commandButton id="gameTeeTimesId"
+				  	    value="Tee Times"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="TeeTimes" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>	                          
+	              
+	              <p:column style="width:5%" headerText="Scores">	
+		             <p:commandButton id="scoresButtonID"
+		               value="Scores"
+		               action="#{pc_Game.selectGameAcid}"
+					   update="gameForm">
+					   <f:param name="operation" value="Scores" />
+	 				   <f:param name="id" value="#{game.gameID}" />
+				     </p:commandButton> 
+				  </p:column>
+				  
+	              <p:column style="width:5%" headerText="Run">	
+		             <p:commandButton id="runGameButtonID"
+		               value="Run Game"
+		               action="#{pc_Game.selectGameAcid}"
+					   update="gameForm">
+					   <f:param name="operation" value="RunGame" />
+	 				   <f:param name="id" value="#{game.gameID}" />
+				     </p:commandButton> 
+				  </p:column>
+				                 		
+				  <p:column style="width:9%" headerText="ID" sortBy="#{game.gameID}">												
+					  <h:outputText value="#{game.gameID}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:9%" headerText="Date" sortBy="#{game.gameDate}">												
+					  <h:outputText value="#{game.gameDateDisplay}">
+					     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
+					  </h:outputText>														
+				  </p:column>
+				  
+				  <p:column style="width:9%" headerText="Course" sortBy="#{game.courseName}">												
+					  <h:outputText value="#{game.courseName}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Bet Amt" sortBy="#{game.betAmount}">												
+					  <h:outputText value="#{game.betAmount}">
+					    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Field Size" sortBy="#{game.fieldSize}">												
+					  <h:outputText value="#{game.fieldSize}">					    
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Total Players" sortBy="#{game.totalPlayers}">												
+					  <h:outputText value="#{game.totalPlayers}">					    
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Total Teams" sortBy="#{game.totalTeams}">												
+					  <h:outputText value="#{game.totalTeams}">					     
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Total Team Balls" sortBy="#{game.howManyBalls}">												
+					  <h:outputText value="#{game.howManyBalls}">					    
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Team Ball Value" sortBy="#{game.eachBallWorth}">												
+					  <h:outputText value="#{game.eachBallWorth}">
+					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Team Pot" sortBy="#{game.teamPot}">												
+					  <h:outputText value="#{game.teamPot}">
+					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Skins Pot" sortBy="#{game.skinsPot}">												
+					  <h:outputText value="#{game.skinsPot}">
+					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Game Fee" sortBy="#{game.gameFee}">												
+					  <h:outputText value="#{game.gameFee}">
+					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Purse Amt" sortBy="#{game.purseAmount}">												
+					  <h:outputText value="#{game.purseAmount}">
+					    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Indiv Grs" sortBy="#{game.individualGrossPrize}">												
+					  <h:outputText value="#{game.individualGrossPrize}">
+					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:4%" headerText="Indiv Net" sortBy="#{game.individualNetPrize}">												
+					  <h:outputText value="#{game.individualNetPrize}">
+					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
+					  </h:outputText>   														
+				  </p:column>
+			  
+			  </p:dataTable>
+				 	
+		      <p:messages id="facesMessages" showDetail="false">
+		      </p:messages>   
+			
+			  <p:commandButton id="gameAddId"
+				  value="#{bundle.add}"
+				  action="#{pc_Game.selectGameAcid}"
+				  update="gameForm">
+				  <f:param name="operation" value="Add" />
+			  </p:commandButton>		  
+			  
+		   </p:outputPanel>
+		   
+		   <p:outputPanel id="gameUpdatePanel" style="display:block" rendered="#{pc_Game.renderAddUpdateDelete}">
 						
-	      <p:dataTable id="gamesTableID" value="#{pc_GolfMain.fullGameList}"
-	          var="game" scrollable="true" scrollHeight="350"
-	          selectionMode="single" selection="#{pc_Game.selectedGame}" rowKey="#{game.gameID}"
-	          style="font-size:11px;">							
-				
-	          <f:facet name="header">
-   				  <h:outputText value="Games"/>
-			  </f:facet>
-			  
-			   <p:ajax event="rowSelect" listener="#{pc_Game.selectRowAjax}" 
-			       update="gameForm:maintainGameButtonID" ></p:ajax>
-						
-			  <p:column style="width:3%" headerText="ID" sortBy="#{game.gameID}">												
-				  <h:outputText value="#{game.gameID}"/>														
-			  </p:column>
-			  
-			  <p:column style="width:10%" headerText="Date" sortBy="#{game.gameDate}">												
-				  <h:outputText value="#{game.gameDateDisplay}">
-				     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
-				  </h:outputText>														
-			  </p:column>
-			  
-			  <p:column style="width:10%" headerText="Course" sortBy="#{game.courseName}">												
-				  <h:outputText value="#{game.courseName}"/>														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Bet Amt" sortBy="#{game.betAmount}">												
-				  <h:outputText value="#{game.betAmount}">
-				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Field Size" sortBy="#{game.fieldSize}">												
-				  <h:outputText value="#{game.fieldSize}">					    
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Total Players" sortBy="#{game.totalPlayers}">												
-				  <h:outputText value="#{game.totalPlayers}">					    
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Total Teams" sortBy="#{game.totalTeams}">												
-				  <h:outputText value="#{game.totalTeams}">					     
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Total Team Balls" sortBy="#{game.howManyBalls}">												
-				  <h:outputText value="#{game.howManyBalls}">					    
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Team Ball Value" sortBy="#{game.eachBallWorth}">												
-				  <h:outputText value="#{game.eachBallWorth}">
-				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:6%" headerText="Team Pot" sortBy="#{game.teamPot}">												
-				  <h:outputText value="#{game.teamPot}">
-				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:7%" headerText="Skins Pot" sortBy="#{game.skinsPot}">												
-				  <h:outputText value="#{game.skinsPot}">
-				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:7%" headerText="Game Fee" sortBy="#{game.gameFee}">												
-				  <h:outputText value="#{game.gameFee}">
-				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:7%" headerText="Purse Amt" sortBy="#{game.purseAmount}">												
-				  <h:outputText value="#{game.purseAmount}">
-				    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:7%" headerText="Indiv Grs" sortBy="#{game.individualGrossPrize}">												
-				  <h:outputText value="#{game.individualGrossPrize}">
-				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-			  
-			  <p:column style="width:7%" headerText="Indiv Net" sortBy="#{game.individualNetPrize}">												
-				  <h:outputText value="#{game.individualNetPrize}">
-				     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-				  </h:outputText>   														
-			  </p:column>
-		  
-		  </p:dataTable>
-			 	
-	      <p:messages id="facesMessages" showDetail="false">
-	      </p:messages>   
-				        
-          <p:commandButton id="maintainGameButtonID"
-               value="#{bundle.update}"
-               disabled="#{pc_Game.disableGameDialogButton}"
-               action="#{pc_Game.updateGame}"
-			   update="maintainGamesDialogID"
-			   oncomplete="PF('maintainGamesDialog').show();">
-		  </p:commandButton>	
-		
-		  <p:commandButton id="addGameButtonID"
-               value="#{bundle.add}"
-               update="gameForm"
-               action="#{pc_Game.addGameFromGameList}">
-		  </p:commandButton>
+			  <ui:include src="/auth/admin/gameAddUpdateDelete.xhtml"/>		
+		       
+		   </p:outputPanel>
 					
 		</h:form> 	
-	
-		<p:dialog id="maintainGamesDialogID" showEffect="fade" hideEffect="explode" header="#{pc_Game.operation} Game" 
-			          widgetVar="maintainGamesDialog" position="center center" width="540" height="620">				
-			
-			<p:ajax event="close" update="gameForm:gamesTableID" />						
-	    
-			<h:form id="gameDialogForm">				
-				
-				<table id="gamemaintainTableID">
-     
-				  <tr>
-				  		
-		  			 <td class="textLabel">
-						<p:outputLabel value="#{bundle.id}" rendered="#{pc_Game.operation=='Update'}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:outputLabel value="#{pc_Game.gameID}" rendered="#{pc_Game.operation=='Update'}"/>
-		             </td>
-		             
-		          </tr>
-		      
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="gameDateID" value="Game Date"/>
-					 </td>	
-					 
-		             <td  colspan="2" class="text">
-		                <p:calendar id="gameDateID" 
-		        	        size="23"
-		        	        required="true"
-		        	        readonlyInput="false" 
-		        	        value="#{pc_Game.gameDate}"
-		        			mode="popup" showOn="both" pattern="MM/dd/yyyy" yearRange="c-120:c">						        									            			
-		        	    </p:calendar>
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-			          <td class="textLabelMiddle">
-		                <p:outputLabel for="courseListID" value="#{bundle.course}"/>
-		              </td>
-		             
-		             <td colspan="2" class="text">
-						
-					    <p:selectOneMenu id="courseListID" value="#{pc_Game.courseID}" required="true"  hideNoSelectionOption="true">
-					        <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-							<f:selectItems value="#{pc_GolfMain.courseSelections}" var="c" itemLabel="#{c.courseName}" itemValue="#{c.courseID}"/>					
-						</p:selectOneMenu>
-						
-					 </td>
-				  </tr>
-				  
-				   <tr>
-			  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="fieldSizeID" value="Field Size"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:selectOneMenu id="fieldSizeID" value="#{pc_Game.fieldSize}" required="true">
-							<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
-							<p:ajax event="valueChange" listener="#{pc_Game.valueChgFieldSize}" 
-							   update="gameForm:gamesTableID gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID 
-							   		   gameDialogForm:totalPlayersID gameDialogForm:teamPotID gameDialogForm:gameFeeID gameDialogForm:skinsPotID
-							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID 
-							           gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID  " />
-						</p:selectOneMenu>									
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="betAmtID" value="Bet Amount"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="betAmtID" size="8" value="#{pc_Game.betAmount}" required="true"/>
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="totalPlayersID" value="Total Players"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:selectOneMenu id="totalPlayersID" value="#{pc_Game.totalPlayers}" required="true">
-							<f:selectItems value="#{pc_GolfMain.totalPlayersSelections}"/>
-							<p:ajax event="valueChange" listener="#{pc_Game.valueChgTotalPlayersUpdate}" 
-							   update="gameDialogForm:totalTeamsID gameDialogForm:howManyBallsID gameDialogForm:teamBallValueID gameDialogForm:gameFeeID gameDialogForm:teamPotID gameDialogForm:skinsPotID
-							           gameDialogForm:individualGrossID gameDialogForm:individualNetID gameDialogForm:purseID gameDialogForm:gameNoteID gameDialogForm:playBallMethodID gameDialogForm:teeTimesID " />
-						</p:selectOneMenu>						
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="totalTeamsID" value="Total Teams"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:selectOneMenu id="totalTeamsID" value="#{pc_Game.totalTeams}" required="true">
-							<f:selectItems value="#{pc_GolfMain.totalTeamsSelections}"/>
-							<p:ajax event="valueChange" update="gameDialogForm:purseID" />
-						</p:selectOneMenu>
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="howManyBallsID" value="How Many Balls"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:selectOneMenu id="howManyBallsID" value="#{pc_Game.howManyBalls}" required="true">
-							<f:selectItems value="#{pc_GolfMain.howManyBallsSelections}"/>
-							<p:ajax event="valueChange" update="gameDialogForm:teamPotID" />
-						</p:selectOneMenu>
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-				  		
-		  			 <td class="textLabelMiddle">
-						<p:outputLabel for="teamBallValueID" value="Each Ball Worth"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="teamBallValueID" size="8" value="#{pc_Game.eachBallWorth}" required="true">
-		                    <p:ajax event="valueChange" update="gameDialogForm:teamPotID"/> 
-		                </p:inputText>         
-		             </td>
-		             
-		          </tr>
-		          
-		          <tr>
-			         <td class="textLabelMiddle">
-						<p:outputLabel for="teamPotID" value="#{bundle.teamPot}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="teamPotID" size="8" value="#{pc_Game.teamPot}" required="true"/> 
-		             </td>				 
-	        	  </tr>
-	        	  
-	        	  <tr>
-					 <td class="textLabelMiddle">
-						<p:outputLabel for="skinsPotID" value="#{bundle.skinsPot}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="skinsPotID" size="8" value="#{pc_Game.skinsPot}" required="true"/>                	
-		             </td>	            
-		             
-	              </tr>
-	              
-	               <tr>
-					 <td class="textLabelMiddle">
-						<p:outputLabel for="gameFeeID" value="#{bundle.gameFee}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="gameFeeID" size="8" value="#{pc_Game.gameFee}" required="true"/>                	
-		             </td>	            
-		             
-	              </tr>
-	              
-	              <tr>
-	             
-		             <td class="textLabelMiddle">
-						<p:outputLabel for="individualGrossID" value="#{bundle.indivGrossPrize}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="individualGrossID" size="8" value="#{pc_Game.individualGrossPrize}" required="true"/>
-		             </td> 
-		             
-	              </tr>
-	              
-	              <tr>
-	              
-		             <td class="textLabelMiddle">
-						<p:outputLabel for="individualNetID" value="#{bundle.indivNetPrize}"/>
-					 </td>	
-					 
-		             <td colspan="2" class="text">
-		                <p:inputText id="individualNetID" size="8" value="#{pc_Game.individualNetPrize}" required="true"/>
-		             </td> 
-		             
-	              </tr>
-	              
-	              <tr>
-		              <td class="textLabelMiddle">
-						  <p:outputLabel  for="purseID" value="#{bundle.PurseAmount}"/>
-					  </td>	
-					 
-		              <td colspan="2" class="text">
-		                  <p:inputText id="purseID" size="8" value="#{pc_Game.purseAmount}" required="true"/>     
-		              </td>
-	              </tr> 
-	              
-	              <tr>
-		              <td class="textLabelMiddle">
-						  <p:outputLabel  for="gameNoteID" value="#{bundle.gameNote}"/>
-					  </td>	
-					 
-		              <td colspan="2" class="text">
-		                  <p:inputText id="gameNoteID" size="40" maxLength="45" value="#{pc_Game.gameNoteForEmail}"/>     
-		              </td>
-	              </tr>                 
-
-	              <tr>
-		              <td class="textLabelMiddle">
-						  <p:outputLabel  for="playBallMethodID" value="#{bundle.playBallMethod}"/>
-					  </td>	
-					 
-		              <td colspan="2" class="text">
-		                  <p:inputText id="playBallMethodID" size="30" value="#{pc_Game.playTheBallMethod}" required="true"/>     
-		              </td>
-	              </tr> 
-	              
-	              <tr>
-		              <td class="textLabelMiddle">
-						  <p:outputLabel  for="teeTimesID" value="#{bundle.teeTimes}"  rendered="#{pc_Game.operation=='Add'}"/>
-					  </td>	
-					 
-		              <td colspan="2" class="text">
-		                  <p:inputText id="teeTimesID" size="20" value="#{pc_Game.teeTimesString}"  rendered="#{pc_Game.operation=='Add'}" required="true"/>     
-		              </td>
-	              </tr> 
-	              
-	              <tr>
-				  		
-		  			 <td class="text" colspan="2">
-		  			 	<p:selectBooleanCheckbox
-		  			 	    rendered="#{pc_Game.operation=='Update'}"
-							value="#{pc_Game.gameClosedForSignups}">
-						</p:selectBooleanCheckbox>
-						<p:outputLabel rendered="#{pc_Game.operation=='Update'}" value="#{bundle.gameClosed}"/>
-					 </td>	
-					
-		          </tr>
-	              	
-				  <tr>
-						<td colspan="3" align="center">
-						
-						   <p:commandButton 
-							   value="#{bundle.ok}" 
-							   action="#{pc_Game.saveGame}"	
-							   update="gameForm:gamesTableID"															   
-							   oncomplete="PF('maintainGamesDialog').hide();">
-						   </p:commandButton> 
-						   
-						   <p:commandButton value="#{bundle.cancel}"
-						       immediate="true" 										      											     
-							   onclick="PF('maintainGamesDialog').hide();">
-						   </p:commandButton>
-						   
-						</td>
-					</tr>
-					
-				</table>
-				
-			</h:form> 			
-				      
-		</p:dialog>
-	
+		
 	</ui:define>
 	
 </ui:composition>	

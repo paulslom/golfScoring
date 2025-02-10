@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pas.beans.Game;
 import com.pas.beans.GolfMain;
@@ -27,9 +26,11 @@ import com.pas.beans.Round;
 import com.pas.beans.Score;
 import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoRound;
 import com.pas.util.Utils;
 
+import jakarta.inject.Inject;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -58,15 +59,12 @@ public class RoundDAO implements Serializable
 	private static DynamoDbTable<DynamoRound> roundsTable;
 	private static final String AWS_TABLE_NAME = "rounds";
 	
-	@Autowired private final GolfMain golfmain;
-	@Autowired private final Game game;
-	
-	public RoundDAO(DynamoClients dynamoClients2, GolfMain golfmain, Game game) 
+	@Inject GolfMain golfmain;
+	@Inject Game game;
+
+	public RoundDAO(DynamoClients dynamoClients2)
 	{
-		this.golfmain = golfmain;
-		this.game = game;
-		
-	   try 
+	   try
 	   {
 	       dynamoClients = dynamoClients2;
 	       roundsTable = dynamoClients.getDynamoDbEnhancedClient().table(AWS_TABLE_NAME, TableSchema.fromBean(DynamoRound.class));
@@ -77,9 +75,9 @@ public class RoundDAO implements Serializable
 	   }	   
 	}
 	
-	public List<String> getGameParticipantsFromDB(Game selectedGame)
+	public List<String> getGameParticipantsFromDB()
     {	
-		List<Round> roundList = getRoundsForGame(selectedGame);
+		List<Round> roundList = golfmain.getRoundsForGame(game.getSelectedGame());
 		List<String> participantsList = new ArrayList<>();
 		
 		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
@@ -119,9 +117,7 @@ public class RoundDAO implements Serializable
 	    		for (int i = 0; i < dtList.size(); i++) 
 	    		{
 	    			DynamoRound dynamoRound = dtList.get(i);
-		        	
-					Round round = new Round(golfmain, game);
-	
+		        	Round round = new Round();
 					round.setRoundID(dynamoRound.getRoundID());
 					round.setGameID(dynamoRound.getGameID());
 					round.setPlayerID(dynamoRound.getPlayerID());
@@ -135,8 +131,7 @@ public class RoundDAO implements Serializable
 					round.setRoundHandicapDifferential(dynamoRound.getRoundHandicapDifferential());
 					
 					String signupdatetime = dynamoRound.getSignupDateTime();
-					DateToStringConverter dtsc = new DateToStringConverter();
-					Date sdate = dtsc.unconvert(signupdatetime);
+					Date sdate = DateToStringConverter.unconvert(signupdatetime);
 					round.setSignupDateTime(sdate);
 					
 					round.setHole1Score(dynamoRound.getHole1Score());
@@ -214,7 +209,7 @@ public class RoundDAO implements Serializable
 	    return roundIDsByGameList;
 	}
 	
-	public List<Round> getRoundsForGame(Game selectedGame)
+	public List<Round> getRoundsForGame(DynamoGame dynamoGame)
     {
 		List<Round> roundsByGameList = new ArrayList<>();
 		
@@ -222,7 +217,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()))
+			if (rd.getGameID().equalsIgnoreCase(dynamoGame.getGameID()))
 			{
 				roundsByGameList.add(rd);
 			}
@@ -239,7 +234,7 @@ public class RoundDAO implements Serializable
 	   	return roundsByGameList;
     }
 	
-	public List<Round> readPlayGroupRoundsFromDB(Game selectedGame, String teeTimeID)
+	public List<Round> readPlayGroupRoundsFromDB(DynamoGame selectedGame, String teeTimeID)
     {
 		List<Round> roundsList = new ArrayList<>();
 		
@@ -256,7 +251,7 @@ public class RoundDAO implements Serializable
     	return roundsList;
     }
 	
-	public Integer countRoundsForGameFromDB(Game selectedGame)
+	public Integer countRoundsForGameFromDB(DynamoGame gm)
     {
 		int count = 0; 
 		
@@ -264,7 +259,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()))
+			if (rd.getGameID().equalsIgnoreCase(gm.getGameID()))
 			{
 				count++;
 			}
@@ -303,10 +298,10 @@ public class RoundDAO implements Serializable
 	
 		logger.info("LoggedDBOperation: function-delete; table:round; rows:1");
 		
-		Round rd = new Round(golfmain, game);
-		rd.setRoundID(roundID);
+		Round round = new Round();
+		round.setRoundID(roundID);
 		
-		refreshListsAndMaps("delete", rd);		
+		refreshListsAndMaps("delete", round);
 		
 		logger.info(getTempUserName() + " delete round table complete");
     }
@@ -398,8 +393,7 @@ public class RoundDAO implements Serializable
 		DynamoRound dr = dynamoUpsert(round);
 		
 		round.setRoundID(dr.getRoundID());
-		DateToStringConverter dsc = new DateToStringConverter();
-		round.setSignupDateTime(dsc.unconvert(dr.getSignupDateTime()));
+		round.setSignupDateTime(DateToStringConverter.unconvert(dr.getSignupDateTime()));
 		
 		logger.info("LoggedDBOperation: function-update; table:round; rows:1");
 		
@@ -422,7 +416,7 @@ public class RoundDAO implements Serializable
 		
 	}
 
-	public void updateRoundHandicap(Game selectedGame, String playerID, BigDecimal handicap) throws Exception 
+	public void updateRoundHandicap(DynamoGame dynamoGame, String playerID, BigDecimal handicap) throws Exception 
 	{
 		
 		
@@ -430,7 +424,7 @@ public class RoundDAO implements Serializable
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()) && rd.getPlayerID().equalsIgnoreCase(playerID))
+			if (rd.getGameID().equalsIgnoreCase(dynamoGame.getGameID()) && rd.getPlayerID().equalsIgnoreCase(playerID))
 			{
 				rd.setRoundHandicap(handicap);
 				dynamoUpsert(rd);
@@ -449,13 +443,13 @@ public class RoundDAO implements Serializable
 		logger.debug(getTempUserName() + " update player handicap for playerID: " + playerID + " to: " + handicap + " on round table complete");		
 	}	
 	
-	public void updateRoundTeamNumber(Game selectedGame, String playerID, int teamNumber) throws Exception 
+	public void updateRoundTeamNumber(DynamoGame dynamoGame, String playerID, int teamNumber) throws Exception 
 	{
 		for (int i = 0; i < this.getFullRoundsList().size(); i++) 
 		{
 			Round rd = this.getFullRoundsList().get(i);
 			
-			if (rd.getGameID().equalsIgnoreCase(selectedGame.getGameID()) && rd.getPlayerID().equalsIgnoreCase(playerID))
+			if (rd.getGameID().equalsIgnoreCase(dynamoGame.getGameID()) && rd.getPlayerID().equalsIgnoreCase(playerID))
 			{
 				rd.setTeamNumber(teamNumber);
 				dynamoUpsert(rd);

@@ -9,14 +9,13 @@ import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoPlayer;
 
-@Named("pc_PlayerMoney")
-@SessionScoped
-public class PlayerMoney implements Serializable 
+import jakarta.inject.Inject;
+
+public class PlayerMoney implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -31,24 +30,21 @@ public class PlayerMoney implements Serializable
 	private String description;
 	private BigDecimal amount;
 	
-	private Game game;
-	private Player player;
+	private DynamoGame game;
+	private DynamoPlayer player;
 	
 	private List<PlayerMoney> individualPlayerMoneyList = new ArrayList<PlayerMoney>();
 	private List<PlayerMoney> fullPlayerMoneyList = new ArrayList<PlayerMoney>();
 	private List<PlayerMoney> totaledPlayerMoneyList = new ArrayList<PlayerMoney>();
 	
 	private PlayerMoney selectedPlayerMoney;
-	
+	private PlayerMoney totalPM;
+
 	private BigDecimal totalAmount;
 	
-	@Autowired private final GolfMain golfmain;
+	@Inject GolfMain golfmain;
 	
-	public PlayerMoney(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-	}
-	public void onLoadPlayerMoney() 
+	public void onLoadPlayerMoney()
 	{
 		logger.info("about to run Player Money");
 		runTheMoney();		
@@ -77,7 +73,7 @@ public class PlayerMoney implements Serializable
 		if (this.getFullPlayerMoneyList().size() > 0)
 		{
 			PlayerMoney pm1 = this.getFullPlayerMoneyList().get(0);
-			Player priorPlayer = pm1.getPlayer();
+			DynamoPlayer priorPlayer = pm1.getPlayer();
 			String priorPlayerID = priorPlayer.getPlayerID();
 			
 			BigDecimal playerTotal = new BigDecimal(0.0);
@@ -92,7 +88,6 @@ public class PlayerMoney implements Serializable
 				}
 				else
 				{
-					PlayerMoney totalPM = new PlayerMoney(golfmain);
 					totalPM.setPlayer(priorPlayer);
 					totalPM.setAmount(playerTotal);
 					this.getTotaledPlayerMoneyList().add(totalPM);
@@ -104,7 +99,6 @@ public class PlayerMoney implements Serializable
 				}
 			}
 			
-			PlayerMoney totalPM = new PlayerMoney(golfmain);
 			PlayerMoney lastPM = this.getFullPlayerMoneyList().get(this.getFullPlayerMoneyList().size()-1);
 			totalPM.setPlayer(lastPM.getPlayer());
 			totalPM.setAmount(playerTotal);
@@ -154,18 +148,7 @@ public class PlayerMoney implements Serializable
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
-	}
-	public Player getPlayer() {
-		return player;
-	}
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+	
 	public List<PlayerMoney> getFullPlayerMoneyList() {
 		return fullPlayerMoneyList;
 	}
@@ -247,6 +230,22 @@ public class PlayerMoney implements Serializable
 
 	public void setOldPlayerID(int oldPlayerID) {
 		this.oldPlayerID = oldPlayerID;
+	}
+
+	public DynamoGame getGame() {
+		return game;
+	}
+
+	public void setGame(DynamoGame game) {
+		this.game = game;
+	}
+
+	public DynamoPlayer getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(DynamoPlayer player) {
+		this.player = player;
 	}
 	
 }

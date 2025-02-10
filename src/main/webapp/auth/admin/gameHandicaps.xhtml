@@ -7,7 +7,7 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     
     <f:metadata>
-	    <f:viewAction action="#{pc_Round.onLoadGameHandicaps}" />
+	    <f:viewAction action="#{pc_GolfMain.onLoadGameHandicaps}" />
 	</f:metadata> 
 	 
     <ui:define name="content">
@@ -28,8 +28,8 @@
              
 	               <td class="text">
 					
-				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="gameConverter" required="true"  hideNoSelectionOption="true">
-				         <p:ajax listener="#{pc_Round.valueChangeGameHandicaps}" event="change" 
+				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="#{pc_GameConverter}" required="true"  hideNoSelectionOption="true">
+				         <p:ajax listener="#{pc_GolfMain.valueChangeGameHandicaps}" event="change" 
 				         	update="handicapsGameForm:label1 handicapsGameForm:label2 handicapsPlayerForm"/>
 				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
 						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
@@ -60,9 +60,9 @@
 	   
 	   <h:form id="handicapsPlayerForm">                  
 						
-	      <p:dataTable id="playersTableID" value="#{pc_Round.roundsForGame}"
+	      <p:dataTable id="playersTableID" value="#{pc_GolfMain.roundsForGame}"
 	          var="rfg" scrollable="true" scrollHeight="350" 
-	          selectionMode="single" selection="#{pc_Round.selectedRound}" rowKey="#{rfg.roundID}"
+	          selectionMode="single" selection="#{pc_GolfMain.selectedRound}" rowKey="#{rfg.roundID}"
 	          style="font-size:12px;" sortBy="#{rfg.player.lastName}">							
 				
 	          <f:facet name="header">
@@ -112,13 +112,13 @@
 				        
           <p:commandButton id="updateHandicapsButtonID"
               value="#{bundle.update}"
-              action="#{pc_Round.updateGameHandicaps}"
+              action="#{pc_GolfMain.updateGameHandicaps}"
               update="handicapsPlayerForm">
 		  </p:commandButton>
 		  
 		  <p:commandButton id="proceedToPickTeamsButtonID"
              value="#{bundle.proceedToPickTeams}"
-             action="#{pc_Round.proceedToPickTeams}">
+             action="#{pc_GolfMain.proceedToPickTeams}">
 		  </p:commandButton> 					
 			
 		</h:form> 	

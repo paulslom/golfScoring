@@ -2,15 +2,12 @@ package com.pas.dynamodb;
 
 import java.math.BigDecimal;
 
-import org.springframework.stereotype.Component;
-
 import com.pas.beans.Course;
 import com.pas.beans.CourseTee;
 import com.pas.beans.Hole;
 import com.pas.dao.CourseDAO;
 import com.pas.dao.CourseTeeDAO;
 
-@Component
 public class AddCourseAndTees
 {	 
 	private static CourseDAO courseDAO;
@@ -35,9 +32,9 @@ public class AddCourseAndTees
 
 	private static void addTheCourseTees(DynamoClients dynamoClients) throws Exception 
 	{
-		courseTeeDAO = new CourseTeeDAO(dynamoClients, null);
+		courseTeeDAO = new CourseTeeDAO(dynamoClients);
 		
-		CourseTee courseTee = new CourseTee(null);
+		CourseTee courseTee = new CourseTee();
 		
 		courseTee.setCourseID("7b563b65-cb2e-48f9-91ba-076d98b0f76d");		
 		courseTee.setTeeColor("Black");
@@ -48,7 +45,7 @@ public class AddCourseAndTees
 
 		courseTeeDAO.addCourseTee(courseTee);
 		
-		courseTee = new CourseTee(null);
+		courseTee = new CourseTee();
 		
 		courseTee.setCourseID("7b563b65-cb2e-48f9-91ba-076d98b0f76d");	
 		courseTee.setTeeColor("Blue");
@@ -59,7 +56,7 @@ public class AddCourseAndTees
 
 		courseTeeDAO.addCourseTee(courseTee);
 		
-		courseTee = new CourseTee(null);
+		courseTee = new CourseTee();
 		
 		courseTee.setCourseID("7b563b65-cb2e-48f9-91ba-076d98b0f76d");	
 		courseTee.setTeeColor("White");
@@ -70,7 +67,7 @@ public class AddCourseAndTees
 
 		courseTeeDAO.addCourseTee(courseTee);
 		
-		courseTee = new CourseTee(null);
+		courseTee = new CourseTee();
 		
 		courseTee.setCourseID("7b563b65-cb2e-48f9-91ba-076d98b0f76d");	
 		courseTee.setTeeColor("Gold");

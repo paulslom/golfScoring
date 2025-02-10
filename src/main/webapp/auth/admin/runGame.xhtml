@@ -22,7 +22,7 @@
              
 	               <td class="text">
 					
-				 	  <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="gameConverter" required="true"  hideNoSelectionOption="true">
+				 	  <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="#{pc_GameConverter}" required="true"  hideNoSelectionOption="true">
 				         <p:ajax listener="#{pc_Game.valueChangeGame}" event="change" 
 				         	update="gameForm"/>
 						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					

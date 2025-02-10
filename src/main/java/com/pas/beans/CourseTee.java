@@ -9,14 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pas.dynamodb.DynamoCourseTee;
 
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.model.SelectItem;
-import jakarta.inject.Named;
+import jakarta.inject.Inject;
 
-@Named("pc_CourseTee")
-@SessionScoped
 public class CourseTee implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
@@ -31,12 +28,8 @@ public class CourseTee implements Serializable
 	private int slopeRating;
 	private int totalYardage;
 	
-	@Autowired private final GolfMain golfmain;
+	@Inject GolfMain golfmain;
 	
-	public CourseTee(GolfMain golfmain) 
-	{
-		this.golfmain = golfmain;
-	}
 	private Map<String, List<SelectItem>> teeSelectionsMap = new HashMap<>();
 	
 	@Override
@@ -119,7 +112,7 @@ public class CourseTee implements Serializable
 	      	{
 				for (int i = 0; i < golfmain.getCourseTees().size(); i++) 
 				{					
-					CourseTee ct = golfmain.getCourseTees().get(i);
+					DynamoCourseTee ct = golfmain.getCourseTees().get(i);
 					if (!ct.getCourseID().equalsIgnoreCase(lastCourseID) && !lastCourseID.equalsIgnoreCase("0"))
 					{	
 						List<SelectItem> tempList = new ArrayList<>();

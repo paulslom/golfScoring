@@ -12,7 +12,7 @@ import com.pas.util.Utils;
 
 public class DateToStringConverter
 {
-    public Date unconvert(String s) 
+    public static Date unconvert(String s) 
     {
     	//Example of what we are unconverting: 2020-03-21T00:00:00.000-04:00
     	
