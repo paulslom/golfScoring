@@ -870,7 +870,7 @@ public class Game implements Serializable
 			
 		logger.info(Utils.getLoggedInUserName() + " emailing tee time removal to: " + emailRecipients);
 		
-		SAMailUtility.sendEmail(subjectLine, messageContent, emailRecipients, true); //last param means use jsf		
+		SAMailUtility.sendEmail(subjectLine, messageContent, emailRecipients); 	
 	}
 	
 
@@ -2099,7 +2099,7 @@ public class Game implements Serializable
 			
 		logger.info(Utils.getLoggedInUserName() + " emailing withdrawal to: " + emailRecipients);
 		
-		SAMailUtility.sendEmail(subjectLine, withdrawalMessageContent, emailRecipients, true);	//last param means use jsf	
+		SAMailUtility.sendEmail(subjectLine, withdrawalMessageContent, emailRecipients);
 	}
 
 	public void calculatePMTotal(Object o) 
@@ -4236,7 +4236,7 @@ public class Game implements Serializable
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		String subjectLine = "Golf game setup for " + sdf.format(this.getSelectedGame().getGameDate());
-		SAMailUtility.sendEmail(subjectLine, preGameEmailMessage, emailRecipients, true); //last param means use jsf
+		SAMailUtility.sendEmail(subjectLine, preGameEmailMessage, emailRecipients); 
 		return "";
 	}
 	
@@ -4244,7 +4244,7 @@ public class Game implements Serializable
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		String subjectLine = "Golf results for " + sdf.format(this.getSelectedGame().getGameDate());
-		SAMailUtility.sendEmail(subjectLine, postGameEmailMessage, emailRecipients, true); //last param means use jsf
+		SAMailUtility.sendEmail(subjectLine, postGameEmailMessage, emailRecipients); 
 		return "";
 	}
 	
@@ -4252,7 +4252,7 @@ public class Game implements Serializable
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		String subjectLine = "Golf Test email sent to admin on " + sdf.format(new Date());
-		SAMailUtility.sendEmail(subjectLine, testEmailMessage, emailRecipients, true); //last param means use jsf
+		SAMailUtility.sendEmail(subjectLine, testEmailMessage, emailRecipients); 
 		return "";
 	}
 	

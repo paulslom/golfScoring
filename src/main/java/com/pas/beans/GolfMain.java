@@ -1339,7 +1339,7 @@ public class GolfMain implements Serializable
 		else
 		{
 			//emailRecipients.add("paulslomkowski@yahoo.com"); //to just me for testing
-			SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients, true); //last param means use jsf
+			SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients); 
 		}		
 		
 		logger.info("User sent email to entire group successfully");

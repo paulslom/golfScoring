@@ -914,8 +914,13 @@ public class Utils
 		ArrayList<String> emailRecipients = establishEmailRecipientsForFutureGame(fullPlayerList);
 		String logMessage = "This future game email will go to " + emailRecipients.size() + " recipients: " + emailRecipients;
 		logger.info(logMessage);
+		
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,logMessage,null);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		
+		if (FacesContext.getCurrentInstance() != null)
+		{
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 	
 		return sb.toString();
 	}	
@@ -1018,7 +1023,7 @@ public class Utils
 		}
 		else
 		{
-			SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients, true); //last param means use jsf
+			SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients); 
 		}
 		
 		return "";

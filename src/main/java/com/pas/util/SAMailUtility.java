@@ -47,7 +47,7 @@ public class SAMailUtility
 	
 	//catch all exceptions here.  Do NOT want this method to break the app.
 	
-	public static void sendEmail(String mailSubject, String emailMessage, ArrayList<String> ccArrayList, boolean useJSF)
+	public static void sendEmail(String mailSubject, String emailMessage, ArrayList<String> ccArrayList)
 	{
 		logger.info("entering sendEmail()");
 				
@@ -58,14 +58,14 @@ public class SAMailUtility
 	
 		mailBody.append(emailMessage);
 		
-		sendTheEmail(mailFrom, mailTo, mailSubject, mailBody.toString(), ccArrayList, useJSF);		
+		sendTheEmail(mailFrom, mailTo, mailSubject, mailBody.toString(), ccArrayList);		
 
 		logger.info("leaving sendEmail()");
 	}
 
 	// catch all exceptions here. Do NOT want this method to break the app.
 
-	private static void sendTheEmail(String mailFrom, String mailTo, String mailSubject, String mailBody, ArrayList<String> ccArrayList, boolean useJSF)
+	private static void sendTheEmail(String mailFrom, String mailTo, String mailSubject, String mailBody, ArrayList<String> ccArrayList)
 	{
 		try 
 		{
@@ -115,29 +115,30 @@ public class SAMailUtility
 			String logMessage = "Email successfully sent to " + ccArrayList.size() + " recipients: " + ccArrayList;
 			logger.info(logMessage);
 			
-			if (useJSF)
-		    {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, logMessage, null);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, logMessage, null);
+			if (FacesContext.getCurrentInstance() != null)
+			{
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-		    }
+			}
+			
 		} 		
 		catch (AddressException e)
 		{
 			logger.error("AddressException encountered in SAMailUtility => ", e);
-			if (useJSF)
-		    {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email error: " + e.getMessage(),null);
-				FacesContext.getCurrentInstance().addMessage(null, msg);	
-		    }
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email error: " + e.getMessage(),null);
+			if (FacesContext.getCurrentInstance() != null)
+			{
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
 		} 
 		catch (MessagingException e) 
 		{
 			logger.error("MessagingException encountered in SAMailUtility => ", e);
-			if (useJSF)
-		    {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email error: " + e.getMessage(),null);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email error: " + e.getMessage(),null);
+			if (FacesContext.getCurrentInstance() != null)
+			{
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-		    }
+			}
 		}
 
 	}

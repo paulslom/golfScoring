@@ -64,7 +64,7 @@ public class Registration implements Serializable
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		String subjectLine = "New Player request sent to admin on " + sdf.format(new Date());
-		SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients, true); //last param means use jsf
+		SAMailUtility.sendEmail(subjectLine, sb.toString(), emailRecipients); 
 		
 		return "success";
 	}
