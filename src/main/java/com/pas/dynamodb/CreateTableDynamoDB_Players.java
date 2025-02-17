@@ -85,14 +85,7 @@ public class CreateTableDynamoDB_Players
             	DynamoPlayer dynamoObj = new DynamoPlayer();
             	
             	dynamoObj.setPlayerID(UUID.randomUUID().toString());
-            	dynamoObj.setOldPlayerID(obj.getOldPlayerID());
-            	dynamoObj.setUsername(obj.getUsername());
-            	dynamoObj.setFirstName(obj.getFirstName());
-            	dynamoObj.setLastName(obj.getLastName());
-            	dynamoObj.setHandicap(obj.getHandicap());
-            	dynamoObj.setEmailAddress(obj.getEmailAddress());
-            	dynamoObj.setActive(obj.isActive());
-            
+            	            
             	playerTable.putItem(dynamoObj);                
     		}             
         }

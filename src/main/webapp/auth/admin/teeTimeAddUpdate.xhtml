@@ -29,20 +29,7 @@
 				   action="#{pc_Game.addTeeTime}"
 				   rendered="#{pc_GolfMain.teeTimeOperation=='Add'}"	
 				   update="teeTimesForm">
-			   </p:commandButton> 
-			   
-			   <p:commandButton 
-				   value="Delete" 
-				   action="#{pc_Game.deleteTeeTime}"
-				   rendered="#{pc_GolfMain.teeTimeOperation=='Delete'}"	
-				   update="teeTimesForm">
-				   <p:confirm header="Confirmation" message="Really completely delete this tee time??" icon="pi pi-exclamation-triangle" />
-			   </p:commandButton> 
-			   
-			   <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-			        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-			   </p:confirmDialog>  
+			   </p:commandButton> 		   
 				
 			   <p:commandButton value="#{bundle.cancel}"
 			       action="#{pc_Game.cancelAddUpdateTeeTime}"
@@ -68,13 +55,11 @@
          <tr>
 	  		
  			<td class="textLabel">
-			    <p:outputLabel value="Game Date"/>
-			    
-		    </td>
-		    
-		    <td colspan="2" class="text">
-               <p:outputLabel value="#{pc_Game.selectedGame.gameDateDisplay}"/>
-            </td>
+               <p:outputLabel value="Game Date: "/>
+               <p:outputLabel value="#{pc_Game.selectedGame.gameDateJava}">
+		          <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
+		       </p:outputLabel>	
+            </td>	
             
          </tr>
          

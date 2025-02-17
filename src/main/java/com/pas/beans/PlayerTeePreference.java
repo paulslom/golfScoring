@@ -3,18 +3,13 @@ package com.pas.beans;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.primefaces.event.SelectEvent;
-
-import com.pas.dynamodb.DynamoCourseTee;
-
-import jakarta.inject.Inject;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 
 public class PlayerTeePreference implements Serializable
 {
 	private static final long serialVersionUID = 3523975134478530653L;
-	private static Logger logger = LogManager.getLogger(PlayerTeePreference.class);
+	//private static Logger logger = LogManager.getLogger(PlayerTeePreference.class);
 	
 	private String playerTeePreferenceID;
 	private int oldPlayerTeePreferenceID;
@@ -27,60 +22,7 @@ public class PlayerTeePreference implements Serializable
 	private String courseName;
 	private String courseTeeID;
 	private int oldCourseTeeID;
-	private String teeColor;
-	
-	private boolean disableDialogButton = true;
-	
-	private PlayerTeePreference selectedPlayerTeePreference;
-	
-	@Inject GolfMain golfmain;
-
-	public String selectRowAjax(SelectEvent<PlayerTeePreference> event)
-	{
-		logger.info("User clicked on a row in Player Tee Preference list");
-		
-		PlayerTeePreference item = event.getObject();
-		
-		this.setSelectedPlayerTeePreference(item);
-		this.setDisableDialogButton(false);
-				
-		return "";
-	}	
-	
-	public String setUpForUpdate()
-	{
-		this.setPlayerTeePreferenceID(this.getSelectedPlayerTeePreference().getPlayerTeePreferenceID());
-		this.setPlayerID(this.getSelectedPlayerTeePreference().getPlayerID());
-		this.setCourseTeeID(this.getSelectedPlayerTeePreference().getCourseTeeID());
-		this.setCourseID(this.getSelectedPlayerTeePreference().getCourseID());
-		this.setPlayerFullName(this.getSelectedPlayerTeePreference().getPlayerFullName());
-		this.setCourseName(this.getSelectedPlayerTeePreference().getCourseName());
-		this.setTeeColor(this.getSelectedPlayerTeePreference().getTeeColor());	
-		
-		return "";
-	}
-	
-	public String updatePrefs() throws Exception
-	{
-		logger.info("entering updatePrefs");
-		
-		for (int i = 0; i < golfmain.getCourseTeesList().size(); i++) 
-		{
-			DynamoCourseTee courseTee = golfmain.getCourseTeesList().get(i);
-			
-			if (courseTee.getCourseID().equalsIgnoreCase(this.getCourseID()))
-			{
-				if (this.getTeeColor().equalsIgnoreCase(courseTee.getTeeColor()))
-				{
-					this.setCourseTeeID(courseTee.getCourseTeeID());
-					break;
-				}
-			}
-		}
-		
-		golfmain.updatePlayerTeePreference(this);
-		return "";
-	}
+	private String teeColor;	
 		
 	@Override
     public boolean equals(final Object o) 
@@ -97,8 +39,6 @@ public class PlayerTeePreference implements Serializable
         final String that = (String) o;
         return Objects.equals(playerTeePreferenceID, that);
     }
-
-	
 
 	public String getTeeColor() {
 		return teeColor;
@@ -124,28 +64,12 @@ public class PlayerTeePreference implements Serializable
 		this.playerFullName = playerFullName;
 	}
 
-	public PlayerTeePreference getSelectedPlayerTeePreference() {
-		return selectedPlayerTeePreference;
-	}
-
-	public void setSelectedPlayerTeePreference(PlayerTeePreference selectedPlayerTeePreference) {
-		this.selectedPlayerTeePreference = selectedPlayerTeePreference;
-	}
-
 	public String getCourseName() {
 		return courseName;
 	}
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
-	}
-
-	public boolean isDisableDialogButton() {
-		return disableDialogButton;
-	}
-
-	public void setDisableDialogButton(boolean disableDialogButton) {
-		this.disableDialogButton = disableDialogButton;
 	}
 
 	public String getPlayerTeePreferenceID() {

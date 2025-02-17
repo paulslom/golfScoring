@@ -104,6 +104,99 @@ function tabNextScore(inputElement)
 	}
 }	
 
+function tabNextHole(inputElement)
+{
+	try
+	{
+		var elementID = inputElement.name;
+		
+		var newElementName = "";
+		
+		if (elementID.endsWith("hole1ParID")) 
+		{
+			newElementName = elementID.replace("hole1ParID", "hole2ParID");			
+		}
+		else if (elementID.endsWith("hole2ParID")) 
+		{
+			newElementName = elementID.replace("hole2ParID", "hole3ParID");				
+		}
+		else if (elementID.endsWith("hole3ParID")) 
+		{
+			newElementName = elementID.replace("hole3ParID", "hole4ParID");			
+		}
+		else if (elementID.endsWith("hole4ParID")) 
+		{
+			newElementName = elementID.replace("hole4ParID", "hole5ParID");				
+		}
+		else if (elementID.endsWith("hole5ParID")) 
+		{
+			newElementName = elementID.replace("hole5ParID", "hole6ParID");				
+		}
+		else if (elementID.endsWith("hole6ParID")) 
+		{
+			newElementName = elementID.replace("hole6ParID", "hole7ParID");				
+		}
+		else if (elementID.endsWith("hole7ParID")) 
+		{
+			newElementName = elementID.replace("hole7ParID", "hole8ParID");				
+		}
+		else if (elementID.endsWith("hole8ParID")) 
+		{
+			newElementName = elementID.replace("hole8ParID", "hole9ParID");			
+		}
+		else if (elementID.endsWith("hole9ParID")) 
+		{
+			newElementName = elementID.replace("hole9ParID", "hole10ParID");				
+		}
+		else if (elementID.endsWith("hole10ParID")) 
+		{
+			newElementName = elementID.replace("hole10ParID", "hole11ParID");				
+		}
+		else if (elementID.endsWith("hole11ParID")) 
+		{
+			newElementName = elementID.replace("hole11ParID", "hole12ParID");			
+		}
+		else if (elementID.endsWith("hole12ParID")) 
+		{
+			newElementName = elementID.replace("hole12ParID", "hole13ParID");				
+		}
+		else if (elementID.endsWith("hole13ParID")) 
+		{
+			newElementName = elementID.replace("hole13ParID", "hole14ParID");			
+		}
+		else if (elementID.endsWith("hole14ParID")) 
+		{
+			newElementName = elementID.replace("hole14ParID", "hole15ParID");			
+		}
+		else if (elementID.endsWith("hole15ParID")) 
+		{
+			newElementName = elementID.replace("hole15ParID", "hole16ParID");			
+		}
+		else if (elementID.endsWith("hole16ParID")) 
+		{
+			newElementName = elementID.replace("hole16ParID", "hole17ParID");			
+		}
+		else if (elementID.endsWith("hole17ParID")) 
+		{
+			newElementName = elementID.replace("hole17ParID", "hole18ParID");			
+		}		
+		
+		//no tabbing if we're on hole 18
+		if (!elementID.endsWith("hole18ParID")) 
+		{
+			var newElement = document.getElementById(newElementName);
+			newElement.focus();	
+		}
+		
+		updatePar();		
+		
+	}
+	catch (err)
+	{
+		alert(err);
+	}
+}	
+
 function updateScores(rowIndex)
 {
 	var hole1ElementName = "scoresForm:roundsTableID:" + rowIndex + ":inputHole1ID_input";
@@ -250,6 +343,144 @@ function updateScores(rowIndex)
 	document.getElementById(front9ElementName).innerHTML = front9Total;
 	document.getElementById(back9ElementName).innerHTML = back9Total;
 	document.getElementById(totalScoreElementName).innerHTML = totalScore;	
+}
+
+function updatePar()
+{
+	var hole1Par = document.getElementById('coursesForm:hole1ParID').value;
+	var hole2Par = document.getElementById('coursesForm:hole2ParID').value;
+	var hole3Par = document.getElementById('coursesForm:hole3ParID').value;
+	var hole4Par = document.getElementById('coursesForm:hole4ParID').value;
+	var hole5Par = document.getElementById('coursesForm:hole5ParID').value;
+	var hole6Par = document.getElementById('coursesForm:hole6ParID').value;
+	var hole7Par = document.getElementById('coursesForm:hole7ParID').value;
+	var hole8Par = document.getElementById('coursesForm:hole8ParID').value;
+	var hole9Par = document.getElementById('coursesForm:hole9ParID').value;
+	var hole10Par = document.getElementById('coursesForm:hole10ParID').value;
+	var hole11Par = document.getElementById('coursesForm:hole11ParID').value;
+	var hole12Par = document.getElementById('coursesForm:hole12ParID').value;
+	var hole13Par = document.getElementById('coursesForm:hole13ParID').value;
+	var hole14Par = document.getElementById('coursesForm:hole14ParID').value;
+	var hole15Par = document.getElementById('coursesForm:hole15ParID').value;
+	var hole16Par = document.getElementById('coursesForm:hole16ParID').value;
+	var hole17Par = document.getElementById('coursesForm:hole17ParID').value;
+	var hole18Par = document.getElementById('coursesForm:hole18ParID').value;
+	
+	//alert('hole1Par = ' + hole1Par);
+	//alert('hole2Par = ' + hole2Par);
+	
+	var front9Total = 0;	
+
+	if (!(isNaN(hole1Par)))
+	{
+		front9Total = front9Total + parseInt(hole1Par,10);
+	}
+	
+	//alert('2');
+	
+	if (!(isNaN(hole2Par)))
+	{
+		front9Total = front9Total + parseInt(hole2Par,10);
+	}
+	
+	if (!(isNaN(hole3Par)))
+	{
+		front9Total = front9Total + parseInt(hole3Par,10);
+	}
+	
+	if (!(isNaN(hole4Par)))
+	{
+		front9Total = front9Total + parseInt(hole4Par,10);
+	}
+	
+	if (!(isNaN(hole5Par)))
+	{
+		front9Total = front9Total + parseInt(hole5Par,10);
+	}
+	
+	if (!(isNaN(hole6Par)))
+	{
+		front9Total = front9Total + parseInt(hole6Par,10);
+	}
+	
+	if (!(isNaN(hole7Par)))
+	{
+		front9Total = front9Total + parseInt(hole7Par,10);
+	}
+	
+	if (!(isNaN(hole8Par)))
+	{
+		front9Total = front9Total + parseInt(hole8Par,10);
+	}
+	
+	if (!(isNaN(hole9Par)))
+	{
+		front9Total = front9Total + parseInt(hole9Par,10);
+	}
+	
+	var back9Total = 0;
+	
+	if (!(isNaN(hole10Par)))
+	{
+		back9Total = back9Total + parseInt(hole10Par,10);
+	}
+	
+	if (!(isNaN(hole11Par)))
+	{
+		back9Total = back9Total + parseInt(hole11Par,10);
+	}
+	
+	if (!(isNaN(hole12Par)))
+	{
+		back9Total = back9Total + parseInt(hole12Par,10);
+	}
+	
+	if (!(isNaN(hole13Par)))
+	{
+		back9Total = back9Total + parseInt(hole13Par,10);
+	}
+	
+	if (!(isNaN(hole14Par)))
+	{
+		back9Total = back9Total + parseInt(hole14Par,10);
+	}
+	
+	if (!(isNaN(hole15Par)))
+	{
+		back9Total = back9Total + parseInt(hole15Par,10);
+	}
+	
+	if (!(isNaN(hole16Par)))
+	{
+		back9Total = back9Total + parseInt(hole16Par,10);
+	}
+	
+	if (!(isNaN(hole17Par)))
+	{
+		back9Total = back9Total + parseInt(hole17Par,10);
+	}
+	
+	if (!(isNaN(hole18Par)))
+	{
+		back9Total = back9Total + parseInt(hole18Par,10);
+	}	
+	
+	//alert('18');
+	//alert('front 9 total= ' + front9Total);
+	
+	var totalPar = front9Total + back9Total;	
+	
+	var front9ElementName = "coursesForm:front9ParID";
+	var back9ElementName = "coursesForm:back9ParID";
+	var totalParElementName = "coursesForm:courseParID";
+	
+	//alert('22');
+	//need innerHTML here because p:outputLabel renders a HTML <span> element with the value in its body. 
+	//To alter the body of a <span> in JavaScript you need to manipulate the innerHTML.
+
+	document.getElementById(front9ElementName).value = front9Total;
+	document.getElementById(back9ElementName).value = back9Total;
+	document.getElementById(totalParElementName).value = totalPar;	
 }
 
 function composePickListParms()

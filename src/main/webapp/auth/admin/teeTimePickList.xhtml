@@ -6,273 +6,255 @@
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     
-    <f:metadata>
-	    <f:viewAction action="#{pc_Player.onLoadTeeTimePickList}" />
-	</f:metadata> 
-	
     <ui:define name="content">
-    
-       <h:outputScript name="javascript/golfJS.js" target="head" />
        
- 	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
+ 	   <h:form id="teeTimeGameForm">
+		   				    		
+	   		<h3>Playing group tee times</h3>
+	   		
+	   		<table>
+	   		
+         		<tr>
+                  
+	               <td class="textLabel">
+	                  <p:outputLabel value="Game Date: "/>
+	                  <p:outputLabel value="#{pc_Game.selectedGame.gameDateJava}">
+				          <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
+				      </p:outputLabel>	
+	               </td>	
+             
+	               <td class="textLabel">
+						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+				   </td>
+				   
+				</tr>					
+				    
+			    <tr>
+					<td colspan="4" align="center">
+						<p:messages id="facesMessages" showDetail="false">
+						</p:messages>    								
+					</td>
+				</tr>	
+			    
+			</table>
 			
-		   <h:form id="teeTimeGameForm">
-		   		
-		   		<h:inputHidden id="hiddenSelectedGame" value="#{pc_Game.selectedGame}" />
-		   		
-		   		<h3>Playing group tee times</h3>
-		   		
-		   		<table>
-		   		
-	         		<tr>
-	                  
-		               <td class="textLabel">
-		                  <p:outputLabel value="Game Date"/>
-		               </td>
-	             
-		               <td class="text">
-						
-					      <p:selectOneMenu id="gameList" value="#{pc_Game.gameID}" required="true"  hideNoSelectionOption="true">
-					         <p:ajax listener="#{pc_Player.valueChangeGamePlayerTeeTimes}"
-					         	update="teeTimeGameForm:label1 teeTimeGameForm:label2 teeTimeGameForm teeTimesPicklistForm"/>
-					     	 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
-						  </p:selectOneMenu>
-						
-					   </td>
-					   
-					   <td class="textLabel">
-							<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
-					   </td>
-					   
-					   <td class="textLabel">
-							<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
-					   </td>
-					   
-					</tr>					
-					    
-				    <tr>
-						<td colspan="4" align="center">
-							<p:messages id="facesMessages" showDetail="false">
-							</p:messages>    								
-						</td>
-					</tr>	
-				    
-				</table>
-				
-			</h:form>
+		</h:form>
+		
+		<h:form id="teeTimesPicklistForm">				
 			
-			<h:form id="teeTimesPicklistForm">				
-				
-				<table>
-		   		
-		   		    <tr>				    
-				       <td colspan="3" align="center">
-		   				  <p:messages id="facesMessagesID" showDetail="false">
-		   				  </p:messages> 
-		   			   </td>
-		   			</tr>
-		   				  		
-	         		<tr>
-	                  
-		               <td>
-		               
-		               	  <p:pickList value="#{pc_Player.gameTeeTimeList1}" var="player1" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player1}" converter="#{pc_PlayerConverter}" showSourceControls="true" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption1}</f:facet>					 
-					         
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime1}" update="teeTimesPicklistForm" />
-					   
-							<p:column style="width:100%">
-								#{player1.fullName}
-							</p:column>
-							
-						  </p:pickList>		
-		                  
-		               </td>
-		               
-		               <td width="10px">						
-					   </td>
-					   
-					   <td>
-					   
-					   	  <p:pickList value="#{pc_Player.gameTeeTimeList2}" var="player2" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player2}" converter="#{pc_PlayerConverter}" showSourceControls="true" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption2}</f:facet>					 
-					         
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime2}" update="teeTimesPicklistForm" />
-			           
-							<p:column style="width:100%">
-								#{player2.fullName}
-							</p:column>
-							
-						  </p:pickList>			
+			<table>
+	   		
+	   		    <tr>				    
+			       <td colspan="3" align="center">
+	   				  <p:messages id="facesMessagesID" showDetail="false">
+	   				  </p:messages> 
+	   			   </td>
+	   			</tr>
+	   				  		
+         		<tr>
+                  
+	               <td>
+	               
+	               	  <p:pickList value="#{pc_Game.gameTeeTimeList1}" var="player1" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player1}" converter="#{pc_PlayerConverter}" showSourceControls="true" showTargetControls="true">
 						
-					   </td>
-					   					   
-				    </tr>
-				    
-				    <tr>
-	                  
-		               <td>
-		               
-		               	  <p:pickList value="#{pc_Player.gameTeeTimeList3}" var="player3" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player3}" rendered="#{pc_Player.showGameTeeTimeList3}" 
-							showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption3}</f:facet>					 
-					        
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime3}" update="teeTimesPicklistForm" />
-			            
-							<p:column style="width:100%">
-								#{player3.fullName}
-							</p:column>
-							
-						  </p:pickList>		
-		                  
-		               </td>
-		               
-		               <td width="10px">						
-					   </td>
-					   
-					   <td>
-					   
-					   	  <p:pickList value="#{pc_Player.gameTeeTimeList4}" var="player4" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player4}" rendered="#{pc_Player.showGameTeeTimeList4}" 
-							showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption4}</f:facet>					 
-					        
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime4}" update="teeTimesPicklistForm" />
-			            
-							<p:column style="width:100%">
-								#{player4.fullName}
-							</p:column>
-							
-						  </p:pickList>			
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption1}</f:facet>					 
+				         
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime1}" update="teeTimesPicklistForm" />
+				   
+						<p:column style="width:100%">
+							#{player1.fullName}
+						</p:column>
 						
-					   </td>
-					   					   
-				    </tr>
-				    
-				    <tr>
+					  </p:pickList>		
 	                  
-		               <td>
-		               
-		               	  <p:pickList value="#{pc_Player.gameTeeTimeList5}" var="player5" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player5}" rendered="#{pc_Player.showGameTeeTimeList5}" 
-							showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption5}</f:facet>					 
-					        
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime5}" update="teeTimesPicklistForm" />
-			            
-							<p:column style="width:100%">
-								#{player5.fullName}
-							</p:column>
-							
-						  </p:pickList>		
-		                  
-		               </td>
-		               
-		               <td width="10px">						
-					   </td>
-					   
-					   <td>
-					   
-					   	  <p:pickList value="#{pc_Player.gameTeeTimeList6}" var="player6" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player6}" rendered="#{pc_Player.showGameTeeTimeList6}" 
-							showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption6}</f:facet>					 
-					        
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime6}" update="teeTimesPicklistForm" />
-			            
-							<p:column style="width:100%">
-								#{player6.fullName}
-							</p:column>
-							
-						  </p:pickList>			
+	               </td>
+	               
+	               <td width="10px">						
+				   </td>
+				   
+				   <td>
+				   
+				   	  <p:pickList value="#{pc_Game.gameTeeTimeList2}" var="player2" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player2}" converter="#{pc_PlayerConverter}" showSourceControls="true" showTargetControls="true">
 						
-					   </td>
-					   					   
-				    </tr>
-				    
-				    <tr>
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption2}</f:facet>					 
+				         
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime2}" update="teeTimesPicklistForm" />
+		           
+						<p:column style="width:100%">
+							#{player2.fullName}
+						</p:column>
+						
+					  </p:pickList>			
+					
+				   </td>
+				   					   
+			    </tr>
+			    
+			    <tr>
+                  
+	               <td>
+	               
+	               	  <p:pickList value="#{pc_Game.gameTeeTimeList3}" var="player3" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player3}" rendered="#{pc_Game.showGameTeeTimeList3}" 
+						showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
+						
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption3}</f:facet>					 
+				        
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime3}" update="teeTimesPicklistForm" />
+		            
+						<p:column style="width:100%">
+							#{player3.fullName}
+						</p:column>
+						
+					  </p:pickList>		
 	                  
-		               <td>
-		               
-		               	  <p:pickList value="#{pc_Player.gameTeeTimeList7}" var="player7" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player7}" rendered="#{pc_Player.showGameTeeTimeList7}" 
-							showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption7}</f:facet>					 
-					        
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime7}" update="teeTimesPicklistForm" />
-			            
-							<p:column style="width:100%">
-								#{player7.fullName}
-							</p:column>
-							
-						  </p:pickList>		
-		                  
-		               </td>
-		               
-		               <td width="10px">						
-					   </td>
-					   
-					   <td>
-					   
-					   	  <p:pickList value="#{pc_Player.gameTeeTimeList8}" var="player8" iconOnly="true" styleClass="p2" effect="bounce"
-							itemValue="#{player8}" rendered="#{pc_Player.showGameTeeTimeList8}" 
-							showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
-							
-							<f:facet name="sourceCaption">Available</f:facet>
-					        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption8}</f:facet>					 
-					        
-					        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime8}" update="teeTimesPicklistForm" />
-			            
-							<p:column style="width:100%">
-								#{player8.fullName}
-							</p:column>
-							
-						  </p:pickList>			
+	               </td>
+	               
+	               <td width="10px">						
+				   </td>
+				   
+				   <td>
+				   
+				   	  <p:pickList value="#{pc_Game.gameTeeTimeList4}" var="player4" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player4}" rendered="#{pc_Game.showGameTeeTimeList4}" 
+						showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
 						
-					   </td>
-					   					   
-				    </tr>
-				    
-				    <tr>
-				    
-				       <td colspan="3" align="center">
-				       
-					        <p:commandButton id="saveAndStayButtonID"
-				                value="#{bundle.saveAndStay}"
-				                action="#{pc_Player.saveAndStayTeeTimesPickList}"
-				                update="teeTimesPicklistForm">
-							</p:commandButton> 	
-							
-							<p:commandButton id="proceedToGameHandicapsButtonID"
-				                value="#{bundle.proceedToGameHandicaps}"
-				                action="#{pc_Player.proceedToGameHandicaps}"
-				                update="teeTimesPicklistForm">
-							</p:commandButton> 												
-							
-				       </td>
-				       
-				    </tr>   
-				
-			    </table>								
-							
-		   </h:form> 
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption4}</f:facet>					 
+				        
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime4}" update="teeTimesPicklistForm" />
+		            
+						<p:column style="width:100%">
+							#{player4.fullName}
+						</p:column>
+						
+					  </p:pickList>			
+					
+				   </td>
+				   					   
+			    </tr>
+			    
+			    <tr>
+                  
+	               <td>
+	               
+	               	  <p:pickList value="#{pc_Game.gameTeeTimeList5}" var="player5" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player5}" rendered="#{pc_Game.showGameTeeTimeList5}" 
+						showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
+						
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption5}</f:facet>					 
+				        
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime5}" update="teeTimesPicklistForm" />
+		            
+						<p:column style="width:100%">
+							#{player5.fullName}
+						</p:column>
+						
+					  </p:pickList>		
+	                  
+	               </td>
+	               
+	               <td width="10px">						
+				   </td>
+				   
+				   <td>
+				   
+				   	  <p:pickList value="#{pc_Game.gameTeeTimeList6}" var="player6" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player6}" rendered="#{pc_Game.showGameTeeTimeList6}" 
+						showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
+						
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption6}</f:facet>					 
+				        
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime6}" update="teeTimesPicklistForm" />
+		            
+						<p:column style="width:100%">
+							#{player6.fullName}
+						</p:column>
+						
+					  </p:pickList>			
+					
+				   </td>
+				   					   
+			    </tr>
+			    
+			    <tr>
+                  
+	               <td>
+	               
+	               	  <p:pickList value="#{pc_Game.gameTeeTimeList7}" var="player7" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player7}" rendered="#{pc_Game.showGameTeeTimeList7}" 
+						showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
+						
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Game.gameTeeTimeListCaption7}</f:facet>					 
+				        
+				        <p:ajax event="transfer" listener="#{pc_Player.onTransferTeeTime7}" update="teeTimesPicklistForm" />
+		            
+						<p:column style="width:100%">
+							#{player7.fullName}
+						</p:column>
+						
+					  </p:pickList>		
+	                  
+	               </td>
+	               
+	               <td width="10px">						
+				   </td>
+				   
+				   <td>
+				   
+				   	  <p:pickList value="#{pc_Game.gameTeeTimeList8}" var="player8" iconOnly="true" styleClass="p2" effect="bounce"
+						itemValue="#{player8}" rendered="#{pc_Game.showGameTeeTimeList8}" 
+						showSourceControls="true" converter="#{pc_PlayerConverter}" showTargetControls="true">
+						
+						<f:facet name="sourceCaption">Available</f:facet>
+				        <f:facet name="targetCaption">#{pc_Player.gameTeeTimeListCaption8}</f:facet>					 
+				        
+				        <p:ajax event="transfer" listener="#{pc_Game.onTransferTeeTime8}" update="teeTimesPicklistForm" />
+		            
+						<p:column style="width:100%">
+							#{player8.fullName}
+						</p:column>
+						
+					  </p:pickList>			
+					
+				   </td>
+				   					   
+			    </tr>
+			    
+			    <tr>
+			    
+			       <td colspan="3" align="center">
+			       
+				       <p:commandButton id="saveButtonID"
+			                value="Save and Return To Game List"
+			                action="#{pc_Player.saveTeeTimesPickList}"
+			                update="teeTimesPicklistForm">
+						</p:commandButton> 
+										
+						<p:commandButton id="returnToGameListID" 
+					  	    value="Return To Game List (No Save)"
+		                    action="#{pc_GolfMain.returnToGameList}">
+					    </p:commandButton> 													
+						
+			       </td>
+			       
+			    </tr>   
+			
+		    </table>								
+						
+	   </h:form> 
 
 	</ui:define>
 	

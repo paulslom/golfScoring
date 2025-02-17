@@ -5,15 +5,9 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
-    
-    <f:metadata>
-	    <f:viewAction action="#{pc_GolfMain.onLoadGameHandicaps}" />
-	</f:metadata> 
-	 
+ 	 
     <ui:define name="content">
- 	    
-	   <f:loadBundle var="bundle" basename="ApplicationProperties" />  
-	 	
+ 		 	
 	 	<h:form id="handicapsGameForm">
 		   		
 	   		<h3>Handicaps specific for a game</h3>
@@ -23,21 +17,13 @@
          		<tr>
                   
 	               <td class="textLabel">
-	                  <p:outputLabel value="Game Date"/>
-	               </td>
+	                  <p:outputLabel value="Game Date: "/>
+	                  <p:outputLabel value="#{pc_Game.selectedGame.gameDateJava}">
+				          <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
+				      </p:outputLabel>	
+	               </td>	
              
-	               <td class="text">
-					
-				      <p:selectOneMenu id="gameList" value="#{pc_Game.selectedGame}" converter="#{pc_GameConverter}" required="true"  hideNoSelectionOption="true">
-				         <p:ajax listener="#{pc_GolfMain.valueChangeGameHandicaps}" event="change" 
-				         	update="handicapsGameForm:label1 handicapsGameForm:label2 handicapsPlayerForm"/>
-				         <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
-						 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
-					  </p:selectOneMenu>
-					
-				   </td>
-				   
-				   <td class="textLabel">
+	               <td class="textLabel">
 						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
 				   </td>
 				   
@@ -60,15 +46,19 @@
 	   
 	   <h:form id="handicapsPlayerForm">                  
 						
-	      <p:dataTable id="playersTableID" value="#{pc_GolfMain.roundsForGame}"
+	      <p:dataTable id="playersTableID" value="#{pc_Game.roundsForGameList}"
 	          var="rfg" scrollable="true" scrollHeight="350" 
-	          selectionMode="single" selection="#{pc_GolfMain.selectedRound}" rowKey="#{rfg.roundID}"
+	          selectionMode="single" selection="#{pc_Game.selectedRound}" rowKey="#{rfg.roundID}"
 	          style="font-size:12px;" sortBy="#{rfg.player.lastName}">							
 				
 	          <f:facet name="header">
    				  <h:outputText value="Player Rounds"/>
 			  </f:facet>
 				
+			  <p:column style="width:20%" headerText="Round ID">												
+				  <h:outputText value="#{rfg.roundID}"/>														
+			  </p:column>
+			  
 			  <p:column style="width:20%" headerText="Last name" sortBy="#{rfg.player.firstName}">												
 				  <h:outputText value="#{rfg.player.firstName}"/>														
 			  </p:column>	
@@ -109,18 +99,18 @@
 			 	
 	      <p:messages id="facesMessages" showDetail="false">
 	      </p:messages>   
-				        
-          <p:commandButton id="updateHandicapsButtonID"
-              value="#{bundle.update}"
-              action="#{pc_GolfMain.updateGameHandicaps}"
-              update="handicapsPlayerForm">
-		  </p:commandButton>
-		  
-		  <p:commandButton id="proceedToPickTeamsButtonID"
-             value="#{bundle.proceedToPickTeams}"
-             action="#{pc_GolfMain.proceedToPickTeams}">
-		  </p:commandButton> 					
 			
+		  <p:commandButton id="updateHandicapsButtonID"
+             value="Save and Return To Game List"
+             action="#{pc_Game.updateGameHandicaps}"
+             update="handicapsGameForm">
+		  </p:commandButton> 
+							
+		  <p:commandButton id="ghreturnToGameListID" 
+		  	    value="Return To Game List (No Save)"
+                action="#{pc_GolfMain.returnToGameList}">
+		  </p:commandButton> 				
+					
 		</h:form> 	
 		
 	</ui:define>

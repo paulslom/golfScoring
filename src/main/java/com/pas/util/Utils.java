@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.ZoneId;
@@ -31,12 +32,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 //import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pas.beans.Course;
-import com.pas.beans.Player;
 import com.pas.beans.Round;
 import com.pas.beans.Score;
+import com.pas.beans.TeeTime;
 import com.pas.dynamodb.DynamoCourseTee;
+import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoPlayer;
 
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpSession;
 
@@ -55,6 +58,11 @@ public class Utils
 	public static int NET_STYLE_HOLENUM = 22;
 	
 	public static String MY_TIME_ZONE = "America/New_York";
+	
+	public static String NEWLINE = "<br/>";	
+	
+	//private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";  //original RDS DB one
+	public static String WEBSITE_URL = "http://golfscoring-springboot-env.eba-bir4zg4h.us-east-1.elasticbeanstalk.com"; //SpringBoot-DynamoDB-JDK17
 		
 	public static String getLastYearsLastDayDate() 
 	{
@@ -72,6 +80,28 @@ public class Utils
 	    Locale locale = Locale.getDefault();
 	    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
 	    String returnDate = formatter.format(dateOneMonthAgo);
+	    return returnDate;
+	}
+	
+	public static String getThreeMonthsAgoDate() 
+	{
+	    Calendar calThreeMonthsAgo = Calendar.getInstance();
+	    calThreeMonthsAgo.add(Calendar.MONTH, -3);
+	    Date dateOneMonthAgo = calThreeMonthsAgo.getTime();
+	    Locale locale = Locale.getDefault();
+	    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
+	    String returnDate = formatter.format(dateOneMonthAgo);
+	    return returnDate;
+	}
+	
+	public static String getOneYearAgoDate() 
+	{
+	    Calendar calOneYearAgo = Calendar.getInstance();
+	    calOneYearAgo.add(Calendar.YEAR, -1);
+	    Date dateOneYearAgo = calOneYearAgo.getTime();
+	    Locale locale = Locale.getDefault();
+	    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
+	    String returnDate = formatter.format(dateOneYearAgo);
 	    return returnDate;
 	}
 	
@@ -844,12 +874,155 @@ public class Utils
 		return isLocal;
 	}
 	
-	public static String getEncryptedPassword(String unencryptedPassword)
+	public static String composeFutureGameEmail(DynamoGame dynamoGame, List<DynamoPlayer> fullPlayerList, List<TeeTime> teeTimeList, List<Round> roundsForGame)
 	{
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String encryptedPW = passwordEncoder.encode(unencryptedPassword);
-		return encryptedPW;
+		StringBuffer sb = new StringBuffer();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
+		
+		String subjectLine = "<H3>Golf game on " + Utils.getDayofWeekString(dynamoGame.getGameDateJava()) + " " + sdf.format(dynamoGame.getGameDateJava()) + " on " + dynamoGame.getCourseName() + "</H3>";
+		sb.append(subjectLine);
+		
+		sb.append(NEWLINE);
+		
+		StringBuffer sbFutureGameDetails = getFutureEmailGameDetails(dynamoGame, teeTimeList);
+		sb.append(sbFutureGameDetails);	
+		sb.append(NEWLINE);
+		
+		StringBuffer whosIn = getGameParticipants(dynamoGame, roundsForGame);
+		sb.append(whosIn);		
+		sb.append(NEWLINE);		
+						
+		sb.append("To sign up to play (or withdraw if you've already signed up but can no longer play), go to this site:");
+		sb.append(NEWLINE);
+		sb.append("<a href='" + WEBSITE_URL + "'>Golf Scoring</a>");
+		sb.append(NEWLINE);
+		sb.append("Please do not send email requests to sign up to play - the way to sign up or withdraw now is the website above.  The gmail box is not monitored regularly and you may be left out of a game if you request to get in that way.");
+		sb.append(NEWLINE);
+	
+		sb.append(NEWLINE);
+		
+		sb.append("Log in with your credentials.  If first time logging in, those are your first name initial plus your last name for both userid and password.");
+		sb.append(NEWLINE);
+		sb.append("For example for John Doe, his credentials would be userid jdoe and password jdoe.");
+		sb.append(NEWLINE);		
+		sb.append("You can change your password from the profile menu and you are encouraged to do so.  Your user id is not changeable.");
+		sb.append(NEWLINE);
+		sb.append("To sign up or withdraw from a game hover on the Game menu and click Sign up for Game.");
+		sb.append(NEWLINE);
+		sb.append("select * from that screen click the appropriate button for the game you are interested in.");			
+		
+		ArrayList<String> emailRecipients = establishEmailRecipientsForFutureGame(fullPlayerList);
+		String logMessage = "This future game email will go to " + emailRecipients.size() + " recipients: " + emailRecipients;
+		logger.info(logMessage);
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,logMessage,null);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	
+		return sb.toString();
+	}	
+	
+	public static List<String> getGameParticipantsFromDB(List<Round> roundList)
+    {		
+		List<String> participantsList = new ArrayList<>();
+		
+		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
+		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
+		signupSDF.setTimeZone(etTimeZone);
+		
+		for (int i = 0; i < roundList.size(); i++) 
+		{
+			Round rd = roundList.get(i);
+			String signupLine = Utils.getSignupLine(rd);			
+			participantsList.add(signupLine);
+		}
+		
+		return participantsList;
+    }
+	
+	private static StringBuffer getGameParticipants(DynamoGame dynamoGame, List<Round> roundsForGame)
+	{
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("Current list of players for this game:");
+		sb.append(NEWLINE);
+		
+		List<String> roundPlayers = getGameParticipantsFromDB(roundsForGame);
+		
+		for (int i = 0; i < roundPlayers.size(); i++) 
+		{
+			String playerName = roundPlayers.get(i);
+			if (i+1 <= dynamoGame.getFieldSize())
+			{
+				sb.append(i+1 + ". " + playerName);
+			}
+			else
+			{
+				sb.append(i+1 + ". " + playerName + " (wait list)");
+			}
+			sb.append(NEWLINE);
+		}
+		
+		int spotsAvailable = dynamoGame.getFieldSize() - roundPlayers.size();
+		
+		sb.append(NEWLINE);
+		sb.append("Spots still available: " + spotsAvailable);
+		sb.append(NEWLINE);
+		
+		return sb;
 	}
+	
+	public static ArrayList<String> establishEmailRecipientsForFutureGame(List<DynamoPlayer> fullPlayerList)
+	{		
+		ArrayList<String> emailRecipients = new ArrayList<>();	 
+		
+		emailRecipients = Utils.setEmailFullRecipientList(fullPlayerList);
+				
+		logger.info(" future game composing email: will email to these recipients if sendemail clicked: " + emailRecipients);
+		
+		return emailRecipients;
+	}
+	
+	public static StringBuffer getFutureEmailGameDetails(DynamoGame gm, List<TeeTime> teeTimeList)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
+		DecimalFormat currencyFmt = new DecimalFormat("$0.00");
+		
+		StringBuffer sb = new StringBuffer();	
+		
+		sb.append("Date: " + sdf.format(gm.getGameDateJava()) + NEWLINE);
+		sb.append("Course: " + gm.getCourseName() + NEWLINE);
+		sb.append("Bet Amt: " + currencyFmt.format(gm.getBetAmount()) + NEWLINE);
+		sb.append("Field Size: " + gm.getFieldSize() + NEWLINE);
+		sb.append("Tee Times: ");		
+		
+		for (int i = 0; i < teeTimeList.size(); i++)
+		{
+			TeeTime teeTime = teeTimeList.get(i);
+			sb.append(teeTime.getTeeTimeString() + " ");
+		}
+
+		sb.append(NEWLINE);
+
+		return sb;
+	}
+	
+	public static String sendFutureGameEmail(DynamoGame dynamoGame, List<DynamoPlayer> fullPlayerList, String futureGameEmailMessage)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
+		String subjectLine = "Golf game on " + Utils.getDayofWeekString(dynamoGame.getGameDateJava()) + " " + sdf.format(dynamoGame.getGameDateJava()) + " on " + dynamoGame.getCourseName();		
+		ArrayList<String> emailRecipients = establishEmailRecipientsForFutureGame(fullPlayerList);
+		
+		if (emailRecipients.size() >= 100)
+		{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"100 or more recipients on Email list - google will not send it, preventing before trying",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else
+		{
+			SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients, true); //last param means use jsf
+		}
+		
+		return "";
+	}	
 	
 	public static long getDailyEmailTime() 
     {
@@ -857,8 +1030,8 @@ public class Utils
     	int minute = 0;
     	int second = 0;
     	
-    	//int hour = 19;
-    	//int minute = 12;
+    	//int hour = 22;
+    	//int minute = 28;
     	//int second = 0;
     	
     	ZonedDateTime now = ZonedDateTime.now(ZoneId.of(Utils.MY_TIME_ZONE));
@@ -872,6 +1045,13 @@ public class Utils
     	Duration duration = Duration.between(now, nextRun);
     	long initialDelay = duration.getSeconds();
 		return initialDelay;
+	}
+	
+	public static String getEncryptedPassword(String unencryptedPassword)
+	{
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encryptedPW = passwordEncoder.encode(unencryptedPassword);
+		return encryptedPW;
 	}
 	
 	public static String getSignupLine(Round rd) 
@@ -899,21 +1079,6 @@ public class Utils
 		return signupString.toString();
 	}
 
-	public static DynamoPlayer convertPlayerToDynamoPlayer(Player player) 
-	{
-		DynamoPlayer dynamoPlayer = new DynamoPlayer();
-		
-		dynamoPlayer.setPlayerID(player.getPlayerID());
-		dynamoPlayer.setActive(player.isActive());
-		dynamoPlayer.setEmailAddress(player.getEmailAddress());
-		dynamoPlayer.setFirstName(player.getFirstName());
-		dynamoPlayer.setLastName(player.getLastName());
-		dynamoPlayer.setHandicap(player.getHandicap());
-		dynamoPlayer.setUsername(player.getUsername());
-		
-		return dynamoPlayer;
-	}
-
 	public static boolean isWinterMonth() 
 	{
 		boolean isWinterMonth = false;
@@ -929,5 +1094,5 @@ public class Utils
 		
 		return isWinterMonth;
 	}
-		
+
 }

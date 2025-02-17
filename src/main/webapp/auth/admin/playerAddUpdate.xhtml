@@ -1,0 +1,160 @@
+<ui:composition 
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+     
+    <table id="playermaintainTableID">
+		          
+	  <tr>
+	  		
+	 		<td class="textLabel">
+				<p:outputLabel value="#{bundle.id}" rendered="#{pc_Player.operation=='Update'}"/>
+			</td>	
+		 
+            <td class="text">
+               <p:outputLabel value="#{pc_Player.selectedPlayer.playerID}" rendered="#{pc_Player.operation=='Update'}"/>
+            </td>
+            
+         </tr>
+     
+         <tr>
+	  		
+ 			 <td class="textLabel">
+			<p:outputLabel for="firstNameID" value="#{bundle.firstName}"/>
+		 </td>	
+		 
+            <td class="text">
+               <p:inputText id="firstNameID" size="30" value="#{pc_Player.selectedPlayer.firstName}" required="true"/>
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabel">
+			<p:outputLabel for="lastNameID" value="#{bundle.lastName}"/>
+		 </td>	
+		 
+            <td class="text">
+               <p:inputText id="lastNameID" size="30" value="#{pc_Player.selectedPlayer.lastName}" required="true"/>
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabel">
+			<p:outputLabel for="handicapID" value="#{bundle.handicap}"/>
+		 </td>	
+		 
+            <td class="text">
+               <p:inputText id="handicapID" size="8" value="#{pc_Player.selectedPlayer.handicap}" required="true"/>
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabel">
+			<p:outputLabel for="teeColorID" value="#{bundle.teePref}" rendered="#{pc_Player.operation=='Add'}"/>
+		 </td>	
+		 
+            <td class="text">
+                <p:selectOneRadio id="teeColorID" value="#{pc_Player.selectedPlayer.teePreference}" rendered="#{pc_Player.operation=='Add'}">
+	                <f:selectItem itemLabel="Shortest" itemValue="Shortest" />
+					<f:selectItem itemLabel="Shorter" itemValue="Shorter" />
+					<f:selectItem itemLabel="Medium" itemValue="Medium" />
+					<f:selectItem itemLabel="Longer" itemValue="Longer" />
+					<f:selectItem itemLabel="Longest" itemValue="Longest" />
+            	</p:selectOneRadio>
+            </td>
+            
+         </tr>	          	
+         
+         <tr>
+	  		
+ 			 <td class="textLabel">
+				<p:outputLabel for="usernameID" value="User Name"/>
+			 </td>	
+		 
+            <td class="text">
+               <p:inputText id="usernameID" size="50" value="#{pc_Player.selectedPlayer.username}" required="true"/>
+            </td>
+            
+         </tr>
+         
+          <tr>
+	  		
+ 			 <td class="text" colspan="2">
+ 			 	<p:selectBooleanCheckbox
+ 			 	    rendered="#{pc_Player.operation=='Update'}"
+					value="#{pc_Player.selectedPlayer.active}">
+				</p:selectBooleanCheckbox>
+				<p:outputLabel  rendered="#{pc_Player.operation=='Update'}" value="Active"/>
+			 </td>	
+		
+         </tr>
+         
+         <tr>	  		
+ 			 <td class="textLabel">
+			    <p:outputLabel for="emailID" value="#{bundle.email}"/>
+		    </td>	
+		 
+            <td class="text">
+               <p:inputText id="emailID" size="50" value="#{pc_Player.selectedPlayer.emailAddress}" required="true"/>
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="textLabel">
+			<p:outputLabel for="emailID" value="#{bundle.role}"/>
+		 </td>	
+		 
+            <td class="text">
+               <p:selectOneMenu id="userRoleID" value="#{pc_Player.selectedPlayer.role}" required="true"  hideNoSelectionOption="true">
+		          <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true"  />
+				  <f:selectItem itemValue="USER" itemLabel="USER"/>
+				  <f:selectItem itemValue="ADMIN" itemLabel="ADMIN" />				
+			   </p:selectOneMenu>
+            </td>
+            
+         </tr>
+         
+         <tr>
+	  		
+ 			 <td class="text" colspan="2">
+ 			 	<p:selectBooleanCheckbox
+ 			 	    rendered="#{pc_Player.operation=='Update'}"
+					value="#{pc_Player.resetPassword}">
+				</p:selectBooleanCheckbox>
+				<p:outputLabel  rendered="#{pc_Player.operation=='Update'}" value="#{bundle.resetPassword}"/>
+			 </td>	
+		
+         </tr>
+    			
+	     <tr>
+			<td align="center">
+			
+			   <p:commandButton 
+				   value="#{bundle.ok}" 
+				   action="#{pc_Player.savePlayer}"	
+				   update="playerForm">	
+			   </p:commandButton> 
+			   
+			   <p:commandButton value="#{bundle.cancel}"
+			       action="#{pc_Player.cancelAddUpdatePlayer}"
+			       immediate="true"
+				   update="playerForm">
+			   </p:commandButton>
+			   
+			</td>
+		</tr>
+						
+	</table>
+		
+</ui:composition>	

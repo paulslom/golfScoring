@@ -2,7 +2,6 @@ package com.pas.dao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,15 +12,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.pas.beans.Game;
-import com.pas.beans.GolfMain;
 import com.pas.beans.Round;
 import com.pas.beans.Score;
 import com.pas.dynamodb.DateToStringConverter;
@@ -30,7 +26,6 @@ import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoRound;
 import com.pas.util.Utils;
 
-import jakarta.inject.Inject;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -59,9 +54,6 @@ public class RoundDAO implements Serializable
 	private static DynamoDbTable<DynamoRound> roundsTable;
 	private static final String AWS_TABLE_NAME = "rounds";
 	
-	@Inject GolfMain golfmain;
-	@Inject Game game;
-
 	public RoundDAO(DynamoClients dynamoClients2)
 	{
 	   try
@@ -74,25 +66,6 @@ public class RoundDAO implements Serializable
 	      logger.error("Got exception while initializing TeeTimeDAO. Ex = " + ex.getMessage(), ex);
 	   }	   
 	}
-	
-	public List<String> getGameParticipantsFromDB()
-    {	
-		List<Round> roundList = golfmain.getRoundsForGame(game.getSelectedGame());
-		List<String> participantsList = new ArrayList<>();
-		
-		SimpleDateFormat signupSDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
-		TimeZone etTimeZone = TimeZone.getTimeZone(Utils.MY_TIME_ZONE);
-		signupSDF.setTimeZone(etTimeZone);
-		
-		for (int i = 0; i < roundList.size(); i++) 
-		{
-			Round rd = roundList.get(i);
-			String signupLine = Utils.getSignupLine(rd);			
-			participantsList.add(signupLine);
-		}
-		
-		return participantsList;
-    }
 	
 	public void readAllRoundsFromDB(List<String> gameIDList)
     {

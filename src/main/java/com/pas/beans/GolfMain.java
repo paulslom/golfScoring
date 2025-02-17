@@ -36,6 +36,7 @@ import com.pas.dynamodb.DynamoCourseTee;
 import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoGroup;
 import com.pas.dynamodb.DynamoPlayer;
+import com.pas.dynamodb.DynamoPlayerTeePreference;
 import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
@@ -43,7 +44,6 @@ import com.pas.util.Utils;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
@@ -94,6 +94,8 @@ public class GolfMain implements Serializable
 
 	private Group selectedGroup;
 	
+	private String newPassword;
+	
 	private TeeTime selectedTeeTime;
 	private boolean disableDeleteTeeTime = true;
 	private String teeTimeOperation = "";
@@ -102,10 +104,18 @@ public class GolfMain implements Serializable
 	private List<TeeTime> gameSpecificTeeTimesList = new ArrayList<>();
 	
 	private Course selectedCourse;
+	private boolean disableDeleteCourse = true;
 	private String courseOperation;
 	private boolean courseRenderInputFields = true;
 	private boolean courseRenderInquiry = true;
-	private boolean courseRenderAddUpdateDelete = false;
+	private boolean courseRenderAddUpdate = false;
+	private List<CourseTee> newCourseTeesList = new ArrayList<>();
+	private List<DynamoCourseTee> courseSpecificCourseTeesList = new ArrayList<>();	
+	private Integer courseTeeBoxes;
+	
+	private PlayerTeePreference selectedPlayerTeePreference;
+	private boolean disablePlayerTeePrefDialogButton = true;	
+	private List<DynamoPlayerTeePreference> playerSpecificTeePreferencesList = new ArrayList<>();
 	
 	private String loggedInPlayerName;
 	private String loggedInPlayerEmail;
@@ -394,73 +404,167 @@ public class GolfMain implements Serializable
 		return "/auth/admin/gameList.xhtml";
 	}
 	
-	public String selectCourseAcid()
-	{		
-		try 
-        {
-			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		    String acid = ec.getRequestParameterMap().get("operation");
-		    String id = ec.getRequestParameterMap().get("id");
-		    
-		    logger.info("course for add-change-inquire-delete.  Function is: " + acid);
-		    
-		    if (acid.equalsIgnoreCase("Add"))
-		    {
-		    	this.setCourseOperation("Add");
-		    	
-		    	this.setCourseRenderInputFields(true);
-		    	this.setCourseRenderInquiry(false);
-		    	this.setCourseRenderAddUpdateDelete(true);
-		    	
-		    	this.setSelectedCourse(new Course());		    		
-		    }
-		    else if (acid.equalsIgnoreCase("Update"))
-		    {
-		    	this.setCourseOperation("Add");
-		    	
-		    	this.setCourseRenderInputFields(true);
-		    	this.setCourseRenderInquiry(false);
-		    	this.setCourseRenderAddUpdateDelete(true);
-		    	
-		    	Course course = this.getCourseByCourseID(id);
-		    	this.setSelectedCourse(course);
-		    }
-		    else if (acid.equalsIgnoreCase("Delete"))
-		    {
-		    	this.setCourseOperation("Delete");
-		    	
-		    	this.setCourseRenderInputFields(false);
-		    	this.setCourseRenderInquiry(false);
-		    	this.setCourseRenderAddUpdateDelete(true);
-		    	
-		    	Course course = this.getCourseByCourseID(id);
-		    	this.setSelectedCourse(course);
-		    }
-		    else if (acid.equalsIgnoreCase("View"))
-		    {
-		    	this.setCourseOperation("View");
-		    	
-		    	this.setCourseRenderInputFields(false);
-		    	this.setCourseRenderInquiry(false);
-		    	this.setCourseRenderAddUpdateDelete(true);
-		    	
-		    	Course course = this.getCourseByCourseID(id);
-		    	this.setSelectedCourse(course);
-		    }
-		    					    
-        } 
-        catch (Exception e) 
-        {
-        	logger.error("selectCourseAcid errored: " + e.getMessage(), e);
-			FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
-		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
-        }
-		
+	public String updateCourseSetup()
+	{
+		setCourseOperation("Update");
+		setCourseRenderInquiry(false);
+    	setCourseRenderAddUpdate(true);
+    	
+    	this.getCourseSpecificCourseTeesList().clear();
+    	this.setCourseSpecificCourseTeesList(courseTeeDAO.getCourseSpecificCourseTeesListByCourseID(this.getSelectedCourse().getCourseID()));
 		return "";
+	}
+	
+	public String addCourseSetup()
+	{
+		setCourseOperation("Add");
+		setCourseRenderInquiry(false);
+    	setCourseRenderAddUpdate(true);
+    	
+    	Course course = new Course();
+    	setSelectedCourse(course);
+    	
+		return "";
+	}		
+	
+	public String updateCourse()
+	{
+		setCourseOperation("Update");
+		saveCourse();
+		setCourseRenderInquiry(true);
+    	setCourseRenderAddUpdate(false);
+		return "";
+	}
+	
+	public String addCourse()
+	{
+		setCourseOperation("Add");
+		saveCourse();
+		setCourseRenderInquiry(true);
+    	setCourseRenderAddUpdate(false);
+		return "";
+	}		 
+	
+	public String cancelAddUpdateCourse()
+	{
+		this.setCourseRenderInquiry(true);
+    	this.setCourseRenderAddUpdate(false);
+    	
+		return "";
+	}
+	
+	public String deleteCourse()
+	{
+		logger.info(getTempUserName() + " is deleting a course");
 		
+		try
+		{
+			courseDAO.deleteCourse(this.getSelectedCourse().getCourseID());
+			this.deleteCourseTeesFromDB(this.getSelectedCourse().getCourseID());
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"course and course tees successfully removed",null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);  
+	        
+	        logger.info(getTempUserName() + " course and course tees successfully deleted");
+		}
+		catch (Exception e)
+		{
+			logger.error("Exception when deleting a course: " + e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when deleting a course: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
+			
+		return "";
+	}
+	
+	public String selectPlayerTeePrefRowAjax(SelectEvent<PlayerTeePreference> event)
+	{
+		logger.info("User clicked on a row in Player Tee Preference list");
+		
+		PlayerTeePreference item = event.getObject();
+		
+		this.setSelectedPlayerTeePreference(item);
+		this.setDisablePlayerTeePrefDialogButton(false);
+				
+		return "";
 	}	
 	
-	private Course getCourseByCourseID(String id2) 
+	public String setUpForPlayerTeePrefUpdate()
+	{
+		return "";
+	}
+	
+	public String updatePrefs() throws Exception
+	{
+		logger.info("entering updatePrefs");
+		
+		for (int i = 0; i < this.getCourseTeesList().size(); i++) 
+		{
+			DynamoCourseTee courseTee = this.getCourseTeesList().get(i);
+			
+			if (courseTee.getCourseID().equalsIgnoreCase(this.getSelectedPlayerTeePreference().getCourseID()))
+			{
+				if (this.getSelectedPlayerTeePreference().getTeeColor().equalsIgnoreCase(courseTee.getTeeColor()))
+				{
+					this.getSelectedPlayerTeePreference().setCourseTeeID(courseTee.getCourseTeeID());
+					break;
+				}
+			}
+		}
+		
+		this.updatePlayerTeePreference(this.getSelectedPlayerTeePreference());
+		
+		return "";
+	}
+	
+	public String generateTeeBoxRows()
+	{
+		this.getNewCourseTeesList().clear();
+		
+		for (int i = 0; i < this.getCourseTeeBoxes(); i++) 
+		{
+			CourseTee courseTee = new CourseTee();
+			courseTee.setCourseID(this.getSelectedCourse().getCourseID());
+			this.getNewCourseTeesList().add(courseTee);			
+		}
+		return "";
+	}
+	
+	private void saveCourse() 
+	{
+		logger.info(getTempUserName() + " inside saveCourse()");	
+		
+		try
+		{
+			if (this.getCourseOperation().equalsIgnoreCase("Add"))
+			{
+				this.getCourseDAO().addCourse(this.getSelectedCourse());
+				for (int i = 0; i < this.getNewCourseTeesList().size(); i++) 
+				{
+					CourseTee ct = this.getNewCourseTeesList().get(i);
+					ct.setCourseID(this.getSelectedCourse().getCourseID());
+					ct.setCoursePar(this.getSelectedCourse().getCoursePar());
+					this.getCourseTeeDAO().addCourseTee(ct);
+				}
+			}
+			
+			if (this.getCourseOperation().equalsIgnoreCase("Update"))
+			{
+				this.getCourseDAO().updateCourse(this.getSelectedCourse());
+			}	
+			
+		}
+		catch (Exception e)
+		{
+			logger.error("Exception when saving course: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when saving course: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
+		
+		logger.info(getTempUserName() + " exiting saveCourse");
+	}
+
+	public Course getCourseByCourseID(String id2) 
 	{
 		return courseDAO.getCourseByCourseID(id2);
 	}
@@ -471,8 +575,7 @@ public class GolfMain implements Serializable
 		
 		Course item = event.getObject();
 		this.setSelectedCourse(item);
-				
-		setCourseOperation("Update");
+		this.setDisableDeleteCourse(false);		
 		
 		return "";
 	}	
@@ -631,6 +734,9 @@ public class GolfMain implements Serializable
 			return courseTee1.getCourseRating().compareTo(courseTee2.getCourseRating());
 		}		
 	}
+	
+	
+	
 	
 	public void onLoadEmailGroup() 
 	{
@@ -1571,12 +1677,50 @@ public class GolfMain implements Serializable
 
 	public List<DynamoGame> getAvailableGamesByPlayerID(String playerID) 
 	{
-		return gameDAO.getAvailableGames(playerID);
+		List<DynamoGame> gameList = gameDAO.getAvailableGames(playerID);
+		List<DynamoGame> tempList = new ArrayList<>();
+		
+		for (int i = 0; i < gameList.size(); i++) 
+    	{
+			DynamoGame dynamoGame = gameList.get(i);
+			Round rd = this.getRoundByGameandPlayer(dynamoGame.getGameID(), playerID);
+			
+			Integer spotsTaken = this.countRoundsForGameFromDB(dynamoGame);
+			Integer spotsAvailable = dynamoGame.getFieldSize() - spotsTaken;
+			dynamoGame.setSpotsAvailable(spotsAvailable);
+			
+			if (rd == null)
+			{
+				dynamoGame.setRenderSignUp(true);
+				dynamoGame.setRenderWithdraw(false);
+				dynamoGame.setSelectedCourseTeeID(getTeePreference(playerID, dynamoGame.getCourseID()));
+				this.assignCourseToGame(dynamoGame);
+			}
+			else
+			{
+				dynamoGame.setRenderSignUp(false);
+				dynamoGame.setRenderWithdraw(true);
+				dynamoGame.setSelectedCourseTeeID(rd.getCourseTeeID());
+			}
+	
+			tempList.add(dynamoGame);
+		} 
+    	
+    	Collections.sort(tempList, new Comparator<DynamoGame>() 
+		{
+		   public int compare(DynamoGame o1, DynamoGame o2) 
+		   {
+		      return o1.getGameDate().compareTo(o2.getGameDate());
+		   }
+		});
+		
+		return tempList;
 	}
 
 	public String getTeePreference(String playerID, String courseID)
 	{
-		return gameDAO.getTeePreference(playerID, courseID);
+		PlayerTeePreference ptp = playerTeePreferencesDAO.getPlayerTeePreference(playerID, courseID);
+		return ptp.getPlayerTeePreferenceID();
 	}
 
 	public DynamoGame getGameByGameID(String gameID) 
@@ -1594,9 +1738,9 @@ public class GolfMain implements Serializable
 		return playerDAO.getFullPlayersMapByUserName().get(username);
 	}
 		
-	public String addPlayer(Player player)  throws Exception  
+	public String addPlayer(DynamoPlayer dynamoPlayer)  throws Exception  
 	{
-		return playerDAO.addPlayer(player);
+		return playerDAO.addPlayer(dynamoPlayer);
 	}
 	
 	public void updatePlayer(DynamoPlayer player)  throws Exception 
@@ -1634,11 +1778,6 @@ public class GolfMain implements Serializable
 		return roundDAO.getRoundByGameandPlayer(gameID, playerID);
 	}
 
-	public List<String> getGameParticipantsFromDB(DynamoGame selectedGame) 
-	{
-		return roundDAO.getGameParticipantsFromDB();
-	}
-
 	public Integer countRoundsForGameFromDB(DynamoGame gm) 
 	{
 		return roundDAO.countRoundsForGameFromDB(gm);
@@ -1674,6 +1813,11 @@ public class GolfMain implements Serializable
 		return courseTeeDAO.getCourseTeesList();
 	}
 
+	public void deleteCourseTeesFromDB(String courseID) 
+	{
+		courseTeeDAO.deleteCourseTeesForCourseFromDB(courseID);		
+	}
+	
 	public List<TeeTime> getTeeTimesByGame(DynamoGame selectedGame) 
 	{
 		return teeTimeDAO.getTeeTimesByGame(selectedGame);
@@ -1742,6 +1886,29 @@ public class GolfMain implements Serializable
 		return golfUsersDAO.getGolfUser(whoIsThis);
 	}
 
+	public String changePassword()
+	{
+		String errorMsg = "";
+		
+		try
+		{
+			String whoIsThis = Utils.getLoggedInUserName();
+		
+			this.updateUser(whoIsThis, this.getNewPassword(), "USER");
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password successfully changed",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
+		}
+		catch (Exception e)
+		{
+			errorMsg = "Unable to change password. " + e.getMessage();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg,null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return "";
+	}
+	
 	public void updateUser(String whoIsThis, String newPassword, String userrole) throws Exception 
 	{
 		GolfUser gu = new GolfUser();
@@ -1978,14 +2145,6 @@ public class GolfMain implements Serializable
 		this.courseRenderInquiry = courseRenderInquiry;
 	}
 
-	public boolean isCourseRenderAddUpdateDelete() {
-		return courseRenderAddUpdateDelete;
-	}
-
-	public void setCourseRenderAddUpdateDelete(boolean courseRenderAddUpdateDelete) {
-		this.courseRenderAddUpdateDelete = courseRenderAddUpdateDelete;
-	}
-
 	public TeeTime getSelectedTeeTime() {
 		return selectedTeeTime;
 	}
@@ -2034,5 +2193,131 @@ public class GolfMain implements Serializable
 		this.teeTimesRenderAddUpdateDelete = teeTimesRenderAddUpdateDelete;
 	}
 
+	public boolean isDisableDeleteCourse() {
+		return disableDeleteCourse;
+	}
+
+	public void setDisableDeleteCourse(boolean disableDeleteCourse) {
+		this.disableDeleteCourse = disableDeleteCourse;
+	}
+
+	public boolean isCourseRenderAddUpdate() {
+		return courseRenderAddUpdate;
+	}
+
+	public void setCourseRenderAddUpdate(boolean courseRenderAddUpdate) {
+		this.courseRenderAddUpdate = courseRenderAddUpdate;
+	}
+
+	public Integer getCourseTeeBoxes() {
+		return courseTeeBoxes;
+	}
+
+	public void setCourseTeeBoxes(Integer courseTeeBoxes) {
+		this.courseTeeBoxes = courseTeeBoxes;
+	}
+
+	public List<CourseTee> getNewCourseTeesList() {
+		return newCourseTeesList;
+	}
+
+	public void setNewCourseTeesList(List<CourseTee> newCourseTeesList) {
+		this.newCourseTeesList = newCourseTeesList;
+	}
+
+	public List<DynamoCourseTee> getCourseSpecificCourseTeesList() {
+		return courseSpecificCourseTeesList;
+	}
+
+	public void setCourseSpecificCourseTeesList(List<DynamoCourseTee> courseSpecificCourseTeesList) {
+		this.courseSpecificCourseTeesList = courseSpecificCourseTeesList;
+	}
+
+	public void deletePlayer(DynamoPlayer dynamoPlayer) 
+	{
+		try 
+		{
+			playerDAO.deletePlayer(dynamoPlayer);
+		} 
+		catch (Exception e) 
+		{
+			logger.error("Error calling playerDAO.deletePlayer " +e.getMessage(), e);
+		}		
+	}
+
+	public void deletePlayerTeePreferences(DynamoPlayer selectedPlayer) 
+	{
+		playerTeePreferencesDAO.deletePlayerTeePreferences(selectedPlayer);		
+	}
+
+	public void deletePlayerMoneyFromDB(DynamoPlayer selectedPlayer) 
+	{
+		playerMoneyDAO.deletePlayerMoneyFromDB(selectedPlayer);		
+	}
+
+	public void deleteGolfUser(String username)
+	{
+		try
+		{
+			golfUsersDAO.deleteUser(username);
+		} 
+		catch (Exception e) 
+		{
+			logger.error("Error calling playerDAO.deletePlayer " +e.getMessage(), e);
+		}	
+	}
 	
+	public PlayerTeePreference getSelectedPlayerTeePreference() {
+		return selectedPlayerTeePreference;
+	}
+
+	public void setSelectedPlayerTeePreference(PlayerTeePreference selectedPlayerTeePreference) {
+		this.selectedPlayerTeePreference = selectedPlayerTeePreference;
+	}
+
+	public boolean isDisablePlayerTeePrefDialogButton() {
+		return disablePlayerTeePrefDialogButton;
+	}
+
+	public void setDisablePlayerTeePrefDialogButton(boolean disablePlayerTeePrefDialogButton) {
+		this.disablePlayerTeePrefDialogButton = disablePlayerTeePrefDialogButton;
+	}
+
+	public List<DynamoPlayerTeePreference> getPlayerSpecificTeePreferencesList() 
+	{
+		return playerSpecificTeePreferencesList;
+	}
+
+	public void setPlayerSpecificTeePreferencesList(DynamoPlayer dynamoPlayer) 
+	{
+		List<DynamoPlayerTeePreference> tempList = playerTeePreferencesDAO.getPlayerSpecificTeePreferencesList(dynamoPlayer);
+		
+		for (int i = 0; i < tempList.size(); i++) 
+		{
+			DynamoPlayerTeePreference dpt = tempList.get(i);
+			Course course = courseDAO.getCourseByCourseID(dpt.getCourseID());
+			List<DynamoCourseTee> tempCourseTeesList = courseTeeDAO.getCourseSpecificCourseTeesListByCourseID(course.getCourseID());
+			List<SelectItem> siList = new ArrayList<>();
+			for (int j = 0; j < tempCourseTeesList.size(); j++) 
+			{
+				DynamoCourseTee dct = tempCourseTeesList.get(j);
+				SelectItem si = new SelectItem();
+				si.setLabel(dct.getTeeColor());
+				si.setValue(dct.getCourseTeeID());
+				siList.add(si);
+			}
+			dpt.setTeeSelections(siList);
+		}
+		
+		this.playerSpecificTeePreferencesList = tempList;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
 }

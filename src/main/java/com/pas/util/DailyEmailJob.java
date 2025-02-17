@@ -12,18 +12,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pas.beans.Course;
-import com.pas.beans.Game;
-import com.pas.beans.GolfMain;
+import com.pas.beans.Round;
+import com.pas.beans.TeeTime;
 import com.pas.dao.CourseDAO;
+import com.pas.dao.GameDAO;
 import com.pas.dao.GroupDAO;
+import com.pas.dao.PlayerDAO;
+import com.pas.dao.RoundDAO;
+import com.pas.dao.TeeTimeDAO;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGame;
 import com.pas.dynamodb.DynamoGroup;
+import com.pas.dynamodb.DynamoPlayer;
 import com.pas.dynamodb.DynamoUtil;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class DailyEmailJob implements Runnable 
 {
 	private static DynamoClients dynamoClients;
@@ -33,19 +38,8 @@ public class DailyEmailJob implements Runnable
 	private static long SIX_DAYS = 518400000; //in milliseconds
 	private static DynamoGroup defaultGroup;
 
-	@Inject GolfMain golfmain;
-	@Inject Game game;
-
-	@PostConstruct
-	public void init() throws Exception
-	{
-		dynamoClients = DynamoUtil.getDynamoClients();
+	private List<DynamoGame> gameList = new ArrayList<>();
 		
-		GroupDAO groupDAO = new GroupDAO(dynamoClients);
-		groupDAO.readGroupsFromDB();
-		defaultGroup = groupDAO.getGroupsList().get(0);
-	}
-	
 	@Override
 	public void run() 
 	{
@@ -55,22 +49,47 @@ public class DailyEmailJob implements Runnable
 		
 		try 
 		{
-			List<DynamoGame> futuregameslist = getFutureGames();
+			dynamoClients = DynamoUtil.getDynamoClients();
+			
+			GroupDAO groupDAO = new GroupDAO(dynamoClients);
+			groupDAO.readGroupsFromDB();
+			defaultGroup = groupDAO.getGroupsList().get(0);
+			
+			CourseDAO courseDAO = new CourseDAO(dynamoClients);
+			courseDAO.readCoursesFromDB(defaultGroup); 
+			
+			GameDAO gameDAO = new GameDAO(dynamoClients);
+			gameDAO.readGamesFromDB(defaultGroup, courseDAO.getCoursesMap());
+			gameList = gameDAO.getFullGameList();	
+			
+			PlayerDAO playerDAO = new PlayerDAO(dynamoClients); 
+			playerDAO.readPlayersFromDB();
+			List<DynamoPlayer> fullPlayerList = playerDAO.getFullPlayerList();
+			
+			TeeTimeDAO teeTimeDAO = new TeeTimeDAO(dynamoClients);			
+			RoundDAO roundDAO = new RoundDAO(dynamoClients);
+			
+			List<DynamoGame> futuregameslist = getFutureGames(courseDAO);
 			
 			//if there is a game coming up within 6 days, email about it.  Don't do today's though.
 			
 			for (int i = 0; i < futuregameslist.size(); i++) 
 			{
 				DynamoGame dynamoGame = futuregameslist.get(i);
+				
 				Date gameDate = dynamoGame.getGameDateJava();
 				
 				long diffInMillies = Math.abs(gameDate.getTime() - todaysDate.getTime());
 			
 			    if (diffInMillies >= TEN_HOURS && diffInMillies <= SIX_DAYS)
 			    {
-					game.setSelectedGame(dynamoGame);
-					game.composeFutureGameEmail();
-			    	game.sendFutureGameEmail(game.getSelectedGame());
+			    	List<TeeTime> teeTimeList = teeTimeDAO.readTeeTimesForGame(defaultGroup, dynamoGame.getGameID());
+			    	List<String> gameIDList = new ArrayList<>();
+			    	gameIDList.add(dynamoGame.getGameID());
+			    	roundDAO.readAllRoundsFromDB(gameIDList);
+			    	List<Round> roundsForGame = roundDAO.getRoundsForGame(dynamoGame);
+					String futureGameEmailMessage = Utils.composeFutureGameEmail(dynamoGame, fullPlayerList, teeTimeList, roundsForGame);
+					Utils.sendFutureGameEmail(dynamoGame, fullPlayerList, futureGameEmailMessage);
 			    }
 			}
 			
@@ -82,10 +101,8 @@ public class DailyEmailJob implements Runnable
    
 	}
 	
-	private List<DynamoGame> getFutureGames() throws Exception
+	private List<DynamoGame> getFutureGames(CourseDAO courseDAO) throws Exception
 	{
-		List<DynamoGame> gameList = golfmain.getFullGameList();
-		
 		List<DynamoGame> tempList = new ArrayList<>();
 				
 		Date today = new Date();
@@ -110,10 +127,6 @@ public class DailyEmailJob implements Runnable
 			}
 			
 		}
-		
-		DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
-		CourseDAO courseDAO = new CourseDAO(dynamoClients);
-		courseDAO.readCoursesFromDB(defaultGroup);
 		
 	    for (int i = 0; i < tempList.size(); i++) 
 		{

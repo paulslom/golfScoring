@@ -24,9 +24,9 @@ public class CourseTee implements Serializable
 	private int oldCourseID;
 	private String teeColor;
 	private BigDecimal courseRating;
-	private int coursePar;
-	private int slopeRating;
-	private int totalYardage;
+	private Integer coursePar;
+	private Integer slopeRating;
+	private Integer totalYardage;
 	
 	@Inject GolfMain golfmain;
 	
@@ -47,60 +47,7 @@ public class CourseTee implements Serializable
         final String that = (String) o;
         return Objects.equals(courseTeeID, that);
     }
-
-
 	
-
-	public String getTeeColor() {
-		return teeColor;
-	}
-
-
-	public void setTeeColor(String teeColor) {
-		this.teeColor = teeColor;
-	}
-
-
-	public BigDecimal getCourseRating() {
-		return courseRating;
-	}
-
-
-	public void setCourseRating(BigDecimal courseRating) {
-		this.courseRating = courseRating;
-	}
-
-
-	public int getCoursePar() {
-		return coursePar;
-	}
-
-
-	public void setCoursePar(int coursePar) {
-		this.coursePar = coursePar;
-	}
-
-
-	public int getSlopeRating() {
-		return slopeRating;
-	}
-
-
-	public void setSlopeRating(int slopeRating) {
-		this.slopeRating = slopeRating;
-	}
-
-
-	public int getTotalYardage() {
-		return totalYardage;
-	}
-
-
-	public void setTotalYardage(int totalYardage) {
-		this.totalYardage = totalYardage;
-	}
-
-
 	public Map<String, List<SelectItem>> getTeeSelectionsMap()
 	{		
 		if (teeSelectionsMap == null || teeSelectionsMap.size() == 0)
@@ -156,7 +103,6 @@ public class CourseTee implements Serializable
 		this.teeSelectionsMap = teeSelectionsMap;
 	}
 
-
 	public List<SelectItem> getTeeSelections(String courseID)
 	{
 		if (getTeeSelectionsMap() != null)
@@ -178,54 +124,73 @@ public class CourseTee implements Serializable
 		return courseTeeID;
 	}
 
-
-
-
 	public void setCourseTeeID(String courseTeeID) {
 		this.courseTeeID = courseTeeID;
 	}
-
-
-
 
 	public String getCourseID() {
 		return courseID;
 	}
 
-
-
-
 	public void setCourseID(String courseID) {
 		this.courseID = courseID;
 	}
-
-
-
 
 	public int getOldCourseTeeID() {
 		return oldCourseTeeID;
 	}
 
-
-
-
 	public void setOldCourseTeeID(int oldCourseTeeID) {
 		this.oldCourseTeeID = oldCourseTeeID;
 	}
-
-
-
 
 	public int getOldCourseID() {
 		return oldCourseID;
 	}
 
-
-
-
 	public void setOldCourseID(int oldCourseID) {
 		this.oldCourseID = oldCourseID;
 	}
+
+	public Integer getCoursePar() {
+		return coursePar;
+	}
+
+	public void setCoursePar(Integer coursePar) {
+		this.coursePar = coursePar;
+	}
+
+	public Integer getSlopeRating() {
+		return slopeRating;
+	}
+
+	public void setSlopeRating(Integer slopeRating) {
+		this.slopeRating = slopeRating;
+	}
+
+	public Integer getTotalYardage() {
+		return totalYardage;
+	}
+
+	public void setTotalYardage(Integer totalYardage) {
+		this.totalYardage = totalYardage;
+	}
 	
+	public String getTeeColor() {
+		return teeColor;
+	}
+
+	public void setTeeColor(String teeColor) {
+		this.teeColor = teeColor;
+	}
+
+	public BigDecimal getCourseRating() {
+		return courseRating;
+	}
+
+	public void setCourseRating(BigDecimal courseRating) {
+		this.courseRating = courseRating;
+	}
+
 	
 }

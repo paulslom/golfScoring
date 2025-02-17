@@ -16,19 +16,11 @@
            	
 			<p:submenu label="Game">
 				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="List" url="#{request.contextPath}/auth/admin/gameList.xhtml"/>
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Select Players for Game" url="#{request.contextPath}/auth/admin/playerPicklist.xhtml"/>
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Select Player tee times" url="#{request.contextPath}/auth/admin/teeTimePickList.xhtml"/>
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Player Game Handicaps" url="#{request.contextPath}/auth/admin/gameHandicaps.xhtml"/>				
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Pick Teams" url="#{request.contextPath}/auth/admin/pickTeams.xhtml"/>	
 				<p:menuitem value="Sign Up for Game" url="#{request.contextPath}/auth/gameSignUp.xhtml"/>											
 			</p:submenu>
 			
-			<p:submenu rendered="#{sessionScope.currentUserisAdmin}" label="Player">
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Players" url="#{request.contextPath}/auth/admin/player.xhtml"/>			
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Money" url="#{request.contextPath}/auth/admin/playerMoney.xhtml"/>
-				<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Tee Prefs" url="#{request.contextPath}/auth/admin/playerTeePrefs.xhtml"/>
-			</p:submenu>
-			
+			<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Players" url="#{request.contextPath}/auth/admin/playerList.xhtml"/>
+				
 			<p:menuitem rendered="#{sessionScope.currentUserisAdmin}" value="Courses" url="#{request.contextPath}/auth/admin/courseList.xhtml"/>
 						
 			<p:submenu label="Email">

@@ -1,7 +1,7 @@
 package com.pas.util;
 
 import com.pas.beans.GolfMain;
-import com.pas.beans.Player;
+import com.pas.dynamodb.DynamoPlayer;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
@@ -30,7 +30,7 @@ public class PlayerConverter implements Converter<Object>
 	    {
 	        return (String)modelValue;
 	    } 
-	    else if (modelValue instanceof Player tempPlayer)
+	    else if (modelValue instanceof DynamoPlayer tempPlayer)
 	    {
             return String.valueOf(tempPlayer.getPlayerID());
 	    } 

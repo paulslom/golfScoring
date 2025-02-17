@@ -11,9 +11,7 @@
 	</f:metadata> 
 	 
     <ui:define name="content">
-   
-       <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
-		
+   	
 	   <h:form id="gameSignUpForm">
 	   			       
           <p:dataTable id="gamesTableID" value="#{pc_Game.availableGameList}"
@@ -32,8 +30,8 @@
 				  <h:outputText value="#{game.gameID}"/>														
 			  </p:column>
 			  
-			  <p:column style="width:10%" id="tblGameDate" headerText="Game Date" sortBy="#{game.gameDate}">												
-				  <h:outputText value="#{game.gameDate}">
+			  <p:column style="width:10%" id="tblGameDate" headerText="Game Date" sortBy="#{game.gameDateJava}">												
+				  <h:outputText value="#{game.gameDateJava}">
 				     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
 				  </h:outputText>														
 			  </p:column>

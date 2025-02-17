@@ -11,10 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pas.util.SAMailUtility;
-import com.pas.util.Utils;
 
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 
 public class Registration implements Serializable
@@ -38,43 +35,7 @@ public class Registration implements Serializable
 	
 	@Inject GolfMain golfmain;
 
-	public String changePassword()
-	{
-		boolean valid = true;
-		String errorMsg = "";
-		
-		try
-		{
-			String whoIsThis = Utils.getLoggedInUserName();
-		
-			if (this.getNewPassword().equals(this.getConfirmNewPassword()))
-			{
-				golfmain.updateUser(whoIsThis, this.getNewPassword(), "USER");
-			}
-			else
-			{
-				errorMsg = "Unable to change password.  New password and confirm password do not match";
-				valid = false;
-			}			
-			
-			if (valid)
-			{
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password successfully changed",null);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
-			else
-			{
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg,null);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
-		}
-		catch (Exception e)
-		{
-			errorMsg = "Unable to change password. " + e.getMessage();
-			valid = false;
-		}
-		return "";
-	}
+	
 	
 	public String emailAdminNewPlayer()
 	{

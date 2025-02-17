@@ -5,77 +5,63 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
-    
-    <f:metadata>
-	    <f:viewAction action="#{pc_Player.onLoadPlayerPickList}" />
-	</f:metadata> 
-	
+        	
     <ui:define name="content">
-    
-       <h:outputScript name="javascript/golfJS.js" target="head" />
        
- 	   <f:loadBundle var="bundle" basename="ApplicationProperties" /> 
-			
-		   <h:form id="playerPicklistForm">
+ 	   <h:form id="playerPicklistForm">
 		 
-		   		<h3>Player PickList - Use this to add players to a game when they cannot or will not sign up themselves</h3>
-		   		
-		   		<table>
-		   		
-	         		<tr>
-	                  
-	                   <td class="textLabel">
-		                  <p:outputLabel value="Game ID: #{pc_Game.selectedGame.gameID}"/>
-		               </td>
-		               
-		               <td class="textLabel">
-		                  <p:outputLabel value="Game Date"/>
-		               </td>
-	             
-		               <td class="text">
-						
-					      <p:selectOneMenu id="gameList" value="#{pc_Game.gameID}" required="true"  hideNoSelectionOption="true">
-					         <p:ajax listener="#{pc_Player.valueChangeGamePlayerPicklist}" update="playerPicklistForm playersPicklistForm"/>
-					 		 <f:selectItems value="#{pc_GolfMain.fullGameList}" var="g" itemLabel="#{g.gameDateDisplay}" itemValue="#{g.gameID}"/>					
-						  </p:selectOneMenu>
-						
-					   </td>
-					   
-					   <td class="textLabel">
-							<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Player.selectedGame.totalPlayers}"/>
-					   </td>
-					   
-					   <td class="textLabel">
-							<p:outputLabel id="label2" value="#{pc_Player.selectedGame.courseName}"/>
-					   </td>
-					   
-					</tr>
-					
-					<tr>   	
-					   
-					    <td class="textLabel" colspan="4">
-							<p:outputLabel id="label3" value="Players Selected so far: #{pc_Player.pickListTargetPlayersSelected}"/>
-					   </td>					       
-					   
-				    </tr>
-				    
-				    <tr>
-						<td colspan="4" align="center">
-							<p:messages id="facesMessages" showDetail="false">
-							</p:messages>    								
-						</td>
-					</tr>	
-				    
-				</table>
+	   		<h3>Player PickList - Use this to add players to a game when they cannot or will not sign up themselves</h3>
+	   		
+	   		<table>
+	   		
+         		<tr>
+                  
+                   <td class="textLabel">
+	                  <p:outputLabel value="Game ID: #{pc_Game.selectedGame.gameID}"/>
+	               </td>
+	               
+	               <td class="textLabel">
+	                  <p:outputLabel value="Game Date: "/>
+	                  <p:outputLabel value="#{pc_Game.selectedGame.gameDateJava}">
+				          <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
+				      </p:outputLabel>	
+	               </td>	
+             	              					   
+				   <td class="textLabel">
+						<p:outputLabel id="label1" value="#{bundle.totalPlayers} - #{pc_Game.selectedGame.totalPlayers}"/>
+				   </td>
+				   
+				   <td class="textLabel">
+						<p:outputLabel id="label2" value="#{pc_Game.selectedGame.courseName}"/>
+				   </td>
+				   
+				</tr>
 				
-			</h:form>
+				<tr>   	
+				   
+				    <td class="textLabel" colspan="4">
+						<p:outputLabel id="label3" value="Players Selected so far: #{pc_Player.pickListTargetPlayersSelected}"/>
+				   </td>					       
+				   
+			    </tr>
+			    
+			    <tr>
+					<td colspan="4" align="center">
+						<p:messages id="facesMessages" showDetail="false">
+						</p:messages>    								
+					</td>
+				</tr>	
+			    
+			</table>
+			
+		</h:form>
 			
 			<h:form id="playersPicklistForm">				
 								 
 				<p:messages id="facesMessagesID" showDetail="false">
 				</p:messages> 	
 						
-				<p:pickList value="#{pc_Player.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
+				<p:pickList value="#{pc_Game.playersPickList}" var="player" iconOnly="true" styleClass="p2" effect="bounce"
 					itemValue="#{player}" converter="#{pc_PlayerConverter}" showSourceControls="true" showTargetControls="true">
 					
 					<f:facet name="sourceCaption">Available</f:facet>
@@ -90,19 +76,17 @@
 					</p:column>
 					
 				</p:pickList>				
-				
 				 
 				<p:commandButton id="saveAndStayButtonID"
-	                value="#{bundle.saveAndStay}"
-	                action="#{pc_Player.saveAndStayPickList}"
+	                value="Save and Return To Game List"
+	                action="#{pc_Player.savePlayersPickList}"
 	                update="playersPicklistForm">
 				</p:commandButton> 
-				
-				<p:commandButton id="proceedToTeeTimesButtonID"
-	                value="#{bundle.proceedToTeeTimes}"
-	                action="#{pc_Player.proceedToTeeTimes}"
-					update="playersPicklistForm">
-				</p:commandButton> 								
+								
+				<p:commandButton id="returnToGameListID" 
+			  	    value="Return To Game List (No Save)"
+                    action="#{pc_GolfMain.returnToGameList}">
+			    </p:commandButton> 								
 							
 		   </h:form> 
 

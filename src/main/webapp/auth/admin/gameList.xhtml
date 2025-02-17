@@ -7,13 +7,16 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core">
      
     <f:metadata>
-	    <f:viewAction action="#{pc_Game.onLoadGameList}" />
-	</f:metadata> 
-	
+	   <f:viewAction action="#{pc_Game.onLoadGameList}" />
+	</f:metadata>   
+   	
     <ui:define name="content">	   
 	 	
 	   <h:form id="gameForm">                  
 			
+		  <p:messages id="facesMessages" showDetail="false">
+	      </p:messages> 
+	      
 		  <p:outputPanel id="gameInquiryPanel" style="display:block" rendered="#{pc_Game.renderInquiry}">	
 		  		
 		      <p:dataTable id="gamesTableID" value="#{pc_GolfMain.fullGameList}"
@@ -27,7 +30,7 @@
 				  
 				  <p:ajax event="rowSelect" listener="#{pc_Game.selectRowAjax}"/>
 					
-				  <p:column style="width:5%" headerText="View">	
+				  <p:column style="width:3%" headerText="View">	
 						  
 				     <p:commandButton id="gameViewId"
 					   	value="View"
@@ -39,7 +42,7 @@
 				   	 
                   </p:column>
                         
-                  <p:column style="width:5%" headerText="Chg">	
+                  <p:column style="width:3%" headerText="Chg">	
                         		
 				     <p:commandButton id="gameChgId"
 					  	value="Chg"
@@ -51,7 +54,7 @@
 					 	
                  </p:column>
                         
-                 <p:column style="width:5%" headerText="Del">	
+                 <p:column style="width:3%" headerText="Del">	
                         		
 				   	 <p:commandButton id="gameDelId"
 				  	    value="Del"
@@ -73,9 +76,69 @@
  						<f:param name="id" value="#{game.gameID}" />
 					 </p:commandButton>	
 					 
-                  </p:column>	                          
+                  </p:column>	
+                  
+                  <p:column style="width:5%" headerText="Select Players">	
+                        		
+				   	 <p:commandButton id="gameSelectPlayersId"
+				  	    value="Select Players"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="SelectPlayers" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>	   
+                  
+                  <p:column style="width:5%" headerText="Play Grps">	
+                        		
+				   	 <p:commandButton id="gamePlayGrpsId"
+				  	    value="Play Grps"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="PlayGroups" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>	   
+                  
+                  <p:column style="width:5%" headerText="Game Hdcps">	
+                        		
+				   	 <p:commandButton id="gameHdcpsId"
+				  	    value="Game Hdcps"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="GameHandicaps" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>	   
+                  
+                  <p:column style="width:5%" headerText="Pick Teams">	
+                        		
+				   	 <p:commandButton id="gamePickTeamsId"
+				  	    value="Pick Teams"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="PickTeams" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>
+                  
+                  <p:column style="width:6%" headerText="Pre-Game Email">	
+                        		
+				   	 <p:commandButton id="pregameemailId"
+				  	    value="Pre-game Email"
+					    action="#{pc_Game.selectGameAcid}"
+					    update="gameForm">
+					    <f:param name="operation" value="PreGameEmail" />
+ 						<f:param name="id" value="#{game.gameID}" />
+					 </p:commandButton>	
+					 
+                  </p:column>	     	                             
 	              
-	              <p:column style="width:5%" headerText="Scores">	
+	              <p:column style="width:4%" headerText="Scores">	
 		             <p:commandButton id="scoresButtonID"
 		               value="Scores"
 		               action="#{pc_Game.selectGameAcid}"
@@ -85,7 +148,7 @@
 				     </p:commandButton> 
 				  </p:column>
 				  
-	              <p:column style="width:5%" headerText="Run">	
+	              <p:column style="width:3%" headerText="Run">	
 		             <p:commandButton id="runGameButtonID"
 		               value="Run Game"
 		               action="#{pc_Game.selectGameAcid}"
@@ -99,22 +162,16 @@
 					  <h:outputText value="#{game.gameID}"/>														
 				  </p:column>
 				  
-				  <p:column style="width:9%" headerText="Date" sortBy="#{game.gameDate}">												
+				  <p:column style="width:8%" headerText="Date" sortBy="#{game.gameDate}">												
 					  <h:outputText value="#{game.gameDateDisplay}">
 					     <f:convertDateTime type="date" pattern="EEEE yyyy-MM-dd"/>
 					  </h:outputText>														
 				  </p:column>
 				  
-				  <p:column style="width:9%" headerText="Course" sortBy="#{game.courseName}">												
+				  <p:column style="width:8%" headerText="Course" sortBy="#{game.courseName}">												
 					  <h:outputText value="#{game.courseName}"/>														
 				  </p:column>
-				  
-				  <p:column style="width:4%" headerText="Bet Amt" sortBy="#{game.betAmount}">												
-					  <h:outputText value="#{game.betAmount}">
-					    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-					  </h:outputText>   														
-				  </p:column>
-				  
+				 				  
 				  <p:column style="width:4%" headerText="Field Size" sortBy="#{game.fieldSize}">												
 					  <h:outputText value="#{game.fieldSize}">					    
 					  </h:outputText>   														
@@ -152,38 +209,11 @@
 					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
 					  </h:outputText>   														
 				  </p:column>
-				  
-				  <p:column style="width:4%" headerText="Game Fee" sortBy="#{game.gameFee}">												
-					  <h:outputText value="#{game.gameFee}">
-					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-					  </h:outputText>   														
-				  </p:column>
-				  
-				  <p:column style="width:4%" headerText="Purse Amt" sortBy="#{game.purseAmount}">												
-					  <h:outputText value="#{game.purseAmount}">
-					    <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-					  </h:outputText>   														
-				  </p:column>
-				  
-				  <p:column style="width:4%" headerText="Indiv Grs" sortBy="#{game.individualGrossPrize}">												
-					  <h:outputText value="#{game.individualGrossPrize}">
-					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-					  </h:outputText>   														
-				  </p:column>
-				  
-				  <p:column style="width:4%" headerText="Indiv Net" sortBy="#{game.individualNetPrize}">												
-					  <h:outputText value="#{game.individualNetPrize}">
-					     <f:convertNumber currencySymbol="$" type="currency" maxFractionDigits="2" />
-					  </h:outputText>   														
-				  </p:column>
-			  
-			  </p:dataTable>
-				 	
-		      <p:messages id="facesMessages" showDetail="false">
-		      </p:messages>   
+				 				
+			  </p:dataTable>		       
 			
 			  <p:commandButton id="gameAddId"
-				  value="#{bundle.add}"
+				  value="Add New Game"
 				  action="#{pc_Game.selectGameAcid}"
 				  update="gameForm">
 				  <f:param name="operation" value="Add" />

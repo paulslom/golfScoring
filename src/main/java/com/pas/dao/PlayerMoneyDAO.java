@@ -152,6 +152,57 @@ public class PlayerMoneyDAO implements Serializable
 		logger.info("updatePlayerMoney complete");		
 	}
 	
+	//deletes all player money rows from the db for this player
+	public void deletePlayerMoneyFromDB(DynamoPlayer dynamoPlayer) 
+	{
+		DynamoDbIndex<DynamoPlayerMoney> gsi = playerMoneyTable.index("gsi_PlayerID");
+		
+		Key key = Key.builder().partitionValue(dynamoPlayer.getPlayerID()).build();
+    	QueryConditional qc = QueryConditional.keyEqualTo(key);
+    	
+    	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+                .queryConditional(qc)
+                .build();
+    	SdkIterable<Page<DynamoPlayerMoney>> pmsByGameID = gsi.query(qer);
+    	     
+    	PageIterable<DynamoPlayerMoney> pages = PageIterable.create(pmsByGameID);
+    	
+    	List<DynamoPlayerMoney> dtList = pages.items().stream().toList();
+    	
+    	if (dtList != null && dtList.size() > 0)
+    	{
+    		for (int i = 0; i < dtList.size(); i++) 
+    		{
+    			DynamoPlayerMoney dpm = dtList.get(i);
+        		String playerMoneyID = dpm.getPlayerMoneyID();
+        		
+        		Key key2 = Key.builder().partitionValue(playerMoneyID).build();
+        		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key2).build();
+        		playerMoneyTable.deleteItem(deleteItemEnhancedRequest);
+        	
+        		logger.info("LoggedDBOperation: function-delete; table:playermoney; rows:1");        		
+			}
+    		
+    		for (int j = 0; j < playerMoneyList.size(); j++)
+    		{
+    			PlayerMoney playerMoney = playerMoneyList.get(j);
+    			
+    			if (playerMoney.getPlayerID().equalsIgnoreCase(dynamoPlayer.getPlayerID()))
+    			{
+    				this.getPlayerMoneyMap().remove(playerMoney.getPlayerMoneyID());
+    			}
+    		}	
+    		
+    	}			
+		
+		this.getPlayerMoneyList().clear();
+		Collection<PlayerMoney> values = this.getPlayerMoneyMap().values();
+		this.setPlayerMoneyList(new ArrayList<>(values));
+		
+		logger.info("deletePlayerMoneyFromDB complete");    	
+		
+	}	
+	
 	//deletes all player money rows from the db for this game
 	public void deletePlayerMoneyFromDB(String gameID) throws Exception
     {
@@ -242,6 +293,8 @@ public class PlayerMoneyDAO implements Serializable
 
 	public void setPlayerMoneyMap(Map<String, PlayerMoney> playerMoneyMap) {
 		this.playerMoneyMap = playerMoneyMap;
-	}	
+	}
+
+	
 
 }

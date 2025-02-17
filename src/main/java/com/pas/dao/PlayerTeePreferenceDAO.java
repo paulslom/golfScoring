@@ -19,12 +19,21 @@ import com.pas.beans.GolfMain;
 import com.pas.beans.PlayerTeePreference;
 import com.pas.dynamodb.DynamoClients;
 import com.pas.dynamodb.DynamoGroup;
+import com.pas.dynamodb.DynamoPlayer;
 import com.pas.dynamodb.DynamoPlayerTeePreference;
 
 import jakarta.inject.Inject;
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
  
 public class PlayerTeePreferenceDAO implements Serializable
 {
@@ -83,6 +92,25 @@ public class PlayerTeePreferenceDAO implements Serializable
 			
 		return playerTeePreferencesList;
     }
+	
+	public List<DynamoPlayerTeePreference> getPlayerSpecificTeePreferencesList(DynamoPlayer dynamoPlayer) 
+	{
+		DynamoDbIndex<DynamoPlayerTeePreference> gsi = playerTeePreferencesTable.index("gsi_PlayerID");
+		
+		Key key = Key.builder().partitionValue(dynamoPlayer.getPlayerID()).build();
+    	QueryConditional qc = QueryConditional.keyEqualTo(key);
+    	
+    	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+                .queryConditional(qc)
+                .build();
+    	SdkIterable<Page<DynamoPlayerTeePreference>> pmsByGameID = gsi.query(qer);
+    	     
+    	PageIterable<DynamoPlayerTeePreference> pages = PageIterable.create(pmsByGameID);
+    	
+    	List<DynamoPlayerTeePreference> dtList = pages.items().stream().toList();
+    	
+    	return dtList;
+	}
 	
 	public PlayerTeePreference getPlayerTeePreference(String playerID, String courseID)
     {
@@ -159,6 +187,72 @@ public class PlayerTeePreferenceDAO implements Serializable
 		return dynamoPtp;
 	}
 	
+	//deletes a particular player tee preference row
+	public void deletePlayerTeePreference(String ptpID) 
+	{
+		Key key2 = Key.builder().partitionValue(ptpID).build();
+		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key2).build();
+		playerTeePreferencesTable.deleteItem(deleteItemEnhancedRequest);
+	
+		logger.info("LoggedDBOperation: function-delete; table:playerteePreferences; rows:1");  			
+		
+		this.getPlayerTeePreferencesList().clear();
+		Collection<PlayerTeePreference> values = this.getPlayerTeePreferencesMap().values();
+		this.setPlayerTeePreferencesList(new ArrayList<>(values));
+		
+		logger.info("deletePlayerTeePreferences complete"); 		
+	}	
+		
+	//deletes all player tee preferences rows from the db for this player
+	public void deletePlayerTeePreferences(DynamoPlayer dynamoPlayer) 
+	{
+		DynamoDbIndex<DynamoPlayerTeePreference> gsi = playerTeePreferencesTable.index("gsi_PlayerID");
+		
+		Key key = Key.builder().partitionValue(dynamoPlayer.getPlayerID()).build();
+    	QueryConditional qc = QueryConditional.keyEqualTo(key);
+    	
+    	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+                .queryConditional(qc)
+                .build();
+    	SdkIterable<Page<DynamoPlayerTeePreference>> pmsByGameID = gsi.query(qer);
+    	     
+    	PageIterable<DynamoPlayerTeePreference> pages = PageIterable.create(pmsByGameID);
+    	
+    	List<DynamoPlayerTeePreference> dtList = pages.items().stream().toList();
+    	
+    	if (dtList != null && dtList.size() > 0)
+    	{
+    		for (int i = 0; i < dtList.size(); i++) 
+    		{
+    			DynamoPlayerTeePreference dpm = dtList.get(i);
+        		String playerTeePreferenceID = dpm.getPlayerTeePreferenceID();
+        		
+        		Key key2 = Key.builder().partitionValue(playerTeePreferenceID).build();
+        		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key2).build();
+        		playerTeePreferencesTable.deleteItem(deleteItemEnhancedRequest);
+        	
+        		logger.info("LoggedDBOperation: function-delete; table:playerteePreferences; rows:1");        		
+			}
+    		
+    		for (int j = 0; j < playerTeePreferencesList.size(); j++)
+    		{
+    			PlayerTeePreference playerTeePreference = playerTeePreferencesList.get(j);
+    			
+    			if (playerTeePreference.getPlayerID().equalsIgnoreCase(dynamoPlayer.getPlayerID()))
+    			{
+    				this.getPlayerTeePreferencesMap().remove(playerTeePreference.getPlayerTeePreferenceID());
+    			}
+    		}	
+    		
+    	}			
+		
+		this.getPlayerTeePreferencesList().clear();
+		Collection<PlayerTeePreference> values = this.getPlayerTeePreferencesMap().values();
+		this.setPlayerTeePreferencesList(new ArrayList<>(values));
+		
+		logger.info("deletePlayerTeePreferences complete"); 		
+	}	
+	
 	private void refreshListsAndMaps(String function, PlayerTeePreference ptp)
 	{
 		if (function.equalsIgnoreCase("delete"))
@@ -204,7 +298,6 @@ public class PlayerTeePreferenceDAO implements Serializable
 	public void setPlayerTeePreferencesList(List<PlayerTeePreference> playerTeePreferencesList) {
 		this.playerTeePreferencesList = playerTeePreferencesList;
 	}
-
 
 	
 }

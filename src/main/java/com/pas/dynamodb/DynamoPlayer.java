@@ -18,8 +18,14 @@ public class DynamoPlayer
 	private BigDecimal handicap;
 	private String emailAddress;
 	private boolean active;
+	private String fullName;
 
 	private String role;
+	
+	public String toString()
+	{
+		return "playerID: " + playerID + " username: " + username + " FirstName: " + firstName + " Last Name: " + lastName;
+	}
 	
 	@DynamoDbPartitionKey //primary key
 	public String getPlayerID() {
@@ -43,16 +49,20 @@ public class DynamoPlayer
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName) 
+	{
 		this.firstName = firstName;
+		this.setFullName(firstName + " " + lastName);
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(String lastName) 
+	{
 		this.lastName = lastName;
+		this.setFullName(firstName + " " + lastName);
 	}
 
 	public BigDecimal getHandicap() {
@@ -88,11 +98,6 @@ public class DynamoPlayer
 		this.oldPlayerID = oldPlayerID;
 	}
 
-	public String getFullName() 
-	{
-		return firstName + " " + lastName;
-	}
-
 	@DynamoDbIgnore
 	public String getRole() {
 		return role;
@@ -101,5 +106,15 @@ public class DynamoPlayer
 	@DynamoDbIgnore
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	@DynamoDbIgnore
+	public String getFullName() {
+		return fullName;
+	}
+
+	@DynamoDbIgnore
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }

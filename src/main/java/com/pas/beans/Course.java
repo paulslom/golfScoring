@@ -18,24 +18,24 @@ public class Course implements Serializable
 	private int back9Par;
 	private int coursePar;
 	
-	private int hole1Par;
-	private int hole2Par;
-	private int hole3Par;
-	private int hole4Par;
-	private int hole5Par;
-	private int hole6Par;
-	private int hole7Par;
-	private int hole8Par;
-	private int hole9Par;
-	private int hole10Par;
-	private int hole11Par;
-	private int hole12Par;
-	private int hole13Par;
-	private int hole14Par;
-	private int hole15Par;
-	private int hole16Par;
-	private int hole17Par;
-	private int hole18Par;
+	private Integer hole1Par;
+	private Integer hole2Par;
+	private Integer hole3Par;
+	private Integer hole4Par;
+	private Integer hole5Par;
+	private Integer hole6Par;
+	private Integer hole7Par;
+	private Integer hole8Par;
+	private Integer hole9Par;
+	private Integer hole10Par;
+	private Integer hole11Par;
+	private Integer hole12Par;
+	private Integer hole13Par;
+	private Integer hole14Par;
+	private Integer hole15Par;
+	private Integer hole16Par;
+	private Integer hole17Par;
+	private Integer hole18Par;
 	
 	private List<Hole> holesList = new ArrayList<Hole>();
 	private Map<Integer,Hole> holesMap = new HashMap<Integer,Hole>();	
@@ -106,113 +106,114 @@ public class Course implements Serializable
 	public void setOldCourseID(int oldCourseID) {
 		this.oldCourseID = oldCourseID;
 	}
-	public int getHole1Par() {
+	public Integer getHole1Par() {
 		return hole1Par;
 	}
-	public void setHole1Par(int hole1Par) {
+	public void setHole1Par(Integer hole1Par) {
 		this.hole1Par = hole1Par;
 	}
-	public int getHole2Par() {
+	public Integer getHole2Par() {
 		return hole2Par;
 	}
-	public void setHole2Par(int hole2Par) {
+	public void setHole2Par(Integer hole2Par) {
 		this.hole2Par = hole2Par;
 	}
-	public int getHole3Par() {
+	public Integer getHole3Par() {
 		return hole3Par;
 	}
-	public void setHole3Par(int hole3Par) {
+	public void setHole3Par(Integer hole3Par) {
 		this.hole3Par = hole3Par;
 	}
-	public int getHole4Par() {
+	public Integer getHole4Par() {
 		return hole4Par;
 	}
-	public void setHole4Par(int hole4Par) {
+	public void setHole4Par(Integer hole4Par) {
 		this.hole4Par = hole4Par;
 	}
-	public int getHole5Par() {
+	public Integer getHole5Par() {
 		return hole5Par;
 	}
-	public void setHole5Par(int hole5Par) {
+	public void setHole5Par(Integer hole5Par) {
 		this.hole5Par = hole5Par;
 	}
-	public int getHole6Par() {
+	public Integer getHole6Par() {
 		return hole6Par;
 	}
-	public void setHole6Par(int hole6Par) {
+	public void setHole6Par(Integer hole6Par) {
 		this.hole6Par = hole6Par;
 	}
-	public int getHole7Par() {
+	public Integer getHole7Par() {
 		return hole7Par;
 	}
-	public void setHole7Par(int hole7Par) {
+	public void setHole7Par(Integer hole7Par) {
 		this.hole7Par = hole7Par;
 	}
-	public int getHole8Par() {
+	public Integer getHole8Par() {
 		return hole8Par;
 	}
-	public void setHole8Par(int hole8Par) {
+	public void setHole8Par(Integer hole8Par) {
 		this.hole8Par = hole8Par;
 	}
-	public int getHole9Par() {
+	public Integer getHole9Par() {
 		return hole9Par;
 	}
-	public void setHole9Par(int hole9Par) {
+	public void setHole9Par(Integer hole9Par) {
 		this.hole9Par = hole9Par;
 	}
-	public int getHole10Par() {
+	public Integer getHole10Par() {
 		return hole10Par;
 	}
-	public void setHole10Par(int hole10Par) {
+	public void setHole10Par(Integer hole10Par) {
 		this.hole10Par = hole10Par;
 	}
-	public int getHole11Par() {
+	public Integer getHole11Par() {
 		return hole11Par;
 	}
-	public void setHole11Par(int hole11Par) {
+	public void setHole11Par(Integer hole11Par) {
 		this.hole11Par = hole11Par;
 	}
-	public int getHole12Par() {
+	public Integer getHole12Par() {
 		return hole12Par;
 	}
-	public void setHole12Par(int hole12Par) {
+	public void setHole12Par(Integer hole12Par) {
 		this.hole12Par = hole12Par;
 	}
-	public int getHole13Par() {
+	public Integer getHole13Par() {
 		return hole13Par;
 	}
-	public void setHole13Par(int hole13Par) {
+	public void setHole13Par(Integer hole13Par) {
 		this.hole13Par = hole13Par;
 	}
-	public int getHole14Par() {
+	public Integer getHole14Par() {
 		return hole14Par;
 	}
-	public void setHole14Par(int hole14Par) {
+	public void setHole14Par(Integer hole14Par) {
 		this.hole14Par = hole14Par;
 	}
-	public int getHole15Par() {
+	public Integer getHole15Par() {
 		return hole15Par;
 	}
-	public void setHole15Par(int hole15Par) {
+	public void setHole15Par(Integer hole15Par) {
 		this.hole15Par = hole15Par;
 	}
-	public int getHole16Par() {
+	public Integer getHole16Par() {
 		return hole16Par;
 	}
-	public void setHole16Par(int hole16Par) {
+	public void setHole16Par(Integer hole16Par) {
 		this.hole16Par = hole16Par;
 	}
-	public int getHole17Par() {
+	public Integer getHole17Par() {
 		return hole17Par;
 	}
-	public void setHole17Par(int hole17Par) {
+	public void setHole17Par(Integer hole17Par) {
 		this.hole17Par = hole17Par;
 	}
-	public int getHole18Par() {
+	public Integer getHole18Par() {
 		return hole18Par;
 	}
-	public void setHole18Par(int hole18Par) {
+	public void setHole18Par(Integer hole18Par) {
 		this.hole18Par = hole18Par;
 	}
+	
 	
 }

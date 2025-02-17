@@ -14,14 +14,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 import org.primefaces.util.ComponentUtils;
-import org.springframework.util.CollectionUtils;
 
+import com.pas.beans.Player.PlayerComparatorByLastName;
 import com.pas.dynamodb.DateToStringConverter;
 import com.pas.dynamodb.DynamoCourseTee;
 import com.pas.dynamodb.DynamoGame;
@@ -52,9 +55,6 @@ public class Game implements Serializable
 	private static ResourceBundle genericProps = ResourceBundle.getBundle("ApplicationProperties");
 	
 	private static String NEWLINE = "<br/>";	
-	
-	//private static String WEBSITE_URL = "http://golfscoring-2.us-east-1.elasticbeanstalk.com";  //original RDS DB one
-	private static String WEBSITE_URL = "http://golfscoring-springboot-env.eba-bir4zg4h.us-east-1.elasticbeanstalk.com"; //SpringBoot-DynamoDB-JDK17
 	
 	private boolean courseSelected = false;
 	private boolean disableShowScores = true;
@@ -93,9 +93,49 @@ public class Game implements Serializable
 	private List<DynamoGame> availableGameList = new ArrayList<>();
 	private List<DynamoGame> futureGamesList = new ArrayList<>();	
 	private List<PlayerMoney> playerMoneyForSelectedGameList = new ArrayList<PlayerMoney>();
+	
+	private List<Round> syncGameRoundList = Collections.synchronizedList(new ArrayList<>());		
+	private Round selectedRound;
+	private Integer fixHole;
+	private boolean disableFixScore = true;
+	private Integer correctedScore;
+	private String roundIDForCorrectedScore;
 	private Map<String,List<Round>> roundsForGame = new HashMap<>();
 	private List<Round> roundsForGameList = new ArrayList<>();
+	
+	
+	private DualListModel<DynamoPlayer> playersPickList = new DualListModel<>();
+	private List<DynamoPlayer> playersPickListSource = new ArrayList<>();
+	private List<DynamoPlayer> playersPickListTarget = new ArrayList<>();
+	private List<DynamoPlayer> selectedPlayersList = new ArrayList<>();
+	
+	private boolean showGameTeeTimeList3 = false;
+	private boolean showGameTeeTimeList4 = false;
+	private boolean showGameTeeTimeList5 = false;
+	private boolean showGameTeeTimeList6 = false;
+	private boolean showGameTeeTimeList7 = false;
+	private boolean showGameTeeTimeList8 = false;	
+	private DualListModel<DynamoPlayer> gameTeeTimeList1 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList2 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList3 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList4 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList5 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList6 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList7 = new DualListModel<>();
+	private DualListModel<DynamoPlayer> gameTeeTimeList8 = new DualListModel<>();
+	private String gameTeeTimeListCaption1 = "";
+	private String gameTeeTimeListCaption2 = "";
+	private String gameTeeTimeListCaption3 = "";
+	private String gameTeeTimeListCaption4 = "";
+	private String gameTeeTimeListCaption5 = "";
+	private String gameTeeTimeListCaption6 = "";
+	private String gameTeeTimeListCaption7 = "";
+	private String gameTeeTimeListCaption8 = "";
+	private List<TeeTime> teeTimeList = new ArrayList<TeeTime>();
+
 	private List<SelectItem> teamNumberList = new ArrayList<SelectItem>();
+	
+	private boolean disableRunGameNavigate = true;	
 	
 	private String operation = "";
 	
@@ -108,8 +148,43 @@ public class Game implements Serializable
 
 	public void onLoadGameList() 
 	{
-		logger.info(getTempUserName() + " In onLoadGameList Game.java");
+		logger.info(Utils.getLoggedInUserName() + " In onLoadGameList Game.java");
 		this.setRenderInquiry(true);
+	}
+	
+	//compose future game email - called from emailFutureGames.xhtml	
+	public String fgEmail()
+	{
+		try
+		{
+			List<Round> roundsForGame = golfmain.getRoundsForGame(this.getSelectedGame());
+			this.setFutureGameEmailMessage(Utils.composeFutureGameEmail(this.getSelectedGame(), golfmain.getFullPlayerList(), golfmain.getTeeTimesByGame(this.getSelectedGame()), roundsForGame));
+		}
+		catch (Exception e) 
+        {
+        	logger.error("fgEmail errored: " + e.getMessage(), e);
+			FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
+		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
+        }
+		return "";
+	}
+	
+	//send future game email - called from emailFutureGames.xhtml
+	public String sendFGEmail()
+	{
+		try
+		{
+			List<Round> roundsForGame = golfmain.getRoundsForGame(this.getSelectedGame());
+			String emailMessage = Utils.composeFutureGameEmail(this.getSelectedGame(), golfmain.getFullPlayerList(),golfmain.getTeeTimesByGame(this.getSelectedGame()), roundsForGame);
+			Utils.sendFutureGameEmail(this.getSelectedGame(),golfmain.getFullPlayerList(), emailMessage);
+		}
+		catch (Exception e) 
+        {
+        	logger.error("sendFGEmail errored: " + e.getMessage(), e);
+			FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
+		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
+        }
+		return "";
 	}
 	
 	public String selectGameAcid()
@@ -181,8 +256,33 @@ public class Game implements Serializable
 		    	golfmain.setGameSpecificTeeTimeList(this.getSelectedGame());
 		    	return "/auth/admin/teeTimes.xhtml";
 		    }
+		    else if (acid.equalsIgnoreCase("SelectPlayers"))
+		    {
+		    	loadPlayerPickList();
+		    	return "/auth/admin/playerPicklist.xhtml";
+		    }
+		    else if (acid.equalsIgnoreCase("PlayGroups"))
+		    {
+		    	loadTeeTimePickList();
+		    	return "/auth/admin/teeTimePickList.xhtml";
+		    }
+		    else if (acid.equalsIgnoreCase("GameHandicaps"))
+		    {
+		    	onLoadGameHandicaps();
+		    	return "/auth/admin/gameHandicaps.xhtml";
+		    }
+		    else if (acid.equalsIgnoreCase("PickTeams"))
+		    {
+		    	onLoadPickTeams();
+		    	return "/auth/admin/pickTeams.xhtml";
+		    }
+		    else if (acid.equalsIgnoreCase("PreGameEmail"))
+		    {
+		    	return "/auth/admin/emailPreGame.xhtml";
+		    }
 		    else if (acid.equalsIgnoreCase("Scores"))
 		    {
+		    	onLoadGameEnterScores();
 		    	return "/auth/gameEnterScores.xhtml";
 		    }
 		    else if (acid.equalsIgnoreCase("RunGame"))
@@ -198,9 +298,315 @@ public class Game implements Serializable
 		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
         }
 		
-		return "";
-		
+		return "";		
 	}	
+	
+	public void loadPlayerPickList() 
+	{
+		try
+		{
+			loadSelectedPlayers(this.getSelectedGame());
+			setPlayerPickLists(this.getSelectedGame());	
+		}
+		catch (Exception e)
+		{
+			logger.error("loadPlayerPickList failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"onLoadPlayerPickList failed: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
+	}
+	
+	public String loadSelectedPlayers(DynamoGame dynamoGame) throws Exception
+	{
+		logger.info("load of gameSelectPlayers; loading those already selected");
+		
+		this.getSelectedPlayersList().clear();
+		
+		List<Round> roundsForGame = golfmain.getRoundsForGame(dynamoGame);
+		for (int i = 0; i < roundsForGame.size(); i++) 
+		{
+			Round round = roundsForGame.get(i);
+			DynamoPlayer player = golfmain.getPlayerByPlayerID(round.getPlayerID());
+			this.getSelectedPlayersList().add(player);
+		}
+				
+		return "";
+	}
+	
+	public void loadTeeTimePickList() 
+	{
+		try
+		{
+			loadSelectedPlayers(this.getSelectedGame());
+			this.setTeeTimeList(golfmain.getTeeTimesByGame(this.getSelectedGame()));			
+			showTeeTimePicklist();
+		}
+		catch (Exception e)
+		{
+			logger.error("onLoadTeeTimePickList failed: " + e.getMessage(), e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"onLoadTeeTimePickList: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}
+	}
+	
+	public void setPlayerPickLists(DynamoGame dynamoGame) 
+	{
+		if (playersPickListSource != null)
+		{
+			playersPickListSource.clear();
+		}
+		
+		if (playersPickListTarget != null)
+		{
+			playersPickListTarget.clear();
+		}
+		Map<String, DynamoPlayer> selectedMap = new HashMap<>();
+		
+		for (int i = 0; i < this.getSelectedPlayersList().size(); i++) 
+		{
+			playersPickListTarget.add(this.getSelectedPlayersList().get(i));
+			selectedMap.put(this.getSelectedPlayersList().get(i).getPlayerID(), this.getSelectedPlayersList().get(i));
+		}
+		
+		for (int i = 0; i < golfmain.getFullPlayerList().size(); i++) 
+		{
+			DynamoPlayer tempPlayer = golfmain.getFullPlayerList().get(i);
+			if (!selectedMap.containsKey(tempPlayer.getPlayerID()))
+			{
+				playersPickListSource.add(golfmain.getFullPlayerList().get(i));
+			}
+		}
+		
+		Collections.sort(playersPickListSource, new PlayerComparatorByLastName());
+		Collections.sort(playersPickListTarget, new PlayerComparatorByLastName());
+		
+		this.setPlayersPickList(new DualListModel<DynamoPlayer>(playersPickListSource, playersPickListTarget));	
+	}
+	
+	public String showTeeTimePicklist()
+	{
+		logger.info("setting up tee times for selected game");
+		
+		setShowGameTeeTimeList3(false);
+		setShowGameTeeTimeList4(false);
+		setShowGameTeeTimeList5(false);
+		setShowGameTeeTimeList6(false);
+		setShowGameTeeTimeList7(false);
+		setShowGameTeeTimeList8(false);
+		
+		Map<String,DynamoPlayer> sourcePlayerMap = new HashMap<>();
+		List<Round> roundsForGameList = golfmain.getRoundsForGame(this.getSelectedGame());
+		
+		for (int j = 0; j < roundsForGameList.size(); j++) 
+		{
+			Round rd = roundsForGameList.get(j);
+			sourcePlayerMap.put(rd.getPlayer().getPlayerID(), rd.getPlayer());			
+		}
+		
+		for (int i = 0; i < this.getTeeTimeList().size(); i++) 
+		{
+			TeeTime teeTime = this.getTeeTimeList().get(i);
+			
+			List<DynamoPlayer> sourcePlayerList = new ArrayList<>();
+			List<DynamoPlayer> targetPlayerList = new ArrayList<>();
+			
+			for (int j = 0; j < roundsForGameList.size(); j++) 
+			{
+				Round rd = roundsForGameList.get(j);
+				
+				if (rd.getTeeTimeID() != null && rd.getTeeTimeID().equalsIgnoreCase(teeTime.getTeeTimeID()))
+				{
+					targetPlayerList.add(rd.getPlayer());
+					if (sourcePlayerMap.containsKey(rd.getPlayer().getPlayerID()))
+					{
+						sourcePlayerMap.remove(rd.getPlayer().getPlayerID());
+					}
+				}
+				
+			}
+			
+			Collections.sort(sourcePlayerList, new PlayerComparatorByLastName());
+			Collections.sort(targetPlayerList, new PlayerComparatorByLastName());
+			
+			switch (i) 
+			{
+				case 0:
+					
+					this.setGameTeeTimeList1(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption1(teeTime.getTeeTimeString());
+					break;
+					
+				case 1:
+					
+					this.setGameTeeTimeList2(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption2(teeTime.getTeeTimeString());
+					break;	
+					
+				case 2:
+					
+					this.setGameTeeTimeList3(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption3(teeTime.getTeeTimeString());
+					setShowGameTeeTimeList3(true);
+					break;	
+					
+				case 3:
+					
+					this.setGameTeeTimeList4(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption4(teeTime.getTeeTimeString());
+					setShowGameTeeTimeList4(true);
+					break;	
+					
+				case 4:
+	
+					this.setGameTeeTimeList5(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption5(teeTime.getTeeTimeString());
+					setShowGameTeeTimeList5(true);
+					break;
+					
+				case 5:
+					
+					this.setGameTeeTimeList6(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption6(teeTime.getTeeTimeString());
+					setShowGameTeeTimeList6(true);
+					break;	
+					
+				case 6:
+					
+					this.setGameTeeTimeList7(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption7(teeTime.getTeeTimeString());
+					setShowGameTeeTimeList7(true);
+					break;	
+					
+				case 7:
+					
+					this.setGameTeeTimeList8(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+					setGameTeeTimeListCaption8(teeTime.getTeeTimeString());
+					setShowGameTeeTimeList8(true);
+					break;	
+	
+				default:
+					break;
+			}
+			
+		} 
+		
+		//Once we're done with this loop, anything in sourcePlayerMap is not assigned a tee time yet.  Put them in any list where there's not 4 players.
+		for (Entry<String, DynamoPlayer> entry : sourcePlayerMap.entrySet()) 
+		{
+			List<DynamoPlayer> sourcePlayerList = new ArrayList<>();
+			List<DynamoPlayer> targetPlayerList = new ArrayList<>();
+		
+			DynamoPlayer ply = entry.getValue();
+	        for (int i = 0; i < this.getTeeTimeList().size(); i++) 
+			{
+	        	switch (i) 
+				{
+					case 0:
+						
+						sourcePlayerList = this.getGameTeeTimeList1().getSource();
+						targetPlayerList = this.getGameTeeTimeList1().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList1(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}
+						
+						break;
+						
+					case 1:
+						
+						sourcePlayerList = this.getGameTeeTimeList2().getSource();
+						targetPlayerList = this.getGameTeeTimeList2().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList2(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}				
+						break;	
+						
+					case 2:
+						
+						sourcePlayerList = this.getGameTeeTimeList3().getSource();
+						targetPlayerList = this.getGameTeeTimeList3().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList3(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}
+						break;	
+						
+					case 3:
+						
+						sourcePlayerList = this.getGameTeeTimeList4().getSource();
+						targetPlayerList = this.getGameTeeTimeList4().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList4(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}			
+						break;	
+						
+					case 4:
+		
+						sourcePlayerList = this.getGameTeeTimeList5().getSource();
+						targetPlayerList = this.getGameTeeTimeList5().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList5(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}
+						break;
+						
+					case 5:
+						
+						sourcePlayerList = this.getGameTeeTimeList6().getSource();
+						targetPlayerList = this.getGameTeeTimeList6().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList6(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}
+						break;	
+						
+					case 6:
+						
+						sourcePlayerList = this.getGameTeeTimeList7().getSource();
+						targetPlayerList = this.getGameTeeTimeList7().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList7(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}
+						break;	
+						
+					case 7:
+						
+						sourcePlayerList = this.getGameTeeTimeList8().getSource();
+						targetPlayerList = this.getGameTeeTimeList8().getTarget();
+						
+						if (targetPlayerList != null && targetPlayerList.size() < 4)
+						{
+							sourcePlayerList.add(ply);
+							this.setGameTeeTimeList8(new DualListModel<DynamoPlayer>(sourcePlayerList, targetPlayerList));
+						}
+						break;	
+		
+					default:
+						break;
+				}
+			}
+	        
+	    }
+			
+		return "success";
+	}
 	
 	public String cancelViewAddUpdateDeleteGame()
 	{
@@ -234,7 +640,7 @@ public class Game implements Serializable
 	
 	public String deleteGame()
 	{
-		logger.info(getTempUserName() + " entering Delete Game.  About to delete: " + this.getSelectedGame().getGameDate());
+		logger.info(Utils.getLoggedInUserName() + " entering Delete Game.  About to delete: " + this.getSelectedGame().getGameDate());
 		
 		try
 		{
@@ -243,7 +649,7 @@ public class Game implements Serializable
 			golfmain.deletePlayerMoneyFromDB(this.getSelectedGame().getGameID());		
 			golfmain.deleteGame(this.getSelectedGame().getGameID());
 			
-			logger.info(getTempUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
+			logger.info(Utils.getLoggedInUserName() + " " + this.getSelectedGame().getGameDate() + " successfully deleted");
 			this.setSelectedGame(golfmain.getFullGameList().get(0));
 			
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Game successfully deleted",null);
@@ -271,25 +677,25 @@ public class Game implements Serializable
 		{
 			if (operation.equalsIgnoreCase("Add"))
 			{
-				logger.info(getTempUserName() + " clicked Add game");
+				logger.info(Utils.getLoggedInUserName() + " clicked Add game");
 				this.getSelectedGame().setGameID(null); //should not have a game id on an add
 				this.getSelectedGame().setGameDate(DateToStringConverter.convertDateToDynamoStringFormat(this.getSelectedGame().getGameDateJava()));
 				Course course = golfmain.getCoursesMap().get(this.getSelectedGame().getCourseID());
 				this.getSelectedGame().setCourseName(course.getCourseName());
 				String newGameID = golfmain.addGame(this.getSelectedGame());
 				golfmain.addTeeTimes(newGameID, this.getSelectedGame().getTeeTimesString(), this.getSelectedGame().getGameDateJava(), this.getSelectedGame().getCourseName());
-				logger.info(getTempUserName() + " after add Game");
+				logger.info(Utils.getLoggedInUserName() + " after add Game");
 			}
 			else if (operation.equalsIgnoreCase("Update"))
 			{
-				logger.info(getTempUserName() + " clicked Update game");
+				logger.info(Utils.getLoggedInUserName() + " clicked Update game");
 				this.getSelectedGame().setGameDate(DateToStringConverter.convertDateToDynamoStringFormat(this.getSelectedGame().getGameDateJava()));
 				golfmain.updateGame(this.getSelectedGame());
-				logger.info(getTempUserName() + " after update Game");
+				logger.info(Utils.getLoggedInUserName() + " after update Game");
 			}
 			else
 			{
-				logger.info(getTempUserName() + " neither add nor update from maintain player dialog - doing nothing");
+				logger.info(Utils.getLoggedInUserName() + " neither add nor update from maintain player dialog - doing nothing");
 			}
 						
 		}
@@ -350,7 +756,7 @@ public class Game implements Serializable
 	
 	public String deleteTeeTime()
 	{
-		logger.info(getTempUserName() + " is deleting a tee time");
+		logger.info(Utils.getLoggedInUserName() + " is deleting a tee time");
 		
 		try
 		{
@@ -370,12 +776,12 @@ public class Game implements Serializable
 	    	
 	    	golfmain.setGameSpecificTeeTimeList(this.getSelectedGame());
 	    	
-			//emailAdminsAboutTeeTimeRemoval(tt);
+			emailAdminsAboutTeeTimeRemoval(tt);
 			
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"tee time successfully removed",null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);  
 	        
-	        logger.info(getTempUserName() + " successfully deleted tee time from game");
+	        logger.info(Utils.getLoggedInUserName() + " successfully deleted tee time from game");
 		}
 		catch (Exception e)
 		{
@@ -389,7 +795,7 @@ public class Game implements Serializable
 	
 	public String saveTeeTime()
 	{
-		logger.info(getTempUserName() + " user clicked Save Tee Time from maintain tee time dialog");	
+		logger.info(Utils.getLoggedInUserName() + " inside saveTeeTime");	
 		
 		try
 		{
@@ -414,7 +820,7 @@ public class Game implements Serializable
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception when saving tee time: " + e.getMessage(),null);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);    
 		}
-		logger.info(getTempUserName() + " exiting saveTeeTime");
+		logger.info(Utils.getLoggedInUserName() + " exiting saveTeeTime");
 		
 		return "";
 			
@@ -462,11 +868,775 @@ public class Game implements Serializable
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 			
-		logger.info(getTempUserName() + " emailing tee time removal to: " + emailRecipients);
+		logger.info(Utils.getLoggedInUserName() + " emailing tee time removal to: " + emailRecipients);
 		
 		SAMailUtility.sendEmail(subjectLine, messageContent, emailRecipients, true); //last param means use jsf		
 	}
 	
+
+	public String selectRoundRowAjax(SelectEvent<Round> event)
+	{
+		logger.info(Utils.getLoggedInUserName() + " selected a row in Round selection list");
+		Round rd = event.getObject();
+		this.setSelectedRound(rd);
+			
+		golfmain.setDisableDeleteSelectedPlayerRound(false);			
+
+		this.setDisableFixScore(false);
+		
+		return "";
+	}	
+	
+	public String resetTeams() 
+	{
+		logger.info("User clicked reset teams from player selection screen");
+		
+		for (int i = 0; i < this.getRoundsForGameList().size(); i++) 
+		{
+			Round rd = this.getRoundsForGameList().get(i);
+			rd.setTeamNumber(0); 
+		} 
+		return "";
+	}	
+	
+	
+	public String pickTeams() 
+	{
+		logger.info("User clicked pick teams from pick teams screen");
+		
+		//How many players per team?  Need lists that we can snake through by handicap.
+		
+		List<Round> aPlayersList = new ArrayList<Round>();
+		List<Round> bPlayersList = new ArrayList<Round>();
+		List<Round> cPlayersList = new ArrayList<Round>();
+		List<Round> dPlayersList = new ArrayList<Round>();
+		List<Round> ePlayersList = new ArrayList<Round>();
+		List<Round> fPlayersList = new ArrayList<Round>();
+		List<Round> gPlayersList = new ArrayList<Round>();
+		List<Round> hPlayersList = new ArrayList<Round>();
+		
+		List<Round> gamePlayersList = new ArrayList<Round>();
+		
+		try
+		{
+			for (int i = 0; i < this.getRoundsForGameList().size(); i++) 
+			{
+				Round rd = this.getRoundsForGameList().get(i);
+				if (rd.getTeamNumber() < 0) //means skins only - do not include them in team pick
+				{
+					continue;
+				}
+				else
+				{
+					gamePlayersList.add(rd);
+				}
+			} 
+			
+			Collections.sort(gamePlayersList, new RoundComparatorByHandicap());
+			
+			int playersPerTeam = this.getSelectedGame().getTotalPlayers() / this.getSelectedGame().getTotalTeams(); 
+			int totalTeams = this.getSelectedGame().getTotalTeams();
+			
+			//A players first
+			for (int j = 1; j <= totalTeams; j++) 
+			{
+				aPlayersList.add(gamePlayersList.get(j-1));
+			}
+			
+			//B players
+			for (int j = totalTeams+1; j <= totalTeams*2; j++) 
+			{
+				bPlayersList.add(gamePlayersList.get(j-1));			
+			}
+			
+			Comparator<Round> b = Collections.reverseOrder(new RoundComparatorByHandicap()); 
+	        Collections.sort(bPlayersList, b);
+			
+			//C players
+			for (int j = totalTeams*2+1; j <= totalTeams*3; j++) 
+			{
+				cPlayersList.add(gamePlayersList.get(j-1));			
+			}		
+			
+			//D players
+			if (playersPerTeam >= 4)
+			{
+				for (int j = totalTeams*3+1; j <= totalTeams*4; j++) 
+				{
+					dPlayersList.add(gamePlayersList.get(j-1));				
+				}
+				Comparator<Round> d = Collections.reverseOrder(new RoundComparatorByHandicap()); 
+		        Collections.sort(dPlayersList, d);
+				
+			}
+			
+			//E players
+			if (playersPerTeam >= 5)
+			{
+				for (int j = totalTeams*4+1; j <= totalTeams*5; j++) 
+				{
+					ePlayersList.add(gamePlayersList.get(j-1));				
+				}	
+			}
+			
+			//F players, reverse the order
+			if (playersPerTeam >= 6)
+			{
+				for (int j = totalTeams*5+1; j <= totalTeams*6; j++) 
+				{
+					fPlayersList.add(gamePlayersList.get(j-1));
+				}
+				Comparator<Round> f = Collections.reverseOrder(new RoundComparatorByHandicap()); 
+		        Collections.sort(fPlayersList, f);
+			}
+			
+			//G players
+			if (playersPerTeam >= 7)
+			{
+				for (int j = totalTeams*6+1; j <= totalTeams*7; j++) 
+				{
+					gPlayersList.add(gamePlayersList.get(j-1));
+				}	
+			}
+			
+			//H players
+			if (playersPerTeam >= 8)
+			{
+				for (int j = totalTeams*7+1; j <= totalTeams*8; j++) 
+				{
+					hPlayersList.add(gamePlayersList.get(j-1));				
+				}
+				Comparator<Round> h = Collections.reverseOrder(new RoundComparatorByHandicap()); 
+		        Collections.sort(hPlayersList, h);
+			}
+			
+			for (int i = 0; i <= totalTeams-1; i++) 
+			{
+				Round aPlayer = aPlayersList.get(i);
+				
+				for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+				{
+					Round rd = this.getRoundsForGameList().get(j);
+					DynamoPlayer tempPlayer = rd.getPlayer();
+					if (aPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+					{
+						rd.setTeamNumber(i+1);
+						break;
+					}
+				} 
+				
+				Round bPlayer = bPlayersList.get(i);
+				
+				for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+				{
+					Round rd = this.getRoundsForGameList().get(j);
+					DynamoPlayer tempPlayer = rd.getPlayer();
+					if (bPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+					{
+						rd.setTeamNumber(i+1);
+						break;
+					}
+				} 
+				Round cPlayer = cPlayersList.get(i);
+				
+				for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+				{
+					Round rd = this.getRoundsForGameList().get(j);
+					DynamoPlayer tempPlayer = rd.getPlayer();
+					if (cPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+					{
+						rd.setTeamNumber(i+1);
+						break;
+					}
+				} 
+				
+				if (playersPerTeam >= 4)
+				{
+					Round dPlayer = dPlayersList.get(i);
+					
+					for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+					{
+						Round rd = this.getRoundsForGameList().get(j);
+						DynamoPlayer tempPlayer = rd.getPlayer();
+						if (dPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+						{
+							rd.setTeamNumber(i+1);
+							break;
+						}
+					} 
+				}
+				
+				if (playersPerTeam >= 5)
+				{
+					Round ePlayer = ePlayersList.get(i);
+					
+					for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+					{
+						Round rd = this.getRoundsForGameList().get(j);
+						DynamoPlayer tempPlayer = rd.getPlayer();
+						if (ePlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+						{
+							rd.setTeamNumber(i+1);
+							break;
+						}
+					} 
+				}
+				
+				if (playersPerTeam >= 6)
+				{
+					Round fPlayer = fPlayersList.get(i);
+					
+					for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+					{
+						Round rd = this.getRoundsForGameList().get(j);
+						DynamoPlayer tempPlayer = rd.getPlayer();
+						if (fPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+						{
+							rd.setTeamNumber(i+1);
+							break;
+						}
+					} 
+				}
+				
+				if (playersPerTeam >= 7)
+				{
+					Round gPlayer = gPlayersList.get(i);
+					
+					for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+					{
+						Round rd = this.getRoundsForGameList().get(j);
+						DynamoPlayer tempPlayer = rd.getPlayer();
+						if (gPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+						{
+							rd.setTeamNumber(i+1);
+							break;
+						}
+					} 
+				}
+				
+				if (playersPerTeam >= 8)
+				{
+					Round hPlayer = hPlayersList.get(i);
+					
+					for (int j = 0; j < this.getRoundsForGameList().size(); j++) 
+					{
+						Round rd = this.getRoundsForGameList().get(j);
+						DynamoPlayer tempPlayer = rd.getPlayer();
+						if (hPlayer.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+						{
+							rd.setTeamNumber(i+1);
+							break;
+						}
+					} 
+				}
+				
+			}
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pick Teams successful", "Successfully picked teams"));		
+		} 
+		catch (Exception e) 
+		{
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Pick Teams error encountered", e.getMessage()));		
+		}		
+		
+		return "";
+	}
+		
+	public String savePickTeams()
+	{
+		try
+		{
+			int totalPlayersForGame = this.getSelectedGame().getTotalPlayers();
+			int totalRoundsForGame = 0;
+			
+			for (int i = 0; i < golfmain.getRoundsForGame(this.getSelectedGame()).size(); i++) 
+			{
+				totalRoundsForGame++;
+				
+				Round rd = this.getRoundsForGameList().get(i);
+				golfmain.updateRoundTeamNumber(this.getSelectedGame(), rd.getPlayerID(), rd.getTeamNumber());			
+			}
+			
+			FacesContext context = FacesContext.getCurrentInstance();		
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Teams Saved", "Teams saved"));	 
+		    
+			if (totalRoundsForGame > totalPlayersForGame)
+			{
+				String msg = "saveAndStayPickTeams: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+				throw new Exception(msg);
+			}				
+			
+		}
+		catch (Exception e) 
+		{
+			logger.error(e.getMessage(), e);
+			FacesContext context = FacesContext.getCurrentInstance();
+		    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}	
+		
+		return "/auth/admin/gameList.xhtml";
+	}
+	
+	public String updateGameHandicaps() throws Exception
+	{
+		int totalPlayersForGame = this.getSelectedGame().getTotalPlayers();
+		int totalRoundsForGame = 0;
+
+		for (int i = 0; i < golfmain.getRoundsForGame(this.getSelectedGame()).size(); i++)
+		{
+			totalRoundsForGame++;
+
+			Round rd = this.getRoundsForGameList().get(i);
+			DynamoPlayer player = rd.getPlayer();
+			golfmain.updatePlayer(player);
+
+			DynamoCourseTee ct = golfmain.getCourseTeesMap().get(rd.getCourseTeeID());
+			BigDecimal newRoundHandicap = Utils.getCourseHandicap(ct, rd.getPlayer().getHandicap());
+
+			golfmain.updateRoundHandicap(this.getSelectedGame(), player.getPlayerID(), newRoundHandicap);
+		}
+
+		this.setRoundsForGameList(golfmain.getRoundsForGame(this.getSelectedGame()));
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Game Handicaps Saved", "Game handicaps saved"));
+
+		if (totalRoundsForGame > totalPlayersForGame)
+		{
+			String msg = "updateGameHandicaps: We have more rounds than players for game, this is a big problem.  Total rounds = " + totalRoundsForGame + " and total players for this game = " + totalPlayersForGame;
+			throw new Exception(msg);
+		}
+
+		return "/auth/admin/gameList.xhtml";
+	}
+	
+	public String clearFixedScore()
+	{
+		//updateAllRounds();
+		correctedScore = null;
+		fixHole = null;
+		roundIDForCorrectedScore = null;
+		return "";
+	}
+	
+	public String saveFixedScore()
+	{
+		switch (fixHole) 
+		{
+			case 1:
+				this.getSelectedRound().setHole1Score(correctedScore);
+				break;
+				
+			case 2:
+				this.getSelectedRound().setHole2Score(correctedScore);
+				break;
+				
+			case 3:
+				this.getSelectedRound().setHole3Score(correctedScore);
+				break;	
+				
+			case 4:
+				this.getSelectedRound().setHole4Score(correctedScore);
+				break;
+				
+			case 5:
+				this.getSelectedRound().setHole5Score(correctedScore);
+				break;
+				
+			case 6:
+				this.getSelectedRound().setHole6Score(correctedScore);
+				break;	
+				
+			case 7:
+				this.getSelectedRound().setHole7Score(correctedScore);
+				break;
+				
+			case 8:
+				this.getSelectedRound().setHole8Score(correctedScore);
+				break;
+				
+			case 9:
+				this.getSelectedRound().setHole9Score(correctedScore);
+				break;	
+				
+			case 10:
+				this.getSelectedRound().setHole10Score(correctedScore);
+				break;
+				
+			case 11:
+				this.getSelectedRound().setHole11Score(correctedScore);
+				break;
+				
+			case 12:
+				this.getSelectedRound().setHole12Score(correctedScore);
+				break;
+				
+			case 13:
+				this.getSelectedRound().setHole13Score(correctedScore);
+				break;	
+				
+			case 14:
+				this.getSelectedRound().setHole14Score(correctedScore);
+				break;
+				
+			case 15:
+				this.getSelectedRound().setHole15Score(correctedScore);
+				break;
+				
+			case 16:
+				this.getSelectedRound().setHole16Score(correctedScore);
+				break;	
+				
+			case 17:
+				this.getSelectedRound().setHole17Score(correctedScore);
+				break;
+				
+			case 18:
+				this.getSelectedRound().setHole18Score(correctedScore);
+				break;
+	
+			default:
+				break;
+		}
+		
+		this.getSelectedRound().setFront9Total(Utils.front9Score(this.getSelectedRound()));
+		this.getSelectedRound().setBack9Total(Utils.back9Score(this.getSelectedRound()));
+		this.getSelectedRound().setTotalScore(Utils.totalScore(this.getSelectedRound()));	
+		
+		return "";
+	}
+	
+	public String onLoadGameEnterScores()
+	{
+		logger.info(Utils.getLoggedInUserName() + " in onLoadGameEnterScores");
+		
+		DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(Utils.getLoggedInUserName());
+	
+		this.setRoundsForGameList(golfmain.getRoundsForGame(this.getSelectedGame()));
+		setUpGameEnterScores(tempPlayer);		
+			
+		return "";
+	}
+	
+	private void setUpGameEnterScores(DynamoPlayer tempPlayer) 
+	{
+		/*
+		boolean adminUser = Utils.isAdminUser();		
+		
+		if (!adminUser)
+		{
+			//remove anything from the list where it's not the same play group as the logged in user
+			
+			int tempTeeTimeID = 0;
+			
+			//first let's find out what play group this player is in (might not be in any; in that case empty out the list!)
+			synchronized (this.getSyncGameRoundList())
+			{
+				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 			
+				{
+					Round rd = this.getSyncGameRoundList().get(i);
+					if (rd.getPlayerID().equalsIgnoreCase(tempPlayer.getPlayerID()))
+					{
+						tempTeeTimeID = rd.getTeeTimeID();
+						break;
+					}
+				}
+			}
+			
+			final int temp2TeeTimeID = tempTeeTimeID;
+			
+			if (tempTeeTimeID == 0)
+			{
+				this.getSyncGameRoundList().clear(); //not a part of this game
+			}
+			else
+			{
+				this.getSyncGameRoundList().removeIf(rd -> (rd.getTeeTimeID() != temp2TeeTimeID));				
+			}
+			
+			synchronized (this.getSyncGameRoundList())
+			{
+				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
+				{
+					Round tempRd = this.getSyncGameRoundList().get(i);
+					logger.info(Utils.getLoggedInUserName() + " showing user round for entering scores: roundID = " + tempRd.getRoundID() + " player: " + tempRd.getPlayerName());
+				}
+			}
+		}	
+		*/
+	}
+
+	public String runGameNavigate()
+	{
+		boolean allScoresEntered = validateScores();
+			
+		if (allScoresEntered)
+		{
+			return "/auth/admin/runGame.xhtml";
+		}
+		else
+		{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Not all scores entered",null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return "";
+		}
+	}
+	
+	private boolean validateScores() 
+	{
+		boolean allScoresValid = true; //assume true till proven otherwise
+		
+		synchronized (this.getSyncGameRoundList())
+		{
+			for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
+			{
+				Round tempRound = this.getSyncGameRoundList().get(i);
+				
+				if (tempRound.getHole1Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole2Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole3Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole4Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole5Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole6Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole7Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole8Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole9Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole10Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole11Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole12Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole13Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole14Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole15Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole16Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole17Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				if (tempRound.getHole18Score() == 0)
+				{
+					allScoresValid = false;
+					break;
+				}
+				
+				if (!allScoresValid)
+				{
+					FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"there are round(s) with unentered scores still",null);
+					FacesContext.getCurrentInstance().addMessage(null, msg);				
+				}	     	
+				
+			}	
+		}
+		
+		return allScoresValid;
+	}
+
+	public synchronized String updateAllRounds()
+	{
+		logger.info(Utils.getLoggedInUserName() + " entering updateAllRounds method");
+		
+		try
+		{
+			int updatedRounds = 0;
+			
+			synchronized (this.getRoundsForGameList())
+			{
+				for (int i = 0; i < this.getRoundsForGameList().size(); i++) 
+				{
+					Round tempRound = this.getRoundsForGameList().get(i);
+					
+					if (tempRound.getHole1Score() == null)
+					{
+						continue;
+					}
+					
+					logger.info(Utils.getLoggedInUserName() + " in updateAllRounds method roundID = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName());
+					
+					int frontScore = tempRound.getHole1Score() + tempRound.getHole2Score() + tempRound.getHole3Score();
+					frontScore = frontScore + tempRound.getHole4Score() + tempRound.getHole5Score() + tempRound.getHole6Score();
+					frontScore = frontScore + tempRound.getHole7Score() + tempRound.getHole8Score() + tempRound.getHole9Score();
+					
+					tempRound.setFront9Total(frontScore);
+					
+					int backScore = tempRound.getHole10Score() + tempRound.getHole11Score() + tempRound.getHole12Score();
+					backScore = backScore + tempRound.getHole13Score() + tempRound.getHole14Score() + tempRound.getHole15Score();
+					backScore = backScore + tempRound.getHole16Score() + tempRound.getHole17Score() + tempRound.getHole18Score();
+					
+					tempRound.setBack9Total(backScore);
+					
+					tempRound.setTotalScore(frontScore + backScore); 
+										
+					tempRound.setNetScore((new BigDecimal(tempRound.getTotalScore())).subtract(tempRound.getRoundHandicap()));
+					
+					DynamoGame game = golfmain.getGameByGameID(tempRound.getGameID());
+					Course course = golfmain.getCoursesMap().get(game.getCourseID());
+					int coursePar = course.getCoursePar();
+					int scoreToPar = tempRound.getTotalScore() - coursePar;
+					String scoreToParString = "";
+					if (scoreToPar < 0)
+					{
+						scoreToParString = String.valueOf(scoreToPar);
+					}
+					else if (scoreToPar == 0)
+					{
+						scoreToParString = "E";
+					}
+					else
+					{
+						scoreToParString = "+" + String.valueOf(scoreToPar);
+					}
+					
+					tempRound.setTotalToPar(scoreToParString);
+					
+					logger.info(Utils.getLoggedInUserName() + " about to update round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
+					
+					golfmain.updateRound(tempRound);
+					
+					logger.info(Utils.getLoggedInUserName() + " completed updating round = " + tempRound.getRoundID() + " player: " + tempRound.getPlayerName() + " score = " + tempRound.getTotalScore());
+					
+					updatedRounds++;
+				}
+			}
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,updatedRounds + " Rounds updated",null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		catch (Exception e)
+		{
+			logger.error("Exception in updateAllRounds: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in updateAllRounds: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}		
+        
+		return "";
+	}
+	
+	public String deleteSelectedPlayerRound()
+	{
+		try
+		{
+			Round rd = this.getSelectedRound();
+			golfmain.deleteRoundFromDB(rd.getRoundID());
+			
+			int indexToRemove = -1;
+			
+			synchronized (this.getSyncGameRoundList())
+			{
+				for (int i = 0; i < this.getSyncGameRoundList().size(); i++) 
+				{
+					Round tempRound = this.getSyncGameRoundList().get(i);
+					if (tempRound.getRoundID().equalsIgnoreCase(rd.getRoundID()))
+					{
+						indexToRemove = i;
+						break;
+					}
+				}
+			}
+			
+			this.getSyncGameRoundList().remove(indexToRemove);		
+		}
+		catch (Exception e)
+		{
+			logger.error("Exception in deleteSelectedPlayerRound: " +e.getMessage(),e);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exception in deleteSelectedPlayerRound: " + e.getMessage(),null);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);    
+		}	
+		return "";
+	}
+	
+	//changed to use javascript in golfJS.js instead - once went to auto-tabbing ajax event was not reliably fired
+	public void tallyScore(Round tempRound, int rowIndex)
+	{
+		int frontScore = tempRound.getHole1Score() + tempRound.getHole2Score() + tempRound.getHole3Score();
+		frontScore = frontScore + tempRound.getHole4Score() + tempRound.getHole5Score() + tempRound.getHole6Score();
+		frontScore = frontScore + tempRound.getHole7Score() + tempRound.getHole8Score() + tempRound.getHole9Score();
+		
+		tempRound.setFront9Total(frontScore);
+		PrimeFaces.current().ajax().update("scoresForm:roundsTableID:"+rowIndex+":front9ID"); 
+		
+		int backScore = tempRound.getHole10Score() + tempRound.getHole11Score() + tempRound.getHole12Score();
+		backScore = backScore + tempRound.getHole13Score() + tempRound.getHole14Score() + tempRound.getHole15Score();
+		backScore = backScore + tempRound.getHole16Score() + tempRound.getHole17Score() + tempRound.getHole18Score();
+		
+		tempRound.setBack9Total(backScore);
+		PrimeFaces.current().ajax().update("scoresForm:roundsTableID:"+rowIndex+":back9ID"); 		
+		
+		tempRound.setTotalScore(frontScore + backScore); 
+		PrimeFaces.current().ajax().update("scoresForm:roundsTableID:"+rowIndex+":totalScoreID"); 		
+	}
+	
+	public static class RoundComparatorByHandicap implements Comparator<Round> 
+	{
+		public int compare(Round round1, Round round2)
+		{
+			return round1.getRoundHandicap().compareTo(round2.getRoundHandicap());
+		}		
+	}	
 	public void createTeamNumberList(DynamoGame game) 
 	{
 		this.getTeamNumberList().clear();
@@ -494,19 +1664,19 @@ public class Game implements Serializable
 	
 	public String onLoadEmailFuture()
 	{
-		logger.info(getTempUserName() + " in onLoadEmailFuture");	
+		logger.info(Utils.getLoggedInUserName() + " in onLoadEmailFuture");	
 		this.setFutureGamesList(golfmain.getFutureGames());
 		return "";
 	}
 	
 	public String onLoadGameSignUp()
 	{
-		logger.info(getTempUserName() + " in onLoadGameSignUp");
+		logger.info(Utils.getLoggedInUserName() + " in onLoadGameSignUp");
 		
-		DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());	
+		DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(Utils.getLoggedInUserName());	
 		
 		this.setAvailableGameList(golfmain.getAvailableGamesByPlayerID(tempPlayer.getPlayerID()));	
-		logger.info(getTempUserName() + " At end of onLoadGameSignUp method in Game.java - size of available game list is: " + this.getAvailableGameList().size());		
+		logger.info(Utils.getLoggedInUserName() + " At end of onLoadGameSignUp method in Game.java - size of available game list is: " + this.getAvailableGameList().size());		
 
 		if (this.getAvailableGameList().size() == 0)
 		{
@@ -538,7 +1708,7 @@ public class Game implements Serializable
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String displayedGameDate = sdf.format(this.getSelectedGame().getGameDate());		
+		String displayedGameDate = sdf.format(this.getSelectedGame().getGameDateJava());		
 	
 		StringBuffer sb = new StringBuffer();
 		sb.append("<H3>Signups for game on " + displayedGameDate + "</H3>");
@@ -555,7 +1725,7 @@ public class Game implements Serializable
 
 	public String selectRowSignup(SelectEvent<DynamoGame> event)
 	{
-		logger.info(getTempUserName() + " clicked on a row in Game list on game signup screen");
+		logger.info(Utils.getLoggedInUserName() + " clicked on a row in Game list on game signup screen");
 		
 		DynamoGame item = event.getObject();
 		
@@ -566,7 +1736,7 @@ public class Game implements Serializable
 	
 	public String selectRowAjax(SelectEvent<DynamoGame> event)
 	{
-		logger.info(getTempUserName() + " clicked on a row in Game list");
+		logger.info(Utils.getLoggedInUserName() + " clicked on a row in Game list");
 		
 		DynamoGame item = event.getObject();
 		this.setSelectedGame(item);
@@ -583,7 +1753,7 @@ public class Game implements Serializable
 	
 	public void valueChgTotalPlayersAdd(AjaxBehaviorEvent event) 
 	{
-		logger.info(getTempUserName() + " changed total players");
+		logger.info(Utils.getLoggedInUserName() + " changed total players");
 		
 		try
 		{
@@ -609,24 +1779,24 @@ public class Game implements Serializable
 		if (this.getSelectedGame() == null)
 		{
 			this.setSelectedGame(golfmain.getFullGameList().get(0));
-			this.setRoundsForGameList(this.getRoundsForGame().get(this.getSelectedGame().getGameID()));
+			this.setRoundsForGameList(golfmain.getRoundsForGame(this.getSelectedGame()));
 		}
-		else if (CollectionUtils.isEmpty(this.getRoundsForGame()))
+		else
 		{
-			this.setRoundsForGameList(this.getRoundsForGame().get(this.getSelectedGame().getGameID()));
+			this.setRoundsForGameList(golfmain.getRoundsForGame(this.getSelectedGame()));
 		}
 	}
 
-	public void onloadPickTeams()
+	public void onLoadPickTeams()
 	{
 		if (this.getSelectedGame() == null)
 		{
 			this.setSelectedGame(golfmain.getFullGameList().get(0));
-			this.setRoundsForGameList(this.getRoundsForGame().get(this.getSelectedGame().getGameID()));
+			this.setRoundsForGameList(golfmain.getRoundsForGame(this.getSelectedGame()));
 		}
-		else if (CollectionUtils.isEmpty(golfmain.getRoundsForGame(this.getSelectedGame())))
+		else
 		{
-			this.setRoundsForGameList(this.getRoundsForGame().get(this.getSelectedGame().getGameID()));
+			this.setRoundsForGameList(golfmain.getRoundsForGame(this.getSelectedGame()));
 		}
 
 		createTeamNumberList(this.getSelectedGame());
@@ -634,7 +1804,7 @@ public class Game implements Serializable
 	
 	public void valueChgFieldSize(AjaxBehaviorEvent event) 
 	{
-		logger.info(getTempUserName() + " changed field size on update game dialog");
+		logger.info(Utils.getLoggedInUserName() + " changed field size on update game dialog");
 		
 		try
 		{
@@ -658,7 +1828,7 @@ public class Game implements Serializable
 	
 	public void valueChgTotalPlayersUpdate(AjaxBehaviorEvent event) 
 	{
-		logger.info(getTempUserName() + " changed total players on update game dialog");
+		logger.info(Utils.getLoggedInUserName() + " changed total players on update game dialog");
 		
 		try
 		{
@@ -681,7 +1851,7 @@ public class Game implements Serializable
 	
 	public void selectTotalPlayers(Integer totalPlayers) throws Exception 
 	{		
-		logger.info(getTempUserName() + " i've got this many players selected now: " + totalPlayers);
+		logger.info(Utils.getLoggedInUserName() + " i've got this many players selected now: " + totalPlayers);
 		
 		golfmain.setRecommendations(totalPlayers);
 		
@@ -702,7 +1872,7 @@ public class Game implements Serializable
 	
 	public void valueChangeGame(AjaxBehaviorEvent event) 
 	{
-		logger.info(getTempUserName() + " picked a game");
+		logger.info(Utils.getLoggedInUserName() + " picked a game");
 		
 		try
 		{
@@ -758,11 +1928,11 @@ public class Game implements Serializable
 	
 	public String signUp(DynamoGame dynamoGame)
 	{
-		logger.info(getTempUserName() + " clicked signup button");
+		logger.info(Utils.getLoggedInUserName() + " clicked signup button");
 		
 		try
 		{
-			DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
+			DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(Utils.getLoggedInUserName());
 			
 			if (playerIsAlreadySignedUp(dynamoGame, tempPlayer)) //should not happen but for some reason has been
 			{
@@ -798,7 +1968,7 @@ public class Game implements Serializable
 				resetSignedUpMessage(dynamoGame);
 				
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				String displayedGameDate = sdf.format(dynamoGame.getGameDate());		
+				String displayedGameDate = sdf.format(dynamoGame.getGameDateJava());		
 			
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Player " + round.getPlayerName() + " successfully signed up for game on " + displayedGameDate,null);
 				
@@ -853,11 +2023,11 @@ public class Game implements Serializable
 
 	public String withdraw(DynamoGame dynamoGame)
 	{
-		logger.info(getTempUserName() + " clicked withdraw button");
+		logger.info(Utils.getLoggedInUserName() + " clicked withdraw button");
 		
 		try
 		{
-			DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(getTempUserName());
+			DynamoPlayer tempPlayer = golfmain.getFullPlayersMapByUserName().get(Utils.getLoggedInUserName());
 		
 			Round theRound = golfmain.getRoundByGameandPlayer(dynamoGame.getGameID(), tempPlayer.getPlayerID());
 			
@@ -927,7 +2097,7 @@ public class Game implements Serializable
 			emailRecipients.add(tempPlayer2.getEmailAddress());
 		}
 			
-		logger.info(getTempUserName() + " emailing withdrawal to: " + emailRecipients);
+		logger.info(Utils.getLoggedInUserName() + " emailing withdrawal to: " + emailRecipients);
 		
 		SAMailUtility.sendEmail(subjectLine, withdrawalMessageContent, emailRecipients, true);	//last param means use jsf	
 	}
@@ -967,7 +2137,7 @@ public class Game implements Serializable
 	*/
 	public String runSelectedGame()
 	{
-		logger.info(getTempUserName() + " entering runSelectedGame method");
+		logger.info(Utils.getLoggedInUserName() + " entering runSelectedGame method");
 		
 		try
 		{
@@ -986,7 +2156,7 @@ public class Game implements Serializable
 			calculateTeams();	
 			calculateIndividualGrossAndNet();
 			
-			this.setPlayerMoneyForSelectedGameList(golfmain.getPlayerMoneyByGame(this.getSelectedGame()));
+			//this.setPlayerMoneyForSelectedGameList(golfmain.getPlayerMoneyByGame(this.getSelectedGame()));
 		}
 		catch (Exception e)
 		{
@@ -1224,7 +2394,7 @@ public class Game implements Serializable
 
 	private void calculateTeams() throws Exception 
 	{
-		logger.info(getTempUserName() + " entering calculateTeams");
+		logger.info(Utils.getLoggedInUserName() + " entering calculateTeams");
 			
 		int totalMembersPerTeam = this.getSelectedGame().getTotalPlayers() / this.getSelectedGame().getTotalTeams();
 		
@@ -1255,13 +2425,17 @@ public class Game implements Serializable
 			//ok now we have everyone's score card on this team.
 			for (int i = 1; i <= this.getSelectedGame().getHowManyBalls(); i++)
 			{
-				logger.info(getTempUserName() + " working on team: " + teamNumber + " ball: " + i);
+				logger.info(Utils.getLoggedInUserName() + " working on team: " + teamNumber + " ball: " + i);
 				
 				Round round = new Round();
-				
+				DynamoPlayer tempPlayer = new DynamoPlayer();
+				tempPlayer.setLastName("Ball " + i);
+				tempPlayer.setFirstName(teamName);
+				round.setPlayer(tempPlayer);				
+
 				for (int holeNumber = 1; holeNumber <= 18; holeNumber++) 
 				{
-					logger.info(getTempUserName() + "      working on hole: " + holeNumber);					
+					logger.info(Utils.getLoggedInUserName() + "      working on hole: " + holeNumber);					
 					int lowestScore = Utils.getTeamScoreOnHole(teamRoundsList, holeNumber, i);  //i represents ball number					
 					round = Utils.setDisplayScore(holeNumber, lowestScore, this.getSelectedGame().getCourse(), round);
 				}
@@ -1325,7 +2499,7 @@ public class Game implements Serializable
 		
 		calcTeamIndividualWinnings();
 				
-		logger.info(getTempUserName() + " leaving calculateTeams");		
+		logger.info(Utils.getLoggedInUserName() + " leaving calculateTeams");		
 	}
 
 	private void calcTeamIndividualWinnings() throws Exception 
@@ -1384,10 +2558,10 @@ public class Game implements Serializable
 			}
 			
 			//at the end of that loop, we should have the winning ball(s).
-			logger.info(getTempUserName() + " Ball " + i + " has " + winningBallList.size() + " winner(s)");
+			logger.info(Utils.getLoggedInUserName() + " Ball " + i + " has " + winningBallList.size() + " winner(s)");
 		
 			BigDecimal individualBallPrize = this.getSelectedGame().getEachBallWorth().divide(new BigDecimal(winningBallList.size()).multiply(playersPerTeam), 2, RoundingMode.HALF_UP);
-			logger.info(getTempUserName() + " Ball " + i + " individualBallPrize = " + individualBallPrize);
+			logger.info(Utils.getLoggedInUserName() + " Ball " + i + " individualBallPrize = " + individualBallPrize);
 			
 			//for each player on these teams, they get the individual ball prize.
 			for (int j = 0; j < winningBallList.size(); j++)
@@ -1418,7 +2592,7 @@ public class Game implements Serializable
 
 	private void calculateSkins() throws Exception 
 	{
-		logger.info(getTempUserName() + " entering calculateSkins");
+		logger.info(Utils.getLoggedInUserName() + " entering calculateSkins");
 		
 		int totalSkins = 0;
 		List<SkinWinnings> tempSkinsList = new ArrayList<SkinWinnings>();
@@ -1563,7 +2737,7 @@ public class Game implements Serializable
 		{
 			BigDecimal skinValue = this.getSelectedGame().getSkinsPot().divide(new BigDecimal(totalSkins), 2, RoundingMode.HALF_UP);
 			
-			logger.info(getTempUserName() + " Skins won: " + totalSkins + " at " + skinValue + " each");
+			logger.info(Utils.getLoggedInUserName() + " Skins won: " + totalSkins + " at " + skinValue + " each");
 			
 			for (int i = 0; i < tempSkinsList.size(); i++) 
 			{
@@ -1581,7 +2755,7 @@ public class Game implements Serializable
 			}
 		}		
 		
-		logger.info(getTempUserName() + " leaving calculateSkins");
+		logger.info(Utils.getLoggedInUserName() + " leaving calculateSkins");
 	}
 	
 	/*
@@ -1606,7 +2780,7 @@ public class Game implements Serializable
 	
 	public String saveNewPlayers()
 	{
-		logger.info(getTempUserName() + " clicked save new players");
+		logger.info(Utils.getLoggedInUserName() + " clicked save new players");
 		
 		return "";
 	}
@@ -1630,7 +2804,7 @@ public class Game implements Serializable
 	}
 	public String showScores()
 	{
-		logger.info(getTempUserName() + " clicked show scores button");
+		logger.info(Utils.getLoggedInUserName() + " clicked show scores button");
 		this.setShowPlayerScores(true);
 		return "";
 	}
@@ -1642,7 +2816,7 @@ public class Game implements Serializable
 		
 		sb.append(NEWLINE);
 		sb.append(NEWLINE);
-		sb.append("<a href='" + WEBSITE_URL + "'>Golf Scoring</a>");
+		sb.append("<a href='" + Utils.WEBSITE_URL + "'>Golf Scoring</a>");
 		
 		this.setTestEmailMessage(sb.toString());
 		
@@ -1659,7 +2833,7 @@ public class Game implements Serializable
 			
 		emailRecipients.add(emailAddress);
 		
-		logger.info(getTempUserName() + " emailing to: " + emailRecipients);
+		logger.info(Utils.getLoggedInUserName() + " emailing to: " + emailRecipients);
 		
 		return "";
 	}
@@ -1681,8 +2855,10 @@ public class Game implements Serializable
 		StringBuffer sbSkinResultDetails = getEmailSkinResults();
 		sb.append(sbSkinResultDetails);		
 		
+		/*
 		StringBuffer sbIndividualWinnings = getEmailIndividualWinnings();
 		sb.append(sbIndividualWinnings);
+		*/
 		
 		this.setPostGameEmailMessage(sb.toString());
 		
@@ -1691,6 +2867,7 @@ public class Game implements Serializable
 		return "";
 	}
 	
+	/*
 	private StringBuffer getEmailIndividualWinnings() 
 	{
 		StringBuffer sb = new StringBuffer();
@@ -1797,7 +2974,8 @@ public class Game implements Serializable
 		
 		return sb;
 	}
-
+*/
+	
 	private StringBuffer getEmailSkinResults() 
 	{
 		StringBuffer sb = new StringBuffer();
@@ -2240,8 +3418,8 @@ public class Game implements Serializable
 		
 		sb.append("</table></body></html>");
 		
-		logger.info(getTempUserName() + " team results html");
-		logger.info(getTempUserName() + sb.toString());
+		logger.info(Utils.getLoggedInUserName() + " team results html");
+		logger.info(Utils.getLoggedInUserName() + sb.toString());
 		
 		return sb;
 	
@@ -2678,8 +3856,8 @@ public class Game implements Serializable
 		
 		sb.append("</table></body></html>");
 		
-		logger.info(getTempUserName() + " scores html");
-		logger.info(getTempUserName() + sb.toString());
+		logger.info(Utils.getLoggedInUserName() + " scores html");
+		logger.info(Utils.getLoggedInUserName() + sb.toString());
 		
 		return sb;
 	}
@@ -2692,122 +3870,10 @@ public class Game implements Serializable
 	public String onLoadPreGameEmail() 
 	{
 		return "success";		
-	}
+	}		
 	
-	public String composeFutureGameEmail()
-	{
-		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		
-		String subjectLine = "<H3>Golf game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDateJava()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName() + "</H3>";
-		sb.append(subjectLine);
-		
-		sb.append(NEWLINE);
-		
-		StringBuffer sbFutureGameDetails = getFutureEmailGameDetails();
-		sb.append(sbFutureGameDetails);	
-		sb.append(NEWLINE);
-		
-		StringBuffer whosIn = getGameParticipants();
-		sb.append(whosIn);		
-		sb.append(NEWLINE);		
-						
-		sb.append("To sign up to play (or withdraw if you've already signed up but can no longer play), go to this site:");
-		sb.append(NEWLINE);
-		sb.append("<a href='" + WEBSITE_URL + "'>Golf Scoring</a>");
-		sb.append(NEWLINE);
-		sb.append("Please do not send email requests to sign up to play - the way to sign up or withdraw now is the website above.  The gmail box is not monitored regularly and you may be left out of a game if you request to get in that way.");
-		sb.append(NEWLINE);
-	
-		sb.append(NEWLINE);
-		
-		sb.append("Log in with your credentials.  If first time logging in, those are your first name initial plus your last name for both userid and password.");
-		sb.append(NEWLINE);
-		sb.append("For example for John Doe, his credentials would be userid jdoe and password jdoe.");
-		sb.append(NEWLINE);		
-		sb.append("You can change your password from the profile menu and you are encouraged to do so.  Your user id is not changeable.");
-		sb.append(NEWLINE);
-		sb.append("To sign up or withdraw from a game hover on the Game menu and click Sign up for Game.");
-		sb.append(NEWLINE);
-		sb.append("select * from that screen click the appropriate button for the game you are interested in.");			
-		
-		this.setFutureGameEmailMessage(sb.toString());		
-			
-		establishEmailRecipientsForFutureGame();
-		String logMessage = "This future game email will go to " + emailRecipients.size() + " recipients: " + emailRecipients;
-		logger.info(logMessage);
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,logMessage,null);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	
-		return sb.toString();
-	}	
-	
-	private StringBuffer getGameParticipants() 
-	{
-		StringBuffer sb = new StringBuffer();
-		
-		sb.append("Current list of players for this game:");
-		sb.append(NEWLINE);
-		
-		List<String> roundPlayers = golfmain.getGameParticipantsFromDB(this.getSelectedGame());
-		
-		for (int i = 0; i < roundPlayers.size(); i++) 
-		{
-			String playerName = roundPlayers.get(i);
-			if (i+1 <= this.getSelectedGame().getFieldSize())
-			{
-				sb.append(i+1 + ". " + playerName);
-			}
-			else
-			{
-				sb.append(i+1 + ". " + playerName + " (wait list)");
-			}
-			sb.append(NEWLINE);
-		}
-		
-		int spotsAvailable = this.getSelectedGame().getFieldSize() - roundPlayers.size();
-		
-		sb.append(NEWLINE);
-		sb.append("Spots still available: " + spotsAvailable);
-		sb.append(NEWLINE);
-		
-		return sb;
-	}
 
-	public String sendFutureGameEmail(DynamoGame dynamoGame)
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "Golf game on " + Utils.getDayofWeekString(this.getSelectedGame().getGameDateJava()) + " " + sdf.format(this.getSelectedGame().getGameDate()) + " on " + this.getSelectedGame().getCourseName();		
-		if (emailRecipients.size() >= 100)
-		{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"100 or more recipients on Email list - google will not send it, preventing before trying",null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		else
-		{
-			SAMailUtility.sendEmail(subjectLine, futureGameEmailMessage, emailRecipients, true); //last param means use jsf
-		}
-		
-		return "";
-	}
 	
-	private void establishEmailRecipientsForFutureGame()
-	{		
-		if (emailRecipients == null)
-		{
-			emailRecipients = new ArrayList<String>();
-		}
-		else
-		{
-			emailRecipients.clear();
-		}
-		
-		List<DynamoPlayer> fullPlayerList = golfmain.getFullPlayerList();
-		
-		emailRecipients = Utils.setEmailFullRecipientList(fullPlayerList);
-				
-		logger.info(getTempUserName() + " future game composing email: will email to these recipients if sendemail clicked: " + emailRecipients);	
-	}
 
 	public String composePreGameEmail()
 	{
@@ -2895,7 +3961,7 @@ public class Game implements Serializable
 			emailRecipients.add("cleclerc@bryanpark.com");
 		}	
 				
-		logger.info(getTempUserName() + " emailing to: " + emailRecipients);
+		logger.info(Utils.getLoggedInUserName() + " emailing to: " + emailRecipients);
 		
 	}
 
@@ -3027,33 +4093,7 @@ public class Game implements Serializable
 		sb.append(NEWLINE);
 		
 		return sb;
-	}
-
-	private StringBuffer getFutureEmailGameDetails()
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		DecimalFormat currencyFmt = new DecimalFormat("$0.00");
-		
-		StringBuffer sb = new StringBuffer();
-	
-		DynamoGame gm = this.getSelectedGame();
-		sb.append("Date: " + sdf.format(gm.getGameDate()) + NEWLINE);
-		sb.append("Course: " + gm.getCourseName() + NEWLINE);
-		sb.append("Bet Amt: " + currencyFmt.format(gm.getBetAmount()) + NEWLINE);
-		sb.append("Field Size: " + gm.getFieldSize() + NEWLINE);
-		sb.append("Tee Times: ");
-		
-		List<TeeTime> teeTimeList = golfmain.getTeeTimesByGame(gm);
-		for (int i = 0; i < teeTimeList.size(); i++)
-		{
-			TeeTime teeTime = teeTimeList.get(i);
-			sb.append(teeTime.getTeeTimeString() + " ");
-		}
-
-		sb.append(NEWLINE);
-
-		return sb;
-	}
+	}	
 
 	/*
 	private void emailAdminsAboutGameAddition(Game game1) 
@@ -3072,7 +4112,7 @@ public class Game implements Serializable
 	
 		emailRecipients = getEmailAdminsRecipientList();
 			
-		logger.info(getTempUserName() + " emailing game add to: " + emailRecipients);
+		logger.info(Utils.getLoggedInUserName() + " emailing game add to: " + emailRecipients);
 		
 		SAMailUtility.sendEmail(subjectLine, messageContent, emailRecipients, true); //last param means use jsf		
 	}
@@ -3094,7 +4134,6 @@ public class Game implements Serializable
 	*/	
 	private StringBuffer getEmailGameDetails() 
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		DecimalFormat currencyFmt = new DecimalFormat("$0.00");
 		
 		StringBuffer sb = new StringBuffer();
@@ -3103,7 +4142,7 @@ public class Game implements Serializable
 		
 		DynamoGame gm = this.getSelectedGame();
 		sb.append("Day: " + Utils.getDayofWeekString(gm.getGameDateJava()) + NEWLINE);
-		sb.append("Date: " + sdf.format(gm.getGameDate()) + NEWLINE);
+		sb.append("Date: " + gm.getGameDateDisplay() + NEWLINE);
 		sb.append("Course: " + gm.getCourseName() + NEWLINE);
 		sb.append("Bet Amt: " + currencyFmt.format(gm.getBetAmount()) + NEWLINE);
 		sb.append("Total Players: " + gm.getTotalPlayers() + NEWLINE);
@@ -3402,13 +4441,6 @@ public class Game implements Serializable
 		this.gameClosedForSignups = gameClosedForSignups;
 	}
 
-	private String getTempUserName() 
-	{
-		String username = "";		
-		username = Utils.getLoggedInUserName();			
-		return username;
-	}
-
 	public List<String> getTeamSummaryList() {
 		return teamSummaryList;
 	}
@@ -3479,6 +4511,286 @@ public class Game implements Serializable
 
 	public void setRenderAddUpdateDelete(boolean renderAddUpdateDelete) {
 		this.renderAddUpdateDelete = renderAddUpdateDelete;
+	}
+
+	public boolean isDisableRunGameNavigate() {
+		return disableRunGameNavigate;
+	}
+
+	public void setDisableRunGameNavigate(boolean disableRunGameNavigate) {
+		this.disableRunGameNavigate = disableRunGameNavigate;
+	}
+
+	public List<Round> getSyncGameRoundList() {
+		return syncGameRoundList;
+	}
+
+	public void setSyncGameRoundList(List<Round> syncGameRoundList) {
+		this.syncGameRoundList = syncGameRoundList;
+	}
+
+	public Round getSelectedRound() {
+		return selectedRound;
+	}
+
+	public void setSelectedRound(Round selectedRound) {
+		this.selectedRound = selectedRound;
+	}
+
+	public Integer getFixHole() {
+		return fixHole;
+	}
+
+	public void setFixHole(Integer fixHole) {
+		this.fixHole = fixHole;
+	}
+
+	public Integer getCorrectedScore() {
+		return correctedScore;
+	}
+
+	public void setCorrectedScore(Integer correctedScore) {
+		this.correctedScore = correctedScore;
+	}
+
+	public String getRoundIDForCorrectedScore() {
+		return roundIDForCorrectedScore;
+	}
+
+	public void setRoundIDForCorrectedScore(String roundIDForCorrectedScore) {
+		this.roundIDForCorrectedScore = roundIDForCorrectedScore;
+	}
+
+	public boolean isDisableFixScore() {
+		return disableFixScore;
+	}
+
+	public void setDisableFixScore(boolean disableFixScore) {
+		this.disableFixScore = disableFixScore;
+	}
+
+	public DualListModel<DynamoPlayer> getPlayersPickList() {
+		return playersPickList;
+	}
+
+	public void setPlayersPickList(DualListModel<DynamoPlayer> playersPickList) {
+		this.playersPickList = playersPickList;
+	}
+
+	public List<DynamoPlayer> getPlayersPickListSource() {
+		return playersPickListSource;
+	}
+
+	public void setPlayersPickListSource(List<DynamoPlayer> playersPickListSource) {
+		this.playersPickListSource = playersPickListSource;
+	}
+
+	public List<DynamoPlayer> getPlayersPickListTarget() {
+		return playersPickListTarget;
+	}
+
+	public void setPlayersPickListTarget(List<DynamoPlayer> playersPickListTarget) {
+		this.playersPickListTarget = playersPickListTarget;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList1() {
+		return gameTeeTimeList1;
+	}
+
+	public void setGameTeeTimeList1(DualListModel<DynamoPlayer> gameTeeTimeList1) {
+		this.gameTeeTimeList1 = gameTeeTimeList1;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList2() {
+		return gameTeeTimeList2;
+	}
+
+	public void setGameTeeTimeList2(DualListModel<DynamoPlayer> gameTeeTimeList2) {
+		this.gameTeeTimeList2 = gameTeeTimeList2;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList3() {
+		return gameTeeTimeList3;
+	}
+
+	public void setGameTeeTimeList3(DualListModel<DynamoPlayer> gameTeeTimeList3) {
+		this.gameTeeTimeList3 = gameTeeTimeList3;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList4() {
+		return gameTeeTimeList4;
+	}
+
+	public void setGameTeeTimeList4(DualListModel<DynamoPlayer> gameTeeTimeList4) {
+		this.gameTeeTimeList4 = gameTeeTimeList4;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList5() {
+		return gameTeeTimeList5;
+	}
+
+	public void setGameTeeTimeList5(DualListModel<DynamoPlayer> gameTeeTimeList5) {
+		this.gameTeeTimeList5 = gameTeeTimeList5;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList6() {
+		return gameTeeTimeList6;
+	}
+
+	public void setGameTeeTimeList6(DualListModel<DynamoPlayer> gameTeeTimeList6) {
+		this.gameTeeTimeList6 = gameTeeTimeList6;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList7() {
+		return gameTeeTimeList7;
+	}
+
+	public void setGameTeeTimeList7(DualListModel<DynamoPlayer> gameTeeTimeList7) {
+		this.gameTeeTimeList7 = gameTeeTimeList7;
+	}
+
+	public DualListModel<DynamoPlayer> getGameTeeTimeList8() {
+		return gameTeeTimeList8;
+	}
+
+	public void setGameTeeTimeList8(DualListModel<DynamoPlayer> gameTeeTimeList8) {
+		this.gameTeeTimeList8 = gameTeeTimeList8;
+	}
+
+	public GolfMain getGolfmain() {
+		return golfmain;
+	}
+
+	public void setGolfmain(GolfMain golfmain) {
+		this.golfmain = golfmain;
+	}
+
+	public List<DynamoPlayer> getSelectedPlayersList() {
+		return selectedPlayersList;
+	}
+
+	public void setSelectedPlayersList(List<DynamoPlayer> selectedPlayersList) {
+		this.selectedPlayersList = selectedPlayersList;
+	}
+
+	public boolean isShowGameTeeTimeList3() {
+		return showGameTeeTimeList3;
+	}
+
+	public void setShowGameTeeTimeList3(boolean showGameTeeTimeList3) {
+		this.showGameTeeTimeList3 = showGameTeeTimeList3;
+	}
+
+	public boolean isShowGameTeeTimeList4() {
+		return showGameTeeTimeList4;
+	}
+
+	public void setShowGameTeeTimeList4(boolean showGameTeeTimeList4) {
+		this.showGameTeeTimeList4 = showGameTeeTimeList4;
+	}
+
+	public boolean isShowGameTeeTimeList5() {
+		return showGameTeeTimeList5;
+	}
+
+	public void setShowGameTeeTimeList5(boolean showGameTeeTimeList5) {
+		this.showGameTeeTimeList5 = showGameTeeTimeList5;
+	}
+
+	public boolean isShowGameTeeTimeList6() {
+		return showGameTeeTimeList6;
+	}
+
+	public void setShowGameTeeTimeList6(boolean showGameTeeTimeList6) {
+		this.showGameTeeTimeList6 = showGameTeeTimeList6;
+	}
+
+	public boolean isShowGameTeeTimeList7() {
+		return showGameTeeTimeList7;
+	}
+
+	public void setShowGameTeeTimeList7(boolean showGameTeeTimeList7) {
+		this.showGameTeeTimeList7 = showGameTeeTimeList7;
+	}
+
+	public boolean isShowGameTeeTimeList8() {
+		return showGameTeeTimeList8;
+	}
+
+	public void setShowGameTeeTimeList8(boolean showGameTeeTimeList8) {
+		this.showGameTeeTimeList8 = showGameTeeTimeList8;
+	}
+
+	public String getGameTeeTimeListCaption1() {
+		return gameTeeTimeListCaption1;
+	}
+
+	public void setGameTeeTimeListCaption1(String gameTeeTimeListCaption1) {
+		this.gameTeeTimeListCaption1 = gameTeeTimeListCaption1;
+	}
+
+	public String getGameTeeTimeListCaption2() {
+		return gameTeeTimeListCaption2;
+	}
+
+	public void setGameTeeTimeListCaption2(String gameTeeTimeListCaption2) {
+		this.gameTeeTimeListCaption2 = gameTeeTimeListCaption2;
+	}
+
+	public String getGameTeeTimeListCaption3() {
+		return gameTeeTimeListCaption3;
+	}
+
+	public void setGameTeeTimeListCaption3(String gameTeeTimeListCaption3) {
+		this.gameTeeTimeListCaption3 = gameTeeTimeListCaption3;
+	}
+
+	public String getGameTeeTimeListCaption4() {
+		return gameTeeTimeListCaption4;
+	}
+
+	public void setGameTeeTimeListCaption4(String gameTeeTimeListCaption4) {
+		this.gameTeeTimeListCaption4 = gameTeeTimeListCaption4;
+	}
+
+	public String getGameTeeTimeListCaption5() {
+		return gameTeeTimeListCaption5;
+	}
+
+	public void setGameTeeTimeListCaption5(String gameTeeTimeListCaption5) {
+		this.gameTeeTimeListCaption5 = gameTeeTimeListCaption5;
+	}
+
+	public String getGameTeeTimeListCaption6() {
+		return gameTeeTimeListCaption6;
+	}
+
+	public void setGameTeeTimeListCaption6(String gameTeeTimeListCaption6) {
+		this.gameTeeTimeListCaption6 = gameTeeTimeListCaption6;
+	}
+
+	public String getGameTeeTimeListCaption7() {
+		return gameTeeTimeListCaption7;
+	}
+
+	public void setGameTeeTimeListCaption7(String gameTeeTimeListCaption7) {
+		this.gameTeeTimeListCaption7 = gameTeeTimeListCaption7;
+	}
+
+	public String getGameTeeTimeListCaption8() {
+		return gameTeeTimeListCaption8;
+	}
+
+	public void setGameTeeTimeListCaption8(String gameTeeTimeListCaption8) {
+		this.gameTeeTimeListCaption8 = gameTeeTimeListCaption8;
+	}
+
+	public List<TeeTime> getTeeTimeList() {
+		return teeTimeList;
+	}
+
+	public void setTeeTimeList(List<TeeTime> teeTimeList) {
+		this.teeTimeList = teeTimeList;
 	}
 	
 }

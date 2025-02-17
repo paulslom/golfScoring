@@ -28,7 +28,7 @@ public class Create_All_Dynamo_Tables
     	
     	 try 
          {
-    		 DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
+    		 //DynamoClients dynamoClients = DynamoUtil.getDynamoClients();
     
     		 //doTable(dynamoClients, GOLFUSERS_JSONFILE);
     		 //doTable(dynamoClients, GOLFGROUPS_JSONFILE);

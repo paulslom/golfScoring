@@ -23,7 +23,9 @@ import com.pas.util.Utils;
 
 import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
 
 public class PlayerDAO implements Serializable 
@@ -56,11 +58,9 @@ public class PlayerDAO implements Serializable
 	   }	   
 	}
 	
-	public String addPlayer(Player player) throws Exception
+	public String addPlayer(DynamoPlayer dynamoPlayer) throws Exception
 	{
-		DynamoPlayer dynamoPlayer = dynamoUpsert(Utils.convertPlayerToDynamoPlayer(player));		
-		 
-		player.setPlayerID(dynamoPlayer.getPlayerID());
+		dynamoUpsert(dynamoPlayer);	
 		
 		logger.info("LoggedDBOperation: function-add; table:player; rows:1");
 		
@@ -71,11 +71,9 @@ public class PlayerDAO implements Serializable
 		return dynamoPlayer.getPlayerID(); //this is the key that was just added
 	}
 	
-	private DynamoPlayer dynamoUpsert(DynamoPlayer player2) throws Exception 
-	{
-		DynamoPlayer dynamoPlayer = new DynamoPlayer();
-        
-		if (player2.getPlayerID() == null)
+	private DynamoPlayer dynamoUpsert(DynamoPlayer dynamoPlayer) throws Exception 
+	{	    
+		if (dynamoPlayer.getPlayerID() == null)
 		{
 			dynamoPlayer.setPlayerID(UUID.randomUUID().toString());
 		}
@@ -86,15 +84,28 @@ public class PlayerDAO implements Serializable
 		return dynamoPlayer;
 	}
 
-	public void updatePlayer(DynamoPlayer player2)  throws Exception
+	public void updatePlayer(DynamoPlayer dynamoPlayer)  throws Exception
 	{
-		DynamoPlayer dynamoPlayer = dynamoUpsert(player2);		
+		dynamoUpsert(dynamoPlayer);		
 			
 		logger.info("LoggedDBOperation: function-update; table:player; rows:1");
 		
 		refreshListsAndMaps("update", dynamoPlayer);	
 		
 		logger.debug("update player table complete");		
+	}
+	
+	public void deletePlayer(DynamoPlayer dynamoPlayer) throws Exception 
+	{
+		Key key = Key.builder().partitionValue(dynamoPlayer.getPlayerID()).build();
+		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
+		playersTable.deleteItem(deleteItemEnhancedRequest);
+		
+		logger.info("LoggedDBOperation: function-delete; table:player; rows:1");
+		
+		refreshListsAndMaps("delete", dynamoPlayer);		
+		
+		logger.info(Utils.getLoggedInUserName() + " deletePlayer complete");	
 	}
 	
 	public void readPlayersFromDB() 

@@ -15,16 +15,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.pas.dynamodb.*;
-import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pas.beans.Course;
-import com.pas.beans.Game;
-import com.pas.beans.GolfMain;
-import com.pas.beans.PlayerTeePreference;
-import com.pas.beans.Round;
+import com.pas.dynamodb.DateToStringConverter;
+import com.pas.dynamodb.DynamoClients;
+import com.pas.dynamodb.DynamoGame;
+import com.pas.dynamodb.DynamoGroup;
 import com.pas.util.Utils;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -42,9 +40,6 @@ public class GameDAO implements Serializable
 	
 	private static Logger logger = LogManager.getLogger(GameDAO.class);
 	
-	@Inject GolfMain golfmain;
-	@Inject Game game;
-
 	private List<DynamoGame> fullGameList = new ArrayList<>();
 	private Map<String, DynamoGame> fullGamesMap = new HashMap<>();
 
@@ -119,11 +114,11 @@ public class GameDAO implements Serializable
     {
 		logger.info("entering readGamesFromDB");
 	
-		String oneMonthAgo = Utils.getOneMonthAgoDate();
+		String minDate = Utils.getOneMonthAgoDate(); //Utils.getOneYearAgoDate(); 
 		
-		logger.info("looking for games newer than: " + oneMonthAgo);
+		logger.info("looking for games newer than: " + minDate);
 		
-		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(oneMonthAgo));
+		Map<String, AttributeValue> av = Map.of(":min_value", AttributeValue.fromS(minDate));
 		
 		ScanEnhancedRequest request = ScanEnhancedRequest.builder()
                 .consistentRead(true)
@@ -189,55 +184,10 @@ public class GameDAO implements Serializable
 				gameList.add(availableGame);
 			}
 		}
-				
-    	for (int i = 0; i < gameList.size(); i++) 
-    	{
-			DynamoGame dynamoGame = gameList.get(i);
-			Round rd = golfmain.getRoundByGameandPlayer(dynamoGame.getGameID(), playerID);
-			
-			Integer spotsTaken = golfmain.countRoundsForGameFromDB(dynamoGame);
-			Integer spotsAvailable = dynamoGame.getFieldSize() - spotsTaken;
-			dynamoGame.setSpotsAvailable(spotsAvailable);
-			
-			if (rd == null)
-			{
-				dynamoGame.setRenderSignUp(true);
-				dynamoGame.setRenderWithdraw(false);
-				dynamoGame.setSelectedCourseTeeID(getTeePreference(playerID, dynamoGame.getCourseID()));
-				golfmain.assignCourseToGame(dynamoGame);
-			}
-			else
-			{
-				dynamoGame.setRenderSignUp(false);
-				dynamoGame.setRenderWithdraw(true);
-				dynamoGame.setSelectedCourseTeeID(rd.getCourseTeeID());
-			}
-			
-			logger.info("in getAvailableGames, game id: " + dynamoGame.getGameID() + " game date: " + dynamoGame.getGameDateJava() + " player id: " + playerID + " renderSignup: " + dynamoGame.isRenderSignUp());
-			
-		} 
-    	
-    	Collections.sort(gameList, new Comparator<DynamoGame>() 
-		{
-		   public int compare(DynamoGame o1, DynamoGame o2) 
-		   {
-		      return o1.getGameDate().compareTo(o2.getGameDate());
-		   }
-		});
     	
     	return gameList;
 	}
 	
-	public String getTeePreference(String playerID, String courseID) 
-	{
-		PlayerTeePreference ptp = golfmain.getPlayerTeePreference(playerID, courseID);
-		if (ptp != null)
-		{
-			return ptp.getCourseTeeID();
-		}
-		return null;
-	}
-
 	public List<DynamoGame> getFutureGames() 
     {
 		List<DynamoGame> gameList = new ArrayList<>();

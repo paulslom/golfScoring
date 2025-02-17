@@ -106,13 +106,13 @@ public class GolfUsersDAO implements Serializable
 		return retrievedGolfUser;
     }	
 	
-	private void deleteUser(String username) throws Exception
+	public void deleteUser(String username) throws Exception
 	{
 		Key key = Key.builder().partitionValue(username).build();
 		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
 		golfUsersTable.deleteItem(deleteItemEnhancedRequest);
 		
-		logger.info("LoggedDBOperation: function-delete; table:users; rows:1");
+		logger.info("LoggedDBOperation: function-delete; table:golfUsers; rows:1");
 		
 		GolfUser gu = new GolfUser();
 		gu.setUserName(username);

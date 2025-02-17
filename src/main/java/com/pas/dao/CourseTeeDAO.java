@@ -18,7 +18,9 @@ import com.pas.dynamodb.DynamoCourseTee;
 import com.pas.dynamodb.DynamoGroup;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
  
 public class CourseTeeDAO implements Serializable
@@ -28,7 +30,7 @@ public class CourseTeeDAO implements Serializable
 	private static Logger logger = LogManager.getLogger(CourseTeeDAO.class);
 		
 	private Map<String,DynamoCourseTee> courseTeesMap = new HashMap<>();
-
+	private Map<String,List<DynamoCourseTee>> courseTeesMapListByCourseID = new HashMap<>();
 	private List<DynamoCourseTee> courseTeesList = new ArrayList<>();
 	
 	private static DynamoClients dynamoClients;
@@ -61,7 +63,24 @@ public class CourseTeeDAO implements Serializable
 		logger.info("LoggedDBOperation: function-inquiry; table:courseTee; rows:" + this.getCourseTeesList().size());
 		
 		courseTeesMap = this.getCourseTeesList().stream().collect(Collectors.toMap(DynamoCourseTee::getCourseTeeID, DynamoCourseTee -> DynamoCourseTee));
+		
+		for (int i = 0; i < this.getCourseTeesList().size(); i++) 
+		{
+			DynamoCourseTee dct = this.getCourseTeesList().get(i);
 			
+			if (this.getCourseTeesMapListByCourseID().containsKey(dct.getCourseID()))
+			{
+				List<DynamoCourseTee> ctList = this.getCourseTeesMapListByCourseID().get(dct.getCourseID());
+				ctList.add(dct);
+			}
+			else
+			{
+				List<DynamoCourseTee> ctList = new ArrayList<>();
+				ctList.add(dct);
+				this.getCourseTeesMapListByCourseID().put(dct.getCourseID(), ctList);
+			}
+		}
+		
 		return this.getCourseTeesList();
     }
 	
@@ -98,6 +117,11 @@ public class CourseTeeDAO implements Serializable
 		return dynamoCourseTee;
 	}
 
+	public List<DynamoCourseTee> getCourseSpecificCourseTeesListByCourseID(String courseid) 
+	{
+		return this.getCourseTeesMapListByCourseID().get(courseid);
+	}
+	
 	public List<DynamoCourseTee> getCourseTeesList() {
 		return courseTeesList;
 	}
@@ -112,5 +136,38 @@ public class CourseTeeDAO implements Serializable
 
 	public void setCourseTeesMap(Map<String, DynamoCourseTee> courseTeesMap) {
 		this.courseTeesMap = courseTeesMap;
+	}
+
+	public Map<String, List<DynamoCourseTee>> getCourseTeesMapListByCourseID() {
+		return courseTeesMapListByCourseID;
+	}
+
+	public void setCourseTeesMapListByCourseID(Map<String, List<DynamoCourseTee>> courseTeesMapListByCourseID) {
+		this.courseTeesMapListByCourseID = courseTeesMapListByCourseID;
+	}
+
+	//deletes a particular course tee
+	public void deleteCourseTeeFromDB(String courseTeeID)
+    {
+		Key key = Key.builder().partitionValue(courseTeeID).build();
+		DeleteItemEnhancedRequest deleteItemEnhancedRequest = DeleteItemEnhancedRequest.builder().key(key).build();
+		courseTeesTable.deleteItem(deleteItemEnhancedRequest);
+		
+		logger.info("LoggedDBOperation: function-delete; table:courseTees; rows:1");
+    }
+		
+	//deletes all tees for a specific course
+	public void deleteCourseTeesForCourseFromDB(String courseID) 
+	{
+		List<DynamoCourseTee> tempList = this.getCourseTeesMapListByCourseID().get(courseID);
+		for (int i = 0; i < tempList.size(); i++)
+		{
+			DynamoCourseTee dct = tempList.get(i);
+			deleteCourseTeeFromDB(dct.getCourseTeeID());
+			this.getCourseTeesMap().remove(dct.getCourseTeeID());
+		}
+		
+		this.getCourseTeesMapListByCourseID().remove(courseID);			
+		logger.info("deleteCourseTeesForCourseFromDB");			
 	}
 }

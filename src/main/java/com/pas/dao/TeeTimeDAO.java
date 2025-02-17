@@ -26,11 +26,17 @@ import com.pas.dynamodb.DynamoGroup;
 import com.pas.dynamodb.DynamoTeeTime;
 
 import jakarta.inject.Inject;
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.DeleteItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
 public class TeeTimeDAO implements Serializable
 {
@@ -86,6 +92,34 @@ public class TeeTimeDAO implements Serializable
 		
     	return ttList;
     }
+	
+	public List<TeeTime> readTeeTimesForGame(DynamoGroup defaultGroup, String gameID)
+	{
+		DynamoDbIndex<DynamoTeeTime> gsi = teeTimesTable.index("gsi_GameID");
+		
+		Key key = Key.builder().partitionValue(gameID).build();
+    	QueryConditional qc = QueryConditional.keyEqualTo(key);
+    	
+    	QueryEnhancedRequest qer = QueryEnhancedRequest.builder()
+                .queryConditional(qc)
+                .build();
+    	SdkIterable<Page<DynamoTeeTime>> pmsByGameID = gsi.query(qer);
+    	     
+    	PageIterable<DynamoTeeTime> pages = PageIterable.create(pmsByGameID);
+    	
+    	List<DynamoTeeTime> dtList = pages.items().stream().toList();
+    	List<TeeTime> returnList = new ArrayList<>();
+    	
+    	for (int i = 0; i < dtList.size(); i++) 
+    	{
+    		DynamoTeeTime dtt = dtList.get(i);
+    		TeeTime tt = new TeeTime();
+    		tt.setTeeTimeID(dtt.getTeeTimeID());
+    		tt.setTeeTimeString(dtt.getTeeTimeString());
+    		returnList.add(tt);
+		}
+    	return returnList;
+	}
 	
 	public void readTeeTimesFromDB(DynamoGroup defaultGroup, Map<String, DynamoGame> fullGameMap) throws Exception
     {

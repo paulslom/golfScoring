@@ -1,0 +1,484 @@
+<ui:composition 
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+ 		 
+  	<table id="coursemaintainTableID" style="width:100%;">
+      
+         <colgroup>
+         	<col width="33%"/>
+         	<col width="33%"/>
+         	<col width="33%"/>
+         </colgroup>
+         
+         <tr>	  		
+ 			 <td colspan="3" align="center">
+				<p:outputLabel value="#{pc_GolfMain.courseOperation} Course"/>
+			 </td>		             
+         </tr>  
+         
+         <tr>
+			<td colspan="3" align="center">
+			
+			   <p:commandButton 
+				   value="Update" 
+				   action="#{pc_GolfMain.updateCourse}"
+				   rendered="#{pc_GolfMain.courseOperation=='Update'}"	
+				   update="coursesForm">
+			   </p:commandButton> 
+			   
+			   <p:commandButton 
+				   value="Add" 
+				   action="#{pc_GolfMain.addCourse}"
+				   rendered="#{pc_GolfMain.courseOperation=='Add'}"	
+				   update="coursesForm">
+			   </p:commandButton> 		   
+				
+			   <p:commandButton value="#{bundle.cancel}"
+			       action="#{pc_GolfMain.cancelAddUpdateCourse}"
+			       immediate="true"
+			       update="coursesForm">
+			   </p:commandButton>
+			   
+			</td>
+		</tr>
+         
+	    <tr>
+	  		
+ 		    <td class="textLabel">
+			   <p:outputLabel value="Course ID" />
+		    </td>	
+		 
+            <td colspan="2" class="text">
+               <p:outputLabel value="#{pc_GolfMain.selectedCourse.courseID}"/>
+            </td>
+            
+         </tr>
+        
+         <tr>
+		  		
+  			 <td class="textLabelMiddle">
+				<p:outputLabel for="courseNameID" value="Course Name"/>
+			 </td>	
+			 
+             <td colspan="2" class="text">
+                <p:inputText id="courseNameID" size="50" value="#{pc_GolfMain.selectedCourse.courseName}" required="true"/>
+             </td>
+             
+          </tr>
+          
+          <tr>
+		  		
+  			 <td>
+  			 
+  			    <p:outputPanel id="front9Panel" style="display:block">
+  			    
+  			       <table id="front9TableID" style="width:100%;">
+      
+			         <colgroup>
+			         	<col width="50%"/>
+			         	<col width="50%"/>
+			         </colgroup>
+			         
+			         <tr>
+		  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole1ParID" value="Hole 1 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole1ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole1Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole2ParID" value="Hole 2 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole2ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole2Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole3ParID" value="Hole 3 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole3ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole3Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole4ParID" value="Hole 4 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole4ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole4Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole5ParID" value="Hole 5 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole5ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole5Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole6ParID" value="Hole 6 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole6ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole6Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole7ParID" value="Hole 7 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole7ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole7Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole8ParID" value="Hole 8 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole8ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole8Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole9ParID" value="Hole 9 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole9ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole9Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+			          	<td colspan="2">
+			          	   <br/>
+			          	</td>
+			          </tr>
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="front9ParID" value="Front 9 Par"/>
+						 </td>	
+						 
+			             <td colspan="2" class="text">
+			                <p:inputText id="front9ParID" minValue="20" maxValue="99" decimalPlaces="0" size="2" value="#{pc_GolfMain.selectedCourse.front9Par}" required="true"/>
+			             </td>
+			             
+			          </tr>		
+			         
+			       </table>
+			         
+                </p:outputPanel>
+				
+			 </td>	
+			 
+             <td>
+             
+                <p:outputPanel id="back9Panel" style="display:block">
+                
+                   <table id="back9TableID" style="width:100%;">
+      
+			         <colgroup>
+			         	<col width="50%"/>
+			         	<col width="50%"/>
+			         </colgroup>
+			         
+			         <tr>
+		  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole10ParID" value="Hole 10 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole10ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole10Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole11ParID" value="Hole 11 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole11ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole11Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole12ParID" value="Hole 12 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole12ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole12Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole13ParID" value="Hole 13 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole13ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole13Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole14ParID" value="Hole 14 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole14ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole14Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole15ParID" value="Hole 15 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole15ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole15Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole16ParID" value="Hole 16 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole16ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole16Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole17ParID" value="Hole 17 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole17ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole17Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="hole18ParID" value="Hole 18 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="hole18ParID" minValue="3" maxValue="7" decimalPlaces="0" size="1" value="#{pc_GolfMain.selectedCourse.hole18Par}" required="true" onkeyup="tabNextHole(this);"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+			          	<td colspan="2">
+			          	   <br/>
+			          	</td>
+			          </tr>
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="back9ParID" value="Back 9 Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="back9ParID" minValue="20" maxValue="99" decimalPlaces="0" size="2" value="#{pc_GolfMain.selectedCourse.back9Par}" required="true"/>
+			             </td>
+			             
+			          </tr>		
+			          
+			          <tr>
+			          	<td colspan="2">
+			          	   <br/>
+			          	</td>
+			          </tr>
+			          
+			          <tr>
+					  		
+			  			 <td class="textLabelMiddle">
+							<p:outputLabel for="courseParID" value="Course Par"/>
+						 </td>	
+						 
+			             <td class="text">
+			                <p:inputText id="courseParID" minValue="20" maxValue="99" decimalPlaces="0" size="2" value="#{pc_GolfMain.selectedCourse.coursePar}" required="true"/>
+			             </td>
+			             
+			          </tr>	
+			          		          
+			       </table>
+			       
+                </p:outputPanel>
+                
+             </td>
+             
+             <td>
+             
+                <p:outputPanel id="courseTeesPanel" style="display:block">
+       
+        			<table id="courseTeesTableID" style="width:100%;">
+      
+				         <colgroup>
+				         	<col width="50%"/>
+				         	<col width="50%"/>
+				         </colgroup>
+				         
+				         <tr>
+			  		
+				  			 <td colspan="2" class="textLabelMiddle">
+								<p:outputLabel rendered="#{pc_GolfMain.courseOperation=='Update'}" value="Tee Boxes cannot be updated only added; must alter them directly in the noSQL Workbench tool "/>								
+				             </td>
+				             
+				        </tr>
+				        
+				        <tr>
+			  		
+				  			 <td class="textLabelMiddle">
+								<p:outputLabel rendered="#{pc_GolfMain.courseOperation=='Add'}"	for="numTeeBoxesID" value="Number of Tee Boxes: "/>
+								<p:inputText rendered="#{pc_GolfMain.courseOperation=='Add'}"	id="numTeeBoxesID" minValue="3" maxValue="7" decimalPlaces="0" size="2" value="#{pc_GolfMain.courseTeeBoxes}"/>
+							 </td>	
+							 			             
+				             <td class="text">
+				                <p:commandButton 
+								   value="Generate Tee Box Rows" 
+								   rendered="#{pc_GolfMain.courseOperation=='Add'}"	
+								   action="#{pc_GolfMain.generateTeeBoxRows}"
+								   update="coursesForm">
+							   </p:commandButton> 
+				             </td>
+				             
+				        </tr>
+			        
+			            <tr>
+			  		
+				  		  <td colspan="2">
+				  			 
+				  			 <p:dataTable id="courseTeesTableID" value="#{pc_GolfMain.newCourseTeesList}"
+						          var="ct" scrollable="true" scrollHeight="350" style="font-size:10px;" rendered="#{pc_GolfMain.courseOperation=='Add'}">							
+									
+						          <f:facet name="header">
+					   				  <h:outputText value="CourseTees"/>
+								  </f:facet>
+									
+								  <p:column style="width:25%" headerText="Tee Color">												
+									  <p:inputText id="teeColorID" value="#{ct.teeColor}" required="true"/>														
+								  </p:column>
+								  
+								  <p:column style="width:25%" headerText="Course Rating">												
+									  <p:inputText id="courseRatingID" value="#{ct.courseRating}" required="true"/>														
+								  </p:column>
+								  
+								  <p:column style="width:25%" headerText="Slope Rating">												
+									  <p:inputText id="slopeRatingID" value="#{ct.slopeRating}" required="true"/>														
+								  </p:column>
+								  
+								  <p:column style="width:25%" headerText="Total Yardage">												
+									  <p:inputText id="totalYardageID" value="#{ct.totalYardage}" required="true"/>														
+								  </p:column>
+									  
+						     </p:dataTable>
+						     
+						     <p:dataTable id="courseTeesTableviewID" value="#{pc_GolfMain.courseSpecificCourseTeesList}"
+						          var="ct" scrollable="true" scrollHeight="350" style="font-size:10px;" rendered="#{pc_GolfMain.courseOperation=='Update'}">							
+									
+						          <f:facet name="header">
+					   				  <h:outputText value="CourseTees"/>
+								  </f:facet>
+									
+								  <p:column style="width:25%" headerText="Tee Color">												
+									  <h:outputText value="#{ct.teeColor}"/>														
+								  </p:column>
+								  
+								  <p:column style="width:25%" headerText="Course Rating">												
+									  <h:outputText value="#{ct.courseRating}"/>														
+								  </p:column>
+								  
+								  <p:column style="width:25%" headerText="Slope Rating">												
+									  <h:outputText value="#{ct.slopeRating}"/>														
+								  </p:column>
+								  
+								  <p:column style="width:25%" headerText="Total Yardage">												
+									  <h:outputText value="#{ct.totalYardage}"/>														
+								  </p:column>
+									  
+						     </p:dataTable>
+								
+						  </td>	
+			       		
+                       </tr>
+			       
+			       </table> 
+			       
+                </p:outputPanel>
+                
+             </td>
+             
+          </tr>	
+		
+	</table>
+		
+</ui:composition>	

@@ -51,6 +51,11 @@ public class DynamoGame
 	private BigDecimal suggestedSkinsPot;
 	private String teeTimesString;
 
+	public String toString()
+	{
+		return "Game Date: " + this.getGameDateDisplay() + " Course: " + this.getCourseName() + " Game ID: " + this.getGameID();
+	}
+	
 	@DynamoDbPartitionKey //primary key
 	public String getGameID() {
 		return gameID;

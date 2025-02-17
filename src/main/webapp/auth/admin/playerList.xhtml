@@ -1,0 +1,131 @@
+<ui:composition template="/auth/template.xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+     
+    <ui:define name="content">
+ 	    
+	   <h:form id="playerForm">  
+		  
+		  <p:messages id="facesMessages" showDetail="false">
+	      </p:messages> 
+	      		
+		  <p:outputPanel id="playerInquiryPanel" style="display:block" rendered="#{pc_Player.renderInquiry}">	
+					
+		      <p:dataTable id="playersTableID" value="#{pc_GolfMain.fullPlayerList}"
+		          var="plyr" scrollable="true" scrollHeight="350" sortyBy="#{plyr.lastName}" 
+		          selectionMode="single" selection="#{pc_Player.selectedPlayer}" rowKey="#{plyr.playerID}"
+		          style="font-size:12px;">							
+					
+		          <f:facet name="header">
+	   				  <h:outputText value="Players"/>
+				  </f:facet>
+					
+				  <p:ajax event="rowSelect" listener="#{pc_Player.selectRowAjax}"/>
+					
+			      <p:column style="width:6%" headerText="Chg">	
+	                      		
+				     <p:commandButton id="plyrChgId"
+					  	value="Chg"
+						action="#{pc_Player.selectPlayerAcid}"
+						update="playerForm">
+						<f:param name="operation" value="Update" />
+						<f:param name="id" value="#{plyr.playerID}" />
+					 </p:commandButton>	
+				 	
+	              </p:column>
+	                      
+	              <p:column style="width:6%" headerText="Del">	
+	                      		
+				   	<p:commandButton id="deletePlayerButtonID"
+		                value="Delete"
+		                action="#{pc_Player.deletePlayer}"
+						update="playerForm">
+						<p:confirm header="Confirmation" message="Really delete this Player?" icon="pi pi-exclamation-triangle" />
+				    </p:commandButton>
+				  
+				    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+				    </p:confirmDialog> 
+				 
+	              </p:column>
+	                
+	              <p:column style="width:6%" headerText="Tee Prefs">	
+	                      		
+				   	 <p:commandButton id="teePrefsId"
+				  	    value="Tee Prefs"
+					    action="#{pc_Player.selectPlayerAcid}"
+					    disabled="true"
+					    update="playerForm">
+					    <f:param name="operation" value="TeePrefs" />
+						<f:param name="id" value="#{plyr.playerID}" />
+					 </p:commandButton>	
+				 
+	              </p:column>
+	              			
+				  <p:column style="width:10%" headerText="ID" sortBy="#{plyr.playerID}">												
+					  <h:outputText value="#{plyr.playerID}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:15%" headerText="First" sortBy="#{plyr.firstName}">												
+					  <h:outputText value="#{plyr.firstName}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:15%" headerText="Last" sortBy="#{plyr.lastName}">												
+					  <h:outputText value="#{plyr.lastName}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:8%" headerText="Current Handicap Index" sortBy="#{plyr.handicap}">												
+					  <h:outputText value="#{plyr.handicap}">
+					     <f:convertNumber type="number"
+	                             		maxIntegerDigits="2"
+	                             		maxFractionDigits="1"/>
+					  </h:outputText>   														
+				  </p:column>
+				  
+				  <p:column style="width:8%" headerText="ID" sortBy="#{plyr.username}">												
+					  <h:outputText value="#{plyr.username}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:7%" headerText="role" sortBy="#{plyr.role}">												
+					  <h:outputText value="#{plyr.role}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:6%" headerText="Active" sortBy="#{plyr.active}">												
+					  <h:outputText value="#{plyr.active}"/>														
+				  </p:column>
+				  
+				  <p:column style="width:13%" headerText="email" sortBy="#{plyr.emailAddress}">												
+					  <h:outputText value="#{plyr.emailAddress}"/>														
+				  </p:column>
+			  
+			  </p:dataTable>
+				 	
+		      <p:messages id="facesMessagesID" showDetail="false">
+		      </p:messages>   
+					        
+	          <p:commandButton id="playerAddId"
+				  value="Add New Player"
+				  action="#{pc_Player.selectPlayerAcid}"
+				  update="playerForm">
+				  <f:param name="operation" value="Add" />
+			  </p:commandButton>	
+			
+		  </p:outputPanel>
+		   
+		  <p:outputPanel id="playerUpdatePanel" style="display:block" rendered="#{pc_Player.renderAddUpdate}">
+						
+			  <ui:include src="/auth/admin/playerAddUpdate.xhtml"/>		
+		       
+		  </p:outputPanel>
+		  
+		</h:form> 	
+	
+		
+	</ui:define>
+	
+</ui:composition>	

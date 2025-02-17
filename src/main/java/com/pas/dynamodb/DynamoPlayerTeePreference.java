@@ -1,6 +1,11 @@
 package com.pas.dynamodb;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.faces.model.SelectItem;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
@@ -20,6 +25,9 @@ public class DynamoPlayerTeePreference
 	private String courseName;
 	private String teeColor;
 
+	private List<SelectItem> teeSelections = new ArrayList<>();
+	
+	@DynamoDbSecondaryPartitionKey(indexNames = "gsi_PlayerID")
 	public String getPlayerID() {
 		return playerID;
 	}
@@ -116,5 +124,15 @@ public class DynamoPlayerTeePreference
 
 	public void setTeeColor(String teeColor) {
 		this.teeColor = teeColor;
+	}
+
+	@DynamoDbIgnore
+	public List<SelectItem> getTeeSelections() {
+		return teeSelections;
+	}
+
+	@DynamoDbIgnore
+	public void setTeeSelections(List<SelectItem> teeSelections) {
+		this.teeSelections = teeSelections;
 	}
 }
