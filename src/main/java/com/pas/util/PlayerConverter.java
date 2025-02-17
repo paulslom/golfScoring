@@ -1,5 +1,7 @@
 package com.pas.util;
 
+import java.io.Serializable;
+
 import com.pas.beans.GolfMain;
 import com.pas.dynamodb.DynamoPlayer;
 
@@ -14,8 +16,10 @@ import jakarta.inject.Named;
 
 @Named("pc_PlayerConverter")
 @SessionScoped
-public class PlayerConverter implements Converter<Object>
+public class PlayerConverter implements Serializable, Converter<Object>
 {
+	private static final long serialVersionUID = 1L;
+	
 	@Inject GolfMain golfmain;
 
 	@Override
