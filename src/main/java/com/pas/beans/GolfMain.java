@@ -41,15 +41,16 @@ import com.pas.dynamodb.DynamoUtil;
 import com.pas.util.SAMailUtility;
 import com.pas.util.Utils;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 
 @Named("pc_GolfMain")
-@SessionScoped
+@ApplicationScoped
 public class GolfMain implements Serializable
 {
 	static
@@ -153,10 +154,9 @@ public class GolfMain implements Serializable
 	private PlayerTeePreferenceDAO playerTeePreferencesDAO;
 	private GroupDAO groupDAO;
 	
-	@PostConstruct
-	public void init()
+	public void onStart(@Observes @Initialized(ApplicationScoped.class) Object pointless) 
 	{
-		logger.info("Entering GolfMain constructor.  Should only be here ONE time with Spring singleton pattern implemented");	
+		logger.info("Entering GolfMain onStart method.  Should only be here ONE time for an ApplicationScoped CDI bean!");	
 		logger.info("GolfMain id is: " + this.getId());
 		
 		final int MIN_PLAYERS = 4;
@@ -604,7 +604,7 @@ public class GolfMain implements Serializable
 	{
 		logger.info("entering loadPlayerMoneyList");
 		playerMoneyDAO = new PlayerMoneyDAO(dynamoClients);
-		playerMoneyDAO.readPlayerMoneyFromDB();	
+		//playerMoneyDAO.readPlayerMoneyFromDB();	
 		
 		Map<String,PlayerMoney> tempMap = new HashMap<>();
 		

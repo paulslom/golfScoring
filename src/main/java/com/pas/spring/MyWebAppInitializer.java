@@ -63,7 +63,7 @@ public class MyWebAppInitializer implements ServletContextInitializer
             
             //only one class is necessary here, not sure why they are not ALL needed but they are not.
             Set<Class<?>> jsfAnnotatedClasses = new HashSet<>();
-            jsfAnnotatedClasses.add(com.pas.beans.GolfUser.class);
+            jsfAnnotatedClasses.add(com.pas.beans.GolfMain.class);
             
             logger.info("total jsf annotated classes: " + jsfAnnotatedClasses.size()); 
             
