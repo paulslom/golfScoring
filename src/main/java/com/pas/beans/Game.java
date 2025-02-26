@@ -1870,62 +1870,6 @@ public class Game implements Serializable
 						
 	}
 	
-	public void valueChangeGame(AjaxBehaviorEvent event) 
-	{
-		logger.info(Utils.getLoggedInUserName() + " picked a game");
-		
-		try
-		{
-			SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-			
-			String gameID = "";
-			
-			if (selectonemenu.getValue() instanceof String)
-			{
-				gameID = (String)selectonemenu.getValue();
-			}
-			else if (selectonemenu.getValue() instanceof DynamoGame)
-			{
-				DynamoGame tempGame = (DynamoGame)selectonemenu.getValue();
-				gameID = tempGame.getGameID();
-			}
-			
-			if (gameID != null)
-			{
-				selectedGame = golfmain.getGameByGameID(gameID);
-				if (selectedGame != null)
-				{
-					this.setSelectedGame(selectedGame);
-					this.setShowPlayerSelectionPanel(true);
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			logger.error("valueChangeGame failed: " + e.getMessage(), e);
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"valueChangeGame failed: " + e.getMessage(),null);
-	        FacesContext.getCurrentInstance().addMessage(null, msg);    
-		}		
-								
-	}
-	
-	public void valueChangeCourse(AjaxBehaviorEvent event) 
-	{
-		SelectOneMenu selectonemenu = (SelectOneMenu)event.getSource();
-	
-		Course selectedOption = (Course)selectonemenu.getValue();
-		
-		if (selectedOption != null)
-		{
-			this.setCourseSelected(true);
-		}
-		else
-		{
-			this.setCourseSelected(false);
-		}
-				
-	}
-	
 	public String signUp(DynamoGame dynamoGame)
 	{
 		logger.info(Utils.getLoggedInUserName() + " clicked signup button");

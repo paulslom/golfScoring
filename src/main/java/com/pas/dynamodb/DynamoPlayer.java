@@ -19,7 +19,7 @@ public class DynamoPlayer
 	private String emailAddress;
 	private boolean active;
 	private String fullName;
-
+	private String teePreference = "Gold";
 	private String role;
 	
 	public String toString()
@@ -116,5 +116,13 @@ public class DynamoPlayer
 	@DynamoDbIgnore
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public String getTeePreference() {
+		return teePreference;
+	}
+
+	public void setTeePreference(String teePreference) {
+		this.teePreference = teePreference;
 	}
 }

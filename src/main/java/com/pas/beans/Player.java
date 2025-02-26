@@ -42,7 +42,7 @@ public class Player implements Serializable
 	private boolean renderInquiry = true;
 	private boolean renderAddUpdate = false;
 	
-	private String teePreference = "Gold";
+	
 			
 	private String operation = "";
 	
@@ -177,7 +177,7 @@ public class Player implements Serializable
 	
 	private void addInitialTeePrefs(String newPlayerID) throws Exception 
 	{
-		String teePreference = this.getTeePreference();
+		String teePreference = this.getSelectedPlayer().getTeePreference();
 		
 		List<DynamoCourseTee> courseTees = golfmain.getCourseTeesList();
 		List<Course> courses = golfmain.getCoursesList();
@@ -1054,16 +1054,6 @@ public class Player implements Serializable
 
 	public void setResetPassword(boolean resetPassword) {
 		this.resetPassword = resetPassword;
-	}
-
-	public String getTeePreference() 
-	{
-		return teePreference;
-	}
-
-	public void setTeePreference(String teePreference) 
-	{
-		this.teePreference = teePreference;
 	}
 	
 	public boolean isRenderInquiry() {
