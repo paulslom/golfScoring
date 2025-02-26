@@ -44,6 +44,7 @@
 		                value="Delete"
 		                action="#{pc_Player.deletePlayer}"
 						update="playerForm">
+						<f:param name="id" value="#{plyr.playerID}" />
 						<p:confirm header="Confirmation" message="Really delete this Player?" icon="pi pi-exclamation-triangle" />
 				    </p:commandButton>
 				  

@@ -449,10 +449,18 @@ public class Player implements Serializable
 	
 	public String deletePlayer()
 	{
-		logger.info(Utils.getLoggedInUserName() + " entering Delete Game.  About to delete: " + this.getSelectedPlayer());
+		logger.info(Utils.getLoggedInUserName() + " entering Delete Player.  About to delete: " + this.getSelectedPlayer());
 		
 		try
 		{
+			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			String id = ec.getRequestParameterMap().get("id");
+				    
+		    if (id != null)
+		    {
+		    	this.setSelectedPlayer(golfmain.getPlayerByPlayerID(id));
+		    }
+		    
 			golfmain.deletePlayerTeePreferences(this.getSelectedPlayer());
 			golfmain.deletePlayerMoneyFromDB(this.getSelectedPlayer());		
 			golfmain.deletePlayer(this.getSelectedPlayer());
