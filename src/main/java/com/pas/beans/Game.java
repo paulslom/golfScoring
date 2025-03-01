@@ -4178,17 +4178,36 @@ public class Game implements Serializable
 	
 	public String sendPreGameEmail()
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "Golf game setup for " + sdf.format(this.getSelectedGame().getGameDate());
-		SAMailUtility.sendEmail(subjectLine, preGameEmailMessage, emailRecipients); 
+		try
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
+			String subjectLine = "Golf game setup for " + sdf.format(this.getSelectedGame().getGameDateJava());
+			SAMailUtility.sendEmail(subjectLine, preGameEmailMessage, emailRecipients); 
+		} 
+        catch (Exception e) 
+        {
+            logger.error("exception: " + e.getMessage(), e);
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
+		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
+        }
+		
 		return "";
 	}
 	
 	public String sendPostGameEmail()
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
-		String subjectLine = "Golf results for " + sdf.format(this.getSelectedGame().getGameDate());
-		SAMailUtility.sendEmail(subjectLine, postGameEmailMessage, emailRecipients); 
+		try
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
+			String subjectLine = "Golf results for " + sdf.format(this.getSelectedGame().getGameDateJava());
+			SAMailUtility.sendEmail(subjectLine, postGameEmailMessage, emailRecipients); 
+		} 
+        catch (Exception e) 
+        {
+            logger.error("exception: " + e.getMessage(), e);
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
+		 	FacesContext.getCurrentInstance().addMessage(null, facesMessage);		 	
+        }
 		return "";
 	}
 	
