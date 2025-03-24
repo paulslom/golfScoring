@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -689,13 +690,18 @@ public class Game implements Serializable
 			else if (operation.equalsIgnoreCase("Update"))
 			{
 				logger.info(Utils.getLoggedInUserName() + " clicked Update game");
-				this.getSelectedGame().setGameDate(DateToStringConverter.convertDateToDynamoStringFormat(this.getSelectedGame().getGameDateJava()));
-				golfmain.updateGame(this.getSelectedGame());
 				logger.info(Utils.getLoggedInUserName() + " after update Game");
 			}
 			else
 			{
 				logger.info(Utils.getLoggedInUserName() + " neither add nor update from maintain player dialog - doing nothing");
+			}
+			
+			if (operation.equalsIgnoreCase("Add")
+		    ||  operation.equalsIgnoreCase("Update"))
+			{				
+				this.getSelectedGame().setGameDate(DateToStringConverter.convertDateToDynamoStringFormat(getFirstTeeTimeDateTime(this.getSelectedGame().getGameDateJava())));
+				golfmain.updateGame(this.getSelectedGame());		
 			}
 						
 		}
@@ -709,6 +715,42 @@ public class Game implements Serializable
 			
 	}
 	
+	//given a game date, establish the time also using the first tee time in the tee time list for this game
+	private Date getFirstTeeTimeDateTime(Date gameDateJava) throws Exception
+	{
+		List<TeeTime> teeTimesByGame = golfmain.getTeeTimesByGame(this.getSelectedGame());
+		
+		String hour = "";
+		String minute = "";
+		
+		if (teeTimesByGame.size() > 0)
+		{
+			TeeTime teeTime = teeTimesByGame.get(0);
+			String [] temp = teeTime.getTeeTimeString().split(":");
+			if (temp.length > 1)
+			{
+				hour = temp[0];
+				minute = temp[1];
+			}			
+		}
+		
+		Calendar calGame = Calendar.getInstance();
+			
+		calGame.setTime(gameDateJava);
+		
+		if (hour.length() > 0)
+		{
+			calGame.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+		}
+		
+		if (minute.length() > 0)
+		{
+			calGame.set(Calendar.MINUTE, Integer.parseInt(minute));
+		}
+		
+		return calGame.getTime();
+	}
+
 	public String updateTeeTimeSetup()
 	{
 		golfmain.setTeeTimeOperation("Update");

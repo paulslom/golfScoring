@@ -40,8 +40,6 @@ public class Create_All_Dynamo_Tables
     		 //doTable(dynamoClients, PLAYERTEES_JSONFILE);
     		 //doTable(dynamoClients, PLAYERMONEY_JSONFILE);
     		 //doTable(dynamoClients, ROUNDS_JSONFILE);
-	       	
-	    	 DynamoUtil.stopDynamoServer();
 	    	
 			 logger.debug("**********  END of program ***********");
          }

@@ -197,7 +197,7 @@ public class GameDAO implements Serializable
 		todayMidnight.set(Calendar.MINUTE, 0);
 		todayMidnight.set(Calendar.SECOND, 0);
 		todayMidnight.set(Calendar.MILLISECOND, 0);
-		
+				
 		for (int i = 0; i < this.getFullGameList().size(); i++) 
 		{
 			DynamoGame availableGame = this.getFullGameList().get(i);
